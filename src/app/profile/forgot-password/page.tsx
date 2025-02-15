@@ -40,7 +40,7 @@ export default function ChangePassword() {
 
   return (
     <div>
-      <Navbar home={""} />
+      <Navbar/>
       <div className="p-5 flex flex-col justify-between h-[680px]">
         <h1 className="text-center text-[27px] mt-16">Password Reset</h1>
         

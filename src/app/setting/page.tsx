@@ -212,7 +212,7 @@ const Setting: React.FC = () => {
 
   return (
     <>
-      <Navbar home="Setting" />
+      <Navbar/>
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-28">
         <h2 className="font-medium text-[17px] text-left">Notifications</h2>
         <div className="my-5 flex flex-col gap-5">

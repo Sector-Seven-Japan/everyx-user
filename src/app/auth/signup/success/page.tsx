@@ -13,7 +13,7 @@ export default function SuccessPage() {
 
   return (
     <div>
-      <Navbar home={""} />
+      <Navbar/>
       <div className="p-5 flex flex-col justify-between h-[680px]">
         <h1 className="text-center text-[27px] mt-16">Verify Email</h1>
         <div className="flex flex-col items-center justify-center text-center gap-10">

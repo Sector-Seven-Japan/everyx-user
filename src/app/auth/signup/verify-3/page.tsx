@@ -14,7 +14,7 @@ export default function VerifyIdentityProfile() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navbar home="Verification" />
+      <Navbar/>
 
       {/* Main Content */}
       <main className="px-4 pt-12 flex flex-col gap-8">

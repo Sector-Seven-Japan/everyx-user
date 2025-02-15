@@ -69,7 +69,7 @@ const Verification: React.FC = () => {
 
   return (
     <div className="h-screen w-screen bg-black flex flex-col max-w-[430px] mx-auto">
-      <Navbar home="Verify Email" />
+      <Navbar/>
       <div className="flex flex-col items-center justify-center text-white px-4">
         {/* Title */}
         <h1 className="text-2xl font-bold mt-16">Verify Email</h1>

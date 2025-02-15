@@ -5,7 +5,7 @@ import React from "react";
 const About: React.FC = () => {
   return (
     <>
-      <Navbar home="Terms" />
+      <Navbar/>
       <div className={`bg-[#0E0E0E] w-full min-h-screen text-white px-5 py-4`}>
         <h1 className="font-medium text-[29px] text-center">About Us </h1>
         <p className="font-normal text-[13px] opacity-[25%] mt-4 mb-10 text-justify">

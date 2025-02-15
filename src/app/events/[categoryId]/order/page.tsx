@@ -5,26 +5,74 @@ import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
 
+interface WagerPayload {
+  event_id: string;
+  event_outcome_id: string;
+  force_leverage: boolean;
+  leverage: number;
+  loan: number;
+  max_payout: number;
+  pledge: number;
+  wager: number;
+  wallet_id: number;
+}
+
 export default function Order() {
-  const { setIsLoading, orderDetails, selectedOrder } = useContext(AppContext);
+  const {
+    setIsLoading,
+    orderDetails,
+    selectedOrder,
+    walletData,
+    API_BASE_URL,
+    authToken,
+    fetchWalletData
+  } = useContext(AppContext);
   const router = useRouter();
 
   useEffect(() => {
     setIsLoading(false);
   }, []);
 
+  console.log(orderDetails);
+
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      await router.push(`/events/${orderDetails?.event_id}/order/success`);
+      const wagerPayload: WagerPayload = {
+        event_id: orderDetails?.event_id,
+        event_outcome_id: orderDetails?.event_outcome_id,
+        force_leverage: false,
+        leverage: 1,
+        loan: 0,
+        max_payout: orderDetails?.indicative_payout,
+        pledge: orderDetails?.pledge,
+        wager: orderDetails?.wager,
+        wallet_id: walletData[0]?.id,
+      };
+      const response = await fetch(`${API_BASE_URL}/wagers`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(wagerPayload),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Order placement failed");
+      }
+      if (response.ok) {
+        await fetchWalletData();
+        await router.push(`/events/${orderDetails?.event_id}/order/success`);
+      }
     } catch (error) {
-      console.error("Navigation error:", error);
+      console.error("Navigation  error:", error);
     }
   };
 
   return (
     <div>
-      <Navbar home="" />
+      <Navbar/>
       <div className="p-5">
         <h1 className="text-[22px] text-center mt-5">Your Order</h1>
         <div className="flex gap-3 mt-10 leading-6 mb-14">
@@ -91,12 +139,14 @@ export default function Order() {
           <div className="flex justify-between">
             <p>CASH USED</p>
             <p className="text-[#00FFB8] text-[23px]">
-              ${orderDetails?.wager.toFixed(1)}
+              ${orderDetails?.after_wager.toFixed(1)}
             </p>
           </div>
           <div className="flex justify-between">
             <p>PROJECTED PAYOUT</p>
-            <p className="text-[#00FFB8] text-[23px]">$3</p>
+            <p className="text-[#00FFB8] text-[23px]">
+              ${orderDetails?.after_payout.toFixed(1)}
+            </p>
           </div>
         </div>
 

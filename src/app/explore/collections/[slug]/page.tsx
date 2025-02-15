@@ -74,7 +74,7 @@ export default function EventCategoryPage() {
 
   return (
     <div>
-      <Navbar home={"Home"} />
+      <Navbar/>
       <HeadingSlider setFilter={setFilter} filter={filter} />
       <SearchBar search={search} setSearch={setSearch} />
       <div className="p-5 flex flex-col gap-6">

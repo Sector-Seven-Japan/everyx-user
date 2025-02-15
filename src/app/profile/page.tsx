@@ -135,7 +135,7 @@ const Profile: React.FC = () => {
   }
   return (
     <>
-      <Navbar home="Profile" />
+      <Navbar/>
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-5">
         <div className="max-w-md mx-auto">
           <div className="flex flex-col items-center">

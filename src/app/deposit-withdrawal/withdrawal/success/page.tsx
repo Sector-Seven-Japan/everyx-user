@@ -14,7 +14,7 @@ const Success: React.FC = () => {
 
   return (
     <>
-      <Navbar home="Withdrawal" />
+      <Navbar/>
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-5 flex flex-col ">
         <CurrentCashBalanceCard />
 
