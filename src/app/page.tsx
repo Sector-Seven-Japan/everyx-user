@@ -74,7 +74,7 @@ const LandingPage = () => {
 
   return (
     <>
-      <Navbar home="" />
+      <Navbar/>
       <div className="bg-[#0E0E0E] w-full min-h-screen py-10">
         <div className="px-10">
           <p className="text-right text-[13px] text-white text-opacity-[76%]">

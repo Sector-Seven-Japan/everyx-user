@@ -157,11 +157,11 @@ export default function MakeOrder() {
         <div className="flex flex-col gap-2">
           <div className="flex justify-between">
             <p>CASH USED</p>
-            <p className="text-[#00FFB8] text-[23px]">$10</p>
+            <p className="text-[#00FFB8] text-[23px]">${orderDetails?.after_wager.toFixed(1)}</p>
           </div>
           <div className="flex justify-between">
             <p>PROJECTED PAYOUT</p>
-            <p className="text-[#00FFB8] text-[23px]">$3</p>
+            <p className="text-[#00FFB8] text-[23px]">${orderDetails?.after_payout.toFixed(1)}</p>
           </div>
         </div>
 

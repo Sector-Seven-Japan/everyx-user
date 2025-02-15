@@ -45,52 +45,18 @@ interface OrderResponse {
   new_probability: number;
   probability_change: number;
   wager: number;
+  pledge: number;
   event_id: string;
   event_outcome_id: string;
+  after_wager: number;
+  after_payout: number;
+  indicative_payout: number;
 }
 
-interface AppContextProps {
-  filter: string;
-  setFilter: React.Dispatch<React.SetStateAction<string>>;
-  slugHeading: string;
-  setSlugHeading: React.Dispatch<React.SetStateAction<string>>;
-  selectedMenu: string;
-  setSelectedMenu: React.Dispatch<React.SetStateAction<string>>;
-  isLoggedIn: boolean;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  categories: Categories;
-  setCategories: React.Dispatch<React.SetStateAction<Categories>>;
-  bannerData: BannerItem[];
-  setBannerData: React.Dispatch<React.SetStateAction<BannerItem[]>>;
-  findHeadingWithSlug: (slug: string) => string | undefined;
-  getTimeRemaining: (endTime: string) => string;
-  calculateMaxLeverage: (outcomes: { trader_info?: TraderInfo }[]) => number;
-  calculateMaxEstimatedPayout: (
-    outcomes: { trader_info?: TraderInfo }[]
-  ) => number;
-  formatDate: (isoDateString: string) => string;
-  authToken: string | null;
-  setAuthToken: React.Dispatch<React.SetStateAction<string | null>>;
-  makeOrder: (
-    outcomeId: string,
-    eventId: string,
-    amount: number,
-    leverage: number
-  ) => Promise<void>;
-  isOrderMade: boolean;
-  setIsOrderMade: React.Dispatch<React.SetStateAction<boolean>>;
-  orderDetails: OrderResponse;
-  setOrderDetails: React.Dispatch<React.SetStateAction<OrderResponse>>;
-  selectedOrder: string;
-  setSelectedOrder: React.Dispatch<React.SetStateAction<string>>
-  API_BASE_URL: string;
-
-  userProfile: UserProfile | null;
-  userStats: UserStats | null;
+interface Wallet {
+  id: number;
+  currency: string;
+  balance: string;
 }
 
 interface UserProfile {
@@ -137,6 +103,54 @@ interface UserStats {
 
 }
 
+interface AppContextProps {
+  filter: string;
+  setFilter: React.Dispatch<React.SetStateAction<string>>;
+  sidebar: boolean;
+  setSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  slugHeading: string;
+  setSlugHeading: React.Dispatch<React.SetStateAction<string>>;
+  selectedMenu: string;
+  setSelectedMenu: React.Dispatch<React.SetStateAction<string>>;
+  isLoggedIn: boolean;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  categories: Categories;
+  setCategories: React.Dispatch<React.SetStateAction<Categories>>;
+  bannerData: BannerItem[];
+  setBannerData: React.Dispatch<React.SetStateAction<BannerItem[]>>;
+  findHeadingWithSlug: (slug: string) => string | undefined;
+  getTimeRemaining: (endTime: string) => string;
+  calculateMaxLeverage: (outcomes: { trader_info?: TraderInfo }[]) => number;
+  calculateMaxEstimatedPayout: (
+    outcomes: { trader_info?: TraderInfo }[]
+  ) => number;
+  formatDate: (isoDateString: string) => string;
+  authToken: string | null;
+  setAuthToken: React.Dispatch<React.SetStateAction<string | null>>;
+  makeOrder: (
+    outcomeId: string,
+    eventId: string,
+    amount: number,
+    leverage: number
+  ) => Promise<void>;
+  isOrderMade: boolean;
+  setIsOrderMade: React.Dispatch<React.SetStateAction<boolean>>;
+  orderDetails: OrderResponse;
+  setOrderDetails: React.Dispatch<React.SetStateAction<OrderResponse>>;
+  API_BASE_URL: string;
+  selectedOrder: string;
+  setSelectedOrder: React.Dispatch<React.SetStateAction<string>>;
+  walletData: Wallet[];
+  setWalletData: React.Dispatch<React.SetStateAction<Wallet[]>>;
+  fetchWalletData: () => Promise<void>;
+  userProfile: UserProfile | null;
+  userStats: UserStats | null;
+}
+
 const API_BASE_URL = "https://test-api.everyx.io";
 
 // Initial context state
@@ -178,19 +192,25 @@ const initialState: AppContextProps = {
     new_probability: 0,
     probability_change: 0,
     wager: 0,
+    pledge: 0,
     event_id: "",
     event_outcome_id: "",
+    after_payout: 0,
+    after_wager: 0,
+    indicative_payout: 0,
   },
   setIsOrderMade: () => {},
   setOrderDetails: () => {},
   API_BASE_URL,
-
-  userProfile: null,
-  userStats: null,
-
   selectedOrder: "",
   setSelectedOrder: () => {},
-
+  walletData: [],
+  setWalletData: () => {},
+  sidebar:false,
+  setSidebar: () => {},
+  fetchWalletData: async () => {},
+  userProfile: null,
+  userStats: null,
 };
 
 export const AppContext = createContext<AppContextProps>(initialState);
@@ -209,6 +229,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [isOrderMade, setIsOrderMade] = useState<boolean>(false);
   const [selectedOrder, setSelectedOrder] = useState<string>("");
+  const [walletData, setWalletData] = useState<Wallet[]>([]);
+  const [sidebar, setSidebar] = useState<boolean>(false);
   const [orderDetails, setOrderDetails] = useState<OrderResponse>({
     max_wager: 0,
     min_wager: 0,
@@ -221,10 +243,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     new_probability: 0,
     probability_change: 0,
     wager: 0,
+    pledge: 0,
     event_id: "",
     event_outcome_id: "",
+    after_payout: 0,
+    after_wager: 0,
+    indicative_payout: 0,
   });
-
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
 
@@ -241,6 +266,21 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       console.error("Failed to fetch categories:", error);
       setCategories([]);
       setBannerData([]);
+    }
+  };
+
+  const fetchWalletData = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/wallets`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch wallet data");
+      const data = await response.json();
+      setWalletData(data);
+    } catch (error) {
+      console.log("failed to fetch Wallet data",error);
     }
   };
 
@@ -272,6 +312,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(orderPayload),
       });
@@ -388,6 +429,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+
   useEffect(() => {
     if (authToken) {
       getProfileData();
@@ -396,7 +438,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [authToken]);
 
   useEffect(() => {
-    fetchCategories();
+    if (authToken) {
+      fetchCategories();
+      fetchWalletData();
+    }
+  }, [authToken]);
+
+  useEffect(() => {
     const cookies = document.cookie.split("; ");
     const tokenCookie = cookies.find((cookie) =>
       cookie.startsWith("authToken=")
@@ -453,13 +501,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     orderDetails,
     setOrderDetails,
     API_BASE_URL,
-
+    selectedOrder,
+    setSelectedOrder,
+    walletData,
+    setWalletData,
+    sidebar,
+    setSidebar,
+    fetchWalletData,
     userProfile,
     userStats,
-
-    selectedOrder,
-    setSelectedOrder
-
   };
 
   return (

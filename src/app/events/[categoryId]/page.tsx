@@ -144,7 +144,7 @@ export default function EventCategoryPageDetails() {
 
   return (
     <div className="relative">
-      <Navbar home="Home" />
+      <Navbar/>
       <HeadingSlider filter={filter} setFilter={setFilter} />
       {eventData ? (
         <>

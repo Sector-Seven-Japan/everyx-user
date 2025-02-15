@@ -77,7 +77,7 @@ const Page = () => {
 
   return (
     <>
-      <Navbar home="Signup" />
+      <Navbar/>
       <div className="h-screen bg-[#0E0E0E] flex flex-col w-full mx-auto mb-5">
         <div className="text-center text-white text-2xl font-bold mt-6">Sign Up</div>
         <div className="flex flex-col px-6 text-white space-y-6 mt-6">

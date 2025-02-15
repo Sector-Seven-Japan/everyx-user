@@ -10,19 +10,23 @@ export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { setIsLoggedIn, setAuthToken, API_BASE_URL ,setIsLoading} = useContext(AppContext);
+  const [error, setError] = useState<{ email?: string; password?: string; general?: string }>({});
+  const { setIsLoggedIn, setAuthToken, API_BASE_URL, setIsLoading } = useContext(AppContext);
 
-  useEffect(()=>{
+  useEffect(() => {
     setIsLoading(false);
-  })
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError({}); // Reset errors before validating
 
-    if (!email || !password) {
-      setError("Email and Password are required.");
+    // Basic validation
+    const newErrors: { email?: string; password?: string; general?: string } = {};
+    if (!email) newErrors.email = "Email is required.";
+    if (!password) newErrors.password = "Password is required.";
+    if (Object.keys(newErrors).length > 0) {
+      setError(newErrors);
       return;
     }
 
@@ -31,6 +35,7 @@ export default function Login() {
       formData.append("email", email);
       formData.append("password", password);
 
+      setIsLoading(true)
       const response = await fetch(`${API_BASE_URL}/tokens`, {
         method: "POST",
         headers: {
@@ -43,79 +48,78 @@ export default function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Unauthorized. Please check your credentials."
-        );
+        throw new Error(data.message || "Invalid email or password.");
       }
-      
+
       document.cookie = `authToken=${data.token}`;
-      setAuthToken(data.token); // Update authToken in context
-      setIsLoggedIn(true); // Update login status
+      setAuthToken(data.token);
+      setIsLoggedIn(true);
       router.push("/home");
     } catch (error) {
-      console.error("Login Error:", error);
+      setIsLoading(false)
+      setError({ general: (error as Error).message });
     }
   };
 
   return (
     <div>
-      <Navbar home="Login" />
-      <h1 className="text-[27px] text-center py-20">LogIn</h1>
+      <Navbar/>
+      <h1 className="text-[27px] text-center py-20">Log In</h1>
 
       <form onSubmit={handleLogin} className="px-8">
-        {/* Error Message */}
-        {error && (
-          <p className="text-red-500 text-xs text-center mb-4">{error}</p>
-        )}
-
         {/* Email Input */}
-        <div className="flex flex-col gap-2 mb-8">
+        <div className="flex flex-col gap-2 mb-9">
           <label className="text-xs text-white opacity-25">Email</label>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
-            title="Email"
             className="w-full text-xs bg-transparent border-b border-gray-400 outline-none"
           />
+          {error.email && <p className="text-red-500 text-xs mt-1">{error.email}</p>}
         </div>
 
         {/* Password Input */}
-        <div className="flex flex-col gap-2 relative">
+        <div className="flex flex-col gap-2 relative mb-4">
           <p className="text-xs text-white opacity-25">Password</p>
           <p
             onClick={() => router.push("/profile/forgot-password")}
-            className="text-[9px] underline absolute bottom-1 right-0"
+            className="text-[9px] underline absolute bottom-1 right-0 cursor-pointer"
           >
-            Forgot Password
+            Forgot Password?
           </p>
           <input
             type="password"
-            placeholder="Enter your password"
-            title="Password"
-            className="w-full h-5 text-xs bg-transparent border-b border-gray-400 outline-none"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            className="w-full text-xs bg-transparent border-b border-gray-400 outline-none"
           />
+          {error.password && <p className="text-red-500 text-xs mt-1">{error.password}</p>}
         </div>
+
+        {/* General Error Message */}
+        {error.general && <p className="text-red-500 text-xs text-center mt-3">Invalid Email or password</p>}
 
         <p className="text-xl opacity-25 text-center py-10">or</p>
 
         {/* Google Login Button */}
-        <div className="bg-[#131314] w-60 relative left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-4 py-2 rounded-full cursor-pointer">
-          <Image src="/images/google.svg" alt="" width={20} height={20} />
+        <div className="bg-[#131314] w-60 mx-auto flex justify-center items-center gap-4 py-2 rounded-full cursor-pointer">
+          <Image src="/images/google.svg" alt="Google Logo" width={20} height={20} />
           Continue with Google
         </div>
 
         {/* Login Button */}
         <button
           type="submit"
-          className="text-[#2DC198] text-sm border border-[#2DC198] w-full py-2 rounded-md mt-16"
+          className="text-[#2DC198] text-sm border border-[#2DC198] w-full py-2 rounded-md mt-10"
         >
           Login
         </button>
+
         <p className="text-white text-[12px] text-center mt-5">
-          New here?
+          New here?{" "}
           <Link className="underline" href="/auth/signup">
             Create an account
           </Link>

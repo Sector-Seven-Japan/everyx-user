@@ -12,7 +12,7 @@ const Failed: React.FC = () => {
   const amount = searchParams.get("amount");
   return (
     <>
-      <Navbar home="Deposit" />
+      <Navbar/>
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-5 flex flex-col ">
         <CurrentCashBalanceCard />
 

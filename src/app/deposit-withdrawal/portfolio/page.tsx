@@ -59,7 +59,7 @@ const Portfolio: React.FC = () => {
 
   return (
     <>
-      <Navbar home="Portfolio" />
+      <Navbar/>
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-5">
         <CurrentCashBalanceCard />
         <div className="my-10">
