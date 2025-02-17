@@ -1,30 +1,25 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 
 const Verification: React.FC = () => {
   const [email, setEmail] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-  // Fetch registered email from API
+  // Fetch registered email from local storage
   useEffect(() => {
-    const fetchRegisteredEmail = async () => {
+    const fetchRegisteredEmail = () => {
       try {
-        const response = await fetch("https://test-api.everyx.io/register");
+        const storedEmail = localStorage.getItem("registeredEmail");
 
-        if (!response.ok) {
-          throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+        if (!storedEmail) {
+          throw new Error("Email not found in local storage.");
         }
 
-        const data = await response.json();
-        console.log("API Response:", data); // Debugging: check the response format
-
-        if (!data.email) {
-          throw new Error("Email not found in response.");
-        }
-
-        setEmail(data.email);
+        setEmail(storedEmail);
       } catch (err) {
         console.error("Error fetching email:", err);
         setError("Error fetching registered email.");
@@ -62,6 +57,14 @@ const Verification: React.FC = () => {
     validateEmail();
   }, [email]); // Runs only after email is set
 
+  // Navigate to success page after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push("/auth/signup/success");
+    }, 3000);
+
+    return () => clearTimeout(timer); // Cleanup the timer on component unmount
+  }, []);
 
   const handleResendEmail = () => {
     alert("Resending email...");
@@ -69,7 +72,7 @@ const Verification: React.FC = () => {
 
   return (
     <div className="h-screen w-screen bg-black flex flex-col max-w-[430px] mx-auto">
-      <Navbar/>
+      <Navbar />
       <div className="flex flex-col items-center justify-center text-white px-4">
         {/* Title */}
         <h1 className="text-2xl font-bold mt-16">Verify Email</h1>
