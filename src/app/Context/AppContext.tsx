@@ -438,8 +438,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [authToken]);
 
   useEffect(() => {
+    fetchCategories();
     if (authToken) {
-      fetchCategories();
       fetchWalletData();
     }
   }, [authToken]);

@@ -28,7 +28,7 @@ export default function Navbar() {
           setFilter("");
           router.push("/home");
         }}
-        src="/images/logo.png"
+        src="/Images/logo.png"
         className="cursor-pointer"
         alt="Logo image"
         width={25}
@@ -53,7 +53,7 @@ export default function Navbar() {
             setSidebar(!sidebar);
             router.push(sidebar ? "/home" : "/menu");
           }}
-          src={sidebar ? "/images/cross.svg" : "/images/menu.svg"}
+          src={sidebar ? "/Images/cross.svg" : "/Images/menu.svg"}
           alt="Menu Icon"
           width={20}
           height={20}

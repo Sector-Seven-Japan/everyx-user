@@ -8,7 +8,6 @@ import ImageSlider from "@/components/ImageSlider";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 import TopCategories from "@/components/TopCategoies";
-import Category from "@/components/Category";
 import CategoryCard from "@/components/CategoryCard"; // Add this import
 
 interface TraderInfo {
@@ -41,7 +40,6 @@ export default function Home() {
     setFilter,
     setIsOrderMade,
     API_BASE_URL,
-    categories,
     search,
     setSearch,
     setIsLoading
@@ -101,13 +99,13 @@ export default function Home() {
 
       {!search && <TopCategories />}
 
-      {!search &&
+      {/* {!search &&
         categories.map((item, index) => {
           if (typeof item === "object") {
             return <Category key={index} item={item} />;
           }
           return null;
-        })}
+        })} */}
 
       <div className="p-5">
         {isSearching ? (

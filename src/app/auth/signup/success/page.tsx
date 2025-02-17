@@ -8,7 +8,7 @@ export default function SuccessPage() {
   const router = useRouter();
 
   const handleNextClick = () => {
-    router.push("/auth/signup/verify-1"); // Redirect to /signup/verify-1
+    router.push("/home"); // Redirect to home
   };
 
   return (

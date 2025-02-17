@@ -5,8 +5,8 @@ import CashWithdrawalCategories from "@/components/CashWithdrawalCategories";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { AppContext } from "@/app/Context/AppContext";
-import Loader from "@/components/Loader/Loader";
+import { AppContext} from "@/app/Context/AppContext";
+
 
 interface BetEntry {
   id: string;
@@ -17,8 +17,8 @@ interface BetEntry {
 }
 
 const Portfolio: React.FC = () => {
+  const {setIsLoading} = useContext(AppContext);
   const [bets, setBets] = useState<BetEntry[]>([]);
-  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("All");
   const { API_BASE_URL, authToken } = useContext(AppContext);
@@ -62,7 +62,7 @@ const Portfolio: React.FC = () => {
     } catch (error) {
       console.error("Error fetching wager data:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -72,9 +72,10 @@ const Portfolio: React.FC = () => {
     }
   }, [authToken]);
 
-  if (loading) {
-    return <Loader />;
-  }
+
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
 
   return (
     <>
