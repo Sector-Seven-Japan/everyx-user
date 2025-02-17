@@ -12,7 +12,7 @@ export default function SearchBar({ search, setSearch }: searchProps) {
       {/* Search Icon */}
       <Image
         className="pl-2"
-        src="/images/search.svg"
+        src="/Images/search.svg"
         alt="Search icon"
         width={20}
         height={20}

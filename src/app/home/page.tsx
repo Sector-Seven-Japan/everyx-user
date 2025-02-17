@@ -8,8 +8,12 @@ import ImageSlider from "@/components/ImageSlider";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 import TopCategories from "@/components/TopCategoies";
+<<<<<<< HEAD
 import Category from "@/components/Category";
 import CategoryCard from "@/components/CategoryCard"; 
+=======
+import CategoryCard from "@/components/CategoryCard"; // Add this import
+>>>>>>> 7594d66897521a078945b36b700feff140da0c7b
 
 interface TraderInfo {
   max_leverage: number;
@@ -41,7 +45,10 @@ export default function Home() {
     setFilter,
     setIsOrderMade,
     API_BASE_URL,
+<<<<<<< HEAD
     categories,
+=======
+>>>>>>> 7594d66897521a078945b36b700feff140da0c7b
     search,
     setSearch,
     setIsLoading
@@ -101,13 +108,21 @@ export default function Home() {
 
       {!search && <TopCategories />}
 
+<<<<<<< HEAD
       {!search &&
+=======
+      {/* {!search &&
+>>>>>>> 7594d66897521a078945b36b700feff140da0c7b
         categories.map((item, index) => {
           if (typeof item === "object") {
             return <Category key={index} item={item} />;
           }
           return null;
+<<<<<<< HEAD
         })}
+=======
+        })} */}
+>>>>>>> 7594d66897521a078945b36b700feff140da0c7b
 
       <div className="p-5">
         {isSearching ? (
