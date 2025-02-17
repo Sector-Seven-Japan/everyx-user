@@ -5,10 +5,12 @@ import { useContext, useState } from "react";
 import { AppContext } from "../Context/AppContext";
 import "./menu.css";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 export default function Menu() {
   const router = useRouter();
-  const { selectedMenu, setSelectedMenu,setSidebar ,setIsLoading} = useContext(AppContext);
+  const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading } =
+    useContext(AppContext);
   const [languageState, setLanguageState] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
   const { authToken } = useContext(AppContext);
@@ -23,9 +25,7 @@ export default function Menu() {
         { name: "Settings", link: "/setting" },
         { name: "Help", link: "/help" },
       ]
-    : [
-        { name: "Help", link: "/help" },
-      ];
+    : [{ name: "Help", link: "/help" }];
 
   const handleLogotUser = async () => {
     try {
@@ -36,12 +36,13 @@ export default function Menu() {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      if (response.ok) {
-        setIsLoggedIn(false);
-        document.cookie =
-          "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        router.push("/login");
-      }
+      console.log(response)
+
+      await signOut({ redirect: false }); // Sign out without redirecting
+      document.cookie = "next-auth.session-token=; max-age=0;"; // Clear session cookie
+      document.cookie = "authToken=; max-age=0;"; // Clear custom auth token
+      router.push("/login"); // Redirect to login page after sign out
+      setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
     }
@@ -49,7 +50,7 @@ export default function Menu() {
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className="mt-5 flex flex-row-reverse">
         <ul className="flex flex-col w-[42%]">
           {navbarItems.map((item, index) => (
@@ -62,9 +63,9 @@ export default function Menu() {
                   : "text-[#323232] hover:bg-white hover:bg-opacity-[10%] hover:text-white"
               }`}
               onClick={() => {
-                setIsLoading(true)
-                setSelectedMenu(item.name)
-                setSidebar(false)
+                setIsLoading(true);
+                setSelectedMenu(item.name);
+                setSidebar(false);
               }}
             >
               {selectedMenu === item.name && (

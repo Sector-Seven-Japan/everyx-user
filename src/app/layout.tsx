@@ -9,7 +9,6 @@ import "./globals.css";
 import { AppProvider } from "./Context/AppContext";
 import LayoutContent from "./LayoutContent";
 
-import { use } from "react";
 import SessionWrapper from "@/components/SessionWrapper";
 
 const geistSans = Geist({
