@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useDebugValue, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Switch } from "@headlessui/react";
 import { toast } from "react-toastify";
 import "./settings.css";
 import Navbar from "@/components/Navbar";
 import { AppContext } from "../Context/AppContext";
-import Loader from "@/components/Loader/Loader";
+
 
 const Setting: React.FC = () => {
   const router = useRouter();
-  const { authToken, API_BASE_URL } = useContext(AppContext);
+  const { authToken, API_BASE_URL,setIsLoading } = useContext(AppContext);
   const [favoriteTags, setFavoriteTags] = useState<
     { tag: { slug: string; name: string }; enabled: boolean }[]
   >([]);
@@ -108,6 +108,10 @@ const Setting: React.FC = () => {
       fetchSettings();
     }
   }, [authToken]);
+
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
 
   const handleFavoriteTagToggle = (slug: string) => {
     const updatedTags = [...favoriteTags];
@@ -206,14 +210,12 @@ const Setting: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <>
       <Navbar/>
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-28">
+      <h1 className="font-medium text-[29px] text-center mb-10">Setting</h1>
         <h2 className="font-medium text-[17px] text-left">Notifications</h2>
         <div className="my-5 flex flex-col gap-5">
           {Object.keys(notifications).map((key) => (

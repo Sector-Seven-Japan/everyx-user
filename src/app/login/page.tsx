@@ -106,7 +106,7 @@ export default function Login() {
 
         {/* Google Login Button */}
         <div className="bg-[#131314] w-60 mx-auto flex justify-center items-center gap-4 py-2 rounded-full cursor-pointer">
-          <Image src="/images/google.svg" alt="Google Logo" width={20} height={20} />
+          <Image src="/Images/google.svg" alt="Google Logo" width={20} height={20} />
           Continue with Google
         </div>
 

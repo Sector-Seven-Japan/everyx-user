@@ -44,22 +44,15 @@ const Portfolio: React.FC = () => {
     },
   ];
 
-  const [loading, setLoading] = useState(true);
-  const { userStats, userProfile } = useContext(AppContext);
+  const { userStats, userProfile, setIsLoading } = useContext(AppContext);
 
   React.useEffect(() => {
-    if (userStats && userProfile) {
-      setLoading(false);
-    }
+    setIsLoading(false);
   }, [userStats, userProfile]);
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-5">
         <CurrentCashBalanceCard />
         <div className="my-10">

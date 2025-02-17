@@ -53,7 +53,7 @@ export default function Navbar() {
             setSidebar(!sidebar);
             router.push(sidebar ? "/home" : "/menu");
           }}
-          src={sidebar ? "/Images/cross.svg" : "/images/menu.svg"}
+          src={sidebar ? "/Images/cross.svg" : "/Images/menu.svg"}
           alt="Menu Icon"
           width={20}
           height={20}
