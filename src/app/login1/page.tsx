@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import { FaGoogle } from "react-icons/fa";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -38,6 +39,15 @@ export default function LoginPage() {
       <Navbar />
       <h1 className="text-[27px] text-center py-20">Log In</h1>
       <div className="p-5">
+        <button className="w-full py-3 mb-5 bg-[#9c95ff] rounded-md flex items-center justify-center gap-3">
+          <FaGoogle />
+          Continue with Google
+        </button>
+        <div className="flex justify-between items-center mb-5">
+          <div className="h-[1px] w-[45%] bg-[#626262]"></div>
+          OR
+          <div className="h-[1px] w-[45%] bg-[#626262]"></div>
+        </div>
         <div className="flex w-full  justify-between rounded-md overflow-hidden border border-[#464646]">
           <input
             value={email}
@@ -56,6 +66,16 @@ export default function LoginPage() {
           </button>
         </div>
       </div>
+
+      <div className="p-5">
+        
+      </div>
+
+
+
+
+
+
       {/* Login Code Popup */}
       {token && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -90,6 +110,8 @@ export default function LoginPage() {
           </div>
         </div>
       )}
+
+
     </div>
   );
 }
