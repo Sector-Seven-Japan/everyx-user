@@ -9,7 +9,6 @@ import Navbar from "@/components/Navbar";
 import { AppContext } from "../Context/AppContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Don't forget to import the CSS for the toast styles
-import Loader from "@/components/Loader/Loader";
 const VerificationStatus: React.FC<{ isVerified: boolean | null }> = ({
   isVerified,
 }) => (
@@ -24,7 +23,7 @@ const VerificationStatus: React.FC<{ isVerified: boolean | null }> = ({
 
 const Profile: React.FC = () => {
   const router = useRouter();
-  const { authToken, API_BASE_URL } = useContext(AppContext);
+  const { authToken, API_BASE_URL ,setIsLoading} = useContext(AppContext);
 
   const [profileImage, setProfileImage] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
@@ -33,7 +32,7 @@ const Profile: React.FC = () => {
 
   const [email_verified, setEmail_Verified] = useState<boolean | null>(null);
   const [phone_verified, setPhone_verified] = useState<boolean | null>(null);
-  const [Loading, setLoading] = useState<boolean>(true);
+
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -73,7 +72,6 @@ const Profile: React.FC = () => {
       }
 
       console.log(data);
-      setLoading(false);
       return data;
     } catch (error) {
       toast.error(
@@ -130,12 +128,14 @@ const Profile: React.FC = () => {
     fetchData();
   }, [authToken]);
 
-  if (Loading) {
-    return <Loader />;
-  }
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
+
+
   return (
     <>
-      <Navbar home="Profile" />
+      <Navbar/>
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-5">
         <div className="max-w-md mx-auto">
           <div className="flex flex-col items-center">

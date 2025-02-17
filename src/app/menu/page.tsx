@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function Menu() {
   const router = useRouter();
-  const { selectedMenu, setSelectedMenu } = useContext(AppContext);
+  const { selectedMenu, setSelectedMenu,setSidebar ,setIsLoading} = useContext(AppContext);
   const [languageState, setLanguageState] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
   const { authToken } = useContext(AppContext);
@@ -18,11 +18,12 @@ export default function Menu() {
         { name: "Home", link: "/home" },
         { name: "Portfolio", link: "/deposit-withdrawal/history" },
         { name: "Profile", link: "/profile" },
+        { name: "Message", link: "/home" },
+        { name: "Mission", link: "/home" },
         { name: "Settings", link: "/setting" },
         { name: "Help", link: "/help" },
       ]
     : [
-        { name: "Settings", link: "/setting" },
         { name: "Help", link: "/help" },
       ];
 
@@ -48,7 +49,7 @@ export default function Menu() {
 
   return (
     <div>
-      <Navbar home="Menu" />
+      <Navbar/>
       <div className="mt-5 flex flex-row-reverse">
         <ul className="flex flex-col w-[42%]">
           {navbarItems.map((item, index) => (
@@ -58,9 +59,13 @@ export default function Menu() {
               className={`pl-8 py-3 relative ${
                 selectedMenu === item.name
                   ? "bg-[#151515] text-white"
-                  : "text-white hover:bg-white hover:bg-opacity-[10%] hover:text-white"
+                  : "text-[#323232] hover:bg-white hover:bg-opacity-[10%] hover:text-white"
               }`}
-              onClick={() => setSelectedMenu(item.name)}
+              onClick={() => {
+                setIsLoading(true)
+                setSelectedMenu(item.name)
+                setSidebar(false)
+              }}
             >
               {selectedMenu === item.name && (
                 <div className="bg-white w-[2px] h-4 absolute top-4 left-4"></div>
@@ -72,7 +77,7 @@ export default function Menu() {
       </div>
 
       {/* Language Toggle */}
-      <div className="p-5 mt-60">
+      <div className="p-5 mt-36">
         <div className="flex justify-center gap-6 items-center mb-8 pl-[100px]">
           <p
             className={`${
@@ -100,7 +105,7 @@ export default function Menu() {
 
         {/* Login/Logout Button */}
         <button
-          className="text-[#fff] text-sm border border-[#fff] w-full py-3 rounded-lg"
+          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl"
           onClick={() => {
             if (isLoggedIn) {
               handleLogotUser();

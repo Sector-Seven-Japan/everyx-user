@@ -1,23 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { WalletButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 
 import { Button } from "@/components/Button";
 import { useAccount, useDisconnect } from "wagmi";
+import { AppContext } from "../Context/AppContext";
 
 export default function LoginPage() {
+  const { API_BASE_URL } = useContext(AppContext);
   const [isConnected, setIsConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
 
   const { isConnected: wagmiConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
   console.log(walletAddress);
-  const handleConnect = () => {
+  const handleConnect = async () => {
     if (address) {
       setIsConnected(true);
       setWalletAddress(address);
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/v2/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: address }),
+        });
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error("Error occured in fetching the user details", error);
+      }
     }
   };
 
@@ -29,7 +44,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2lg font-bold mb-4">Login Page</h1>
       {!isConnected && !wagmiConnected ? (
         <div className="flex flex-wrap gap-4 justify-center items-center">
           <WalletButton.Custom wallet="rainbow">

@@ -18,7 +18,7 @@ const VerifyIdentity: React.FC = () => {
 
   return (
     <div className="h-screen w-screen bg-black flex flex-col max-w-[430px] mx-auto">
-      <Navbar home="Verification" />
+      <Navbar/>
       <div className="flex flex-col items-center justify-center flex-1 text-white px-4">
         {/* Title */}
         <h1 className="text-2xl font-bold mb-4">Verify Identity</h1>

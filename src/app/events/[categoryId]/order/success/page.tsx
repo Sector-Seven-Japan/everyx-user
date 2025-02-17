@@ -15,7 +15,7 @@ export default function OrderSuccess() {
 
   return (
     <div>
-      <Navbar home={""} />
+      <Navbar/>
       <div className="p-5 flex flex-col justify-between h-[600px]">
         <h1 className="text-center text-[27px] mt-16">Your Order</h1>
         <div className="flex flex-col items-center justify-center text-center gap-10">

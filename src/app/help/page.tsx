@@ -2,10 +2,13 @@
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { AppContext } from "../Context/AppContext";
+
 
 const Help: React.FC = () => {
+  const {setIsLoading} = useContext(AppContext);
   // Dataset containing only the questions and answers (no 'open' state here)
   const questions = [
     {
@@ -96,11 +99,15 @@ const Help: React.FC = () => {
     );
   };
 
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
+
   return (
     <>
-      <Navbar home="Help" />
+      <Navbar />
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4">
-        <h1 className="font-medium text-[29px] text-center">Q & A</h1>
+        <h1 className="font-medium text-[29px] text-center mb-10">Q & A</h1>
         <div className="mt-5 font-normal mb-10">
           <p className="text-[14px]">Event Trading</p>
 
