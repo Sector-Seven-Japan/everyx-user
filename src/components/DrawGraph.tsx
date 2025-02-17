@@ -22,7 +22,6 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
 
-  // Rest of your existing chart logic...
   useEffect(() => {
     if (!data || !chartRef.current) return;
 
@@ -65,6 +64,16 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
             },
             ticks: {
               color: "#fff",
+              maxRotation: 0, // Ensures labels stay straight
+              minRotation: 0, // Ensures labels stay straight
+              callback: function (value) {
+                const label = this.getLabelForValue(value as number);
+                const date = new Date(label);
+                return date.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                });
+              },
             },
           },
           y: {
@@ -92,20 +101,30 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
   }, [data, activeTab]);
 
   const processDataForChart = (data: GraphData[], type: ChartType) => {
-    const dates = [
-      ...new Set(
-        data.map((item) => new Date(item.datetime).toLocaleDateString())
-      ),
-    ].sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+    const today = new Date().toISOString().split("T")[0];
 
-    const outcomes = [...new Set(data.map((item) => item.event_outcome_id))];
+    // Filter data up to today's date
+    const filteredData = data.filter((item) => {
+      const itemDate = new Date(item.datetime).toISOString().split("T")[0];
+      return itemDate <= today; // Only past & today's records
+    });
+
+    // Extract unique sorted dates
+    const dates = [
+      ...new Set(filteredData.map((item) => new Date(item.datetime).toISOString().split("T")[0])),
+    ]
+      .sort((a, b) => new Date(b).getTime() - new Date(a).getTime()) // Sort descending
+      .slice(0, 6) // Get only the latest 6 records
+      .sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); // Re-sort ascending
+
+    const outcomes = [...new Set(filteredData.map((item) => item.event_outcome_id))];
     const colors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
     const datasets = outcomes.map((outcome, index) => {
       const outcomeData = dates.map((date) => {
-        const dataPoint = data.find(
+        const dataPoint = filteredData.find(
           (item) =>
-            new Date(item.datetime).toLocaleDateString() === date &&
+            new Date(item.datetime).toISOString().split("T")[0] === date &&
             item.event_outcome_id === outcome
         );
         return dataPoint
@@ -133,12 +152,11 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
 
   return (
     <div className="w-full rounded-lg">
-      {/* Centered Tabs Container */}
       <div className="flex justify-center mb-4">
         <div className="inline-flex gap-1 p-1 bg-[#1A1A1A] rounded-lg">
           <button
             onClick={() => setActiveTab("probability")}
-            className={`px-6 py-2 rounded-md transition-all duration-200 ${
+            className={`text-sm py-1 px-2 rounded-md transition-all duration-200 ${
               activeTab === "probability"
                 ? "bg-[#00FFBB] text-black"
                 : "text-[#00FFBB] hover:bg-[#00FFBB]/10"
@@ -148,7 +166,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
           </button>
           <button
             onClick={() => setActiveTab("payout")}
-            className={`px-6 py-2 rounded-md transition-all duration-200 ${
+            className={`text-sm py-1 px-2 rounded-md transition-all duration-200 ${
               activeTab === "payout"
                 ? "bg-[#00FFBB] text-black"
                 : "text-[#00FFBB] hover:bg-[#00FFBB]/10"
@@ -158,9 +176,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
           </button>
         </div>
       </div>
-
-      {/* Chart */}
-      <div className="h-[200px] mt-16">
+      <div className="h-[200px] mt-8">
         <canvas ref={chartRef}></canvas>
       </div>
     </div>

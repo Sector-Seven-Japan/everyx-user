@@ -36,7 +36,7 @@ export default function ImageSlider() {
                   </div>
                   <img
                     className="w-[15px] h-[15px]"
-                    src="/images/logo.png"
+                    src="/Images/logo.png"
                     alt=""
                   />
                 </div>

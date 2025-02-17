@@ -1,5 +1,5 @@
 import { AppContext } from "@/app/Context/AppContext";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import DrawGraph from "./DrawGraph";
 
@@ -55,11 +55,11 @@ interface EventHistoryParams {
 }
 
 export default function CategoryCard({ item }: CategoryCardProps) {
-  const [hideGraph, setHideGraph] = useState(false);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
-  const { API_BASE_URL } = useContext(AppContext);
+  const { API_BASE_URL ,search} = useContext(AppContext);
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
   const {
     setIsLoading,
     calculateMaxLeverage,
@@ -75,7 +75,7 @@ export default function CategoryCard({ item }: CategoryCardProps) {
       router.push(`/events/${item?._id}`);
     } catch (error) {
       console.error("Navigation error:", error);
-    } 
+    }
   };
 
   // console.log("item at categoryCard", item);
@@ -136,7 +136,6 @@ export default function CategoryCard({ item }: CategoryCardProps) {
     <div className="rounded-xl overflow-hidden cursor-pointer">
       {/* Card Header */}
       <div
-        onClick={handleNavigation}
         className="relative flex gap-3 items-center h-52"
       >
         <img
@@ -173,7 +172,7 @@ export default function CategoryCard({ item }: CategoryCardProps) {
           <p className="text-[13px]">Maximum return:</p>
         </div>
       </div>
-      {hideGraph && (
+      {pathname === "/home" && search.length===0 && (
         <div className="flex flex-col gap-5 mb-7">
           <>
             {isLoadingGraph ? (
@@ -191,7 +190,7 @@ export default function CategoryCard({ item }: CategoryCardProps) {
                 </p>
                 <div className="flex justify-between items-center gap-2">
                   <div
-                    className="h-[15px] rounded-lg"
+                    className="h-[19px] rounded-lg"
                     style={{
                       backgroundColor: outcomeColors[index],
                       width: `${Math.round(
@@ -212,10 +211,10 @@ export default function CategoryCard({ item }: CategoryCardProps) {
         </div>
       )}
       <button
-        onClick={() => setHideGraph(!hideGraph)}
+        onClick={handleNavigation}
         className="text-[#00FFBB] text-sm border border-[#00FFBB] w-full rounded-md mb-2 py-[10px]"
       >
-        {!hideGraph ? "View More" : "View Less"}
+        View More
       </button>
     </div>
   );
