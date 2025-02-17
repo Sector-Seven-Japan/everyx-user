@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function Menu() {
   const router = useRouter();
-  const { selectedMenu, setSelectedMenu,setSidebar } = useContext(AppContext);
+  const { selectedMenu, setSelectedMenu,setSidebar ,setIsLoading} = useContext(AppContext);
   const [languageState, setLanguageState] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
   const { authToken } = useContext(AppContext);
@@ -62,6 +62,7 @@ export default function Menu() {
                   : "text-[#323232] hover:bg-white hover:bg-opacity-[10%] hover:text-white"
               }`}
               onClick={() => {
+                setIsLoading(true)
                 setSelectedMenu(item.name)
                 setSidebar(false)
               }}

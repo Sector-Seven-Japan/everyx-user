@@ -17,6 +17,40 @@ interface BetEntry {
 }
 
 const Portfolio: React.FC = () => {
+  const bets: BetEntry[] = [
+    {
+      id: "1",
+      question:
+        "Who will make it to the Australian OpenMen's Singles semifinals ?",
+      timestamp: "Nov 2 2024 14:05",
+      amount: -500,
+      status: "failed",
+    },
+    {
+      id: "2",
+      question:
+        "Who will make it to the Australian OpenMen's Singles semifinals ?",
+      timestamp: "Nov 2 2024 14:05",
+      amount: 150,
+      status: "success",
+    },
+    {
+      id: "3",
+      question:
+        "Who will make it to the Australian OpenMen's Singles semifinals ?",
+      timestamp: "Nov 2 2024 14:05",
+      amount: 150,
+      status: "success",
+    },
+  ];
+
+  const { userStats, userProfile, setIsLoading } = useContext(AppContext);
+
+  React.useEffect(() => {
+    setIsLoading(false);
+  }, [userStats, userProfile]);
+  
+  
   const [bets, setBets] = useState<BetEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -72,13 +106,9 @@ const Portfolio: React.FC = () => {
     }
   }, [authToken]);
 
-  if (loading) {
-    return <Loader />;
-  }
-
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-5">
         <CurrentCashBalanceCard />
         <div className="my-10">
