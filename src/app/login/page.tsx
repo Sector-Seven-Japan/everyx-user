@@ -53,7 +53,8 @@ export default function Login() {
       document.cookie = `authToken=${data.token}`;
       setAuthToken(data.token);
       setIsLoggedIn(true);
-      router.push("/home");
+      router.push("/home")
+      ;
     } catch (error) {
       setIsLoading(false);
       setError({ general: (error as Error).message });

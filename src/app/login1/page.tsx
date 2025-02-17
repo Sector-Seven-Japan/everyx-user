@@ -8,6 +8,7 @@ import { WalletButton } from "@rainbow-me/rainbowkit";
 import { Button } from "@/components/Button";
 import { useAccount } from "wagmi";
 import { AppContext } from "../Context/AppContext";
+import { signIn, useSession } from "next-auth/react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -16,6 +17,48 @@ export default function LoginPage() {
   const router = useRouter();
   const { API_BASE_URL, setAuthToken, setIsLoggedIn } = useContext(AppContext);
   const { isConnected: wagmiConnected, address } = useAccount();
+  const { data: session, status } = useSession();
+
+  // Handle Google authentication success
+  const handleAuthentication = async () => {
+    if (session?.user?.email && status === "authenticated") {
+      try {
+        // Make API call to your backend to get the auth token
+        const response = await fetch(`https://everyx.weseegpt.com/auth/v2/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: session.user.email }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to authenticate with Google");
+        }
+
+        const data = await response.json();
+
+        if (data?.token) {
+          // Set auth token in cookie
+          document.cookie = `authToken=${data.token}`;
+          // Update context
+          setAuthToken(data.token);
+          setIsLoggedIn(true);
+          // Redirect to home page
+          router.push("/home");
+        } else {
+          console.error("No token received from server");
+        }
+      } catch (error) {
+        console.error("Authentication error:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      // Once session is authenticated, handle Google login
+      handleAuthentication();
+    }
+  }, [status]);  // This will trigger whenever the session status changes
 
   useEffect(() => {
     if (wagmiConnected && address) {
@@ -71,9 +114,9 @@ export default function LoginPage() {
 
         console.log("API Response Status:", response.status);
         const data = await response.json();
-        if (data) {
-          document.cookie = `authToken=${data?.token}`;
-          setAuthToken(data?.token);
+        if (data?.token) {
+          document.cookie = `authToken=${data.token}`;
+          setAuthToken(data.token);
           setIsLoggedIn(true);
           router.push("/home");
         }
@@ -83,17 +126,30 @@ export default function LoginPage() {
     }
   };
 
+  // Modified Google login handler
+  const handleGoogleLogin = () => {
+    if (typeof window !== "undefined") {
+      signIn("google");
+    }
+  };
+
+
   return (
     <div>
       <Navbar />
       <h1 className="text-[27px] text-center py-20">Log In</h1>
 
       <div className="p-5">
-        {/* Google Login Button */}
-        <button className="w-full py-3 mb-5 bg-[#9c95ff] rounded-md flex items-center justify-center gap-3">
-          <FaGoogle />
-          Continue with Google
-        </button>
+        {/* Check if the session is not authenticated before showing the Google login button */}
+        {status !== "authenticated" && (
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full py-3 mb-5 bg-[#9c95ff] rounded-md flex items-center justify-center gap-3"
+          >
+            <FaGoogle />
+            Continue with Google
+          </button>
+        )}
 
         <div className="flex justify-between items-center mb-5">
           <div className="h-[1px] w-[45%] bg-[#626262]"></div>
