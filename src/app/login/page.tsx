@@ -111,8 +111,6 @@ export default function Login() {
         <p className="text-xl opacity-25 text-center py-10">or</p>
 
         {/* Google Login Button */}
-        <div className="bg-[#131314] w-60 mx-auto flex justify-center items-center gap-4 py-2 rounded-full cursor-pointer">
-          <Image src="/Images/google.svg" alt="Google Logo" width={20} height={20} />
         <div
           className="bg-[#131314] w-60 mx-auto flex justify-center items-center gap-4 py-2 rounded-full cursor-pointer"
           onClick={handleGoogleLogin}
