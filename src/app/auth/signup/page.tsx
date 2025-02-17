@@ -25,8 +25,7 @@ const Page = () => {
 
   const isSignup = async () => {
     const { username, phone, email, password, confirmPassword, referralCode, country, termsAccepted } = formData;
-
-    // Validation
+  
     if (!username || !phone || !email || !password || !country) {
       alert("Please fill all the fields correctly.");
       return;
@@ -39,7 +38,7 @@ const Page = () => {
       alert("You must accept the terms and conditions.");
       return;
     }
-
+  
     try {
       const response = await fetch("https://test-api.everyx.io/register", {
         method: "POST",
@@ -52,18 +51,23 @@ const Page = () => {
           display_name: username,
           password,
           country,
-          phone: `+91${phone}`, // Ensuring country code is included
+          phone: `+91${phone}`, 
           referral_code: referralCode,
         }).toString(),
       });
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.message || "Signup failed");
       }
-
+  
       console.log("Signup successful:", data);
+  
+      // Store email and password temporarily for auto-login
+      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userPassword", password);
+  
       window.location.href = "/auth/signup/email-verification";
     } catch (error) {
       console.error("Error during signup:", error);
@@ -74,10 +78,11 @@ const Page = () => {
       }
     }
   };
+  
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="h-screen bg-[#0E0E0E] flex flex-col w-full mx-auto mb-5">
         <div className="text-center text-white text-2xl font-bold mt-6">Sign Up</div>
         <div className="flex flex-col px-6 text-white space-y-6 mt-6">

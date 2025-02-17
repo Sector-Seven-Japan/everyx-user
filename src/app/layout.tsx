@@ -9,6 +9,9 @@ import "./globals.css";
 import { AppProvider } from "./Context/AppContext";
 import LayoutContent from "./LayoutContent";
 
+import { use } from "react";
+import SessionWrapper from "@/components/SessionWrapper";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -46,9 +49,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${zenKakuGothicAntique.variable} ${zenAntique.variable} antialiased`}
       >
+        <SessionWrapper>
         <AppProvider>
           <LayoutContent>{children}</LayoutContent>
         </AppProvider>
+        </SessionWrapper>
       </body>
     </html>
   );
