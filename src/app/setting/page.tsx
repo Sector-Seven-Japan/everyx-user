@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useDebugValue, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Switch } from "@headlessui/react";
 import { toast } from "react-toastify";
@@ -30,7 +30,7 @@ const Setting: React.FC = () => {
   const [updatedFavoriteTags, setUpdatedFavoriteTags] = useState<
     { tag: { slug: string; name: string }; enabled: boolean }[]
   >([]);
-  const [loading, setLoading] = useState<boolean>(true);
+
 
   const notificationNames: Record<string, string> = {
     EI01: "Event is ending soon!",
@@ -96,8 +96,6 @@ const Setting: React.FC = () => {
         warn_when_market_impact_exceeds:
           data.wager.warn_when_market_impact_exceeds || "",
       });
-
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching settings:", error);
     }

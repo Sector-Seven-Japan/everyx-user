@@ -5,8 +5,8 @@ import CashWithdrawalCategories from "@/components/CashWithdrawalCategories";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { AppContext } from "@/app/Context/AppContext";
-import Loader from "@/components/Loader/Loader";
+import { AppContext} from "@/app/Context/AppContext";
+
 
 interface BetEntry {
   id: string;
@@ -17,42 +17,8 @@ interface BetEntry {
 }
 
 const Portfolio: React.FC = () => {
-  const bets: BetEntry[] = [
-    {
-      id: "1",
-      question:
-        "Who will make it to the Australian OpenMen's Singles semifinals ?",
-      timestamp: "Nov 2 2024 14:05",
-      amount: -500,
-      status: "failed",
-    },
-    {
-      id: "2",
-      question:
-        "Who will make it to the Australian OpenMen's Singles semifinals ?",
-      timestamp: "Nov 2 2024 14:05",
-      amount: 150,
-      status: "success",
-    },
-    {
-      id: "3",
-      question:
-        "Who will make it to the Australian OpenMen's Singles semifinals ?",
-      timestamp: "Nov 2 2024 14:05",
-      amount: 150,
-      status: "success",
-    },
-  ];
-
-  const { userStats, userProfile, setIsLoading } = useContext(AppContext);
-
-  React.useEffect(() => {
-    setIsLoading(false);
-  }, [userStats, userProfile]);
-  
-  
+  const {setIsLoading} = useContext(AppContext);
   const [bets, setBets] = useState<BetEntry[]>([]);
-  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("All");
   const { API_BASE_URL, authToken } = useContext(AppContext);
@@ -96,7 +62,7 @@ const Portfolio: React.FC = () => {
     } catch (error) {
       console.error("Error fetching wager data:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -106,9 +72,14 @@ const Portfolio: React.FC = () => {
     }
   }, [authToken]);
 
+
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
+
   return (
     <>
-      <Navbar />
+      <Navbar/>
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-5">
         <CurrentCashBalanceCard />
         <div className="my-10">
