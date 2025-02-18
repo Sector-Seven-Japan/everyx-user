@@ -64,9 +64,6 @@ const Page = () => {
   
       console.log("Signup successful:", data);
   
-      // Store email and password temporarily for auto-login
-      localStorage.setItem("userEmail", email);
-      localStorage.setItem("userPassword", password);
   
       window.location.href = "/auth/signup/email-verification";
     } catch (error) {

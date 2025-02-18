@@ -144,17 +144,17 @@ export default function LoginPage() {
         {status !== "authenticated" && (
           <button
             onClick={handleGoogleLogin}
-            className="w-full py-3 mb-5 bg-[#9c95ff] rounded-md flex items-center justify-center gap-3"
+            className="w-full py-[14px] font-semibold mb-5 bg-[#509BD5] rounded-md flex items-center justify-center gap-3"
           >
             <FaGoogle />
             Continue with Google
           </button>
         )}
 
-        <div className="flex justify-between items-center mb-5">
-          <div className="h-[1px] w-[45%] bg-[#626262]"></div>
+        <div className="flex justify-between items-center mb-5 text-[#343434] font-semibold">
+          <div className="h-[1px] w-[43%] bg-[#626262]"></div>
           OR
-          <div className="h-[1px] w-[45%] bg-[#626262]"></div>
+          <div className="h-[1px] w-[43%] bg-[#626262]"></div>
         </div>
 
         {/* Email Login */}
@@ -164,7 +164,7 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Enter Email"
-            className="w-[70%] pl-4 py-[15px] bg-transparent outline-none font-semibold placeholder:font-semibold"
+            className="w-[70%] pl-4 py-[15px] bg-transparent outline-none font-semibold placeholder:font-semibold placeholder:text-[#434343]"
           />
           <button
             onClick={handleContinue}
@@ -175,8 +175,8 @@ export default function LoginPage() {
         </div>
 
         {/* Wallet Connection Buttons */}
-        <div className="mt-10 w-full">
-          <div className="flex flex-wrap justify-between items-center">
+        <div className="mt-5 w-full">
+          <div className="flex flex-wrap items-center justify-between">
             <WalletButton.Custom wallet="rainbow">
               {({ ready, connect }) => (
                 <Button
@@ -185,7 +185,7 @@ export default function LoginPage() {
                     await connect();
                     handleConnect();
                   }}
-                  className="px-5 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+                  className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
                 >
                   <Image
                     src="/images/rainbow.svg"
@@ -205,7 +205,7 @@ export default function LoginPage() {
                     await connect();
                     handleConnect();
                   }}
-                  className="px-5 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+                  className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
                 >
                   <Image
                     src="/images/metamask.svg"
@@ -225,7 +225,7 @@ export default function LoginPage() {
                     await connect();
                     handleConnect();
                   }}
-                  className="px-5 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+                  className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
                 >
                   <Image
                     src="/images/coinbase.svg"
@@ -245,7 +245,7 @@ export default function LoginPage() {
                     await connect();
                     handleConnect();
                   }}
-                  className="px-5 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+                  className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
                 >
                   <Image
                     src="/images/walletConnect.png"
@@ -259,6 +259,7 @@ export default function LoginPage() {
             </WalletButton.Custom>
           </div>
         </div>
+        <p className="text-center mt-5 font-semibold text-[#434343]">Terms Privacy</p>
       </div>
 
       {/* Popup Modal */}
