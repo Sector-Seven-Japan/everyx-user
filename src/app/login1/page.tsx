@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupContent, setPopupContent] = useState("");
   const router = useRouter();
-  const { API_BASE_URL, setAuthToken, setIsLoggedIn } = useContext(AppContext);
+  const { setAuthToken, setIsLoggedIn } = useContext(AppContext);
   const { isConnected: wagmiConnected, address } = useAccount();
   const { data: session, status } = useSession();
 
@@ -96,11 +96,6 @@ export default function LoginPage() {
   };
 
   const handleConnect = async () => {
-    if (!API_BASE_URL) {
-      console.error("API_BASE_URL is undefined. Check AppContext.");
-      return;
-    }
-
     if (wagmiConnected && address) {
       console.log("Connecting wallet:", address);
       try {
