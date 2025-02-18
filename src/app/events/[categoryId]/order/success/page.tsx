@@ -139,6 +139,7 @@ export default function OrderSuccess() {
         <div className="flex flex-col mt-10 gap-4">
           <button
             onClick={() => {
+              setIsLoading(true);
               router.push(`/events/${categoryId}`);
             }}
             className="bg-[#00FFB8] py-3 rounded-md text-black text-[18px] flex items-center justify-center gap-3"
@@ -153,6 +154,7 @@ export default function OrderSuccess() {
           </button>
           <button
             onClick={() => {
+              setIsLoading(true);
               router.push("/deposit-withdrawal/history");
             }}
             className="bg-[#222222] py-3 rounded-md text-[#00FFB8] text-[18px]"
