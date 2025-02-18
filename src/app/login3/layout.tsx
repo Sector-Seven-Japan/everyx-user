@@ -9,7 +9,7 @@ const queryClient = new QueryClient(); // ✅ Fix undefined QueryClient error
 
 const config = getDefaultConfig({
   appName: "My RainbowKit App",
-  projectId: "ecd3b47bbfb460ff7694adef865be002",
+  projectId: "Include your project Id here after generating it from the walletConnect Cloud",
   chains: [mainnet, polygon, optimism, arbitrum, base],
   ssr: true,
 });
