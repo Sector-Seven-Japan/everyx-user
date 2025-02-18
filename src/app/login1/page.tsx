@@ -58,7 +58,7 @@ export default function LoginPage() {
       // Once session is authenticated, handle Google login
       handleAuthentication();
     }
-  }, [status]);  // This will trigger whenever the session status changes
+  }, [status]); // This will trigger whenever the session status changes
 
   useEffect(() => {
     if (wagmiConnected && address) {
@@ -132,7 +132,6 @@ export default function LoginPage() {
       signIn("google");
     }
   };
-
 
   return (
     <div>
@@ -259,7 +258,9 @@ export default function LoginPage() {
             </WalletButton.Custom>
           </div>
         </div>
-        <p className="text-center mt-5 font-semibold text-[#434343]">Terms Privacy</p>
+        <p className="text-center mt-5 font-semibold text-[#434343]">
+          Terms Privacy
+        </p>
       </div>
 
       {/* Popup Modal */}
