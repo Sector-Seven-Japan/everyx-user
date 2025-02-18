@@ -5,8 +5,7 @@ import CashWithdrawalCategories from "@/components/CashWithdrawalCategories";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { AppContext} from "@/app/Context/AppContext";
-
+import { AppContext } from "@/app/Context/AppContext";
 
 interface BetEntry {
   id: string;
@@ -17,7 +16,7 @@ interface BetEntry {
 }
 
 const Portfolio: React.FC = () => {
-  const {setIsLoading} = useContext(AppContext);
+  const { setIsLoading } = useContext(AppContext);
   const [bets, setBets] = useState<BetEntry[]>([]);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("All");
@@ -72,18 +71,21 @@ const Portfolio: React.FC = () => {
     }
   }, [authToken]);
 
-
-  useEffect(()=>{
-    setIsLoading(false)
-  },[])
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-5">
         <CurrentCashBalanceCard />
         <div className="my-10">
-          <CashWithdrawalCategories />
+          <CashWithdrawalCategories
+            openDepositPopup={() => {
+              setOpen(true);
+            }}
+          />
         </div>
 
         <div className="flex justify-end items-center gap-4">

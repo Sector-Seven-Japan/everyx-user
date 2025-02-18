@@ -6,6 +6,7 @@ import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AppContext } from "@/app/Context/AppContext";
+import DepositPopup from "@/components/DepositPopup";
 
 interface TransactionButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
@@ -61,10 +62,11 @@ const TransactionButton: React.FC<TransactionButtonProps> = ({
 };
 
 const History: React.FC = () => {
-  const { authToken, API_BASE_URL } = useContext(AppContext);
+  const { authToken, API_BASE_URL ,setIsLoading} = useContext(AppContext);
 
   const [wallet, setWallet] = useState<WalletResponse[]>([]);
   const [transactions, setTransactions] = useState<TransactionsResponse[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const getWalletData = async () => {
     try {
@@ -116,6 +118,10 @@ const History: React.FC = () => {
     }
   }, [wallet, authToken]);
 
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
+
   return (
     <>
       <Navbar/>
@@ -123,7 +129,7 @@ const History: React.FC = () => {
         <CurrentCashBalanceCard />
 
         <div className="my-10">
-          <CashWithdrawalCategories />
+        <CashWithdrawalCategories openDepositPopup={() => setIsOpen(true)} />
         </div>
 
         <p className="text-[14px] text-center font-semibold">
@@ -170,6 +176,7 @@ const History: React.FC = () => {
           ))}
         </div>
       </div>
+      <DepositPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <Footer />
     </>
   );

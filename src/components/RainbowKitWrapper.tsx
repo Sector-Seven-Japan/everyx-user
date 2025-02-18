@@ -2,8 +2,8 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; // ✅ Add missing QueryClient import
 
 const queryClient = new QueryClient(); // ✅ Fix undefined QueryClient error
 
@@ -14,7 +14,7 @@ const config = getDefaultConfig({
   ssr: true,
 });
 
-export default function LoginLayout({
+export default function RainbowKitWrapper({
   children,
 }: {
   children: React.ReactNode;

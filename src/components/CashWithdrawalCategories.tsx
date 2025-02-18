@@ -5,8 +5,13 @@ import { VscHistory } from "react-icons/vsc";
 
 // import Link from "next/link";
 import { useRouter } from "next/navigation";
+interface CashWithdrawalCategoriesProps {
+  openDepositPopup: () => void; // Explicitly define the prop type
+}
 
-export default function CashWithdrawalCategories() {
+export default function CashWithdrawalCategories({
+  openDepositPopup,
+}: CashWithdrawalCategoriesProps) {
   const router = useRouter();
   return (
     <div className="w-full bg-[#0E0E0E]">
@@ -14,11 +19,9 @@ export default function CashWithdrawalCategories() {
         <ul className="grid grid-cols-4 gap-4">
           <li>
             <button
+              onClick={openDepositPopup}
               type="button"
               className="w-full flex flex-col items-center justify-center p-4 rounded-lg bg-[rgba(255,255,255,0.1)] border border-transparent hover:border-white transition-colors gap-2"
-              onClick={() => {
-                router.push("/deposit-withdrawal/deposits");
-              }}
             >
               <span className="text-[11px] text-white ">Deposits</span>
               <BsWallet2 className="w-4 h-4 text-white" />
