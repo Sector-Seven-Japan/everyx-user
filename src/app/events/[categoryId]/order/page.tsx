@@ -159,7 +159,7 @@ export default function Order() {
         event_id: orderDetails?.event_id,
         event_outcome_id: orderDetails?.event_outcome_id,
         force_leverage: false,
-        leverage: 1,
+        leverage: orderDetails?.leverage,
         loan: 0,
         max_payout: orderDetails?.indicative_payout,
         pledge: orderDetails?.pledge,
