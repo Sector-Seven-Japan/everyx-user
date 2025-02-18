@@ -6,6 +6,7 @@ import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AppContext } from "@/app/Context/AppContext";
+import DepositPopup from "@/components/DepositPopup";
 
 interface TransactionButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
@@ -61,7 +62,7 @@ const TransactionButton: React.FC<TransactionButtonProps> = ({
 };
 
 const History: React.FC = () => {
-  const { authToken, API_BASE_URL } = useContext(AppContext);
+  const { authToken, API_BASE_URL ,setIsLoading} = useContext(AppContext);
 
   const [wallet, setWallet] = useState<WalletResponse[]>([]);
   const [transactions, setTransactions] = useState<TransactionsResponse[]>([]);
@@ -115,6 +116,10 @@ const History: React.FC = () => {
       getTransactionData(wallet[0].id);
     }
   }, [wallet, authToken]);
+
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
 
   return (
     <>
@@ -170,6 +175,7 @@ const History: React.FC = () => {
           ))}
         </div>
       </div>
+      <DepositPopup/>
       <Footer />
     </>
   );

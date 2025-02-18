@@ -16,9 +16,6 @@ export default function CashWithdrawalCategories() {
             <button
               type="button"
               className="w-full flex flex-col items-center justify-center p-4 rounded-lg bg-[rgba(255,255,255,0.1)] border border-transparent hover:border-white transition-colors gap-2"
-              onClick={() => {
-                router.push("/deposit-withdrawal/deposits");
-              }}
             >
               <span className="text-[11px] text-white ">Deposits</span>
               <BsWallet2 className="w-4 h-4 text-white" />
