@@ -188,7 +188,7 @@ export default function LoginPage() {
                   className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
                 >
                   <Image
-                    src="/images/rainbow.svg"
+                    src="/Images/rainbow.svg"
                     alt="Rainbow Wallet"
                     width={25}
                     height={25}
@@ -208,7 +208,7 @@ export default function LoginPage() {
                   className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
                 >
                   <Image
-                    src="/images/metamask.svg"
+                    src="/Images/metamask.svg"
                     alt="MetaMask Wallet"
                     width={25}
                     height={25}
@@ -228,7 +228,7 @@ export default function LoginPage() {
                   className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
                 >
                   <Image
-                    src="/images/coinbase.svg"
+                    src="/Images/coinbase.svg"
                     alt="Coinbase Wallet"
                     width={25}
                     height={25}
@@ -248,7 +248,7 @@ export default function LoginPage() {
                   className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
                 >
                   <Image
-                    src="/images/walletConnect.png"
+                    src="/Images/walletConnect.png"
                     alt="WalletConnect"
                     width={25}
                     height={25}
