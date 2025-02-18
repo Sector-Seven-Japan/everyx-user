@@ -12,8 +12,7 @@ const config = getDefaultConfig({
   appName: "My RainbowKit App",
   projectId: "ecd3b47bbfb460ff7694adef865be002",
   chains: [mainnet, polygon, optimism, arbitrum, base],
-  ssr: true,
-});
+
 
 export default function RainbowKitWrapper({
   children,

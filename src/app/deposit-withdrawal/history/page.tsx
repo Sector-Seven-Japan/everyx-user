@@ -62,7 +62,7 @@ const TransactionButton: React.FC<TransactionButtonProps> = ({
 };
 
 const History: React.FC = () => {
-  const { authToken, API_BASE_URL ,setIsLoading} = useContext(AppContext);
+  const { authToken, API_BASE_URL, setIsLoading } = useContext(AppContext);
 
   const [wallet, setWallet] = useState<WalletResponse[]>([]);
   const [transactions, setTransactions] = useState<TransactionsResponse[]>([]);
@@ -118,18 +118,18 @@ const History: React.FC = () => {
     }
   }, [wallet, authToken]);
 
-  useEffect(()=>{
-    setIsLoading(false)
-  },[])
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-5">
         <CurrentCashBalanceCard />
 
         <div className="my-10">
-        <CashWithdrawalCategories openDepositPopup={() => setIsOpen(true)} />
+          <CashWithdrawalCategories openDepositPopup={() => setIsOpen(true)} />
         </div>
 
         <p className="text-[14px] text-center font-semibold">
