@@ -66,6 +66,7 @@ const History: React.FC = () => {
 
   const [wallet, setWallet] = useState<WalletResponse[]>([]);
   const [transactions, setTransactions] = useState<TransactionsResponse[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const getWalletData = async () => {
     try {
@@ -128,7 +129,7 @@ const History: React.FC = () => {
         <CurrentCashBalanceCard />
 
         <div className="my-10">
-          <CashWithdrawalCategories />
+        <CashWithdrawalCategories openDepositPopup={() => setIsOpen(true)} />
         </div>
 
         <p className="text-[14px] text-center font-semibold">
@@ -175,7 +176,7 @@ const History: React.FC = () => {
           ))}
         </div>
       </div>
-      <DepositPopup/>
+      <DepositPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <Footer />
     </>
   );

@@ -7,7 +7,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AppContext } from "@/app/Context/AppContext";
 
-
 interface BetEntry {
   id: string;
   question: string;
@@ -82,7 +81,11 @@ const Portfolio: React.FC = () => {
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-5">
         <CurrentCashBalanceCard />
         <div className="my-10">
-          <CashWithdrawalCategories />
+          <CashWithdrawalCategories
+            openDepositPopup={() => {
+              setOpen(true);
+            }}
+          />
         </div>
 
         <div className="flex justify-end items-center gap-4">
