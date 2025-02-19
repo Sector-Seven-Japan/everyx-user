@@ -137,10 +137,10 @@ const History: React.FC = () => {
         </p>
 
         <div className="mx-5 mt-10">
-          {transactions.map((transaction) => (
+          {transactions.map((transaction,index) => (
             <>
               <div
-                key={transaction.id}
+                key={transaction.id+""+index}
                 className="flex items-center justify-between text-white my-5
                 
                 "
