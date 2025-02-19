@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 
 export default function MakeOrder() {
   const { orderDetails, isOrderMade, setIsOrderMade, makeOrder, setIsLoading } =
     useContext(AppContext);
   const router = useRouter();
+  const pathname = usePathname();
   const [leverage, setLeverage] = useState<number>(1.0); // Allow decimal values
   const [value, setValue] = useState<number>(10);
   const [startY, setStartY] = useState<number | null>(null);
@@ -56,6 +57,7 @@ export default function MakeOrder() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
+
     console.log(
       "submitting with this data",
       outcomeId,
@@ -63,18 +65,30 @@ export default function MakeOrder() {
       value,
       leverage
     );
-    await makeOrder(outcomeId, eventId, value, leverage);
-    router.push(`/events/${eventId}/order`);
+    const wager = value * leverage;
+    const loan = wager - value;
+
+    if (pathname.startsWith("/wager/")) {
+      router.push(`/betting/${eventId}`);
+      await makeOrder(outcomeId, eventId, true, leverage, loan, value, wager);
+    } else {
+      router.push(`/events/${eventId}/order`);
+      await makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
+    }
   };
-
-
   useEffect(() => {
     if (!eventId || !outcomeId) return;
     setIsLoading(true);
-    
+    const wager = value * leverage;
+    const loan = wager - value;
+
     const debounceTimer = setTimeout(() => {
-      makeOrder(outcomeId, eventId, value, leverage);
-    }, 500); 
+      if (pathname.startsWith("/wager/")) {
+        makeOrder(outcomeId, eventId, true, leverage, loan, value, wager);
+      } else {
+        makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
+      }
+    }, 500);
     return () => clearTimeout(debounceTimer);
   }, [value, leverage]);
 

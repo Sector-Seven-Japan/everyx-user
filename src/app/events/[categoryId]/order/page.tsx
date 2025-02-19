@@ -75,7 +75,6 @@ export default function Order() {
   const [option, setOption] = useState<string>("Order details");
   const [isLoaingGraph, setIsLoadingGraph] = useState(true);
   console.log(isLoaingGraph);
-  
 
   const fetchEvent = async () => {
     if (!categoryId) return;
@@ -96,7 +95,6 @@ export default function Order() {
     setIsLoading(false);
     fetchEvent();
   }, []);
-
 
   useEffect(() => {
     const getGraphData = async ({
@@ -160,7 +158,7 @@ export default function Order() {
         event_outcome_id: orderDetails?.event_outcome_id,
         force_leverage: false,
         leverage: orderDetails?.leverage,
-        loan: 0,
+        loan: orderDetails?.loan,
         max_payout: orderDetails?.indicative_payout,
         pledge: orderDetails?.pledge,
         wager: orderDetails?.wager,

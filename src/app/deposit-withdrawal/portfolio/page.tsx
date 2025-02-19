@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AppContext } from "@/app/Context/AppContext";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 interface BetEntry {
   id: string;
   question: string;
@@ -27,6 +28,7 @@ const Portfolio: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("All");
   const { API_BASE_URL, authToken } = useContext(AppContext);
+  const router = useRouter();
   const getWagerData = async () => {
     try {
       const response = await fetch(
@@ -197,6 +199,10 @@ const Portfolio: React.FC = () => {
                   <ul className="mt-2 space-y-2">
                     {bet.position.map((pos) => (
                       <li
+                        onClick={() => {
+                          setIsLoading(true);
+                          router.push(`/wager/${pos?.id}`);
+                        }}
                         key={pos.id}
                         className="bg-white/10 p-3 rounded-md flex justify-between items-center"
                       >

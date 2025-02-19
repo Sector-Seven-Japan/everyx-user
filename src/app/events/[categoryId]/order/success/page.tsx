@@ -98,7 +98,9 @@ export default function OrderSuccess() {
                   <div
                     className="h-[19px] rounded-lg bg-[#00FFBB]"
                     style={{
-                      width: `80%`,
+                      width: `${Math.round(
+                        orderDetails?.current_probability * 100
+                      )}%`,
                     }}
                   ></div>
                 </div>
