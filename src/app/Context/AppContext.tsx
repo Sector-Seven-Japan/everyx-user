@@ -282,8 +282,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
 
-  console.log("is order made",isOrderMade);
-  
 
   // API Calls
   const fetchCategories = async () => {
@@ -353,7 +351,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       }
       const responseData = (await response.json()) as OrderResponse;
       setOrderDetails(responseData);
-      console.log(responseData, "asdhkjsakdhk");
     } catch (error) {
       console.error("Error making order:", error);
     } finally {
@@ -452,7 +449,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("userStats data at the appcontext", data);
         setUserStats(data);
       }
     } catch (error) {
