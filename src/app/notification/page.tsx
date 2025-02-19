@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import { cn } from "@/components/Cn";
 import Navbar from "@/components/Navbar";
 import { AppContext } from "../Context/AppContext";
@@ -42,6 +42,7 @@ export default function AchievementsPage() {
 
       const data = await response.json();
       setNotifications(data);
+      console.log(notifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
