@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 
@@ -56,9 +56,27 @@ export default function MakeOrder() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
+    console.log(
+      "submitting with this data",
+      outcomeId,
+      eventId,
+      value,
+      leverage
+    );
     await makeOrder(outcomeId, eventId, value, leverage);
     router.push(`/events/${eventId}/order`);
   };
+
+
+  useEffect(() => {
+    if (!eventId || !outcomeId) return;
+    setIsLoading(true);
+    
+    const debounceTimer = setTimeout(() => {
+      makeOrder(outcomeId, eventId, value, leverage);
+    }, 500); 
+    return () => clearTimeout(debounceTimer);
+  }, [value, leverage]);
 
   return (
     <div
@@ -108,7 +126,7 @@ export default function MakeOrder() {
             />
             <div className="flex flex-row-reverse">
               <p className="text-[#00FFB8] text-xs mt-5">
-                Max trade size | ${maxTradeSize} MAX
+                Max trade size | ${maxTradeSize.toFixed(1)} MAX
               </p>
             </div>
           </div>
@@ -154,14 +172,38 @@ export default function MakeOrder() {
         </div>
         <div className="h-[0.5px] w-[60%] mb-12 border-t border-dashed mx-auto"></div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           <div className="flex justify-between">
-            <p>CASH USED</p>
-            <p className="text-[#00FFB8] text-[23px]">${orderDetails?.after_wager.toFixed(1)}</p>
+            <div className="flex flex-col gap-[1px]">
+              <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
+              <p className="text-[22px] text-[#00FFB8]">
+                ${orderDetails?.after_wager.toFixed(1)}
+              </p>
+            </div>
+            <div className="flex flex-col gap-[1px] items-end">
+              <p className="text-[#5D5D5D] text-[13px]">Leverage cash value</p>
+              <p className="text-[22px] text-[#00FFB8]">
+                $2{" "}
+                <span className="text-sm text-[#E49C29]">
+                  x {orderDetails?.leverage}
+                </span>
+              </p>
+            </div>
           </div>
+
           <div className="flex justify-between">
-            <p>PROJECTED PAYOUT</p>
-            <p className="text-[#00FFB8] text-[23px]">${orderDetails?.after_payout.toFixed(1)}</p>
+            <div className="flex flex-col gap-[1px]">
+              <p className="text-[#5D5D5D] text-[13px]">Projected payout</p>
+              <p className="text-[22px] text-[#00FFB8]">
+                ${orderDetails?.after_payout.toFixed(1)}
+              </p>
+            </div>
+            <div className="flex flex-col gap-[1px] items-end">
+              <p className="text-[#5D5D5D] text-[13px]">Your return</p>
+              <p className="text-[22px] text-[#00FFB8]">
+                +{orderDetails?.after_return.toFixed(0)} %
+              </p>
+            </div>
           </div>
         </div>
 

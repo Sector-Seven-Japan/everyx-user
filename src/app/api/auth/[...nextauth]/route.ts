@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { JWT } from "next-auth/jwt"; // Import JWT for type safety
+
 
 declare module "next-auth" {
   interface Session {
@@ -24,7 +24,7 @@ const handler = NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user }) {
       console.log("User signed in:", user);
       return true;
     },

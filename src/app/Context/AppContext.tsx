@@ -51,6 +51,8 @@ interface OrderResponse {
   after_wager: number;
   after_payout: number;
   indicative_payout: number;
+  after_return:number;
+  after_stop_probability:number;
 }
 
 interface Wallet {
@@ -198,6 +200,8 @@ const initialState: AppContextProps = {
     after_payout: 0,
     after_wager: 0,
     indicative_payout: 0,
+    after_return:0,
+    after_stop_probability:0
   },
   setIsOrderMade: () => {},
   setOrderDetails: () => {},
@@ -249,6 +253,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     after_payout: 0,
     after_wager: 0,
     indicative_payout: 0,
+    after_return:0,
+    after_stop_probability:0
   });
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);

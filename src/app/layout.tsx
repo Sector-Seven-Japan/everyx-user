@@ -9,8 +9,8 @@ import "./globals.css";
 import { AppProvider } from "./Context/AppContext";
 import LayoutContent from "./LayoutContent";
 
-import { use } from "react";
 import SessionWrapper from "@/components/SessionWrapper";
+import RainbowKitWrapper from "@/components/RainbowKitWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,11 +49,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${zenKakuGothicAntique.variable} ${zenAntique.variable} antialiased`}
       >
-        <SessionWrapper>
-        <AppProvider>
-          <LayoutContent>{children}</LayoutContent>
-        </AppProvider>
-        </SessionWrapper>
+        <RainbowKitWrapper>
+          <SessionWrapper>
+            <AppProvider>
+              <LayoutContent>{children}</LayoutContent>
+            </AppProvider>
+          </SessionWrapper>
+        </RainbowKitWrapper>
       </body>
     </html>
   );

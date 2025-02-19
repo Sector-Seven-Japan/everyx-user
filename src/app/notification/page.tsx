@@ -7,107 +7,111 @@ import Navbar from "@/components/Navbar";
 import { AppContext } from "../Context/AppContext";
 
 export default function AchievementsPage() {
-    const [activeTab, setActiveTab] = useState<"all" | "new">("all");
-    const [notifications, setNotifications] = useState<any[]>([]);
-    const { authToken } = useContext(AppContext); // Get token from context
+  const [activeTab, setActiveTab] = useState("all");
+  interface Notification {
+    context?: string;
+    created_at?: string;
+    template?: string;
+  }
 
-    useEffect(() => {
-        if (!authToken) {
-            console.warn("Auth token is missing! Attempting to fetch from localStorage...");
-            const storedToken = localStorage.getItem("authToken");
-            if (storedToken) {
-                console.log("Token retrieved from localStorage:", storedToken);
-            }
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { authToken } = useContext(AppContext);
+
+  useEffect(() => {
+    if (authToken) {
+      fetchNotifications("all"); // Pass the default tab explicitly
+    }
+  }, [authToken]);
+  const fetchNotifications = async (tabType = activeTab) => {
+    try {
+      if (!authToken) return;
+
+      // Use the parameter value instead of directly accessing activeTab
+      const isUnreadOnly = tabType.toLowerCase() !== "all";
+
+      const response = await fetch(
+        `https://test-api.everyx.io/notifications?with_archived=true&unread_only=${
+          !isUnreadOnly ? "false" : "true"
+        }&pagination=true&page=1&limit=10`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
         }
-    }, [authToken]);
+      );
 
-    const fetchNotifications = async (unreadOnly = false) => {
-        if (!authToken) {
-            console.error("Unauthorized: No token available");
-            return;
-        }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-        try {
-            const cleanedToken = authToken.startsWith("Bearer ") ? authToken : `Bearer ${authToken}`;
-            const url = new URL("https://test-api.everyx.io/notifications");
-            url.searchParams.append("tags", "");
-            url.searchParams.append("with_archived", "false");
-            url.searchParams.append("unread_only", unreadOnly.toString());
-            url.searchParams.append("limit", "10");
-            url.searchParams.append("page", "1");
+      const data = await response.json();
+      setNotifications(data);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+  return (
+    <div className="min-h-screen bg-[`#0E0E0E`] text-white">
+      <Navbar />
 
-            const response = await fetch(url.toString(), {
-                method: "GET",
-                headers: {
-                    "Authorization": cleanedToken,
-                    "Content-Type": "application/json",
-                },
-            });
+      <nav className="flex justify-end items-center px-4 border-b border-gray-800 space-x-4">
+        {["All", "Unread"].map((tab) => (
+          <div className="flex flex-col items-center" key={tab}>
+            <button
+              onClick={() => {
+                setActiveTab(tab.toLowerCase());
+                fetchNotifications(tab.toLowerCase());
+              }}
+              className={cn(
+                "py-3 px-2 relative",
+                activeTab === tab.toLowerCase()
+                  ? "text-[#00ff9d]"
+                  : "text-gray-400"
+              )}
+            >
+              {tab == "All" ? "All" : "New Message"}
+            </button>
+            <div
+              className={cn(
+                "h-[2px] w-5 bg-[#00ff9d]  ",
+                activeTab === tab.toLowerCase() ? "block" : "hidden"
+              )}
+            ></div>
+          </div>
+        ))}
+      </nav>
 
-            if (response.ok) {
-                const data = await response.json();
-                setNotifications(data);
-            } else {
-                console.error("Failed to fetch notifications. Response:", response.status, response.statusText);
-            }
-        } catch (error) {
-            console.error("Error fetching notifications:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchNotifications(activeTab === "new");
-    }, [activeTab]); // Ensures API is called only when tab changes
-
-    return (
-        <div className="min-h-screen bg-black text-white">
-            <Navbar />
-
-            <nav className="flex justify-end items-center px-4 border-b border-gray-800 space-x-4">
-                <button
-                    onClick={() => setActiveTab("all")}
-                    className={cn("py-3 px-2 relative", activeTab === "all" ? "text-[#00ff9d]" : "text-gray-400")}
-                >
-                    All
-                    {activeTab === "all" && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#00ff9d]" />}
-                </button>
-                <button
-                    onClick={() => setActiveTab("new")}
-                    className={cn("py-3 px-2 relative", activeTab === "new" ? "text-[#00ff9d]" : "text-gray-400")}
-                >
-                    New message
-                    {activeTab === "new" && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#00ff9d]" />}
-                </button>
-            </nav>
-
-            {notifications.length > 0 ? (
-                <div className="px-4 py-6 space-y-6">
-                    {notifications.map((notif, i) => (
-                        <div key={i} className="flex gap-4 items-start">
-                            <Image
-                                src="/Images/notif.jpg"
-                                alt="Achievement"
-                                width={80}
-                                height={100}
-                                className="rounded-lg object-cover h-24"
-                            />
-                            <div className="flex-1 h-full">
-                                <h2 className="text-[#00ff9d] text-xl font-medium mb-1">
-                                    {notif.context || "Achievement Unlocked!"}
-                                </h2>
-                                <div className="flex items-center text-gray-400 text-sm mb-3">
-                                    <span className="mr-2">◷</span> {notif.created_at || "Unknown time"}
-                                </div>
-                                <p className="text-gray-300 text-sm leading-relaxed">
-                                    {notif.template || "No description available."}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
+      <div className="px-4 py-6 space-y-6">
+        {notifications.length > 0 ? (
+          notifications.map((notif, i) => (
+            <div key={i} className="flex gap-4 items-start">
+              <Image
+                src="/Images/notif.jpg"
+                alt="Achievement"
+                width={80}
+                height={100}
+                className="rounded-lg object-cover h-24"
+              />
+              <div className="flex-1 h-full">
+                <h2 className="text-[#00ff9d] text-xl font-medium mb-1">
+                  {notif?.context || "Achievement Unlocked!"}
+                </h2>
+                <div className="flex items-center text-gray-400 text-sm mb-3">
+                  <span className="mr-2">◷</span>
+                  {notif?.created_at || "Unknown time"}
                 </div>
-            ) : (
-                <p className="text-gray-400 text-center">No notifications found.</p>
-            )}
-        </div>
-    );
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  {notif?.template || "No description available."}
+                </p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-400 text-center">No notifications found.</p>
+        )}
+      </div> 
+    </div>
+  );
 }
