@@ -6,13 +6,19 @@ import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AppContext } from "@/app/Context/AppContext";
-
+import { format } from "date-fns";
 interface BetEntry {
   id: string;
   question: string;
-  timestamp: string;
-  amount: number;
+  wagered_at: string;
   status: "open" | "closed";
+  ends_at: string;
+  position: {
+    id: string;
+    event_outcome_id: string;
+    event_outcome_name: string;
+    wager: number;
+  }[];
 }
 
 const Portfolio: React.FC = () => {
@@ -42,18 +48,29 @@ const Portfolio: React.FC = () => {
 
       interface WagerData {
         event_id: string;
-        event?: { name: string };
+        event?: { name: string; ends_at: string };
         wagered_at: string;
-        wager: number;
         event_status: "open" | "closed";
+        positions: {
+          id: string;
+          event_outcome_id: string;
+          event_outcome?: { name: string }; // ✅ Added optional chaining
+          wager: number;
+        }[];
       }
 
       const formattedBets: BetEntry[] = data.map((item: WagerData) => ({
         id: item.event_id,
         question: item.event?.name || "Unknown Event",
-        timestamp: new Date(item.wagered_at).toLocaleString(),
-        amount: item.wager || 0,
+        wagered_at: new Date(item.wagered_at).toLocaleString(),
         status: item.event_status,
+        ends_at: item.event?.ends_at,
+        position: item.positions.map((pos) => ({
+          id: pos.id,
+          event_outcome_id: pos.event_outcome_id,
+          event_outcome_name: pos.event_outcome?.name || "Unknown Outcome", // ✅ Corrected access
+          wager: pos.wager,
+        })),
       }));
 
       setBets(formattedBets);
@@ -151,37 +168,55 @@ const Portfolio: React.FC = () => {
         <div className="max-w-2xl mx-auto space-y-8 mt-24">
           {bets.length > 0 ? (
             bets.map((bet) => (
-              <>
-                <div key={bet.id} className="space-y-3 mb-5">
-                  <div className="inline-block">
-                    <span
-                      className={`px-3 py-1 rounded text-sm ${
-                        bet.status === "closed"
-                          ? "text-orange-500 border border-orange-500"
-                          : "text-[#000] bg-[#00FFB8]"
-                      }`}
-                    >
-                      {bet.status === "closed" ? "Inactive" : "Active"}
-                    </span>
-                  </div>
-
-                  <h2 className="text-white text-lg font-medium">
-                    {bet.question}
-                  </h2>
-
-                  <div className="flex justify-between items-center">
-                    <p className="text-gray-500 text-sm">{bet.timestamp}</p>
-                    <p
-                      className={`text-xl font-bold ${
-                        bet.amount < 0 ? "text-orange-500" : "text-[#00FFB8]"
-                      }`}
-                    >
-                      $ {bet.amount.toFixed(2)} (USDT)
-                    </p>
-                  </div>
+              <div key={bet.id} className="space-y-3 mb-5">
+                <div className="inline-block">
+                  <span
+                    className={`px-3 py-1 rounded text-sm ${
+                      bet.status === "closed"
+                        ? "text-orange-500 border border-orange-500"
+                        : "text-[#000] bg-[#00FFB8]"
+                    }`}
+                  >
+                    {bet.status === "closed" ? "Inactive" : "Active"}
+                  </span>
                 </div>
+
+                <h2 className="text-white text-lg font-medium">
+                  {bet.question}
+                </h2>
+
+                {/* <div className="flex justify-between items-center">
+                  <p className="text-gray-500 text-sm">{bet.wagered_at}</p>
+                </div> */}
+
+                {/* Mapping through positions */}
+                <div className="mt-4">
+                  <h3 className="text-gray-300 text-md font-semibold">
+                    Bets Placed :
+                  </h3>
+                  <ul className="mt-2 space-y-2">
+                    {bet.position.map((pos) => (
+                      <li
+                        key={pos.id}
+                        className="bg-white/10 p-3 rounded-md flex justify-between items-center"
+                      >
+                        <span className="text-white text-sm">
+                          {pos.event_outcome_id} :{pos.event_outcome_name}
+                        </span>
+                        <span className="text-[#00FFB8] font-bold">
+                          $ {pos.wager.toFixed(2)} (USDT)
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="text-gray-500 text-sm">
+                  Ends at : {format(new Date(bet.ends_at), "MMM d yyyy HH:mm")}
+                </div>
+
                 <div
-                  className="border-t-2 border-dashed border-gray-400 w-full"
+                  className="border-t-2 border-dashed border-gray-400 w-full mt-4"
                   style={{
                     maskImage:
                       "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
@@ -189,7 +224,7 @@ const Portfolio: React.FC = () => {
                       "linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
                   }}
                 ></div>
-              </>
+              </div>
             ))
           ) : (
             <p className="text-center text-gray-400">No bets available.</p>
