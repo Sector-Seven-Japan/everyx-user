@@ -51,8 +51,15 @@ interface OrderResponse {
   after_wager: number;
   after_payout: number;
   indicative_payout: number;
-  after_return:number;
-  after_stop_probability:number;
+  after_return: number;
+  after_stop_probability: number;
+  before_wager: number;
+  before_leverage: number;
+  before_payout: number;
+  before_return: number;
+  before_stop_probability: number;
+  after_leverage: number;
+  loan: number;
 }
 
 interface Wallet {
@@ -102,7 +109,6 @@ interface UserStats {
 
   selectedOrder: string;
   setSelectedOrder: React.Dispatch<React.SetStateAction<string>>;
-
 }
 
 interface AppContextProps {
@@ -136,8 +142,11 @@ interface AppContextProps {
   makeOrder: (
     outcomeId: string,
     eventId: string,
-    amount: number,
-    leverage: number
+    force_leverage: boolean,
+    leverage: number,
+    loan: number,
+    pledge: number,
+    wager: number
   ) => Promise<void>;
   isOrderMade: boolean;
   setIsOrderMade: React.Dispatch<React.SetStateAction<boolean>>;
@@ -200,8 +209,15 @@ const initialState: AppContextProps = {
     after_payout: 0,
     after_wager: 0,
     indicative_payout: 0,
-    after_return:0,
-    after_stop_probability:0
+    after_return: 0,
+    after_stop_probability: 0,
+    before_wager: 0,
+    before_leverage: 0,
+    before_payout: 0,
+    before_return: 0,
+    before_stop_probability: 0,
+    after_leverage: 0,
+    loan: 0,
   },
   setIsOrderMade: () => {},
   setOrderDetails: () => {},
@@ -210,7 +226,7 @@ const initialState: AppContextProps = {
   setSelectedOrder: () => {},
   walletData: [],
   setWalletData: () => {},
-  sidebar:false,
+  sidebar: false,
   setSidebar: () => {},
   fetchWalletData: async () => {},
   userProfile: null,
@@ -253,11 +269,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     after_payout: 0,
     after_wager: 0,
     indicative_payout: 0,
-    after_return:0,
-    after_stop_probability:0
+    after_return: 0,
+    after_stop_probability: 0,
+    before_wager: 0,
+    before_leverage: 0,
+    before_payout: 0,
+    before_return: 0,
+    before_stop_probability: 0,
+    after_leverage: 0,
+    loan: 0,
   });
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
+
 
   // API Calls
   const fetchCategories = async () => {
@@ -286,33 +310,31 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const data = await response.json();
       setWalletData(data);
     } catch (error) {
-      console.log("failed to fetch Wallet data",error);
+      console.log("failed to fetch Wallet data", error);
     }
   };
 
   const makeOrder = async (
     outcomeId: string,
     eventId: string,
-    amount: number,
-    leverage: number
+    force_leverage: boolean,
+    leverage: number,
+    loan: number,
+    pledge: number,
+    wager: number
   ) => {
     if (!authToken) {
       return router.push("/login");
     }
-
-    // setIsLoading(true);
-    setIsOrderMade(true);
-
     const orderPayload: OrderPayload = {
       event_id: eventId,
       event_outcome_id: outcomeId,
-      force_leverage: false,
+      force_leverage: force_leverage,
       leverage: leverage,
-      loan: 0,
-      pledge: amount,
-      wager: amount,
+      loan: loan,
+      pledge: pledge,
+      wager: wager,
     };
-
     try {
       const response = await fetch(`${API_BASE_URL}/quotes`, {
         method: "POST",
@@ -328,7 +350,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         throw new Error(errorText || "Order placement failed");
       }
       const responseData = (await response.json()) as OrderResponse;
-      setOrderDetails(responseData); // Update with new data after clearing old data
+      setOrderDetails(responseData);
     } catch (error) {
       console.error("Error making order:", error);
     } finally {
@@ -427,14 +449,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("userStats data at the appcontext", data);
         setUserStats(data);
       }
     } catch (error) {
       console.error("Failed to fetch the userStats:", error);
     }
   };
-
 
   useEffect(() => {
     if (authToken) {

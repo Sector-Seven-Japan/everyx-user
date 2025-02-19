@@ -36,13 +36,13 @@ interface CategoryInfoProps {
 const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B","#3661DF"];
 
 export default function CategoryGraph({ eventData }: CategoryInfoProps) {
-  const { makeOrder, setIsOrderMade, setSelectedOrder } =
+  const { makeOrder, setIsOrderMade, setSelectedOrder,setIsLoading } =
     useContext(AppContext);
 
   const [selectedOutcomeId, setSelectedOutcomeId] = useState<string | null>(null);
 
   useEffect(() => {
-    setIsOrderMade(false);
+    // setIsOrderMade(false);
   }, []);
 
   return (
@@ -58,14 +58,16 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
             <div className="flex justify-between items-center gap-2">
               <div className="w-[80%] h-[19px]">
                 <div
-                  onClick={() => {
+                  onClick={async() => {
                     setSelectedOrder(
                       String.fromCharCode(65 + index) +
                         ". " +
                         outcome.name.charAt(0).toUpperCase() +
                         outcome.name.slice(1)
                     );
-                    makeOrder(outcome._id, eventData._id, 10, 1);
+                    setIsLoading(true);
+                    await makeOrder(outcome._id, eventData._id,false,1,0,10,10);
+                    setIsOrderMade(true);
                     setSelectedOutcomeId(outcome._id);
                   }}
                   className="h-[19px] rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
