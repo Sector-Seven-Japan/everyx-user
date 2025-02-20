@@ -1,11 +1,12 @@
 "use client";
-import {useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import { useParams } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
 import DrawGraph from "@/components/DrawGraph";
 import MakeOrder from "@/components/MakeOrder";
+
 
 interface WagerData {
   id: string;
@@ -15,17 +16,18 @@ interface WagerData {
     description: string;
     status: string;
     ends_at: string;
-  };
-  outcome: [
-    {
-      id: string;
+    outcomes: {
+      _id: string;
       name: string;
       trader_info: {
         estimated_probability: number;
         estimated_payout: number;
       };
-    }
-  ];
+      histories: {
+        estimated_probability_24hr_change: number;
+      };
+    }[];
+  };
   event_outcome: {
     name: string;
   };
@@ -81,12 +83,12 @@ interface EventHistoryParams {
 export default function WagerPage() {
   const {
     setIsLoading,
-    orderDetails,
     setSelectedOrder,
     authToken,
     API_BASE_URL,
     makeOrder,
     setIsOrderMade,
+    getCountdown
   } = useContext(AppContext);
   const [option, setOption] = useState<string>("Order details");
   const params = useParams();
@@ -96,6 +98,7 @@ export default function WagerPage() {
   const [graphData, setGraphData] = useState<GraphData[]>([]);
   const [isLoaingGraph, setIsLoadingGraph] = useState(true);
   console.log(isLoaingGraph);
+  const [countdown, setCountdown] = useState<string>("");
 
   useEffect(() => {
     setIsLoading(false);
@@ -114,11 +117,25 @@ export default function WagerPage() {
           },
         }
       );
-      const data = await response.json();
-      console.log("Wager Data", data);
-      setWagerData(data);
+      const data: WagerData = await response.json(); // Explicitly typing the response
+
+
+      // Ensure TypeScript recognizes the type of `outcome`
+      const matchedOutcome = data.event.outcomes.find(
+        (outcome) => outcome._id === data.event_outcome_id
+      );
+
+      // Update wagerData state with only the matched outcome
+      setWagerData({
+        ...data,
+        event: {
+          ...data.event,
+          outcomes: matchedOutcome ? [matchedOutcome] : [], // Ensure outcomes remains an array
+        },
+      });
+
       setSelectedOrder(
-        data?.event_outcome_id + ". " + data?.event_outcome.name
+        `${data?.event_outcome_id}. ${data?.event_outcome.name}`
       );
     } catch (error) {
       console.log("Error fetching wager data", error);
@@ -130,6 +147,7 @@ export default function WagerPage() {
       fetchWagerData();
     }
   }, []);
+
 
   const handleSubmit = async () => {
     try {
@@ -152,7 +170,6 @@ export default function WagerPage() {
   };
 
   const fetchEvent = async () => {
-    console.log(wagerData?.event_id);
 
     if (!wagerData?.event_id) return;
     try {
@@ -177,6 +194,17 @@ export default function WagerPage() {
   }, [wagerData?.event_id]);
 
   useEffect(() => {
+    if (eventData?.ends_at) {
+      setCountdown(getCountdown(eventData.ends_at));
+      const interval = setInterval(() => {
+        setCountdown(getCountdown(eventData.ends_at));
+      }, 60000); // Update every minute
+
+      return () => clearInterval(interval);
+    }
+  }, [eventData?.ends_at, getCountdown]);
+
+  useEffect(() => {
     const getGraphData = async ({
       eventId,
       precision = "hour",
@@ -199,7 +227,6 @@ export default function WagerPage() {
         }
 
         const data = await response.json();
-        // console.log("data at getGraphData", data);
         return data;
       } catch (error) {
         console.error("Error getting graph data:", error);
@@ -247,7 +274,7 @@ export default function WagerPage() {
                 height={18}
                 width={18}
               />
-              1 Day and 23h30m
+              {countdown}
             </p>
           </div>
           <p className="text-[21px] font-light mt-4">
@@ -293,9 +320,9 @@ export default function WagerPage() {
                 Potential payout
               </p>
               <p className="flex justify-between text-[22px] text-[#00FFB8]">
-                $0
+                ${wagerData && Math.round(wagerData?.indicative_payout)}
                 <span className="text-[14px] text-[#E49C29] flex items-end">
-                  +0%
+                  +{wagerData?.indicative_return.toFixed(0)}%
                 </span>
               </p>
             </div>
@@ -308,7 +335,17 @@ export default function WagerPage() {
                   Math.round(wagerData?.probability * 100).toFixed(0)}
                 %
                 <span className="text-[14px] text-[#E49C29] flex items-end">
-                  +{(orderDetails?.probability_change * 100).toFixed(1)}%
+                  {wagerData &&
+                  wagerData?.event?.outcomes[0].histories
+                    ?.estimated_probability_24hr_change > 0
+                    ? "+"
+                    : ""}
+                  {wagerData &&
+                    Math.round(
+                      wagerData?.event?.outcomes[0].histories
+                        ?.estimated_probability_24hr_change * 10
+                    )}
+                  %
                 </span>
               </p>
             </div>
@@ -411,7 +448,7 @@ export default function WagerPage() {
       )}
 
       <div className="px-5">
-        {wagerData?.stop_probability &&
+        {wagerData?.stop_probability ? (
           Math.round(wagerData.stop_probability * 100) > 0 && (
             <button
               onClick={handleSubmit}
@@ -419,7 +456,15 @@ export default function WagerPage() {
             >
               Add Margin
             </button>
-          )}
+          )
+        ) : (
+          <button
+            onClick={handleSubmit}
+            className="text-[#000] w-full border bg-[#5DFF00] mt-6 py-4 rounded-2xl"
+          >
+            Trade on this event again
+          </button>
+        )}
       </div>
       <MakeOrder />
     </div>

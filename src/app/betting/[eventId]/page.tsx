@@ -104,7 +104,7 @@ export default function BettingPage() {
               <div className="flex flex-col gap-[1px]">
                 <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
                 <p className="text-[22px] text-[#00FFB8]">
-                  ${orderDetails?.before_wager.toFixed(1)}
+                  ${Math.round(orderDetails?.before_pledge)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
@@ -112,7 +112,7 @@ export default function BettingPage() {
                   Leverage cash value
                 </p>
                 <p className="text-[22px] text-[#00FFB8]">
-                  $2{" "}
+                  ${Math.round(orderDetails?.before_wager)}{" "}
                   <span className="text-sm text-[#E49C29]">
                     x {orderDetails?.before_leverage}
                   </span>
@@ -124,7 +124,7 @@ export default function BettingPage() {
               <div className="flex flex-col gap-[1px]">
                 <p className="text-[#5D5D5D] text-[13px]">Projected payout</p>
                 <p className="text-[22px] text-[#00FFB8]">
-                  ${orderDetails?.before_payout.toFixed(1)}
+                  ${Math.round(orderDetails?.before_payout)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
@@ -157,7 +157,7 @@ export default function BettingPage() {
               <div className="flex flex-col gap-[1px]">
                 <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
                 <p className="text-[22px] text-[#00FFB8]">
-                  ${orderDetails?.after_wager.toFixed(1)}
+                  ${Math.round(orderDetails?.after_pledge)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
@@ -165,7 +165,7 @@ export default function BettingPage() {
                   Leverage cash value
                 </p>
                 <p className="text-[22px] text-[#00FFB8]">
-                  $2{" "}
+                  ${Math.round(orderDetails?.after_wager)}{" "}
                   <span className="text-sm text-[#E49C29]">
                     x {orderDetails?.after_leverage}
                   </span>
@@ -177,7 +177,7 @@ export default function BettingPage() {
               <div className="flex flex-col gap-[1px]">
                 <p className="text-[#5D5D5D] text-[13px]">Projected payout</p>
                 <p className="text-[22px] text-[#00FFB8]">
-                  ${orderDetails?.after_payout.toFixed(1)}
+                  ${Math.round(orderDetails?.after_payout)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">

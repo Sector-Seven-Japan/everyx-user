@@ -60,6 +60,8 @@ interface OrderResponse {
   before_stop_probability: number;
   after_leverage: number;
   loan: number;
+  before_pledge: number;
+  after_pledge: number;
 }
 
 interface Wallet {
@@ -160,6 +162,7 @@ interface AppContextProps {
   fetchWalletData: () => Promise<void>;
   userProfile: UserProfile | null;
   userStats: UserStats | null;
+  getCountdown: (ends_at: string) => string;
 }
 
 const API_BASE_URL = "https://test-api.everyx.io";
@@ -218,6 +221,8 @@ const initialState: AppContextProps = {
     before_stop_probability: 0,
     after_leverage: 0,
     loan: 0,
+    before_pledge: 0,
+    after_pledge: 0,
   },
   setIsOrderMade: () => {},
   setOrderDetails: () => {},
@@ -231,6 +236,7 @@ const initialState: AppContextProps = {
   fetchWalletData: async () => {},
   userProfile: null,
   userStats: null,
+  getCountdown: () => "Ended",
 };
 
 export const AppContext = createContext<AppContextProps>(initialState);
@@ -278,6 +284,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     before_stop_probability: 0,
     after_leverage: 0,
     loan: 0,
+    before_pledge: 0,
+    after_pledge: 0,
   });
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
@@ -455,6 +463,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const getCountdown = (ends_at: string): string => {
+    const now = new Date();
+    const endDate = new Date(ends_at);
+    let diff = Math.floor((endDate.getTime() - now.getTime()) / 1000);
+
+    if (diff <= 0) return "Ended";
+
+    const days = Math.floor(diff / (24 * 60 * 60));
+    diff %= 24 * 60 * 60;
+    const hours = Math.floor(diff / (60 * 60));
+    diff %= 60 * 60;
+    const minutes = Math.floor(diff / 60);
+
+    return `${days} Day${days !== 1 ? "s" : ""} and ${hours}h${minutes}m`;
+  };
+
   useEffect(() => {
     if (authToken) {
       getProfileData();
@@ -530,6 +554,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     fetchWalletData,
     userProfile,
     userStats,
+    getCountdown,
   };
 
   return (

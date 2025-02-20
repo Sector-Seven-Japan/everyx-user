@@ -27,10 +27,16 @@ interface EventData {
 
 export default function OrderSuccess() {
   const router = useRouter();
-  const { setIsLoading, orderDetails, selectedOrder, API_BASE_URL } =
-    useContext(AppContext);
+  const {
+    setIsLoading,
+    orderDetails,
+    selectedOrder,
+    API_BASE_URL,
+    getCountdown,
+  } = useContext(AppContext);
   const categoryId = orderDetails?.event_id;
   const [eventData, setEventData] = useState<EventData | null>(null);
+  const [countdown, setCountdown] = useState<string>("");
 
   const fetchEvent = async () => {
     if (!categoryId) return;
@@ -51,6 +57,17 @@ export default function OrderSuccess() {
     fetchEvent();
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (eventData?.ends_at) {
+      setCountdown(getCountdown(eventData.ends_at));
+      const interval = setInterval(() => {
+        setCountdown(getCountdown(eventData.ends_at));
+      }, 60000); // Update every minute
+
+      return () => clearInterval(interval);
+    }
+  }, [eventData?.ends_at, getCountdown]);
 
   return (
     <div>
@@ -80,7 +97,7 @@ export default function OrderSuccess() {
                 height={18}
                 width={18}
               />
-              1 Day and 23h30m
+              {countdown}
             </p>
           </div>
           <p className="text-[21px] font-light mt-4">
@@ -99,13 +116,13 @@ export default function OrderSuccess() {
                     className="h-[19px] rounded-lg bg-[#00FFBB]"
                     style={{
                       width: `${Math.round(
-                        orderDetails?.current_probability * 100
+                        orderDetails?.new_probability * 100
                       )}%`,
                     }}
                   ></div>
                 </div>
                 <p className="text-[19px] font-light">
-                  {Math.round(orderDetails?.current_probability * 100)}%
+                  {Math.round(orderDetails?.new_probability * 100)}%
                 </p>
                 <Image
                   src="/Images/checkbox.png"
@@ -113,6 +130,7 @@ export default function OrderSuccess() {
                   height={20}
                   width={20}
                 />
+                {countdown}
               </div>
             </div>
           </div>
@@ -123,15 +141,15 @@ export default function OrderSuccess() {
             <div className="flex flex-col gap-[1px]">
               <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
               <p className="text-[22px] text-[#00FFB8]">
-                ${orderDetails?.after_wager.toFixed(1)}
+                ${Math.round(orderDetails?.after_pledge)}
               </p>
             </div>
             <div className="flex flex-col gap-[1px] items-end">
               <p className="text-[#5D5D5D] text-[13px]">Leverage cash value</p>
               <p className="text-[22px] text-[#00FFB8]">
-                $2{" "}
+                ${Math.round(orderDetails?.after_wager)}{" "}
                 <span className="text-sm text-[#E49C29]">
-                  x {orderDetails?.leverage}
+                  x {orderDetails?.after_leverage}
                 </span>
               </p>
             </div>

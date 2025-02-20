@@ -94,8 +94,8 @@ export default function MakeOrder() {
 
   return (
     <div
-      className={`fixed bg-transparent w-full left-0 h-full transition-transform duration-500 ease-in-out ${
-        isOrderMade ? "translate-y-0" : "translate-y-full"
+      className={`fixed bg-transparent w-full left-0 h-full transition-transform duration-200 ease-in-out ${
+        isOrderMade ? "translate-y-0" : "translate-y-[1000px]"
       }`}
       style={{ bottom: 0 }}
     >
@@ -191,13 +191,13 @@ export default function MakeOrder() {
             <div className="flex flex-col gap-[1px]">
               <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
               <p className="text-[22px] text-[#00FFB8]">
-                ${orderDetails?.after_wager.toFixed(1)}
+                ${Math.round(orderDetails?.after_pledge)}
               </p>
             </div>
             <div className="flex flex-col gap-[1px] items-end">
               <p className="text-[#5D5D5D] text-[13px]">Leverage cash value</p>
               <p className="text-[22px] text-[#00FFB8]">
-                $2{" "}
+                ${Math.round(orderDetails?.after_wager)}{" "}
                 <span className="text-sm text-[#E49C29]">
                   x {orderDetails?.leverage}
                 </span>
@@ -209,7 +209,7 @@ export default function MakeOrder() {
             <div className="flex flex-col gap-[1px]">
               <p className="text-[#5D5D5D] text-[13px]">Projected payout</p>
               <p className="text-[22px] text-[#00FFB8]">
-                ${orderDetails?.after_payout.toFixed(1)}
+                ${Math.round(orderDetails?.after_payout)}
               </p>
             </div>
             <div className="flex flex-col gap-[1px] items-end">
