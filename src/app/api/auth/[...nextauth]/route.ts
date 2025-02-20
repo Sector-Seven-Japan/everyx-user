@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-
 declare module "next-auth" {
   interface Session {
     accessToken?: string | null;
@@ -12,7 +11,9 @@ const clientId = process.env.GOOGLE_CLIENT_ID;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
 if (!clientId || !clientSecret) {
-  throw new Error("Google Client ID and Client Secret must be set in .env.local");
+  throw new Error(
+    "Google Client ID and Client Secret must be set in .env.local"
+  );
 }
 
 const handler = NextAuth({

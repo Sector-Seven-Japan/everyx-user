@@ -13,7 +13,6 @@ const config = getDefaultConfig({
   chains: [mainnet, polygon, optimism, arbitrum, base],
 });
 
-
 export default function RainbowKitWrapper({
   children,
 }: {

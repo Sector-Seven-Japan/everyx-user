@@ -6,9 +6,11 @@ import { AppContext } from "../Context/AppContext";
 import "./menu.css";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useDisconnect } from "wagmi";
 
 export default function Menu() {
   const router = useRouter();
+  const { disconnect } = useDisconnect();
   const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading } =
     useContext(AppContext);
   const [languageState, setLanguageState] = useState(false);
@@ -36,12 +38,35 @@ export default function Menu() {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      console.log(response)
+      console.log(response);
+
+      // console.log("Before sign out:");
+      // console.log("Cookies:", document.cookie);
+      // console.log("Local Storage:", localStorage.getItem("authToken"));
 
       await signOut({ redirect: false }); // Sign out without redirecting
-      document.cookie = "next-auth.session-token=; max-age=0;"; // Clear session cookie
-      document.cookie = "authToken=; max-age=0;"; // Clear custom auth token
-      router.push("/login"); // Redirect to login page after sign out
+
+      // Clear all relevant cookies
+      document.cookie =
+        "next-auth.session-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie =
+        "next-auth.csrf-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie =
+        "next-auth.callback-url=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie =
+        "next-auth.state=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie =
+        "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+      localStorage.removeItem("authToken"); // Clear auth token from local storage
+      // Disconnect wallet
+      disconnect();
+
+      // console.log("After sign out:");
+      // console.log("Cookies:", document.cookie);
+      // console.log("Local Storage:", localStorage.getItem("authToken"));
+
+      router.push("/login1"); // Redirect to login page after sign out
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
@@ -106,12 +131,12 @@ export default function Menu() {
 
         {/* Login/Logout Button */}
         <button
-          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl"
+          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200"
           onClick={() => {
             if (isLoggedIn) {
               handleLogotUser();
             } else {
-              router.push("/login");
+              router.push("/login1");
             }
           }}
         >

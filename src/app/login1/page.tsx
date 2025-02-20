@@ -9,11 +9,13 @@ import { Button } from "@/components/Button";
 import { useAccount } from "wagmi";
 import { AppContext } from "../Context/AppContext";
 import { signIn, useSession } from "next-auth/react";
+import Loader from "@/components/Loader/Loader";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [popupContent, setPopupContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // State for managing loading
   const router = useRouter();
   const { setAuthToken, setIsLoggedIn } = useContext(AppContext);
   const { isConnected: wagmiConnected, address } = useAccount();
@@ -22,6 +24,7 @@ export default function LoginPage() {
   // Handle Google authentication success
   const handleAuthentication = async () => {
     if (session?.user?.email && status === "authenticated") {
+      setIsLoading(true); // Show loader
       try {
         // Make API call to your backend to get the auth token
         const response = await fetch(`https://everyx.weseegpt.com/auth/v2/`, {
@@ -37,8 +40,8 @@ export default function LoginPage() {
         const data = await response.json();
 
         if (data?.token) {
-          // Set auth token in cookie
-          document.cookie = `authToken=${data.token}`;
+          // Set auth token in local storage
+          localStorage.setItem("authToken", data.token);
           // Update context
           setAuthToken(data.token);
           setIsLoggedIn(true);
@@ -49,6 +52,8 @@ export default function LoginPage() {
         }
       } catch (error) {
         console.error("Authentication error:", error);
+      } finally {
+        setIsLoading(false); // Hide loader
       }
     }
   };
@@ -98,6 +103,7 @@ export default function LoginPage() {
   const handleConnect = async () => {
     if (wagmiConnected && address) {
       console.log("Connecting wallet:", address);
+      setIsLoading(true); // Show loader
       try {
         const response = await fetch(`https://everyx.weseegpt.com/auth/v2/`, {
           method: "POST",
@@ -110,13 +116,16 @@ export default function LoginPage() {
         console.log("API Response Status:", response.status);
         const data = await response.json();
         if (data?.token) {
-          document.cookie = `authToken=${data.token}`;
+          // Set auth token in local storage
+          localStorage.setItem("authToken", data.token);
           setAuthToken(data.token);
           setIsLoggedIn(true);
           router.push("/home");
         }
       } catch (error) {
         console.error("Error connecting wallet:", error);
+      } finally {
+        setIsLoading(false); // Hide loader
       }
     }
   };
@@ -124,6 +133,7 @@ export default function LoginPage() {
   // Modified Google login handler
   const handleGoogleLogin = () => {
     if (typeof window !== "undefined") {
+      setIsLoading(true);
       signIn("google");
     }
   };
@@ -135,15 +145,14 @@ export default function LoginPage() {
 
       <div className="p-5">
         {/* Check if the session is not authenticated before showing the Google login button */}
-        {status !== "authenticated" && (
-          <button
-            onClick={handleGoogleLogin}
-            className="w-full py-[14px] font-semibold mb-5 bg-[#509BD5] rounded-md flex items-center justify-center gap-3"
-          >
-            <FaGoogle />
-            Continue with Google
-          </button>
-        )}
+
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full py-[14px] font-semibold mb-5 bg-[#509BD5] rounded-md flex items-center justify-center gap-3"
+        >
+          <FaGoogle />
+          <div>Continue with google</div>
+        </button>
 
         <div className="flex justify-between items-center mb-5 text-[#343434] font-semibold">
           <div className="h-[1px] w-[43%] bg-[#626262]"></div>
@@ -257,6 +266,13 @@ export default function LoginPage() {
           Terms Privacy
         </p>
       </div>
+
+      {/* Loader */}
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <Loader /> {/* Use the Loader component */}
+        </div>
+      )}
 
       {/* Popup Modal */}
       {showPopup && (

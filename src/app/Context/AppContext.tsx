@@ -282,7 +282,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
 
-
   // API Calls
   const fetchCategories = async () => {
     try {
@@ -471,17 +470,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [authToken]);
 
   useEffect(() => {
-    const cookies = document.cookie.split("; ");
-    const tokenCookie = cookies.find((cookie) =>
-      cookie.startsWith("authToken=")
-    );
-
-    if (tokenCookie) {
-      const token = tokenCookie.split("=")[1]; // Extract the token
-      console.log("Auth token retrieved from cookies:", token); // Log token
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      console.log("Auth token retrieved from local storage:", token); // Log token
       setAuthToken(token);
     } else {
-      console.log("No authToken found in cookies."); // Log if no token found
+      console.log("No authToken found in local storage."); // Log if no token found
     }
   }, []); // Only run on mount
 
