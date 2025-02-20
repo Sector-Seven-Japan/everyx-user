@@ -2,7 +2,7 @@
 import { AppContext } from "@/app/Context/AppContext";
 import { useContext, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Loader from "@/components/Loader"; // Import the Loader component
+import Loader from "@/components/Loader/Loader"; // Import the Loader component
 
 export default function AuthLogin() {
   const { setAuthToken, setIsLoggedIn } = useContext(AppContext);
