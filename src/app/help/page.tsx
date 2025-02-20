@@ -2,136 +2,130 @@
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import React, { useContext, useEffect, useState } from "react";
+import type React from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { AppContext } from "../Context/AppContext";
 
-
 const Help: React.FC = () => {
-  const {setIsLoading} = useContext(AppContext);
-  // Dataset containing only the questions and answers (no 'open' state here)
-  const questions = [
-    {
-      question: "What are prediction markets and event trading?",
-      answer:
-        "A prediction market is a platform where participants can trade based on the outcomes of future events, such as elections, sports, or economic indicators. The market prices reflect the collective probability of an event occurring, aggregating diverse information and insights from participants. It is useful for its ability to provide real-time, accurate forecasts based on crowd wisdom and incentivized decision-making.\n\nEvent trading involves making an investment based on the anticipated outcome of various events, such as a horse race, an election, economic reports, or even weather conditions. Participants can leverage any available assets—such as specialized knowledge, breaking news, or personal experience—to form an informed opinion and trade accordingly.\n\nEvents are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Why Event Trading?",
-      answer:
-        "Event trading involves making an investment based on the anticipated outcome of various events, such as a horse race, an election, economic reports, or even weather conditions. Participants can leverage any available assets—such as specialized knowledge, breaking news, or personal experience—to form an informed opinion and trade accordingly.",
-    },
-    {
-      question: "What types of events are there?",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "What is necessary to have a good event?",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Can I suggest an event?",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Market Mechanics",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Leverage",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Stops",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Event Trading",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Deposit",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Withdrawal",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "General",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Account",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "How To Guides",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-    {
-      question: "Important Terms",
-      answer:
-        "Events are typically quoted in terms of probability. A 100% probability indicates that the event is certain to occur, while 0% signifies it will not happen. Most events offer several outcomes to choose from, and the sum of the probabilities for all outcomes will always equal 100%.",
-    },
-  ];
+  const { setIsLoading, API_BASE_URL } = useContext(AppContext);
+  const [categories, setCategories] = useState<
+    { category: string; faqs: { question: string; answer: string }[] }[]
+  >([]);
 
-  // State to manage open/close for each question
-  const [openQuestions, setOpenQuestions] = useState<boolean[]>(
-    new Array(questions.length).fill(false)
-  );
+  const [openCategories, setOpenCategories] = useState<boolean[]>([]);
+  const [openQuestions, setOpenQuestions] = useState<boolean[][]>([]);
 
-  const toggleOpen = (index: number) => {
-    setOpenQuestions((prev) =>
-      prev.map((open, i) => (i === index ? !open : open))
+  const getFaqs = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/faqs`);
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      console.error("Error fetching the FAQs:", error);
+    }
+  };
+
+  useEffect(() => {
+    setIsLoading(false);
+    getFaqs();
+  }, [setIsLoading, API_BASE_URL]);
+
+  useEffect(() => {
+    setOpenCategories(categories.map((_, index) => index === 0)); // First category open
+    setOpenQuestions(
+      categories.map((cat) => new Array(cat.faqs.length).fill(false))
+    );
+  }, [categories]);
+
+  const toggleCategory = (catIndex: number) => {
+    setOpenCategories((prev) =>
+      prev.map((open, i) => (i === catIndex ? !open : open))
     );
   };
 
-  useEffect(()=>{
-    setIsLoading(false)
-  },[])
+  const toggleQuestion = (catIndex: number, qIndex: number) => {
+    setOpenQuestions((prev) =>
+      prev.map((cat, i) =>
+        i === catIndex ? cat.map((q, j) => (j === qIndex ? !q : q)) : cat
+      )
+    );
+  };
+
+  // Function to convert HTML to plain text
+  // Function to convert HTML to plain text with proper spacing
+  const htmlToPlainText = (html: string) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+
+    // Replace <p> with double line breaks and <br> with a single line break
+    return tempDiv.innerHTML
+      .replace(/<p>/g, "\n\n") // Double line spacing for <p> tags
+      .replace(/<\/p>/g, "") // Remove closing </p> tags
+      .replace(/<br\s*\/?>/g, "\n") // Single line spacing for <br> tags
+      .replace(/<\/?[^>]+(>|$)/g, "") // Remove any other HTML tags
+      .trim();
+  };
 
   return (
     <>
       <Navbar />
-      <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4">
+      <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-4">
         <h1 className="font-medium text-[29px] text-center mb-10">Q & A</h1>
         <div className="mt-5 font-normal mb-10">
-          <p className="text-[14px]">Event Trading</p>
-
-          {/* Map through the questions and render each */}
-          {questions.map((item, index) => (
-            <div key={index} className="my-5">
+          {categories.map((category, catIndex) => (
+            <div key={catIndex} className="mb-10">
               <div
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => toggleOpen(index)} // Now clicking anywhere toggles the answer
+                className="flex justify-between items-center cursor-pointer text-[16px] font-semibold px-5"
+                onClick={() => toggleCategory(catIndex)}
               >
-                <p className="text-[13px]">{item.question}</p>
-                {openQuestions[index] ? (
-                  <FaChevronUp size={15} color="#fff" />
+                <p>{category.category}</p>
+                {/* {openCategories[catIndex] ? (
+                  <FaChevronUp size={18} color="#fff" />
                 ) : (
-                  <FaChevronDown size={15} color="#fff" />
-                )}
+                  <FaChevronDown size={18} color="#fff" />
+                )} */}
               </div>
 
-              {openQuestions[index] && (
+              {openCategories[catIndex] && (
                 <div className="mt-3">
-                  {item.answer.split("\n").map((para, i) => (
-                    <p key={i} className="text-[13px] mb-3 opacity-[38%]">
-                      {para}
-                    </p> // Add spacing between paragraphs
+                  {category.faqs.map((item, qIndex) => (
+                    <div key={qIndex} className="">
+                      <div
+                        className={`flex justify-between items-center cursor-pointer text-[14px] border-t border-b border-[rgba(255,255,255,0.05)] px-5 py-3 ${
+                          openQuestions[catIndex]?.[qIndex]
+                            ? "bg-[rgba(255,255,255,0.05)]"
+                            : "bg-transparent"
+                        }`}
+                        onClick={() => toggleQuestion(catIndex, qIndex)}
+                      >
+                        <p
+                          className={`${
+                            openQuestions[catIndex]?.[qIndex]
+                              ? "text-white"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          Q . {item.question}
+                        </p>
+                        {openQuestions[catIndex]?.[qIndex] ? (
+                          <FaChevronUp size={15} color="#fff" />
+                        ) : (
+                          <FaChevronDown size={15} color="gray" />
+                        )}
+                      </div>
+
+                      {openQuestions[catIndex]?.[qIndex] && (
+                        <div className="mt-2 text-[13px] opacity-80 px-5 space-y-2 text-justify">
+                          {htmlToPlainText(item.answer)
+                            .split("\n")
+                            .filter(Boolean)
+                            .map((para, i) => (
+                              <p key={i}>{para}</p>
+                            ))}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               )}

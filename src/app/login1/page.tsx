@@ -37,8 +37,8 @@ export default function LoginPage() {
         const data = await response.json();
 
         if (data?.token) {
-          // Set auth token in cookie
-          document.cookie = `authToken=${data.token}`;
+          // Set auth token in local storage
+          localStorage.setItem("authToken", data.token);
           // Update context
           setAuthToken(data.token);
           setIsLoggedIn(true);
@@ -110,7 +110,8 @@ export default function LoginPage() {
         console.log("API Response Status:", response.status);
         const data = await response.json();
         if (data?.token) {
-          document.cookie = `authToken=${data.token}`;
+          // Set auth token in local storage
+          localStorage.setItem("authToken", data.token);
           setAuthToken(data.token);
           setIsLoggedIn(true);
           router.push("/home");
