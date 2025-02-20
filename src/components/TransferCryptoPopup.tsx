@@ -5,12 +5,14 @@ import { IoIosLink } from "react-icons/io";
 
 interface TransferCryptoPopupProps {
   setShowTransferCryptoPopup: (value: boolean) => void;
+  data:string;
 }
 
 export default function TransferCryptoPopup({
+  data,
   setShowTransferCryptoPopup,
 }: TransferCryptoPopupProps) {
-  const textToCopy = "0x56cbae006895aaf0546c6f0216249012329ba3640";
+  const textToCopy = data;
 
   const handleCopy = () => {
     navigator.clipboard
@@ -45,7 +47,7 @@ export default function TransferCryptoPopup({
             id=""
             className="bg-transparent w-full font-semibold outline-none"
           >
-            <option value="">USDC</option>
+            <option value="">USDT</option>
           </select>
         </div>
       </div>

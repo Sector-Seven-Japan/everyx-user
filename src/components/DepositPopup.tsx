@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
@@ -9,6 +9,7 @@ import { IoCard } from "react-icons/io5";
 import { IoIosLink } from "react-icons/io";
 import TransferCryptoPopup from "./TransferCryptoPopup";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { AppContext } from "@/app/Context/AppContext";
 
 interface DepositPopupProps {
   isOpen: boolean;
@@ -18,6 +19,28 @@ interface DepositPopupProps {
 export default function DepositPopup({ isOpen, onClose }: DepositPopupProps) {
   const [showTransferCryptoPopup, setShowTransferCryptoPopup] = useState(false);
   const router = useRouter(); // Use Next.js router for navigation
+  const { authToken } = useContext(AppContext);
+  const [depositAddress, setDepositAddress] = useState<string>(""); // Deposit address state
+
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch(
+        "https://everyx.weseegpt.com/deposit/create/wallet",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      const data = await res.json();
+      console.log(data);
+      setDepositAddress(data.address);
+      setShowTransferCryptoPopup(true);
+    } catch (error) {
+      console.log("failed to fetch deposit address", error);
+    }
+  };
 
   return (
     <>
@@ -43,7 +66,7 @@ export default function DepositPopup({ isOpen, onClose }: DepositPopupProps) {
             {/* Transfer Crypto - Opens second popup */}
             <div
               className="flex items-center gap-4 border border-[#373737] p-3 rounded-xl hover:bg-[#202020] cursor-pointer"
-              onClick={() => setShowTransferCryptoPopup(true)}
+              onClick={handleSubmit}
             >
               <FontAwesomeIcon icon={faBolt} className="text-[30px]" />
               <div>
@@ -133,8 +156,7 @@ export default function DepositPopup({ isOpen, onClose }: DepositPopupProps) {
 
       {/* Transfer Crypto Details Popup */}
       {showTransferCryptoPopup && (
-        <TransferCryptoPopup
-          setShowTransferCryptoPopup={setShowTransferCryptoPopup}
+        <TransferCryptoPopup data={depositAddress} setShowTransferCryptoPopup={setShowTransferCryptoPopup}
         />
       )}
     </>
