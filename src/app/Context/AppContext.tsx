@@ -60,6 +60,8 @@ interface OrderResponse {
   before_stop_probability: number;
   after_leverage: number;
   loan: number;
+  before_pledge: number;
+  after_pledge: number;
 }
 
 interface Wallet {
@@ -218,6 +220,8 @@ const initialState: AppContextProps = {
     before_stop_probability: 0,
     after_leverage: 0,
     loan: 0,
+    before_pledge: 0,
+    after_pledge: 0,
   },
   setIsOrderMade: () => {},
   setOrderDetails: () => {},
@@ -278,10 +282,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     before_stop_probability: 0,
     after_leverage: 0,
     loan: 0,
+    before_pledge:0,
+    after_pledge:0
   });
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
-
 
   // API Calls
   const fetchCategories = async () => {

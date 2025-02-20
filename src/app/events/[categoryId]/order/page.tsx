@@ -250,8 +250,8 @@ export default function Order() {
               <p className="flex justify-between text-[22px] text-[#00FFB8]">
                 $
                 {Math.round(
-                  orderDetails?.wager * (orderDetails?.indicative_return / 100)
-                )}
+                  orderDetails?.indicative_payout)
+                }
                 <span className="text-[14px] text-[#E49C29] flex items-end">
                   +{orderDetails?.indicative_return.toFixed(0)}%
                 </span>
@@ -281,13 +281,13 @@ export default function Order() {
                     className="h-[19px] rounded-lg bg-[#00FFBB]"
                     style={{
                       width: `${Math.round(
-                        orderDetails?.current_probability * 100
+                        orderDetails?.new_probability * 100
                       )}%`,
                     }}
                   ></div>
                 </div>
                 <p className="text-[19px] font-light">
-                  {Math.round(orderDetails?.current_probability * 100)}%
+                  {Math.round(orderDetails?.new_probability * 100)}%
                 </p>
                 <Image
                   src="/Images/checkbox.png"
@@ -305,7 +305,7 @@ export default function Order() {
               <div className="flex flex-col gap-[1px]">
                 <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
                 <p className="text-[22px] text-[#00FFB8]">
-                  ${orderDetails?.after_wager.toFixed(1)}
+                  ${Math.round(orderDetails?.after_pledge)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
@@ -313,9 +313,9 @@ export default function Order() {
                   Leverage cash value
                 </p>
                 <p className="text-[22px] text-[#00FFB8]">
-                  $2{" "}
+                  ${Math.round(orderDetails?.after_wager)}{" "}
                   <span className="text-sm text-[#E49C29]">
-                    x {orderDetails?.leverage}
+                    x {orderDetails?.after_leverage}
                   </span>
                 </p>
               </div>
@@ -325,7 +325,7 @@ export default function Order() {
               <div className="flex flex-col gap-[1px]">
                 <p className="text-[#5D5D5D] text-[13px]">Projected payout</p>
                 <p className="text-[22px] text-[#00FFB8]">
-                  ${orderDetails?.after_payout.toFixed(1)}
+                  ${Math.round(orderDetails?.after_payout)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
