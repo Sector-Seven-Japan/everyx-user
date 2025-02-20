@@ -57,10 +57,10 @@ export default function Menu() {
         "next-auth.state=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       document.cookie =
         "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-
-      localStorage.removeItem("authToken"); // Clear auth token from local storage
       // Disconnect wallet
       disconnect();
+
+      localStorage.removeItem("authToken"); // Clear auth token from local storage
 
       // console.log("After sign out:");
       // console.log("Cookies:", document.cookie);
