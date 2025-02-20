@@ -140,7 +140,7 @@ export default function LoginPage() {
     <div>
       <div className="flex justify-center items-center mt-40">
         <Image
-          src="/images/logo.png"
+          src="/Images/logo.png"
           width={40}
           height={40}
           alt="EveryX Icon"
@@ -204,7 +204,7 @@ export default function LoginPage() {
                     className="py-[14px] font-semibold mb-5 bg-[#00FFB8] rounded-md flex items-center  gap-3 px-5 w-full"
                   >
                     <Image
-                      src="/images/walletIcon.png"
+                      src="/Images/walletIcon.png"
                       width={20}
                       height={20}
                       alt="walletIcon"
