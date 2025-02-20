@@ -1,6 +1,8 @@
-"use client"
+"use client";
 import { AppContext } from "@/app/Context/AppContext";
 import { useContext } from "react";
+import Image from "next/image";
+import useCountdown from "@/hooks/useCountdown";
 
 // Define the structure of the eventData
 interface EventData {
@@ -27,17 +29,19 @@ interface CategoryInfoProps {
   eventData: EventData;
 }
 
-export default function CategoryInfo({
-  eventData,
-}: CategoryInfoProps) {
-  const { calculateMaxEstimatedPayout, calculateMaxLeverage, formatDate,isOrderMade } =
-    useContext(AppContext);
+export default function CategoryInfo({ eventData }: CategoryInfoProps) {
+  const {
+    calculateMaxEstimatedPayout,
+    calculateMaxLeverage,
+    isOrderMade,
+  } = useContext(AppContext);
+
+  const countdown = useCountdown(eventData?.ends_at);
 
   // Handle the case when eventData is null
   if (!eventData) {
     return <p>Loading...</p>; // or some other loading UI
   }
-
   return (
     <div className="p-5">
       <div className="relative flex gap-3 items-center h-48 w-full">
@@ -53,7 +57,15 @@ export default function CategoryInfo({
         <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#00FFB8] rounded-sm">
           {eventData?.category?.name?.split(" ")[0]}
         </button>
-        <p className="text-[#00FFB8]">{formatDate(eventData?.ends_at)}</p>
+        <p className="text-[#2DC198] flex gap-1 items-center font-light">
+          <Image
+            src={"/Images/FreeClock i.png"}
+            alt="clock"
+            height={18}
+            width={18}
+          />
+          {countdown}
+        </p>
       </div>
       <div className="pt-4">
         <p className="font-light">{eventData?.description}</p>

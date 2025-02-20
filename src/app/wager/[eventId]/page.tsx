@@ -7,6 +7,7 @@ import Image from "next/image";
 import DrawGraph from "@/components/DrawGraph";
 import MakeOrder from "@/components/MakeOrder";
 
+
 interface WagerData {
   id: string;
   event_id: string;
@@ -87,6 +88,7 @@ export default function WagerPage() {
     API_BASE_URL,
     makeOrder,
     setIsOrderMade,
+    getCountdown
   } = useContext(AppContext);
   const [option, setOption] = useState<string>("Order details");
   const params = useParams();
@@ -96,6 +98,7 @@ export default function WagerPage() {
   const [graphData, setGraphData] = useState<GraphData[]>([]);
   const [isLoaingGraph, setIsLoadingGraph] = useState(true);
   console.log(isLoaingGraph);
+  const [countdown, setCountdown] = useState<string>("");
 
   useEffect(() => {
     setIsLoading(false);
@@ -116,7 +119,6 @@ export default function WagerPage() {
       );
       const data: WagerData = await response.json(); // Explicitly typing the response
 
-      console.log("Wager Data", data);
 
       // Ensure TypeScript recognizes the type of `outcome`
       const matchedOutcome = data.event.outcomes.find(
@@ -146,7 +148,6 @@ export default function WagerPage() {
     }
   }, []);
 
-  console.log(wagerData);
 
   const handleSubmit = async () => {
     try {
@@ -169,7 +170,6 @@ export default function WagerPage() {
   };
 
   const fetchEvent = async () => {
-    console.log(wagerData?.event_id);
 
     if (!wagerData?.event_id) return;
     try {
@@ -194,6 +194,17 @@ export default function WagerPage() {
   }, [wagerData?.event_id]);
 
   useEffect(() => {
+    if (eventData?.ends_at) {
+      setCountdown(getCountdown(eventData.ends_at));
+      const interval = setInterval(() => {
+        setCountdown(getCountdown(eventData.ends_at));
+      }, 60000); // Update every minute
+
+      return () => clearInterval(interval);
+    }
+  }, [eventData?.ends_at, getCountdown]);
+
+  useEffect(() => {
     const getGraphData = async ({
       eventId,
       precision = "hour",
@@ -216,7 +227,6 @@ export default function WagerPage() {
         }
 
         const data = await response.json();
-        // console.log("data at getGraphData", data);
         return data;
       } catch (error) {
         console.error("Error getting graph data:", error);
@@ -264,7 +274,7 @@ export default function WagerPage() {
                 height={18}
                 width={18}
               />
-              1 Day and 23h30m
+              {countdown}
             </p>
           </div>
           <p className="text-[21px] font-light mt-4">

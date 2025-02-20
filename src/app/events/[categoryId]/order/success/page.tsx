@@ -27,10 +27,16 @@ interface EventData {
 
 export default function OrderSuccess() {
   const router = useRouter();
-  const { setIsLoading, orderDetails, selectedOrder, API_BASE_URL } =
-    useContext(AppContext);
+  const {
+    setIsLoading,
+    orderDetails,
+    selectedOrder,
+    API_BASE_URL,
+    getCountdown,
+  } = useContext(AppContext);
   const categoryId = orderDetails?.event_id;
   const [eventData, setEventData] = useState<EventData | null>(null);
+  const [countdown, setCountdown] = useState<string>("");
 
   const fetchEvent = async () => {
     if (!categoryId) return;
@@ -51,6 +57,17 @@ export default function OrderSuccess() {
     fetchEvent();
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (eventData?.ends_at) {
+      setCountdown(getCountdown(eventData.ends_at));
+      const interval = setInterval(() => {
+        setCountdown(getCountdown(eventData.ends_at));
+      }, 60000); // Update every minute
+
+      return () => clearInterval(interval);
+    }
+  }, [eventData?.ends_at, getCountdown]);
 
   return (
     <div>
@@ -80,7 +97,7 @@ export default function OrderSuccess() {
                 height={18}
                 width={18}
               />
-              1 Day and 23h30m
+              {countdown}
             </p>
           </div>
           <p className="text-[21px] font-light mt-4">
@@ -113,6 +130,7 @@ export default function OrderSuccess() {
                   height={20}
                   width={20}
                 />
+                {countdown}
               </div>
             </div>
           </div>

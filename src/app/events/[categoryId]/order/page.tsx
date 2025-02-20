@@ -6,6 +6,7 @@ import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
 import DrawGraph from "@/components/DrawGraph";
 
+
 interface WagerPayload {
   event_id: string;
   event_outcome_id: string;
@@ -67,6 +68,7 @@ export default function Order() {
     API_BASE_URL,
     authToken,
     fetchWalletData,
+    getCountdown
   } = useContext(AppContext);
   const router = useRouter();
   const categoryId = orderDetails?.event_id;
@@ -75,6 +77,25 @@ export default function Order() {
   const [option, setOption] = useState<string>("Order details");
   const [isLoaingGraph, setIsLoadingGraph] = useState(true);
   console.log(isLoaingGraph);
+  const [countdown, setCountdown] = useState<string>("");
+
+  
+  useEffect(() => {
+    setIsLoading(false);
+    fetchEvent();
+  }, []);
+
+  useEffect(() => {
+    if (eventData?.ends_at) {
+      setCountdown(getCountdown(eventData.ends_at));
+      const interval = setInterval(() => {
+        setCountdown(getCountdown(eventData.ends_at));
+      }, 60000); // Update every minute
+
+      return () => clearInterval(interval);
+    }
+  }, [eventData?.ends_at, getCountdown]);
+
 
   const fetchEvent = async () => {
     if (!categoryId) return;
@@ -90,11 +111,6 @@ export default function Order() {
       setEventData(null);
     }
   };
-
-  useEffect(() => {
-    setIsLoading(false);
-    fetchEvent();
-  }, []);
 
   useEffect(() => {
     const getGraphData = async ({
@@ -202,7 +218,7 @@ export default function Order() {
                 height={18}
                 width={18}
               />
-              1 Day and 23h30m
+              {countdown}
             </p>
           </div>
           <p className="text-[21px] font-light mt-4">
@@ -248,10 +264,7 @@ export default function Order() {
                 Potential payout
               </p>
               <p className="flex justify-between text-[22px] text-[#00FFB8]">
-                $
-                {Math.round(
-                  orderDetails?.indicative_payout)
-                }
+                ${Math.round(orderDetails?.indicative_payout)}
                 <span className="text-[14px] text-[#E49C29] flex items-end">
                   +{orderDetails?.indicative_return.toFixed(0)}%
                 </span>
