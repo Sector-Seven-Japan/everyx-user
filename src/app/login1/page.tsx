@@ -1,11 +1,9 @@
 "use client";
-import Navbar from "@/components/Navbar";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { useContext, useEffect, useState } from "react";
-import { WalletButton } from "@rainbow-me/rainbowkit";
-import { Button } from "@/components/Button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { AppContext } from "../Context/AppContext";
 import { signIn, useSession } from "next-auth/react";
@@ -140,129 +138,88 @@ export default function LoginPage() {
 
   return (
     <div>
-      <Navbar />
-      <h1 className="text-[27px] text-center py-20">Log In</h1>
+      <div className="flex justify-center items-center mt-40">
+        <Image
+          src="/images/logo.png"
+          width={40}
+          height={40}
+          alt="EveryX Icon"
+        />
+      </div>
 
-      <div className="p-5">
+      <h1 className="text-[27px] text-center pt-6">Welcome to EveryX</h1>
+
+      <div className="px-12 flex items-center flex-col mt-36">
         {/* Check if the session is not authenticated before showing the Google login button */}
 
         <button
           onClick={handleGoogleLogin}
-          className="w-full py-[14px] font-semibold mb-5 bg-[#509BD5] rounded-md flex items-center justify-center gap-3"
+          className="py-[14px] font-semibold mb-5 bg-[rgba(255,255,255,0.025)] rounded-full flex items-center justify-between gap-3 px-5"
         >
-          <FaGoogle />
-          <div>Continue with google</div>
+          <FcGoogle size={25} />
+          <div>Continue with Google</div>
         </button>
 
-        <div className="flex justify-between items-center mb-5 text-[#343434] font-semibold">
-          <div className="h-[1px] w-[43%] bg-[#626262]"></div>
-          OR
-          <div className="h-[1px] w-[43%] bg-[#626262]"></div>
+        <div className="flex justify-between items-center mb-5 text-[#fff] font-light">
+          or
         </div>
 
         {/* Email Login */}
-        <div className="flex w-full justify-between rounded-md overflow-hidden border border-[#464646]">
+        <div className="flex w-full justify-between rounded-lg overflow-hidden border border-gray-600">
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Enter Email"
-            className="w-[70%] pl-4 py-[15px] bg-transparent outline-none font-semibold placeholder:font-semibold placeholder:text-[#434343]"
+            className="w-[70%] pl-4 py-[12px] bg-transparent outline-none font-semibold placeholder:font-semibold placeholder:text-[#434343]"
           />
           <button
             onClick={handleContinue}
-            className="w-[30%] py-[15px] px-3 border-l border-[#343434] font-semibold"
+            className="w-[30%] py-[12px] px-3 border-l border-gray-600 font-normal"
           >
             Continue
           </button>
         </div>
 
         {/* Wallet Connection Buttons */}
-        <div className="mt-5 w-full">
-          <div className="flex flex-wrap items-center justify-between">
-            <WalletButton.Custom wallet="rainbow">
-              {({ ready, connect }) => (
-                <Button
-                  disabled={!ready}
-                  onClick={async () => {
-                    await connect();
-                    handleConnect();
-                  }}
-                  className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+
+        <div className="mt-7 w-full">
+          <ConnectButton.Custom>
+            {({ openConnectModal, mounted }) => {
+              const ready = mounted;
+
+              return (
+                <div
+                  {...(!ready && {
+                    "aria-hidden": true,
+                    style: {
+                      opacity: 90,
+                      pointerEvents: "none",
+                      userSelect: "none",
+                    },
+                  })}
                 >
-                  <Image
-                    src="/Images/rainbow.svg"
-                    alt="Rainbow Wallet"
-                    width={25}
-                    height={25}
-                    className="rounded-lg"
-                  />
-                </Button>
-              )}
-            </WalletButton.Custom>
-            <WalletButton.Custom wallet="metamask">
-              {({ ready, connect }) => (
-                <Button
-                  disabled={!ready}
-                  onClick={async () => {
-                    await connect();
-                    handleConnect();
-                  }}
-                  className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
-                >
-                  <Image
-                    src="/Images/metamask.svg"
-                    alt="MetaMask Wallet"
-                    width={25}
-                    height={25}
-                    className="rounded-lg"
-                  />
-                </Button>
-              )}
-            </WalletButton.Custom>
-            <WalletButton.Custom wallet="coinbase">
-              {({ ready, connect }) => (
-                <Button
-                  disabled={!ready}
-                  onClick={async () => {
-                    await connect();
-                    handleConnect();
-                  }}
-                  className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
-                >
-                  <Image
-                    src="/Images/coinbase.svg"
-                    alt="Coinbase Wallet"
-                    width={25}
-                    height={25}
-                    className="rounded-lg"
-                  />
-                </Button>
-              )}
-            </WalletButton.Custom>
-            <WalletButton.Custom wallet="walletConnect">
-              {({ ready, connect }) => (
-                <Button
-                  disabled={!ready}
-                  onClick={async () => {
-                    await connect();
-                    handleConnect();
-                  }}
-                  className="px-7 py-7 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
-                >
-                  <Image
-                    src="/Images/walletConnect.png"
-                    alt="WalletConnect"
-                    width={25}
-                    height={25}
-                    className="rounded-lg"
-                  />
-                </Button>
-              )}
-            </WalletButton.Custom>
-          </div>
+                  <button
+                    onClick={openConnectModal}
+                    className="py-[14px] font-semibold mb-5 bg-[#00FFB8] rounded-md flex items-center  gap-3 px-5 w-full"
+                  >
+                    <Image
+                      src="/images/walletIcon.png"
+                      width={20}
+                      height={20}
+                      alt="walletIcon"
+                    />
+                    <div className="text-black text-center pl-12">
+                      Connect Wallet
+                    </div>
+                  </button>
+                </div>
+              );
+            }}
+          </ConnectButton.Custom>
         </div>
-        <p className="text-center mt-5 font-semibold text-[#434343]">
+
+        <p className="text-center mt-36 font-semibold text-[#434343]">
           Terms Privacy
         </p>
       </div>
