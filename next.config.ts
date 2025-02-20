@@ -1,8 +1,10 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    swcMinify: true,
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  output: "standalone", // Ensure all dependencies are bundled properly
+  images: {
+    unoptimized: true, // Use Vercel's built-in image optimization
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
