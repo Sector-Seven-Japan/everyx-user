@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { AppContext } from "@/app/Context/AppContext";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
+
 interface BetEntry {
   id: string;
   question: string;
@@ -27,14 +28,16 @@ const Portfolio: React.FC = () => {
   const [bets, setBets] = useState<BetEntry[]>([]);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("All");
+  const [balance, setBalance] = useState<number | null>(null);
   const { API_BASE_URL, authToken } = useContext(AppContext);
   const router = useRouter();
+
   const getWagerData = async () => {
     try {
       const response = await fetch(
         `${API_BASE_URL}/dashboard/wager-position-events?pagination=true&page=1&limit=10&status=active`,
         {
-          method: "GET", // ✅ Change from POST to GET
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
@@ -56,7 +59,7 @@ const Portfolio: React.FC = () => {
         positions: {
           id: string;
           event_outcome_id: string;
-          event_outcome?: { name: string }; // ✅ Added optional chaining
+          event_outcome?: { name: string };
           wager: number;
         }[];
       }
@@ -70,7 +73,7 @@ const Portfolio: React.FC = () => {
         position: item.positions.map((pos) => ({
           id: pos.id,
           event_outcome_id: pos.event_outcome_id,
-          event_outcome_name: pos.event_outcome?.name || "Unknown Outcome", // ✅ Corrected access
+          event_outcome_name: pos.event_outcome?.name || "Unknown Outcome",
           wager: pos.wager,
         })),
       }));
@@ -84,9 +87,34 @@ const Portfolio: React.FC = () => {
     }
   };
 
+  const getWalletBalance = async () => {
+    try {
+      const response = await fetch(
+        "https://test-api.everyx.io/wallets/balance",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch wallet balance: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setBalance(data.balance);
+    } catch (error) {
+      console.error("Error fetching wallet balance:", error);
+    }
+  };
+
   useEffect(() => {
     if (authToken) {
       getWagerData();
+      getWalletBalance();
     }
   }, [authToken]);
 
@@ -98,7 +126,7 @@ const Portfolio: React.FC = () => {
     <>
       <Navbar />
       <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-5">
-        <CurrentCashBalanceCard />
+      <CurrentCashBalanceCard balance={balance ?? 0} />
         <div className="my-10">
           <CashWithdrawalCategories
             openDepositPopup={() => {
@@ -187,11 +215,6 @@ const Portfolio: React.FC = () => {
                   {bet.question}
                 </h2>
 
-                {/* <div className="flex justify-between items-center">
-                  <p className="text-gray-500 text-sm">{bet.wagered_at}</p>
-                </div> */}
-
-                {/* Mapping through positions */}
                 <div className="mt-4">
                   <h3 className="text-gray-300 text-md font-semibold">
                     Bets Placed :
