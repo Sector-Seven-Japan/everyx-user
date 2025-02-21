@@ -5,10 +5,12 @@ import { useRouter, usePathname } from "next/navigation";
 import { useContext, useState, useEffect } from "react";
 
 export default function Navbar() {
-  const { setSelectedMenu, setFilter, walletData } = useContext(AppContext);
+  const { setSelectedMenu, setFilter, walletData, authToken } =
+    useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname(); // Get the current route
   const [sidebar, setSidebar] = useState(false);
+  const [newWalletBalance, setNewWalletBalance] = useState<number>(0);
 
   // Check if the current route is "/menu" and set sidebar to true
   useEffect(() => {
@@ -18,6 +20,33 @@ export default function Navbar() {
       setSidebar(false);
     }
   }, [pathname]);
+
+  const getNewWalletBalance = async () => {
+    try {
+      const response = await fetch(
+        "https://everyx.weseegpt.com/wallets/balance",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.balance) setNewWalletBalance(data.balance);
+      }
+    } catch (error) {
+      console.log("Error fetching the new Wallet balance", error);
+    }
+  };
+
+  useEffect(() => {
+    if (authToken) {
+      getNewWalletBalance();
+    }
+  }, [authToken]);
 
   return (
     <div className="flex justify-between items-center p-5 bg-[#0E0E0E]">
@@ -42,7 +71,8 @@ export default function Navbar() {
               Current Cash Balance
             </p>
             <p className={`${!sidebar ? "text-[#585858]" : "text-white"}`}>
-              {walletData[0]?.currency}T {walletData[0]?.balance}
+              {walletData[0]?.currency}T{" "}
+              {walletData[0]?.balance || newWalletBalance}
             </p>
           </div>
         )}
