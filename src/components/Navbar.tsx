@@ -65,7 +65,7 @@ export default function Navbar() {
       />
 
       <div className="flex gap-3">
-        <div className="text-xs flex flex-col items-end">
+        {authToken !== null ? <div className="text-xs flex flex-col items-end">
           <p className={`${!sidebar ? "text-[#585858]" : "text-white"}`}>
             Current Cash Balance
           </p>
@@ -73,7 +73,7 @@ export default function Navbar() {
             USDT{" "}
             {walletData[0]?.balance || newWalletBalance}
           </p>
-        </div>
+        </div> : ""}
 
         <Image
           className="cursor-pointer"
