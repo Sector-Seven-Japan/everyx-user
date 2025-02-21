@@ -35,7 +35,7 @@ export default function Navbar() {
 
       if (response.ok) {
         const data = await response.json();
-        if (data && data.balance) setNewWalletBalance(data.balance);
+        setNewWalletBalance(data?.balance || 0);
       }
     } catch (error) {
       console.log("Error fetching the new Wallet balance", error);
@@ -65,17 +65,15 @@ export default function Navbar() {
       />
 
       <div className="flex gap-3">
-        {walletData.length !== 0 && (
-          <div className="text-xs flex flex-col items-end">
-            <p className={`${!sidebar ? "text-[#585858]" : "text-white"}`}>
-              Current Cash Balance
-            </p>
-            <p className={`${!sidebar ? "text-[#585858]" : "text-white"}`}>
-              {walletData[0]?.currency}T{" "}
-              {walletData[0]?.balance || newWalletBalance}
-            </p>
-          </div>
-        )}
+        <div className="text-xs flex flex-col items-end">
+          <p className={`${!sidebar ? "text-[#585858]" : "text-white"}`}>
+            Current Cash Balance
+          </p>
+          <p className={`${!sidebar ? "text-[#585858]" : "text-white"}`}>
+            USDT{" "}
+            {walletData[0]?.balance || newWalletBalance}
+          </p>
+        </div>
 
         <Image
           className="cursor-pointer"
