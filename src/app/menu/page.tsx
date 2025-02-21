@@ -29,7 +29,7 @@ export default function Menu() {
       ]
     : [{ name: "Help", link: "/help" }];
 
-  const handleLogotUser = async () => {
+  const handleLogoutUser = async () => {
     try {
       const response = await fetch("https://test-api.everyx.io/tokens", {
         method: "DELETE",
@@ -39,10 +39,6 @@ export default function Menu() {
         },
       });
       console.log(response);
-
-      // console.log("Before sign out:");
-      // console.log("Cookies:", document.cookie);
-      // console.log("Local Storage:", localStorage.getItem("authToken"));
 
       await signOut({ redirect: false }); // Sign out without redirecting
 
@@ -57,14 +53,11 @@ export default function Menu() {
         "next-auth.state=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       document.cookie =
         "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
       // Disconnect wallet
       disconnect();
 
       localStorage.removeItem("authToken"); // Clear auth token from local storage
-
-      // console.log("After sign out:");
-      // console.log("Cookies:", document.cookie);
-      // console.log("Local Storage:", localStorage.getItem("authToken"));
 
       router.push("/login1"); // Redirect to login page after sign out
       setIsLoggedIn(false);
@@ -134,7 +127,7 @@ export default function Menu() {
           className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200"
           onClick={() => {
             if (isLoggedIn) {
-              handleLogotUser();
+              handleLogoutUser();
             } else {
               router.push("/login1");
             }
