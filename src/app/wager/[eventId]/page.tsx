@@ -6,7 +6,7 @@ import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
 import DrawGraph from "@/components/DrawGraph";
 import MakeOrder from "@/components/MakeOrder";
-
+import { useRouter } from "next/router";
 
 interface WagerData {
   id: string;
@@ -38,6 +38,7 @@ interface WagerData {
   probability: number;
   stop_probability: number;
   leverage: number;
+  is_leveraged: boolean;
 }
 
 // EventData interface
@@ -88,8 +89,9 @@ export default function WagerPage() {
     API_BASE_URL,
     makeOrder,
     setIsOrderMade,
-    getCountdown
+    getCountdown,
   } = useContext(AppContext);
+  const router = useRouter();
   const [option, setOption] = useState<string>("Order details");
   const params = useParams();
   const eventId = params.eventId;
@@ -99,6 +101,7 @@ export default function WagerPage() {
   const [isLoaingGraph, setIsLoadingGraph] = useState(true);
   console.log(isLoaingGraph);
   const [countdown, setCountdown] = useState<string>("");
+
 
   useEffect(() => {
     setIsLoading(false);
@@ -118,7 +121,6 @@ export default function WagerPage() {
         }
       );
       const data: WagerData = await response.json(); // Explicitly typing the response
-
 
       // Ensure TypeScript recognizes the type of `outcome`
       const matchedOutcome = data.event.outcomes.find(
@@ -148,7 +150,6 @@ export default function WagerPage() {
     }
   }, []);
 
-
   const handleSubmit = async () => {
     try {
       if (wagerData) {
@@ -170,7 +171,6 @@ export default function WagerPage() {
   };
 
   const fetchEvent = async () => {
-
     if (!wagerData?.event_id) return;
     try {
       const response = await fetch(
@@ -448,18 +448,19 @@ export default function WagerPage() {
       )}
 
       <div className="px-5">
-        {wagerData?.stop_probability ? (
-          Math.round(wagerData.stop_probability * 100) > 0 && (
-            <button
-              onClick={handleSubmit}
-              className="text-[#000] w-full border bg-[#5DFF00] mt-6 py-4 rounded-2xl"
-            >
-              Add Margin
-            </button>
-          )
-        ) : (
+        {wagerData && wagerData?.is_leveraged ? (
           <button
             onClick={handleSubmit}
+            className="text-[#000] w-full border bg-[#5DFF00] mt-6 py-4 rounded-2xl"
+          >
+            Add Margin
+          </button>
+        ) : (
+          <button
+            onClick={()=>{
+              setIsLoading(true);
+              router.push(`/events/${wagerData?.event_id}`);
+            }}
             className="text-[#000] w-full border bg-[#5DFF00] mt-6 py-4 rounded-2xl"
           >
             Trade on this event again
