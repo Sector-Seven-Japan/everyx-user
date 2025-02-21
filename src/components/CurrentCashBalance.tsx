@@ -5,7 +5,6 @@ import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 
 const CurrentCashBalanceCard: React.FC = () => {
-
   const router = useRouter();
   const { userStats, userProfile, authToken } = useContext(AppContext);
   const pathname = usePathname();
@@ -66,14 +65,24 @@ const CurrentCashBalanceCard: React.FC = () => {
       <p className="text-[15px] text-center mt-5">Current Cash Balance</p>
       <div className="flex justify-center mt-5 items-baseline font-bold">
         <span className="text-[34px]">
-          ${(newWalletBalance || userStats?.fund_available || "0").toString().split(".")[0]}
+          $
+          {
+            (newWalletBalance || userStats?.fund_available || "0")
+              .toString()
+              .split(".")[0]
+          }
         </span>
         <span className="text-[30px]">
-          .{(newWalletBalance || userStats?.fund_available || 0.00).toFixed(2).split(".")[1]}
+          .
+          {
+            (newWalletBalance || userStats?.fund_available || 0.0)
+              .toFixed(2)
+              .split(".")[1]
+          }
         </span>
       </div>
       {pathname === "/deposit-withdrawal/portfolio" ||
-        pathname === "/deposit-withdrawal/history" ? (
+      pathname === "/deposit-withdrawal/history" ? (
         <div className="mt-5">
           {/* Top Dashed Border */}
           <div
