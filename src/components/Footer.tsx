@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 const Footer: React.FC = () => {
   const router = useRouter();
   return (
-    <div className="bg-[#0E0E0E] w-full pt-20 px-10 pb-10">
+    <div className="bg-[#0E0E0E] w-full pt-20 px-4 sm:px-10 pb-10">
       {/* Logo Section */}
       <div className="flex justify-center">
         <Image
@@ -15,11 +15,12 @@ const Footer: React.FC = () => {
           alt="EveryX Logo"
           width={50}
           height={50}
+          className="w-[50px] md:w-[70px] h-auto"
         />
       </div>
 
       {/* Footer Links */}
-      <div className="text-[#fff] text-[14px] flex justify-between mt-10 opacity-[34%]">
+      <div className="text-[#fff] text-[14px] md:text-[16px] flex flex-row justify-center items-center gap-4 sm:gap-8 mt-10 opacity-[34%] flex-wrap">
         <button
           type="button"
           onClick={() => {
@@ -47,7 +48,7 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Footer Description */}
-      <p className="text-[#fff] text-[12px] mt-10 opacity-[33%] text-justify">
+      <p className="text-[#fff] text-[12px] md:text-[14px] mt-10 opacity-[33%] text-justify max-w-3xl mx-auto">
         EveryX is owned and operated by ABC Concepts B.V., the only platform
         where you can engage in event gambling with real money leveraging. ABC
         Concepts B.V. is registered with the XYZ Agency under Article 2 of the
@@ -67,11 +68,12 @@ const Footer: React.FC = () => {
           alt="Footer Bottom Logo"
           width={50}
           height={50}
+          className="w-[50px] md:w-[70px] h-auto"
         />
       </div>
 
       {/* Copyright */}
-      <p className="text-[#fff] text-[12px] mt-10 opacity-[33%] text-center">
+      <p className="text-[#fff] text-[12px] md:text-[14px] mt-10 opacity-[33%] text-center">
         Copyright © 2000-2025 EveryX INC. All Rights Reserved.
       </p>
     </div>

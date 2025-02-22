@@ -1,5 +1,6 @@
 "use client";
 import Navbar from "@/components/Navbar";
+<<<<<<< HEAD
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FaGoogle } from "react-icons/fa";
@@ -10,135 +11,35 @@ import { useAccount } from "wagmi";
 import { AppContext } from "../Context/AppContext";
 import { signIn, useSession } from "next-auth/react";
 import Loader from "@/components/Loader/Loader";
+=======
+import React, { useEffect, useState } from "react";
+import MobileLanding from "@/components/Screens/login/MobileView";
+import WebLanding from "@/components/Screens/login/WebView";
+>>>>>>> 05db7f1 (build desktop view)
 
-export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupContent, setPopupContent] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // State for managing loading
-  const router = useRouter();
-  const { setAuthToken, setIsLoggedIn } = useContext(AppContext);
-  const { isConnected: wagmiConnected, address } = useAccount();
-  const { data: session, status } = useSession();
+const login = () => {
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Handle Google authentication success
-  const handleAuthentication = async () => {
-    if (session?.user?.email && status === "authenticated") {
-      setIsLoading(true); // Show loader
-      try {
-        // Make API call to your backend to get the auth token
-        const response = await fetch(`https://everyx.weseegpt.com/auth/v2/`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: session.user.email }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to authenticate with Google");
-        }
-
-        const data = await response.json();
-
-        if (data?.token) {
-          // Set auth token in local storage
-          localStorage.setItem("authToken", data.token);
-          // Update context
-          setAuthToken(data.token);
-          setIsLoggedIn(true);
-          // Redirect to home page
-          router.push("/home");
-        } else {
-          console.error("No token received from server");
-        }
-      } catch (error) {
-        console.error("Authentication error:", error);
-      } finally {
-        setIsLoading(false); // Hide loader
-      }
-    }
-  };
-
+  // Handle screen size detection
   useEffect(() => {
-    if (status === "authenticated") {
-      // Once session is authenticated, handle Google login
-      handleAuthentication();
-    }
-  }, [status]); // This will trigger whenever the session status changes
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Set breakpoint (e.g., 768px for mobile)
+    };
 
-  useEffect(() => {
-    if (wagmiConnected && address) {
-      handleConnect();
-    }
-  }, [wagmiConnected, address]);
+    // Set initial value
+    handleResize();
 
-  const handleContinue = async () => {
-    if (!email) return;
+    // Add event listener for resize
+    window.addEventListener("resize", handleResize);
 
-    try {
-      const response = await fetch(
-        `https://everyx.weseegpt.com/auth/v2/user/exists/${email}`
-      );
+    // Cleanup event listener
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-      if (!response.ok) throw new Error("Failed to check user existence");
 
-      const data = await response.json();
-
-      if (!data) {
-        setPopupContent("new user");
-      } else {
-        const res = await fetch(
-          `https://everyx.weseegpt.com/auth/v2/login/${email}`
-        );
-        if (!res.ok) throw new Error("Failed to log in user");
-
-        setPopupContent("existing user");
-      }
-
-      setShowPopup(true);
-    } catch (error) {
-      console.error("Login error:", error);
-    }
-  };
-
-  const handleConnect = async () => {
-    if (wagmiConnected && address) {
-      console.log("Connecting wallet:", address);
-      setIsLoading(true); // Show loader
-      try {
-        const response = await fetch(`https://everyx.weseegpt.com/auth/v2/`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: address }),
-        });
-
-        if (!response.ok) throw new Error("Failed to connect wallet");
-
-        console.log("API Response Status:", response.status);
-        const data = await response.json();
-        if (data?.token) {
-          // Set auth token in local storage
-          localStorage.setItem("authToken", data.token);
-          setAuthToken(data.token);
-          setIsLoggedIn(true);
-          router.push("/home");
-        }
-      } catch (error) {
-        console.error("Error connecting wallet:", error);
-      } finally {
-        setIsLoading(false); // Hide loader
-      }
-    }
-  };
-
-  // Modified Google login handler
-  const handleGoogleLogin = () => {
-    if (typeof window !== "undefined") {
-      setIsLoading(true);
-      signIn("google");
-    }
-  };
 
   return (
+<<<<<<< HEAD
     <div>
       <Navbar />
       <h1 className="text-[27px] text-center py-20">Log In</h1>
@@ -306,5 +207,13 @@ export default function LoginPage() {
         </div>
       )}
     </div>
+=======
+    <>
+      <Navbar />
+      {isMobile ? <MobileLanding /> : <WebLanding />}
+    </>
+>>>>>>> 05db7f1 (build desktop view)
   );
-}
+};
+
+export default login;
