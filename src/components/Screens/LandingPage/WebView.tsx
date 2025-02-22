@@ -1,8 +1,7 @@
 "use client";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
@@ -46,7 +45,6 @@ const MobileLanding = () => {
     },
   ];
   const [category, setCategory] = useState("Sports");
-  const [isLoading, setIsLoading] = useState(true);
   const [openQuestions, setOpenQuestions] = useState<boolean[]>(
     new Array(questions.length).fill(false)
   );
