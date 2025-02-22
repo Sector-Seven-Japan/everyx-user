@@ -4,9 +4,9 @@ import { useState, useEffect, useContext } from "react";
 // import Image from "next/image";
 import { cn } from "@/components/Cn";
 import Navbar from "@/components/Navbar";
-import { AppContext } from "../Context/AppContext";
+import { AppContext } from "@/app/Context/AppContext";
 
-export default function AchievementsPage() {
+export default function Notification() {
   const [activeTab, setActiveTab] = useState("all");
   const [notifications, setNotifications] = useState([]);
   const { authToken } = useContext(AppContext);
