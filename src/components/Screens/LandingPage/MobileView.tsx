@@ -1,12 +1,9 @@
 "use client";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import LoadingPage from "@/components/LoadingPage";
 
 const MobileLanding = () => {
   const questions = [
@@ -47,17 +44,9 @@ const MobileLanding = () => {
     },
   ];
   const [category, setCategory] = useState("Sports");
-  const [isLoading, setIsLoading] = useState(true);
   const [openQuestions, setOpenQuestions] = useState<boolean[]>(
     new Array(questions.length).fill(false)
   );
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const toggleOpen = (index: number) => {
     setOpenQuestions((prev) =>
@@ -65,13 +54,8 @@ const MobileLanding = () => {
     );
   };
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
-
   return (
     <>
-      <Navbar />
       <div className="bg-[#0E0E0E] w-full min-h-screen py-10">
         <div className="px-4 sm:px-10">
           <p className="text-right text-[13px] text-white text-opacity-[76%]">
@@ -355,7 +339,6 @@ const MobileLanding = () => {
           </p>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

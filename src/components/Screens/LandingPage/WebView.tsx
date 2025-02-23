@@ -6,7 +6,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-const MobileLanding = () => {
+const WebLanding = () => {
   const questions = [
     {
       question: "Q. What is EveryX?",
@@ -323,4 +323,4 @@ const MobileLanding = () => {
   );
 };
 
-export default MobileLanding;
+export default WebLanding;
