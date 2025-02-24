@@ -167,7 +167,7 @@ const HistoryWeb: React.FC = () => {
             </>
           ))}
         </div>
-        <div className="lg:col-span-4 md:col-span-4 sm:col-span-4">
+        <div className="lg:col-span-4 md:col-span-4 sm:col-span-4 flex justify-end">
           <CurrentCashBalanceCardWebview />
         </div>
       </div>

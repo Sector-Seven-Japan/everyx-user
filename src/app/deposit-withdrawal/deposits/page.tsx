@@ -110,7 +110,7 @@ const Deposit: React.FC = () => {
               USD
             </div>
           </div>
-          <div className="col-span-4">
+          <div className="col-span-4 flex justify-end">
             <CurrentCashBalanceCardWebview />
           </div>
         </div>
