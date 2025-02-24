@@ -6,9 +6,10 @@ import type React from "react";
 import { useContext, useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { AppContext } from "../Context/AppContext";
+import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 
 const Help: React.FC = () => {
-  const { setIsLoading, API_BASE_URL } = useContext(AppContext);
+  const { setIsLoading, API_BASE_URL, isMobile } = useContext(AppContext);
   const [categories, setCategories] = useState<
     { category: string; faqs: { question: string; answer: string }[] }[]
   >([]);
@@ -70,69 +71,144 @@ const Help: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-4">
-        <h1 className="font-medium text-[29px] text-center mb-10">Q & A</h1>
-        <div className="mt-5 font-normal mb-10">
-          {categories.map((category, catIndex) => (
-            <div key={catIndex} className="mb-10">
-              <div
-                className="flex justify-between items-center cursor-pointer text-[16px] font-semibold px-5"
-                onClick={() => toggleCategory(catIndex)}
-              >
-                <p>{category.category}</p>
-                {/* {openCategories[catIndex] ? (
+      {isMobile ? (
+        <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-4">
+          <h1 className="font-medium text-[29px] text-center mb-10">Q & A</h1>
+          <div className="mt-5 font-normal mb-10">
+            {categories.map((category, catIndex) => (
+              <div key={catIndex} className="mb-10">
+                <div
+                  className="flex justify-between items-center cursor-pointer text-[16px] font-semibold px-5"
+                  onClick={() => toggleCategory(catIndex)}
+                >
+                  <p>{category.category}</p>
+                  {/* {openCategories[catIndex] ? (
                   <FaChevronUp size={18} color="#fff" />
                 ) : (
                   <FaChevronDown size={18} color="#fff" />
                 )} */}
-              </div>
+                </div>
 
-              {openCategories[catIndex] && (
-                <div className="mt-3">
-                  {category.faqs.map((item, qIndex) => (
-                    <div key={qIndex} className="">
-                      <div
-                        className={`flex justify-between items-center cursor-pointer text-[14px] border-t border-b border-[rgba(255,255,255,0.05)] px-5 py-3 ${
-                          openQuestions[catIndex]?.[qIndex]
-                            ? "bg-[rgba(255,255,255,0.05)]"
-                            : "bg-transparent"
-                        }`}
-                        onClick={() => toggleQuestion(catIndex, qIndex)}
-                      >
-                        <p
-                          className={`${
+                {openCategories[catIndex] && (
+                  <div className="mt-3">
+                    {category.faqs.map((item, qIndex) => (
+                      <div key={qIndex} className="">
+                        <div
+                          className={`flex justify-between items-center cursor-pointer text-[14px] border-t border-b border-[rgba(255,255,255,0.05)] px-5 py-3 ${
                             openQuestions[catIndex]?.[qIndex]
-                              ? "text-white"
-                              : "text-gray-400"
+                              ? "bg-[rgba(255,255,255,0.05)]"
+                              : "bg-transparent"
                           }`}
+                          onClick={() => toggleQuestion(catIndex, qIndex)}
                         >
-                          Q . {item.question}
-                        </p>
-                        {openQuestions[catIndex]?.[qIndex] ? (
-                          <FaChevronUp size={15} color="#fff" />
-                        ) : (
-                          <FaChevronDown size={15} color="gray" />
+                          <p
+                            className={`${
+                              openQuestions[catIndex]?.[qIndex]
+                                ? "text-white"
+                                : "text-gray-400"
+                            }`}
+                          >
+                            Q . {item.question}
+                          </p>
+                          {openQuestions[catIndex]?.[qIndex] ? (
+                            <FaChevronUp size={15} color="#fff" />
+                          ) : (
+                            <FaChevronDown size={15} color="gray" />
+                          )}
+                        </div>
+
+                        {openQuestions[catIndex]?.[qIndex] && (
+                          <div className="mt-2 text-[13px] opacity-80 px-5 space-y-2 text-justify">
+                            {htmlToPlainText(item.answer)
+                              .split("\n")
+                              .filter(Boolean)
+                              .map((para, i) => (
+                                <p key={i}>{para}</p>
+                              ))}
+                          </div>
                         )}
                       </div>
-
-                      {openQuestions[catIndex]?.[qIndex] && (
-                        <div className="mt-2 text-[13px] opacity-80 px-5 space-y-2 text-justify">
-                          {htmlToPlainText(item.answer)
-                            .split("\n")
-                            .filter(Boolean)
-                            .map((para, i) => (
-                              <p key={i}>{para}</p>
-                            ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="grid grid-cols-10 lg:px-40 md:px-10 sm:px-10 gap-5">
+          <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-4 col-span-6">
+            <h1 className="font-medium text-[29px] text-left mb-10 ml-3">
+              Q & A
+            </h1>
+            <div className="mt-5 font-normal mb-10">
+              {categories.map((category, catIndex) => (
+                <div key={catIndex} className="mb-10">
+                  <div
+                    className="flex justify-between items-center cursor-pointer text-[16px] font-semibold px-5"
+                    onClick={() => toggleCategory(catIndex)}
+                  >
+                    <p>{category.category}</p>
+                    {/* {openCategories[catIndex] ? (
+                  <FaChevronUp size={18} color="#fff" />
+                ) : (
+                  <FaChevronDown size={18} color="#fff" />
+                )} */}
+                  </div>
+
+                  {openCategories[catIndex] && (
+                    <div className="mt-3">
+                      {category.faqs.map((item, qIndex) => (
+                        <div key={qIndex} className="">
+                          <div
+                            className={`flex justify-between items-center cursor-pointer text-[14px] border-t border-b border-[rgba(255,255,255,0.05)] px-5 py-3 ${
+                              openQuestions[catIndex]?.[qIndex]
+                                ? "bg-[rgba(255,255,255,0.05)]"
+                                : "bg-transparent"
+                            }`}
+                            onClick={() => toggleQuestion(catIndex, qIndex)}
+                          >
+                            <p
+                              className={`${
+                                openQuestions[catIndex]?.[qIndex]
+                                  ? "text-white"
+                                  : "text-gray-400"
+                              }`}
+                            >
+                              Q . {item.question}
+                            </p>
+                            {openQuestions[catIndex]?.[qIndex] ? (
+                              <FaChevronUp size={15} color="#fff" />
+                            ) : (
+                              <FaChevronDown size={15} color="gray" />
+                            )}
+                          </div>
+
+                          {openQuestions[catIndex]?.[qIndex] && (
+                            <div className="mt-2 text-[13px] opacity-80 px-5 space-y-2 text-justify">
+                              {htmlToPlainText(item.answer)
+                                .split("\n")
+                                .filter(Boolean)
+                                .map((para, i) => (
+                                  <p key={i}>{para}</p>
+                                ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="col-span-4">
+            <CurrentCashBalanceCardWebview />
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );

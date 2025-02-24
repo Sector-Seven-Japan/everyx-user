@@ -163,6 +163,7 @@ interface AppContextProps {
   userProfile: UserProfile | null;
   userStats: UserStats | null;
   getCountdown: (ends_at: string) => string;
+  isMobile: boolean;
 }
 
 const API_BASE_URL = "https://test-api.everyx.io";
@@ -237,6 +238,7 @@ const initialState: AppContextProps = {
   userProfile: null,
   userStats: null,
   getCountdown: () => "Ended",
+  isMobile: false,
 };
 
 export const AppContext = createContext<AppContextProps>(initialState);
@@ -289,6 +291,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   });
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle screen size detection
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Set breakpoint (e.g., 768px for mobile)
+    };
+
+    // Set initial value
+    handleResize();
+
+    // Add event listener for resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // API Calls
   const fetchCategories = async () => {
@@ -555,6 +574,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     userProfile,
     userStats,
     getCountdown,
+    isMobile,
   };
 
   return (
