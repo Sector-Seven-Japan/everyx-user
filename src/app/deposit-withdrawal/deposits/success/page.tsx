@@ -81,7 +81,7 @@ const Success: React.FC = () => {
               Done
             </button>
           </div>
-          <div className="col-span-3">
+          <div className="col-span-3 flex justify-end">
             <CurrentCashBalanceCardWebview />
           </div>
         </div>

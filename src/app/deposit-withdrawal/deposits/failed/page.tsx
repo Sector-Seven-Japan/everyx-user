@@ -80,7 +80,7 @@ const Failed: React.FC = () => {
               Back to Portfolio
             </button>
           </div>
-          <div className="col-span-3">
+          <div className="col-span-3 flex justify-end">
             <CurrentCashBalanceCardWebview />
           </div>
         </div>
