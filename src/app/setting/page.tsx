@@ -7,11 +7,12 @@ import { toast } from "react-toastify";
 import "./settings.css";
 import Navbar from "@/components/Navbar";
 import { AppContext } from "../Context/AppContext";
-
+import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 
 const Setting: React.FC = () => {
   const router = useRouter();
-  const { authToken, API_BASE_URL,setIsLoading } = useContext(AppContext);
+  const { authToken, API_BASE_URL, setIsLoading, isMobile } =
+    useContext(AppContext);
   const [favoriteTags, setFavoriteTags] = useState<
     { tag: { slug: string; name: string }; enabled: boolean }[]
   >([]);
@@ -30,7 +31,6 @@ const Setting: React.FC = () => {
   const [updatedFavoriteTags, setUpdatedFavoriteTags] = useState<
     { tag: { slug: string; name: string }; enabled: boolean }[]
   >([]);
-
 
   const notificationNames: Record<string, string> = {
     EI01: "Event is ending soon!",
@@ -107,9 +107,9 @@ const Setting: React.FC = () => {
     }
   }, [authToken]);
 
-  useEffect(()=>{
-    setIsLoading(false)
-  },[])
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   const handleFavoriteTagToggle = (slug: string) => {
     const updatedTags = [...favoriteTags];
@@ -208,118 +208,240 @@ const Setting: React.FC = () => {
     }
   };
 
-
   return (
     <>
-      <Navbar/>
-      <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-28">
-      <h1 className="font-medium text-[29px] text-center mb-10">Setting</h1>
-        <h2 className="font-medium text-[17px] text-left">Notifications</h2>
-        <div className="my-5 flex flex-col gap-5">
-          {Object.keys(notifications).map((key) => (
-            <div key={key} className="flex items-center justify-between">
-              <label className="text-[14px]">{notifications[key].name}</label>
-              <Switch
-                checked={notifications[key]?.enabled ?? false}
-                onChange={() => {
-                  setNotifications((prev) => {
-                    const updatedNotificationsMap = {
+      <Navbar />
+      {isMobile ? (
+        <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-28">
+          <h1 className="font-medium text-[29px] text-center mb-10">Setting</h1>
+          <h2 className="font-medium text-[17px] text-left">Notifications</h2>
+          <div className="my-5 flex flex-col gap-5">
+            {Object.keys(notifications).map((key) => (
+              <div key={key} className="flex items-center justify-between">
+                <label className="text-[14px]">{notifications[key].name}</label>
+                <Switch
+                  checked={notifications[key]?.enabled ?? false}
+                  onChange={() => {
+                    setNotifications((prev) => {
+                      const updatedNotificationsMap = {
+                        ...prev,
+                        [key]: {
+                          ...prev[key],
+                          enabled: !prev[key]?.enabled,
+                        },
+                      };
+
+                      setUpdatedNotifications((prevState) => ({
+                        ...prevState,
+                        [key]: !prev[key]?.enabled,
+                      }));
+
+                      return updatedNotificationsMap;
+                    });
+                  }}
+                  className={`${
+                    notifications[key]?.enabled ? "bg-green-500" : "bg-gray-900"
+                  } relative inline-flex h-6 w-11 items-center rounded-full transition`}
+                >
+                  <span
+                    className={`${
+                      notifications[key]?.enabled
+                        ? "translate-x-6"
+                        : "translate-x-1"
+                    } inline-block h-4 w-4 transform bg-white rounded-full transition`}
+                  />
+                </Switch>
+              </div>
+            ))}
+          </div>
+
+          <h2 className="font-medium text-[17px] text-left mt-10">
+            Favourites
+          </h2>
+          <div className="my-5 flex flex-col gap-5">
+            {favoriteTags.map((item) => (
+              <div
+                key={item.tag.slug}
+                className="flex items-center justify-between"
+              >
+                <label className="text-[14px]">{item.tag.name}</label>
+                <Switch
+                  checked={item.enabled}
+                  onChange={() => handleFavoriteTagToggle(item.tag.slug)}
+                  className={`${
+                    item.enabled ? "bg-green-500" : "bg-gray-900"
+                  } relative inline-flex h-6 w-11 items-center rounded-full transition`}
+                >
+                  <span
+                    className={`${
+                      item.enabled ? "translate-x-6" : "translate-x-1"
+                    } inline-block h-4 w-4 transform bg-white rounded-full transition`}
+                  />
+                </Switch>
+              </div>
+            ))}
+          </div>
+
+          <h2 className="font-medium text-[17px] text-left mt-10">Trades</h2>
+          <div className="flex flex-col mt-5 gap-5">
+            {Object.keys(wager).map((key) => (
+              <div key={key}>
+                <label className="text-[14px] text-white opacity-[27%]">
+                  {key.replace(/_/g, " ")}
+                </label>
+                <input
+                  type="text"
+                  value={wager[key as keyof typeof wager]}
+                  onChange={(e) =>
+                    setWager((prev) => ({
                       ...prev,
-                      [key]: {
-                        ...prev[key],
-                        enabled: !prev[key]?.enabled,
-                      },
-                    };
-
-                    setUpdatedNotifications((prevState) => ({
-                      ...prevState,
-                      [key]: !prev[key]?.enabled,
-                    }));
-
-                    return updatedNotificationsMap;
-                  });
-                }}
-                className={`${
-                  notifications[key]?.enabled ? "bg-green-500" : "bg-gray-900"
-                } relative inline-flex h-6 w-11 items-center rounded-full transition`}
-              >
-                <span
-                  className={`${
-                    notifications[key]?.enabled
-                      ? "translate-x-6"
-                      : "translate-x-1"
-                  } inline-block h-4 w-4 transform bg-white rounded-full transition`}
+                      [key as keyof typeof wager]: e.target.value,
+                    }))
+                  }
+                  placeholder={`Enter ${key.replace(/_/g, " ")}`}
+                  className="w-full mt-2 bg-transparent border-b-[1px] text-[14px] text-white pb-1 border-[#707070] outline-none"
                 />
-              </Switch>
-            </div>
-          ))}
-        </div>
+              </div>
+            ))}
+          </div>
 
-        <h2 className="font-medium text-[17px] text-left mt-10">Favourites</h2>
-        <div className="my-5 flex flex-col gap-5">
-          {favoriteTags.map((item) => (
-            <div
-              key={item.tag.slug}
-              className="flex items-center justify-between"
+          <div className="px-5 mt-10">
+            <button
+              type="button"
+              className="w-full bg-transparent border-[0.25px] border-[#2DC198] rounded-lg h-14 flex justify-center items-center"
+              onClick={saveData}
             >
-              <label className="text-[14px]">{item.tag.name}</label>
-              <Switch
-                checked={item.enabled}
-                onChange={() => handleFavoriteTagToggle(item.tag.slug)}
-                className={`${
-                  item.enabled ? "bg-green-500" : "bg-gray-900"
-                } relative inline-flex h-6 w-11 items-center rounded-full transition`}
-              >
-                <span
-                  className={`${
-                    item.enabled ? "translate-x-6" : "translate-x-1"
-                  } inline-block h-4 w-4 transform bg-white rounded-full transition`}
-                />
-              </Switch>
+              <span className="text-[16px] text-[#2DC198]">SAVE</span>
+            </button>
+
+            <div
+              className="text-center mt-5 underline cursor-pointer"
+              onClick={() => router.back()}
+            >
+              Back
             </div>
-          ))}
-        </div>
-
-        <h2 className="font-medium text-[17px] text-left mt-10">Trades</h2>
-        <div className="flex flex-col mt-5 gap-5">
-          {Object.keys(wager).map((key) => (
-            <div key={key}>
-              <label className="text-[14px] text-white opacity-[27%]">
-                {key.replace(/_/g, " ")}
-              </label>
-              <input
-                type="text"
-                value={wager[key as keyof typeof wager]}
-                onChange={(e) =>
-                  setWager((prev) => ({
-                    ...prev,
-                    [key as keyof typeof wager]: e.target.value,
-                  }))
-                }
-                placeholder={`Enter ${key.replace(/_/g, " ")}`}
-                className="w-full mt-2 bg-transparent border-b-[1px] text-[14px] text-white pb-1 border-[#707070] outline-none"
-              />
-            </div>
-          ))}
-        </div>
-
-        <div className="px-5 mt-10">
-          <button
-            type="button"
-            className="w-full bg-transparent border-[0.25px] border-[#2DC198] rounded-lg h-14 flex justify-center items-center"
-            onClick={saveData}
-          >
-            <span className="text-[16px] text-[#2DC198]">SAVE</span>
-          </button>
-
-          <div
-            className="text-center mt-5 underline cursor-pointer"
-            onClick={() => router.back()}
-          >
-            Back
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10">
+          <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-28 col-span-6">
+            <h1 className="font-medium text-[29px] text-left mb-10">Setting</h1>
+            <h2 className="font-medium text-[17px] text-left">Notifications</h2>
+            <div className="my-5 flex flex-col gap-5">
+              {Object.keys(notifications).map((key) => (
+                <div key={key} className="flex items-center justify-between">
+                  <label className="text-[14px]">
+                    {notifications[key].name}
+                  </label>
+                  <Switch
+                    checked={notifications[key]?.enabled ?? false}
+                    onChange={() => {
+                      setNotifications((prev) => {
+                        const updatedNotificationsMap = {
+                          ...prev,
+                          [key]: {
+                            ...prev[key],
+                            enabled: !prev[key]?.enabled,
+                          },
+                        };
+
+                        setUpdatedNotifications((prevState) => ({
+                          ...prevState,
+                          [key]: !prev[key]?.enabled,
+                        }));
+
+                        return updatedNotificationsMap;
+                      });
+                    }}
+                    className={`${
+                      notifications[key]?.enabled
+                        ? "bg-green-500"
+                        : "bg-gray-900"
+                    } relative inline-flex h-6 w-11 items-center rounded-full transition`}
+                  >
+                    <span
+                      className={`${
+                        notifications[key]?.enabled
+                          ? "translate-x-6"
+                          : "translate-x-1"
+                      } inline-block h-4 w-4 transform bg-white rounded-full transition`}
+                    />
+                  </Switch>
+                </div>
+              ))}
+            </div>
+
+            <h2 className="font-medium text-[17px] text-left mt-10">
+              Favourites
+            </h2>
+            <div className="my-5 flex flex-col gap-5">
+              {favoriteTags.map((item) => (
+                <div
+                  key={item.tag.slug}
+                  className="flex items-center justify-between"
+                >
+                  <label className="text-[14px]">{item.tag.name}</label>
+                  <Switch
+                    checked={item.enabled}
+                    onChange={() => handleFavoriteTagToggle(item.tag.slug)}
+                    className={`${
+                      item.enabled ? "bg-green-500" : "bg-gray-900"
+                    } relative inline-flex h-6 w-11 items-center rounded-full transition`}
+                  >
+                    <span
+                      className={`${
+                        item.enabled ? "translate-x-6" : "translate-x-1"
+                      } inline-block h-4 w-4 transform bg-white rounded-full transition`}
+                    />
+                  </Switch>
+                </div>
+              ))}
+            </div>
+
+            <h2 className="font-medium text-[17px] text-left mt-10">Trades</h2>
+            <div className="flex flex-col mt-5 gap-5">
+              {Object.keys(wager).map((key) => (
+                <div key={key}>
+                  <label className="text-[14px] text-white opacity-[27%]">
+                    {key.replace(/_/g, " ")}
+                  </label>
+                  <input
+                    type="text"
+                    value={wager[key as keyof typeof wager]}
+                    onChange={(e) =>
+                      setWager((prev) => ({
+                        ...prev,
+                        [key as keyof typeof wager]: e.target.value,
+                      }))
+                    }
+                    placeholder={`Enter ${key.replace(/_/g, " ")}`}
+                    className="w-full mt-2 bg-transparent border-b-[1px] text-[14px] text-white pb-1 border-[#707070] outline-none"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="px-5 mt-10 flex justify-between items-center">
+              <div
+                className="text-center mt-5 underline cursor-pointer"
+                onClick={() => router.back()}
+              >
+                Back
+              </div>
+              <button
+                type="button"
+                className="w-56 bg-transparent border-[0.25px] border-[#2DC198] rounded-lg h-9 flex justify-center items-center"
+                onClick={saveData}
+              >
+                <span className="text-[16px] text-[#2DC198]">SAVE</span>
+              </button>
+            </div>
+          </div>
+          <div className="col-span-4">
+            <CurrentCashBalanceCardWebview />
+          </div>
+        </div>
+      )}
     </>
   );
 };
