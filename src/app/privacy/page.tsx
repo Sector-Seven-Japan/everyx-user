@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import MobileLanding from "@/components/Screens/Privacy/MobileView";
 import WebLanding from "@/components/Screens/Privacy/WebView";
 
-const privacy = () => {
+const Privacy = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   // Handle screen size detection
@@ -22,13 +22,7 @@ const privacy = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
- 
-
-  return (
-    <>
-      {isMobile ? <MobileLanding /> : <WebLanding />}
-    </>
-  );
+  return <>{isMobile ? <MobileLanding /> : <WebLanding />}</>;
 };
 
-export default privacy;
+export default Privacy;

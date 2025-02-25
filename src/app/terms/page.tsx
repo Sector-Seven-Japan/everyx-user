@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import MobileLanding from "@/components/Screens/Terms/MobileView";
 import WebLanding from "@/components/Screens/Terms/WebView";
 
-const terms = () => {
+const Terms = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   // Handle screen size detection
@@ -22,12 +22,7 @@ const terms = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
-  return (
-    <>
-      {isMobile ? <MobileLanding /> : <WebLanding />}
-    </>
-  );
+  return <>{isMobile ? <MobileLanding /> : <WebLanding />}</>;
 };
 
-export default terms;
+export default Terms;

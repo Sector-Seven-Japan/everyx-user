@@ -16,7 +16,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
 
   return (
     <>
-      <div className="max-w-[280px]">
+      <div className="max-w-[280px] sticky top-20 ">
         <div className="flex flex-col bg-[rgba(255,255,255,0.08)] rounded-3xl px-10 py-8">
           <div className="flex justify-center items-center mt-5 relative">
             {userProfile && (
@@ -32,7 +32,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
             <Image
               src={settingIcon}
               alt="Setting icon"
-              className="absolute top-1 left-[65%]"
+              className="absolute top-1 left-[65%] cursor-pointer"
               onClick={handleSettingsClick}
             />
           </div>

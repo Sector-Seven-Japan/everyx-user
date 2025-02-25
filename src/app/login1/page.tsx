@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import MobileLanding from "@/components/Screens/login/MobileView";
 import WebLanding from "@/components/Screens/login/WebView";
 
-const login = () => {
+const Login = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   // Handle screen size detection
@@ -23,8 +23,6 @@ const login = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
-
   return (
     <>
       <Navbar />
@@ -33,4 +31,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
