@@ -59,6 +59,7 @@ export default function OrderSuccess() {
     getCountdown,
     filter,
     setFilter,
+    setIsOrderMade,
   } = useContext(AppContext);
   const categoryId = orderDetails?.event_id;
   const [eventData, setEventData] = useState<EventData | null>(null);
@@ -70,9 +71,7 @@ export default function OrderSuccess() {
   const fetchEvent = async () => {
     if (!categoryId) return;
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/events/${categoryId}`
-      );
+      const response = await fetch(`${API_BASE_URL}/events/${categoryId}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -157,9 +156,11 @@ export default function OrderSuccess() {
   return (
     <div>
       <Navbar />
-      <HeadingSlider filter={filter} setFilter={setFilter} />
-      <div className="flex md:px-[120px]">
-        <div className="md:w-[70%] md:block hidden">
+      <div className="md:block hidden">
+        <HeadingSlider filter={filter} setFilter={setFilter} />
+      </div>
+      <div className="flex md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
+        <div className="md:block md:w-full hidden">
           {eventData ? (
             <>
               <CategoryInfo eventData={eventData} />
@@ -181,11 +182,13 @@ export default function OrderSuccess() {
             </p>
           )}
         </div>
-        <div className="md:w-[30%] w-full">
-          <div className="px-8 py-5 md:bg-[#141414] md:rounded-xl md:mt-5 md:px-5">
-            <h1 className="text-center hidden md:block">Your Order</h1>
+        <div className="">
+          <div className="px-8 py-5 md:bg-[#141414] md:rounded-xl md:mt-5 md:px-5 md:w-[300px] sticky top-[]">
+            <h1 className="text-center hidden md:block md:text-[18px]">
+              Your Order
+            </h1>
             <div className="flex flex-col items-center justify-center text-center gap-8 mt-5 md:gap-2">
-              <div className="md:w-8">
+              <div className="md:w-9">
                 <Image
                   src="/Icons/SuccessIcon.png"
                   alt=""
@@ -200,29 +203,35 @@ export default function OrderSuccess() {
 
             <div className="mt-20 md:mt-5">
               <div className="flex gap-3">
-                <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md">
-                  {/* {eventData?.category?.name?.split(" ")[0]} */}sports
+                <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[10px]">
+                  {eventData?.category?.name?.split(" ")[0]}
                 </button>
                 <p className="text-[#2DC198] flex gap-1 items-center font-light">
-                  <Image
-                    src={"/Images/FreeClock i.png"}
-                    alt="clock"
-                    height={18}
-                    width={18}
-                  />
-                  <p className="text-[12px] text-[#2DC198]">{countdown}</p>
+                  <div className="md:w-3">
+                    <Image
+                      src={"/Images/FreeClock i.png"}
+                      alt="clock"
+                      height={18}
+                      width={18}
+                    />
+                  </div>
+                  <p className="text-[#2DC198] md:text-[10px]">{countdown}</p>
                 </p>
               </div>
               <p className="text-[21px] font-light mt-4 md:text-[12px]">
                 {eventData?.description}
               </p>
-              <p className="text-[#3E3E3E] mt-2 md:text-[1vw]">ID: NDSJHDH676235</p>
+              <p className="text-[#3E3E3E] mt-2 md:text-[12px]">
+                ID: NDSJHDH676235
+              </p>
 
               <div className="h-[0.5px] w-[70%] mb-6 border-t border-dashed mx-auto mt-6 border-[#575757]"></div>
 
               <div className="mb-8">
                 <div className="flex flex-col gap-2">
-                  <p className="text-[19px] font-light md:text-[1.1vw]">{selectedOrder}</p>
+                  <p className="text-[19px] font-light md:text-[12px]">
+                    {selectedOrder}
+                  </p>
                   <div className="flex justify-between items-center gap-2">
                     <div className="w-[80%] h-[19px]">
                       <div
@@ -230,20 +239,20 @@ export default function OrderSuccess() {
                         style={{
                           width: `${Math.round(
                             orderDetails?.new_probability * 100
-                          )}%`
+                          )}%`,
                         }}
                       ></div>
                     </div>
-                    <p className="text-[19px] font-light md:text-[1vw]">
+                    <p className="text-[19px] font-light md:text-[12px]">
                       {Math.round(orderDetails?.new_probability * 100)}%
                     </p>
                     <div className="md:w-3">
-                    <Image
-                      src="/Images/checkbox.png"
-                      alt="checkbox"
-                      height={20}
-                      width={20}
-                    />
+                      <Image
+                        src="/Images/checkbox.png"
+                        alt="checkbox"
+                        height={20}
+                        width={20}
+                      />
                     </div>
                   </div>
                 </div>
@@ -253,8 +262,10 @@ export default function OrderSuccess() {
 
               <div className="flex justify-between">
                 <div className="flex flex-col gap-[1px]">
-                  <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">Cash used</p>
-                  <p className="text-[22px] text-[#00FFB8]">
+                  <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
+                    Cash used
+                  </p>
+                  <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                     ${Math.round(orderDetails?.after_pledge)}
                   </p>
                 </div>
@@ -262,9 +273,9 @@ export default function OrderSuccess() {
                   <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                     Leverage cash value
                   </p>
-                  <p className="text-[22px] text-[#00FFB8]">
+                  <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                     ${Math.round(orderDetails?.after_wager)}{" "}
-                    <span className="text-sm text-[#E49C29]">
+                    <span className="text-sm text-[#E49C29] md:text-[12px]">
                       x {orderDetails?.after_leverage}
                     </span>
                   </p>
@@ -276,26 +287,28 @@ export default function OrderSuccess() {
               <button
                 onClick={() => {
                   setIsLoading(true);
+                  setIsOrderMade(false);
                   router.push(`/events/${categoryId}`);
                 }}
-                className="bg-[#00FFB8] py-3 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[14px] md:py-3"
+                className="bg-[#00FFB8] py-3 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[13px] md:py-2"
               >
                 Trade on this event again
                 <div className="md:w-2">
-                <Image
-                  src="/Images/rightarrowicon.png"
-                  alt=""
-                  height={15}
-                  width={12}
-                />
+                  <Image
+                    src="/Images/rightarrowicon.png"
+                    alt=""
+                    height={15}
+                    width={12}
+                  />
                 </div>
               </button>
               <button
                 onClick={() => {
                   setIsLoading(true);
+                  setIsOrderMade(false);
                   router.push("/deposit-withdrawal/history");
                 }}
-                className="bg-[#222222] py-3 rounded-md text-[#00FFB8] text-[18px] md:text-[14px] md:py-3"
+                className="bg-[#222222] py-3 rounded-md text-[#00FFB8] text-[18px] md:text-[13px] md:py-2"
               >
                 View in Portfolio
               </button>
@@ -303,7 +316,9 @@ export default function OrderSuccess() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <div className="md:block hidden">
+        <Footer />
+      </div>
     </div>
   );
 }

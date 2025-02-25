@@ -3,8 +3,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 
 export default function MakeOrder() {
-  const { orderDetails, makeOrder, setIsLoading } =
-    useContext(AppContext);
+  const { orderDetails, makeOrder, setIsLoading } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
   const [leverage, setLeverage] = useState<number>(1.0); // Allow decimal values
@@ -80,12 +79,14 @@ export default function MakeOrder() {
   }, [value, leverage]);
 
   return (
-    <div className="bg-[#141414] rounded-xl p-5">
-      <h1 className="text-center text-[18px] mb-2">Your Order</h1>
+    <div className="bg-[#141414] rounded-xl p-5 sticky top-[70px] w-[280px]">
+      <h1 className="text-center text-[18px] mb-3 md:text-[18px]">
+        Your Order
+      </h1>
       <div className="mb-10">
-        <h1 className="text-[14px] mb-3">Total Size</h1>
+        <h1 className="text-[12px] mb-1">Total Size</h1>
         <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2">
-          <div className="w-[60%] px-2 text-[15px]">
+          <div className="w-[60%] px-2 text-[13px]">
             ${wholePart}.{decimalPart}
           </div>
           {[20, 50, 100].map((item, index) => {
@@ -93,7 +94,7 @@ export default function MakeOrder() {
               <button
                 key={index}
                 onClick={() => handleTradeSizePlus(item)}
-                className="bg-[#1b1b1b] rounded-md px-2 font-semibold text text-[13px] hover:bg-[#2b2b2b]"
+                className="bg-[#1b1b1b] rounded-sm px-2 font-semibold text text-[10px] hover:bg-[#2b2b2b]"
               >
                 +{item}
               </button>
@@ -111,28 +112,28 @@ export default function MakeOrder() {
             style={{
               background: `linear-gradient(to right, #00FFB8 ${tradeSizePercentage}%, #171717 ${tradeSizePercentage}%)`,
             }}
-            className="w-full h-1 rounded-lg appearance-none cursor-pointer 
-                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
-                [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
+            className="w-full h-[2px] rounded-lg appearance-none cursor-pointer 
+                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
+                [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
           />
           <div className="flex flex-row-reverse">
-            <p className="text-[#00FFB8] text-xs mt-3">
+            <p className="text-[#00FFB8] text-[9px] mt-2">
               Max trade size | ${maxTradeSize.toFixed(1)} MAX
             </p>
           </div>
         </div>
       </div>
 
-      <div className="mb-12">
-        <h1 className="text-[14px] mb-3">Leverage</h1>
+      <div className="mb-8">
+        <h1 className="text-[12px] mb-1">Leverage</h1>
         <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2">
-          <div className="w-[60%] text-[15px] px-2">x{leverage}</div>
+          <div className="w-[60%] text-[13px] px-2">x{leverage}</div>
           {[20, 50, 100].map((item, index) => {
             return (
               <button
                 key={index}
                 onClick={() => handleLeveragePlus(item)}
-                className="bg-[#1b1b1b] rounded-md px-2 font-semibold text text-[13px] hover:bg-[#2b2b2b]"
+                className="bg-[#1b1b1b] rounded-sm px-2 font-semibold text text-[10px] hover:bg-[#2b2b2b]"
               >
                 +{item}
               </button>
@@ -150,12 +151,12 @@ export default function MakeOrder() {
             style={{
               background: `linear-gradient(to right, #00FFB8 ${leveragePercentage}%, #171717 ${leveragePercentage}%)`,
             }}
-            className="w-full h-1 rounded-lg appearance-none cursor-pointer 
-    [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
-    [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
+            className="w-full h-[2px] rounded-lg appearance-none cursor-pointer 
+    [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
+    [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
           />
           <div className="flex flex-row-reverse">
-            <p className="text-[#FF4E00] text-xs mt-3">
+            <p className="text-[#FF4E00] text-[9px] mt-2">
               Max Available leverage | {maxLeverage}MAX
             </p>
           </div>
@@ -167,18 +168,18 @@ export default function MakeOrder() {
           <div className="flex flex-col gap-4">
             <div className="flex justify-between">
               <div className="flex flex-col gap-[1px]">
-                <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
-                <p className="text-[22px] text-[#00FFB8]">
+                <p className="text-[#5D5D5D] text-[11px]">Cash used</p>
+                <p className="text-[16px] text-[#00FFB8]">
                   ${Math.round(orderDetails?.after_pledge)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
-                <p className="text-[#5D5D5D] text-[13px]">
+                <p className="text-[#5D5D5D] text-[11px]">
                   Leverage cash value
                 </p>
-                <p className="text-[22px] text-[#00FFB8]">
+                <p className="text-[16px] text-[#00FFB8]">
                   ${Math.round(orderDetails?.after_wager)}{" "}
-                  <span className="text-sm text-[#E49C29]">
+                  <span className="text-[12px] text-[#E49C29]">
                     x {orderDetails?.leverage}
                   </span>
                 </p>
@@ -187,14 +188,14 @@ export default function MakeOrder() {
 
             <div className="flex justify-between">
               <div className="flex flex-col gap-[1px]">
-                <p className="text-[#5D5D5D] text-[13px]">Projected payout</p>
-                <p className="text-[22px] text-[#00FFB8]">
+                <p className="text-[#5D5D5D] text-[11px]">Projected payout</p>
+                <p className="text-[16px] text-[#00FFB8]">
                   ${Math.round(orderDetails?.after_payout)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
-                <p className="text-[#5D5D5D] text-[13px]">Your return</p>
-                <p className="text-[22px] text-[#00FFB8]">
+                <p className="text-[#5D5D5D] text-[11px]">Your return</p>
+                <p className="text-[16px] text-[#00FFB8]">
                   +{orderDetails?.after_return.toFixed(0)} %
                 </p>
               </div>
@@ -202,7 +203,7 @@ export default function MakeOrder() {
           </div>
 
           <div className="flex justify-between mt-7 md:items-center">
-            <p className="text-[#FF2E2E] text-[17px] md:text-[14px]">
+            <p className="text-[#FF2E2E] text-[17px] md:text-[12px]">
               Stop level
             </p>
             <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
@@ -214,7 +215,7 @@ export default function MakeOrder() {
 
       <button
         onClick={handleSubmit}
-        className="text-[#00FFB8] w-full border border-[#00FFB8] py-2 rounded-xl text-[16px] mt-5"
+        className="text-[#00FFB8] w-full border border-[#00FFB8] py-2 rounded-xl text-[13px] mt-3"
       >
         Proceed
       </button>
