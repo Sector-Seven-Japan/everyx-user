@@ -121,8 +121,8 @@ const HistoryWeb: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-[#0E0E0E] w-full min-h-screen text-white lg:px-40 pt-4 pb-5 md:px-10 sm:px-10 mt-20">
-      <div className="grid grid-cols-10 gap-10 mx-5 mt-10">
+    <div className="bg-[#0E0E0E] w-full min-h-screen text-white lg:px-40 pt-4 pb-5 md:px-10 sm:px-10 mt-20  relative">
+      <div className="grid grid-cols-10 gap-10 mx-5 mt-10 ">
         <div className="lg:col-span-6 md:col-span-6 sm:col-span-6">
           <p className="text-[24px] font-semibold">
             Deposit ＆ Withdrawal History :
@@ -167,8 +167,10 @@ const HistoryWeb: React.FC = () => {
             </>
           ))}
         </div>
-        <div className="lg:col-span-4 md:col-span-4 sm:col-span-4 flex justify-end">
-          <CurrentCashBalanceCardWebview />
+        <div className="lg:col-span-4 md:col-span-4 sm:col-span-4 flex justify-end  ">
+          <div>
+            <CurrentCashBalanceCardWebview />
+          </div>
         </div>
       </div>
     </div>

@@ -208,9 +208,9 @@ const PasswordChange: React.FC = () => {
               )}
             </div>
 
-            <div className="space-y-4 pt-6 flex justify-between items-center ">
+            <div className="mt-1 flex justify-between items-center gap-5">
               <button
-                className="w-full flex items-center justify-center transition-colors gap-2 underline text-white text-[12px]"
+                className="w-56  border-[#fff]  rounded-lg py-3 px-4 border-[0.25px]  text-white text-[14px]"
                 type="button"
                 onClick={() => router.push("/profile")}
               >

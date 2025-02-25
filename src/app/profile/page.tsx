@@ -251,7 +251,7 @@ const Profile: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mb-10 mt-20">
+        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mb-10 pt-32">
           <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5  col-span-6">
             <div className="max-w-md mx-auto">
               <div>
@@ -351,9 +351,9 @@ const Profile: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-4 mt-1 flex justify-between items-center">
+              <div className=" mt-1 flex justify-between items-center gap-5">
                 <button
-                  className="w-full flex items-center justify-center transition-colors gap-2 underline text-white text-[12px]"
+                  className=" w-56  border-[#fff]  rounded-lg py-3 px-4 border-[0.25px]  text-white text-[14px]"
                   type="button"
                   onClick={() => router.push("/deposit-withdrawal/history")}
                 >
