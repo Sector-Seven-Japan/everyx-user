@@ -359,7 +359,7 @@ const Portfolio: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-10 gap-5 pt-10 lg:px-40 md:px-10 sm:px-10">
+        <div className="grid grid-cols-10 gap-5 pt-20 lg:px-40 md:px-10 sm:px-10">
           <div className="bg-[#0E0E0E]  min-h-screen text-white px-5  pb-5 col-span-6">
             <div className="flex justify-between items-start">
               <div>Results : </div>
