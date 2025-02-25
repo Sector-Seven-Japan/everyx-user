@@ -171,11 +171,11 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Enter Email"
-            className="w-[70%] pl-4 py-[12px] bg-transparent outline-none font-semibold placeholder:font-semibold placeholder:text-[#434343]"
+            className="w-[70%] text-sm pl-4 py-[14px] bg-transparent outline-none"
           />
           <button
             onClick={handleContinue}
-            className="w-[30%] py-[12px] px-3 border-l border-gray-600 font-normal"
+            className="w-[30%] py-[14px] text-xs px-3 border-l border-gray-600 font-normal"
           >
             Continue
           </button>
