@@ -136,7 +136,7 @@ const Help: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-10 lg:px-40 md:px-10 sm:px-10 gap-5">
+        <div className="grid grid-cols-10 lg:px-40 md:px-10 sm:px-10 gap-5 mt-20">
           <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-4 col-span-6">
             <h1 className="font-medium text-[29px] text-left mb-10 ml-3">
               Q & A
