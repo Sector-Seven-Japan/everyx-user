@@ -9,6 +9,8 @@ import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 import TopCategories from "@/components/TopCategoies";
 import CategoryCard from "@/components/CategoryCard"; // Add this import
+import Category from "@/components/Category";
+
 
 interface TraderInfo {
   max_leverage: number;
@@ -42,7 +44,8 @@ export default function Home() {
     API_BASE_URL,
     search,
     setSearch,
-    setIsLoading
+    setIsLoading,
+    categories,
   } = useContext(AppContext);
   const [searchData, setSearchData] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -91,7 +94,7 @@ export default function Home() {
   }, [search, API_BASE_URL]);
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <Navbar />
       <HeadingSlider setFilter={setFilter} filter={filter} />
       <ImageSlider />
@@ -99,26 +102,40 @@ export default function Home() {
 
       {!search && <TopCategories />}
 
-      {/* {!search &&
+      {!search &&
         categories.map((item, index) => {
+          console.log(item);
+
           if (typeof item === "object") {
             return <Category key={index} item={item} />;
           }
           return null;
-        })} */}
+        })}
 
       <div className="p-5">
         {isSearching ? (
           <div className="text-center text-gray-500 h-52 flex items-center justify-center">
             Searching...
           </div>
-        ) : searchData.length > 0 ? (
-          searchData.map((item) => <CategoryCard key={item._id} item={item} />)
-        ) : search.trim() ? (
-          <div className="text-center text-gray-500 h-52 flex items-center justify-center">
-            No results found
+        ) : (
+          <div className="md:px-[76px] grid grid-cols-1 md:grid-cols-4 gap-x-5 md:mt-10">
+            {searchData.length > 0 ? (
+              searchData.map((item) => (
+                <CategoryCard
+                  key={item._id}
+                  item={item}
+                  showChart={false}
+                  showPrediction={false}
+                  showTime={true}
+                />
+              ))
+            ) : search.trim() ? (
+              <div className="text-center text-gray-500 h-52 flex items-center justify-center">
+                No results found
+              </div>
+            ) : null}
           </div>
-        ) : null}
+        )}
       </div>
       <Footer />
     </div>

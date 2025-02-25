@@ -1,7 +1,6 @@
 export default function LoadingPage() {
-
   return (
-    <div className="h-screen w-screen bg-black flex flex-col max-w-[430px] mx-auto">
+    <div className="h-screen w-screen bg-black flex flex-col mx-auto">
       {/* Logo */}
       <div className="flex-1 flex items-center justify-center">
         <div className="w-12 h-12">
@@ -11,8 +10,16 @@ export default function LoadingPage() {
             height="46.771"
             viewBox="0 0 45.643 46.771"
           >
-            <g id="Group_39822" data-name="Group 39822" transform="translate(18768.857 -10853.672)">
-              <g id="Group_39816" data-name="Group 39816" transform="translate(-18768.857 10853.672)">
+            <g
+              id="Group_39822"
+              data-name="Group 39822"
+              transform="translate(18768.857 -10853.672)"
+            >
+              <g
+                id="Group_39816"
+                data-name="Group 39816"
+                transform="translate(-18768.857 10853.672)"
+              >
                 <path
                   id="Path_47219"
                   data-name="Path 47219"

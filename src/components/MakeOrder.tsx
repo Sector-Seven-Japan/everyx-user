@@ -102,9 +102,9 @@ export default function MakeOrder() {
       <div
         onTouchMove={handleTouchMove}
         onTouchStart={handleTouchStart}
-        className="h-[800px] bg-[#1a1a1a] w-full px-5 absolute left-0 bottom-0 rounded-t-3xl"
+        className="pb-5 bg-[#1a1a1a] w-full px-5 absolute left-0 bottom-0 rounded-t-3xl"
       >
-        <div className="w-[15%] h-[3px] bg-white mb-10 mt-4 mx-auto"></div>
+        <div className="w-[15%] h-[3px] bg-white mb-5 mt-4 mx-auto"></div>
         <div className="mb-10">
           <h1 className="text-[23px] mb-5">Total Size</h1>
           <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2">
@@ -146,7 +146,7 @@ export default function MakeOrder() {
           </div>
         </div>
 
-        <div className="mb-12">
+        <div className="mb-10">
           <h1 className="text-[23px] mb-5">Leverage</h1>
           <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2">
             <div className="w-[60%] text-[19px] px-2">x{leverage}</div>
@@ -220,6 +220,17 @@ export default function MakeOrder() {
             </div>
           </div>
         </div>
+
+        {pathname.startsWith("/wager") && (
+          <div className="flex justify-between mt-7 md:items-center">
+            <p className="text-[#FF2E2E] text-[17px] md:text-[14px]">
+              Stop level
+            </p>
+            <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
+              {(orderDetails?.after_stop_probability * 100).toFixed(0)}%
+            </button>
+          </div>
+        )}
 
         <button
           onClick={handleSubmit}
