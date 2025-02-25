@@ -44,7 +44,7 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
   }
   return (
     <div className="p-5">
-      <div className="relative flex gap-3 items-center h-48 w-full">
+      <div className="relative flex gap-3 items-center h-48 w-full rounded-t-2xl overflow-hidden">
         <img
           className="h-full w-full object-cover"
           src={eventData?.event_images_url[0]}
@@ -64,7 +64,7 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
             height={18}
             width={18}
           />
-          {countdown}
+          <p className="md:text-[13px] text-[#2DC198]">{countdown}</p>
         </p>
       </div>
       <div className="pt-4">

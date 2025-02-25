@@ -75,6 +75,8 @@ export default function EventCategoryPage() {
     setIsLoading(false);
   }, [fetchEventsOfCategory, setIsLoading]);
 
+  console.log(open, "open");
+
   return (
     <div>
       <Navbar />
@@ -85,57 +87,63 @@ export default function EventCategoryPage() {
           <h1 className="text-xl mb-6 md:text-[25px] md:mt-10">
             {heading || safeSlug}
           </h1>
-          <div className="gap-2 mb-2 hidden md:flex">
-            <p>{filterC}</p>
-            <div
-              className="flex justify-center items-center flex-col gap-1"
-              onClick={() => {
-                setOpen((con) => !con);
-              }}
-            >
-              <div className="w-[20px] h-[1.5px] bg-white"></div>
-              <div className="w-[18px] h-[1.5px] bg-white"></div>
-              <div className="w-[12px] h-[1.5px] bg-white"></div>
+
+          <div>
+            <div className="gap-2 mb-2 hidden md:flex">
+              <p>{filterC}</p>
+              <div
+                className="flex justify-center items-center flex-col gap-1"
+                onClick={() => {
+                  setOpen(!open);
+                }}
+              >
+                <div className="w-[20px] h-[1.5px] bg-white"></div>
+                <div className="w-[18px] h-[1.5px] bg-white"></div>
+                <div className="w-[12px] h-[1.5px] bg-white"></div>
+              </div>
             </div>
+            {open && (
+              <div
+                className={`w-30 cursor-pointer flex flex-col absolute right-10 mt-3`}
+              >
+                <div
+                  onClick={() => {
+                    setFilterC("Time");
+                    setOpen(false);
+                  }}
+                  className="bg-transparent hover:bg-white/10 transition duration-300  pl-5 text-[14px]"
+                >
+                  Time
+                </div>
+                <div
+                  onClick={() => {
+                    setFilterC("Chart");
+                    setOpen(false);
+                  }}
+                  className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
+                >
+                  Chart
+                </div>
+                <div
+                  onClick={() => {
+                    setFilterC("Prediction view");
+                    setOpen(false);
+                  }}
+                  className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
+                >
+                  Prediction view
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        <div
-          className={`w-30 cursor-pointer flex flex-col absolute right-10 mt-3 ${
-            open ? "block" : "hidden"
-          }`}
-        >
-          <div
-            onClick={() => {
-              setFilterC("Time");
-              setOpen(false);
-            }}
-            className="bg-transparent hover:bg-white/10 transition duration-300  pl-5 text-[14px]"
-          >
-            Time
-          </div>
-          <div
-            onClick={() => {
-              setFilterC("Chart");
-              setOpen(false);
-            }}
-            className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
-          >
-            Chart
-          </div>
-          <div
-            onClick={() => {
-              setFilterC("Prediction view");
-              setOpen(false);
-            }}
-            className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
-          >
-            Prediction view
-          </div>
-        </div>
         {events.length !== 0 ? (
           events.map((item) => (
-            <div key={item._id} className="grid grid-cols-1 md:grid-cols-4 gap-x-5">
+            <div
+              key={item._id}
+              className="grid grid-cols-1 md:grid-cols-4 gap-x-5"
+            >
               <CategoryCard
                 key={item._id}
                 item={item}

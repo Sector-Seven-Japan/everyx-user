@@ -8,6 +8,7 @@ import CategoryInfo from "@/components/CategoryInfo";
 import CategoryRule from "@/components/CategoryRule";
 import DrawGraph from "@/components/DrawGraph";
 import HeadingSlider from "@/components/HeadingSlider";
+import Footer from "@/components/Footer";
 
 interface WagerPayload {
   event_id: string;
@@ -82,7 +83,6 @@ export default function BettingPage() {
   const [countdown, setCountdown] = useState<string>("");
   const categoryId = orderDetails?.event_id;
   console.log(countdown);
-  
 
   const handleSubmit = async () => {
     try {
@@ -207,9 +207,11 @@ export default function BettingPage() {
   return (
     <div>
       <Navbar />
-      <HeadingSlider filter={filter} setFilter={setFilter} />
-      <div className="flex md:px-[120px]">
-        <div className="md:w-[70%] md:block hidden">
+      <div className="md:block hidden">
+        <HeadingSlider filter={filter} setFilter={setFilter} />
+      </div>
+      <div className="flex md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
+        <div className="md:block hidden md:w-full">
           {eventData ? (
             <>
               <CategoryInfo eventData={eventData} />
@@ -231,13 +233,17 @@ export default function BettingPage() {
             </p>
           )}
         </div>
-        <div className="md:w-[30%] w-full">
-          <div className="md:bg-[#171717] rounded-2xl md:mt-5 md:pb-5">
-            <div className="p-5">
-              <h1 className="text-[22px] mt-3 text-center">Your Order</h1>
+        <div className="relative w-full md:w-[280px]">
+          <div className="md:bg-[#171717] rounded-2xl md:mt-5 md:pb-5 md:w-[280px] sticky top-[70px]">
+            <div className="p-5 md:pb-0">
+              <h1 className="text-[22px] mt-3 text-center md:text-[18px]">
+                Your Order
+              </h1>
               <div className="mb-6 mt-8">
                 <div className="flex flex-col gap-2">
-                  <p className="text-[19px] font-light md:text-[1.1vw]">{selectedOrder}</p>
+                  <p className="text-[19px] font-light md:text-[12px]">
+                    {selectedOrder}
+                  </p>
                   <div className="flex justify-between items-center gap-2">
                     <div className="w-[80%] h-[19px]">
                       <div
@@ -249,19 +255,19 @@ export default function BettingPage() {
                         }}
                       ></div>
                     </div>
-                    <p className="text-[19px] font-light md:text-[1vw]">
+                    <p className="text-[19px] font-light md:text-[12px]">
                       {Math.round(
                         (orderDetails?.current_probability ?? 0) * 100
                       )}
                       %
                     </p>
                     <div className="md:w-3">
-                    <Image
-                      src="/Images/checkbox.png"
-                      alt="checkbox"
-                      height={20}
-                      width={20}
-                    />
+                      <Image
+                        src="/Images/checkbox.png"
+                        alt="checkbox"
+                        height={20}
+                        width={20}
+                      />
                     </div>
                   </div>
                 </div>
@@ -269,20 +275,22 @@ export default function BettingPage() {
             </div>
 
             <div className="px-1 md:px-4">
-              <div className="border p-5 border-[#515151] rounded-xl">
-                <div className="flex flex-col gap-4">
+              <div className="border p-5 border-[#515151] rounded-xl md:p-4">
+                <div className="flex flex-col gap-4 md:gap-2">
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-[1px]">
-                      <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
+                        Cash used
+                      </p>
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${Math.round(orderDetails?.before_pledge)}
                       </p>
                     </div>
                     <div className="flex flex-col gap-[1px] items-end">
-                      <p className="text-[#5D5D5D] text-[13px]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                         Leverage cash value
                       </p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${Math.round(orderDetails?.before_wager)}{" "}
                         <span className="text-sm text-[#E49C29]">
                           x {orderDetails?.before_leverage}
@@ -293,16 +301,18 @@ export default function BettingPage() {
 
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-[1px]">
-                      <p className="text-[#5D5D5D] text-[13px]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                         Projected payout
                       </p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${Math.round(orderDetails?.before_payout)}
                       </p>
                     </div>
                     <div className="flex flex-col gap-[1px] items-end">
-                      <p className="text-[#5D5D5D] text-[13px]">Your return</p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
+                        Your return
+                      </p>
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         +{orderDetails?.before_return.toFixed(0)} %
                       </p>
                     </div>
@@ -310,36 +320,42 @@ export default function BettingPage() {
                 </div>
 
                 <div className="flex justify-between mt-5">
-                  <p className="text-[#FF2E2E] text-[17px]">Stop level</p>
-                  <button className="bg-[#FF2E2E] rounded-md px-3 py-1">
+                  <p className="text-[#FF2E2E] text-[17px] md:text-[12px]">
+                    Stop level
+                  </p>
+                  <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
                     {(orderDetails?.before_stop_probability * 100).toFixed(0)}%
                   </button>
                 </div>
               </div>
-              <div className="flex justify-between items-center px-3 py-5">
+              <div className="flex justify-between items-center px-3 py-5 md:py-3">
                 <Image src="/Images/down.png" alt="" height={10} width={10} />
-                <div className="flex items-center gap-4">
-                  <p className="text-[13px] text-[#5D5D5D]">Cash used</p>
+                <div className="flex items-center gap-4 md:items-end">
+                  <p className="text-[13px] text-[#5D5D5D] md:text-[11px] md:mb-1">
+                    Cash used
+                  </p>
                   <p className="text-[22px] text-[#00FFB8]">
                     ${orderDetails?.wager}
                   </p>
                 </div>
                 <Image src="/Images/down.png" alt="" height={10} width={10} />
               </div>
-              <div className="border p-5 border-[#515151] rounded-xl">
-                <div className="flex flex-col gap-4">
+              <div className="border p-5 border-[#515151] rounded-xl md:p-4">
+                <div className="flex flex-col gap-4 md:gap-2">
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-[1px]">
-                      <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
+                        Cash used
+                      </p>
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${Math.round(orderDetails?.after_pledge)}
                       </p>
                     </div>
                     <div className="flex flex-col gap-[1px] items-end">
-                      <p className="text-[#5D5D5D] text-[13px]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                         Leverage cash value
                       </p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${Math.round(orderDetails?.after_wager)}{" "}
                         <span className="text-sm text-[#E49C29]">
                           x {orderDetails?.after_leverage}
@@ -350,16 +366,18 @@ export default function BettingPage() {
 
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-[1px]">
-                      <p className="text-[#5D5D5D] text-[13px]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                         Projected payout
                       </p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${Math.round(orderDetails?.after_payout)}
                       </p>
                     </div>
                     <div className="flex flex-col gap-[1px] items-end">
-                      <p className="text-[#5D5D5D] text-[13px]">Your return</p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
+                        Your return
+                      </p>
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         +{orderDetails?.after_return.toFixed(0)} %
                       </p>
                     </div>
@@ -367,8 +385,10 @@ export default function BettingPage() {
                 </div>
 
                 <div className="flex justify-between mt-5">
-                  <p className="text-[#FF2E2E] text-[17px]">Stop level</p>
-                  <button className="bg-[#FF2E2E] rounded-md px-3 py-1">
+                  <p className="text-[#FF2E2E] text-[17px] md:text-[12px]">
+                    Stop level
+                  </p>
+                  <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
                     {(orderDetails?.after_stop_probability * 100).toFixed(0)}%
                   </button>
                 </div>
@@ -378,13 +398,16 @@ export default function BettingPage() {
             <div className="px-5">
               <button
                 onClick={handleSubmit}
-                className="text-[#00FFB8] w-full border border-[#00FFB8] mt-8 py-4 rounded-2xl"
+                className="text-[#00FFB8] w-full border border-[#00FFB8] mt-8 py-4 rounded-2xl md:py-3 md:text-[12px]"
               >
                 Proceed
               </button>
             </div>
           </div>
         </div>
+      </div>
+      <div className="md:block hidden">
+        <Footer />
       </div>
     </div>
   );

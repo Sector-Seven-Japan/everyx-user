@@ -10,7 +10,6 @@ import CategoryInfo from "@/components/CategoryInfo";
 import HeadingSlider from "@/components/HeadingSlider";
 import Footer from "@/components/Footer";
 
-
 interface WagerPayload {
   event_id: string;
   event_outcome_id: string;
@@ -104,9 +103,7 @@ export default function Order() {
   const fetchEvent = async () => {
     if (!categoryId) return;
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/events/${categoryId}`
-      );
+      const response = await fetch(`${API_BASE_URL}/events/${categoryId}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -210,14 +207,16 @@ export default function Order() {
   return (
     <div>
       <Navbar />
-      <HeadingSlider filter={filter} setFilter={setFilter} />
-      <div className="flex md:px-[120px]">
-        <div className="md:w-[70%] md:block hidden">
+      <div className="hidden md:block"><HeadingSlider filter={filter} setFilter={setFilter} /></div>
+      <div className="flex flex-col md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
+        <div className="md:w-full md:block hidden">
           {eventData ? (
             <>
               <CategoryInfo eventData={eventData} />
               <div className="px-5">
-                <h1 className="text-[23px] mb-8 mt-5">Live Chart</h1>
+                <h1 className="text-[23px] mb-8 mt-5 md:text-[16px]">
+                  Live Chart
+                </h1>
                 {isLoaingGraph ? (
                   <div className="flex justify-center items-center h-40">
                     <p className="text-[#00FFBB] text-lg">Loading graph...</p>
@@ -234,36 +233,44 @@ export default function Order() {
             </p>
           )}
         </div>
-        <div className="md:w-[30%] w-full">
-          <div className="pb-10 md:mt-5 md:bg-[#141414] md:rounded-xl">
+        <div>
+          <div className="pb-10 md:mt-5 md:bg-[#141414] md:rounded-xl md:w-[280px] sticky top-[70px]">
             <div className="p-5">
-              <h1 className="text-[22px] mt-3 text-center">Your Order</h1>
+              <h1 className="text-[22px] mt-3 text-center md:text-[18px]">
+                Your Order
+              </h1>
               <div>
                 <div className="flex mt-7 gap-3">
-                  <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md">
+                  <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[10px]">
                     {eventData?.category?.name?.split(" ")[0]}
                   </button>
                   <p className="text-[#2DC198] flex gap-1 items-center font-light">
-                    <Image
-                      src={"/Images/FreeClock i.png"}
-                      alt="clock"
-                      height={18}
-                      width={18}
-                    />
-                    <p className="text-[#2DC198] text-[12px]">{countdown}</p>
+                    <div className="md:w-3">
+                      <Image
+                        src={"/Images/FreeClock i.png"}
+                        alt="clock"
+                        height={18}
+                        width={18}
+                      />
+                    </div>
+                    <p className="text-[#2DC198] md:text-[10px]">
+                      {countdown}
+                    </p>
                   </p>
                 </div>
-                <p className="text-[21px] md:text-[15px] font-light mt-4">
+                <p className="text-[21px] md:text-[12px] font-light mt-4">
                   {eventData?.description}
                 </p>
-                <p className="text-[#3E3E3E] mt-2 md:text-[1vw]">ID: NDSJHDH676235</p>
+                <p className="text-[#3E3E3E] mt-2 md:text-[12px]">
+                  ID: NDSJHDH676235
+                </p>
               </div>
             </div>
 
             {/* Tabs */}
             <div className="flex border-b border-[#363636] pb-[6px] px-5 gap-8 mt-3 md:mt-0">
               <h1
-                className={`text-[17px] relative cursor-pointer md:text-[14px] ${
+                className={`text-[17px] relative cursor-pointer md:text-[12px] ${
                   option === "Order details"
                     ? "text-[#00FFBB]"
                     : "text-[#323232]"
@@ -277,7 +284,7 @@ export default function Order() {
               </h1>
 
               <h1
-                className={`text-[17px] relative cursor-pointer md:text-[14px] ${
+                className={`text-[17px] relative cursor-pointer md:text-[12px] ${
                   option === "Charts" ? "text-[#00FFBB]" : "text-[#323232]"
                 }`}
                 onClick={() => setOption("Charts")}
@@ -294,23 +301,23 @@ export default function Order() {
               <div className="p-5">
                 <div className="flex md:flex-col justify-between mt-5 md:mt-2 md:gap-3">
                   <div>
-                    <p className="text-[#5D5D5D] text-[17px] md:text-[12px] mb-1 md:mb-0">
+                    <p className="text-[#5D5D5D] text-[17px] md:text-[11px] mb-1 md:mb-0">
                       Potential payout
                     </p>
-                    <p className="flex justify-between text-[22px] text-[#00FFB8]">
+                    <p className="flex justify-between text-[22px] text-[#00FFB8] md:text-[16px]">
                       ${Math.round(orderDetails?.indicative_payout)}
-                      <span className="text-[14px] text-[#E49C29] flex items-end">
+                      <span className="text-[14px] text-[#E49C29] flex items-end md:text-[12px]">
                         +{orderDetails?.indicative_return.toFixed(0)}%
                       </span>
                     </p>
                   </div>
                   <div>
-                    <p className="text-[#5D5D5D] text-[17px] md:text-[12px] mb-1 md:mb-0">
+                    <p className="text-[#5D5D5D] text-[17px] md:text-[11px] mb-1 md:mb-0">
                       Your Traded Probability
                     </p>
-                    <p className="flex justify-between text-[22px] text-[#00FFB8]">
+                    <p className="flex justify-between text-[22px] text-[#00FFB8] md:text-[16px]">
                       {Math.round(orderDetails?.new_probability * 100)}%
-                      <span className="text-[14px] text-[#E49C29] flex items-end">
+                      <span className="text-[14px] text-[#E49C29] flex items-end md:text-[12px]">
                         +{(orderDetails?.probability_change * 100).toFixed(1)}%
                       </span>
                     </p>
@@ -321,7 +328,9 @@ export default function Order() {
                 {/* Order Data */}
                 <div className="mb-6">
                   <div className="flex flex-col gap-2">
-                    <p className="text-[19px] font-light md:text-[1.1vw]">{selectedOrder}</p>
+                    <p className="text-[19px] font-light md:text-[12px]">
+                      {selectedOrder}
+                    </p>
                     <div className="flex justify-between items-center gap-2">
                       <div className="w-[80%] h-[19px]">
                         <div
@@ -333,16 +342,16 @@ export default function Order() {
                           }}
                         ></div>
                       </div>
-                      <p className="text-[19px] font-light md:text-[1vw]">
+                      <p className="text-[19px] font-light md:text-[12px]">
                         {Math.round(orderDetails?.new_probability * 100)}%
                       </p>
                       <div className="md:w-3">
-                      <Image
-                        src="/Images/checkbox.png"
-                        alt="checkbox"
-                        height={20}
-                        width={20}
-                      />
+                        <Image
+                          src="/Images/checkbox.png"
+                          alt="checkbox"
+                          height={20}
+                          width={20}
+                        />
                       </div>
                     </div>
                   </div>
@@ -352,8 +361,10 @@ export default function Order() {
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-[1px]">
-                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">Cash used</p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
+                        Cash used
+                      </p>
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${Math.round(orderDetails?.after_pledge)}
                       </p>
                     </div>
@@ -361,9 +372,9 @@ export default function Order() {
                       <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                         Leverage cash value
                       </p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${Math.round(orderDetails?.after_wager)}{" "}
-                        <span className="text-sm text-[#E49C29]">
+                        <span className="text-sm text-[#E49C29] md:text-[12px]">
                           x {orderDetails?.after_leverage}
                         </span>
                       </p>
@@ -375,13 +386,15 @@ export default function Order() {
                       <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                         Projected payout
                       </p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${Math.round(orderDetails?.after_payout)}
                       </p>
                     </div>
                     <div className="flex flex-col gap-[1px] items-end">
-                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">Your return</p>
-                      <p className="text-[22px] text-[#00FFB8]">
+                      <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
+                        Your return
+                      </p>
+                      <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                         +{orderDetails?.after_return.toFixed(0)} %
                       </p>
                     </div>
@@ -389,7 +402,9 @@ export default function Order() {
                 </div>
 
                 <div className="flex justify-between mt-7 md:items-center">
-                  <p className="text-[#FF2E2E] text-[17px] md:text-[14px]">Stop level</p>
+                  <p className="text-[#FF2E2E] text-[17px] md:text-[12px]">
+                    Stop level
+                  </p>
                   <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
                     {(orderDetails?.after_stop_probability * 100).toFixed(0)}%
                   </button>
@@ -402,7 +417,9 @@ export default function Order() {
                   {/* Order Data */}
                   <div className="mb-6">
                     <div className="flex flex-col gap-2 mb-5">
-                      <p className="text-[19px] font-light md:text-[1.1vw]">{selectedOrder}</p>
+                      <p className="text-[19px] font-light md:text-[1.1vw]">
+                        {selectedOrder}
+                      </p>
                       <div className="flex justify-between items-center gap-2">
                         <div className="w-[80%] h-[19px]">
                           <div
@@ -418,12 +435,12 @@ export default function Order() {
                           {Math.round(orderDetails?.current_probability * 100)}%
                         </p>
                         <div className="md:w-3">
-                        <Image
-                          src="/Images/checkbox.png"
-                          alt="checkbox"
-                          height={20}
-                          width={20}
-                        />
+                          <Image
+                            src="/Images/checkbox.png"
+                            alt="checkbox"
+                            height={20}
+                            width={20}
+                          />
                         </div>
                       </div>
                     </div>
@@ -436,7 +453,7 @@ export default function Order() {
             <div className="px-5">
               <button
                 onClick={handleSubmit}
-                className="text-[#00FFB8] w-full border border-[#00FFB8] mt-6 py-4 rounded-2xl md:py-2 md:rounded-xl md:text-[14px]"
+                className="text-[#00FFB8] w-full border border-[#00FFB8] mt-6 md:mt-0 py-4 rounded-2xl md:py-2 md:rounded-xl md:text-[14px]"
               >
                 Proceed
               </button>
@@ -445,7 +462,7 @@ export default function Order() {
         </div>
       </div>
       <div className="hidden md:block">
-      <Footer/>
+        <Footer />
       </div>
     </div>
   );

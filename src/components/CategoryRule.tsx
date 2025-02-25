@@ -5,8 +5,8 @@ export default function CategoryRule() {
 
   return (
     <div className="px-5 mt-10">
-      <h1 className="text-[23px] mb-8">Rule</h1>
-      <p className={`text-[15px] font-light text-[#adadad] ${expanded ? "" : "line-clamp-6 overflow-hidden"}`}>
+      <h1 className="text-[23px] mb-8 md:text-[16px]">Rules</h1>
+      <p className={`text-[15px] font-light text-[#adadad] md:text-[12px] ${expanded ? "" : "line-clamp-6 overflow-hidden md:line-clamp-none"}`}>
         This market will resolve to &quot;Yes&quot; if both of the following two
         conditions are met: <br /><br />
         1) Donald J. Trump wins the 2024 US Presidential election. <br /><br />
@@ -22,7 +22,7 @@ export default function CategoryRule() {
         this market will resolve based on who is inaugurated.
       </p>
       <button
-        className="text-sm border border-[#fff] w-full rounded-md mb-2 py-3 mt-6"
+        className="text-sm border border-[#fff] w-full rounded-md mb-2 py-3 mt-6 md:hidden"
         onClick={() => setExpanded(!expanded)}
       >
         {expanded ? "View Less" : "View More"}

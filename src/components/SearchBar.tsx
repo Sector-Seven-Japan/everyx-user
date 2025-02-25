@@ -8,11 +8,12 @@ interface searchProps {
 export default function SearchBar({ search, setSearch }: searchProps) {
   return (
     <div className="md:px-40">
-      <h1 className="text-center hidden md:block text-[40px] md:mt-16">
-        Search Marcket with EveryX
+      <h1 className="text-center hidden md:block text-[36px] md:mt-16 cambria">
+        Search Market with EveryX
       </h1>
       <div className="flex gap-3 px-4 py-2 md:py-3 rounded-2xl md:rounded-3xl bg-[#161616] mx-5 mt-7 items-center">
         {/* Search Icon */}
+
         <Image
           className="pl-2"
           src="/Images/search.svg"
