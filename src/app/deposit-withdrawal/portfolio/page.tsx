@@ -172,7 +172,7 @@ const Portfolio: React.FC = () => {
             <div className="flex w-36 bg-[rgba(255,255,255,0.1)] rounded-md justify-between items-center px-2 py-1">
               <div className="text-[14px]">{filter}</div>
               <div
-                className="flex justify-center items-center flex-col gap-1"
+                className="flex justify-center items-center flex-col gap-1 cursor-pointer"
                 onClick={() => {
                   setOpen((con) => !con);
                 }}
@@ -194,7 +194,7 @@ const Portfolio: React.FC = () => {
                 setFilter("All");
                 setOpen(false);
               }}
-              className="bg-transparent hover:bg-white/10 transition duration-300  pl-5 text-[14px]"
+              className="bg-transparent hover:bg-white/10 transition duration-300  pl-5 text-[14px] cursor-pointer"
             >
               All
             </div>
@@ -203,7 +203,7 @@ const Portfolio: React.FC = () => {
                 setFilter("Active");
                 setOpen(false);
               }}
-              className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
+              className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
             >
               Active
             </div>
@@ -212,7 +212,7 @@ const Portfolio: React.FC = () => {
                 setFilter("Success");
                 setOpen(false);
               }}
-              className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
+              className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
             >
               Success
             </div>
@@ -221,7 +221,7 @@ const Portfolio: React.FC = () => {
                 setFilter("Failed");
                 setOpen(false);
               }}
-              className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
+              className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
             >
               Failed
             </div>
@@ -369,7 +369,7 @@ const Portfolio: React.FC = () => {
                   <div className="flex w-36 bg-[rgba(255,255,255,0.1)] rounded-md justify-between items-center px-2 py-1">
                     <div className="text-[14px]">{filter}</div>
                     <div
-                      className="flex justify-center items-center flex-col gap-1"
+                      className="flex justify-center items-center flex-col gap-1 cursor-pointer"
                       onClick={() => {
                         setOpen((con) => !con);
                       }}
@@ -389,7 +389,7 @@ const Portfolio: React.FC = () => {
                         setFilter("All");
                         setOpen(false);
                       }}
-                      className="bg-transparent hover:bg-white/10 transition duration-300  pl-5 text-[14px]"
+                      className="bg-transparent hover:bg-white/10 transition duration-300  pl-5 text-[14px] cursor-pointer"
                     >
                       All
                     </div>
@@ -398,7 +398,7 @@ const Portfolio: React.FC = () => {
                         setFilter("Active");
                         setOpen(false);
                       }}
-                      className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
+                      className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
                     >
                       Active
                     </div>
@@ -407,7 +407,7 @@ const Portfolio: React.FC = () => {
                         setFilter("Success");
                         setOpen(false);
                       }}
-                      className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
+                      className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
                     >
                       Success
                     </div>
@@ -416,7 +416,7 @@ const Portfolio: React.FC = () => {
                         setFilter("Failed");
                         setOpen(false);
                       }}
-                      className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px]"
+                      className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
                     >
                       Failed
                     </div>
