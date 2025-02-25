@@ -290,6 +290,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
 
+
   // API Calls
   const fetchCategories = async () => {
     try {

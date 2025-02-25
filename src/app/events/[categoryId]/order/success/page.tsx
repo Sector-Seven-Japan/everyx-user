@@ -1,5 +1,10 @@
 "use client";
 import { AppContext } from "@/app/Context/AppContext";
+import CategoryInfo from "@/components/CategoryInfo";
+import CategoryRule from "@/components/CategoryRule";
+import DrawGraph from "@/components/DrawGraph";
+import Footer from "@/components/Footer";
+import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -25,6 +30,25 @@ interface EventData {
   event_images_url: string[];
 }
 
+interface GraphData {
+  datetime: string;
+  event_id: string;
+  event_outcome_id: string;
+  probability: number;
+  timestamp: string;
+  value: number;
+  estimated_payout: number;
+  num_wagers: number;
+  sum_wagers: number;
+}
+
+interface EventHistoryParams {
+  precision?: "hour" | "day" | "month";
+  from?: string;
+  to?: string;
+  eventId: string;
+}
+
 export default function OrderSuccess() {
   const router = useRouter();
   const {
@@ -33,15 +57,22 @@ export default function OrderSuccess() {
     selectedOrder,
     API_BASE_URL,
     getCountdown,
+    filter,
+    setFilter,
   } = useContext(AppContext);
   const categoryId = orderDetails?.event_id;
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [countdown, setCountdown] = useState<string>("");
+  const [isLoaingGraph, setIsLoadingGraph] = useState(true);
+  console.log(isLoaingGraph);
+  const [graphData, setGraphData] = useState<GraphData[]>([]);
 
   const fetchEvent = async () => {
     if (!categoryId) return;
     try {
-      const response = await fetch(`${API_BASE_URL}/events/${categoryId}`);
+      const response = await fetch(
+        `${API_BASE_URL}/events/${categoryId}`
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -69,120 +100,210 @@ export default function OrderSuccess() {
     }
   }, [eventData?.ends_at, getCountdown]);
 
+  useEffect(() => {
+    const getGraphData = async ({
+      eventId,
+      precision = "hour",
+      from,
+      to,
+    }: EventHistoryParams) => {
+      try {
+        // Build URL with query parameters
+        const params = new URLSearchParams();
+        if (precision) params.append("precision", precision);
+        if (from) params.append("from", from);
+        if (to) params.append("to", to);
+
+        const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        // console.log("data at getGraphData", data);
+        return data;
+      } catch (error) {
+        console.error("Error getting graph data:", error);
+        throw error; // Re-throw the error to handle it in the calling code
+      }
+    };
+
+    const fetchData = async () => {
+      try {
+        if (eventData) {
+          const currentDate = new Date().toISOString();
+          const data = await getGraphData({
+            eventId: eventData?._id,
+            precision: "hour",
+            from: "2025-02-01T18:30:00.000Z",
+            to: currentDate,
+          });
+          setGraphData(data);
+        }
+      } catch (error) {
+        // Handle error appropriately
+        console.error("Failed to fetch graph data:", error);
+      } finally {
+        setIsLoadingGraph(false); // Stop loading
+      }
+    };
+
+    fetchData();
+  }, [eventData?._id, API_BASE_URL]);
+
   return (
     <div>
       <Navbar />
-      <div className="px-8 py-5">
-        <div className="flex flex-col items-center justify-center text-center gap-8 mt-5">
-          <Image
-            src="/Icons/SuccessIcon.png"
-            alt=""
-            width={70}
-            height={70}
-          ></Image>
-          <p className="text-lg font-light">
-            Your order has been successfully processed!
-          </p>
-        </div>
-
-        <div className="mt-20">
-          <div className="flex gap-3">
-            <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md">
-              {eventData?.category?.name?.split(" ")[0]}
-            </button>
-            <p className="text-[#2DC198] flex gap-1 items-center font-light">
-              <Image
-                src={"/Images/FreeClock i.png"}
-                alt="clock"
-                height={18}
-                width={18}
-              />
-              {countdown}
+      <HeadingSlider filter={filter} setFilter={setFilter} />
+      <div className="flex md:px-[120px]">
+        <div className="md:w-[70%] md:block hidden">
+          {eventData ? (
+            <>
+              <CategoryInfo eventData={eventData} />
+              <div className="px-5">
+                <h1 className="text-[23px] mb-8 mt-5">Live Chart</h1>
+                {isLoaingGraph ? (
+                  <div className="flex justify-center items-center h-40">
+                    <p className="text-[#00FFBB] text-lg">Loading graph...</p>
+                  </div>
+                ) : (
+                  <DrawGraph data={graphData} />
+                )}
+              </div>
+              <CategoryRule />
+            </>
+          ) : (
+            <p className="text-center text-gray-500">
+              Loading event details...
             </p>
-          </div>
-          <p className="text-[21px] font-light mt-4">
-            {eventData?.description}
-          </p>
-          <p className="text-[#3E3E3E] mt-2">ID: NDSJHDH676235</p>
-
-          <div className="h-[0.5px] w-[70%] mb-6 border-t border-dashed mx-auto mt-6 border-[#575757]"></div>
-
-          <div className="mb-8">
-            <div className="flex flex-col gap-2">
-              <p className="text-[19px] font-light">{selectedOrder}</p>
-              <div className="flex justify-between items-center gap-2">
-                <div className="w-[80%] h-[19px]">
-                  <div
-                    className="h-[19px] rounded-lg bg-[#00FFBB]"
-                    style={{
-                      width: `${Math.round(
-                        orderDetails?.new_probability * 100
-                      )}%`,
-                    }}
-                  ></div>
-                </div>
-                <p className="text-[19px] font-light">
-                  {Math.round(orderDetails?.new_probability * 100)}%
-                </p>
+          )}
+        </div>
+        <div className="md:w-[30%] w-full">
+          <div className="px-8 py-5 md:bg-[#141414] md:rounded-xl md:mt-5 md:px-5">
+            <h1 className="text-center hidden md:block">Your Order</h1>
+            <div className="flex flex-col items-center justify-center text-center gap-8 mt-5 md:gap-2">
+              <div className="md:w-8">
                 <Image
-                  src="/Images/checkbox.png"
-                  alt="checkbox"
-                  height={20}
-                  width={20}
-                />
-                {countdown}
+                  src="/Icons/SuccessIcon.png"
+                  alt=""
+                  width={70}
+                  height={70}
+                ></Image>
+              </div>
+              <p className="text-lg font-light md:text-[12px]">
+                Your order has been successfully processed!
+              </p>
+            </div>
+
+            <div className="mt-20 md:mt-5">
+              <div className="flex gap-3">
+                <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md">
+                  {/* {eventData?.category?.name?.split(" ")[0]} */}sports
+                </button>
+                <p className="text-[#2DC198] flex gap-1 items-center font-light">
+                  <Image
+                    src={"/Images/FreeClock i.png"}
+                    alt="clock"
+                    height={18}
+                    width={18}
+                  />
+                  <p className="text-[12px] text-[#2DC198]">{countdown}</p>
+                </p>
+              </div>
+              <p className="text-[21px] font-light mt-4 md:text-[12px]">
+                {eventData?.description}
+              </p>
+              <p className="text-[#3E3E3E] mt-2 md:text-[1vw]">ID: NDSJHDH676235</p>
+
+              <div className="h-[0.5px] w-[70%] mb-6 border-t border-dashed mx-auto mt-6 border-[#575757]"></div>
+
+              <div className="mb-8">
+                <div className="flex flex-col gap-2">
+                  <p className="text-[19px] font-light md:text-[1.1vw]">{selectedOrder}</p>
+                  <div className="flex justify-between items-center gap-2">
+                    <div className="w-[80%] h-[19px]">
+                      <div
+                        className="h-[19px] rounded-lg bg-[#00FFBB] md:h-[14px]"
+                        style={{
+                          width: `${Math.round(
+                            orderDetails?.new_probability * 100
+                          )}%`
+                        }}
+                      ></div>
+                    </div>
+                    <p className="text-[19px] font-light md:text-[1vw]">
+                      {Math.round(orderDetails?.new_probability * 100)}%
+                    </p>
+                    <div className="md:w-3">
+                    <Image
+                      src="/Images/checkbox.png"
+                      alt="checkbox"
+                      height={20}
+                      width={20}
+                    />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-[0.5px] w-[70%] mb-6 border-t border-dashed mx-auto mt-6 border-[#575757]"></div>
+
+              <div className="flex justify-between">
+                <div className="flex flex-col gap-[1px]">
+                  <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">Cash used</p>
+                  <p className="text-[22px] text-[#00FFB8]">
+                    ${Math.round(orderDetails?.after_pledge)}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-[1px] items-end">
+                  <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
+                    Leverage cash value
+                  </p>
+                  <p className="text-[22px] text-[#00FFB8]">
+                    ${Math.round(orderDetails?.after_wager)}{" "}
+                    <span className="text-sm text-[#E49C29]">
+                      x {orderDetails?.after_leverage}
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="h-[0.5px] w-[70%] mb-6 border-t border-dashed mx-auto mt-6 border-[#575757]"></div>
-
-          <div className="flex justify-between">
-            <div className="flex flex-col gap-[1px]">
-              <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
-              <p className="text-[22px] text-[#00FFB8]">
-                ${Math.round(orderDetails?.after_pledge)}
-              </p>
+            <div className="flex flex-col mt-10 gap-4 md:gap-2">
+              <button
+                onClick={() => {
+                  setIsLoading(true);
+                  router.push(`/events/${categoryId}`);
+                }}
+                className="bg-[#00FFB8] py-3 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[14px] md:py-3"
+              >
+                Trade on this event again
+                <div className="md:w-2">
+                <Image
+                  src="/Images/rightarrowicon.png"
+                  alt=""
+                  height={15}
+                  width={12}
+                />
+                </div>
+              </button>
+              <button
+                onClick={() => {
+                  setIsLoading(true);
+                  router.push("/deposit-withdrawal/history");
+                }}
+                className="bg-[#222222] py-3 rounded-md text-[#00FFB8] text-[18px] md:text-[14px] md:py-3"
+              >
+                View in Portfolio
+              </button>
             </div>
-            <div className="flex flex-col gap-[1px] items-end">
-              <p className="text-[#5D5D5D] text-[13px]">Leverage cash value</p>
-              <p className="text-[22px] text-[#00FFB8]">
-                ${Math.round(orderDetails?.after_wager)}{" "}
-                <span className="text-sm text-[#E49C29]">
-                  x {orderDetails?.after_leverage}
-                </span>
-              </p>
-            </div>
           </div>
-        </div>
-
-        <div className="flex flex-col mt-10 gap-4">
-          <button
-            onClick={() => {
-              setIsLoading(true);
-              router.push(`/events/${categoryId}`);
-            }}
-            className="bg-[#00FFB8] py-3 rounded-md text-black text-[18px] flex items-center justify-center gap-3"
-          >
-            Trade on this event again
-            <Image
-              src="/Images/rightarrowicon.png"
-              alt=""
-              height={15}
-              width={12}
-            />
-          </button>
-          <button
-            onClick={() => {
-              setIsLoading(true);
-              router.push("/deposit-withdrawal/history");
-            }}
-            className="bg-[#222222] py-3 rounded-md text-[#00FFB8] text-[18px]"
-          >
-            View in Portfolio
-          </button>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

@@ -70,9 +70,9 @@ export default function Category({ item }: CategoryProps) {
   }
 
   return (
-    <div className="px-5 py-8">
+    <div className="px-5 py-8 md:px-[76px]">
       <div className="flex justify-between">
-        <h1 className="text-xl mb-6">{item?.name}</h1>
+        <h1 className="text-xl mb-6 md:text-[25px] md:mb-10">{item?.name}</h1>
         <button
           onClick={() => {
             setFilter(item?.name);
@@ -83,9 +83,9 @@ export default function Category({ item }: CategoryProps) {
           View ALL
         </button>
       </div>
-      <div className="flex flex-col gap-6">
-        {events.slice(0,3).map((eventItem) => (
-          <CategoryCard key={eventItem._id} item={eventItem} />
+      <div className="grid grid-cols-1 md:grid-cols-4 md:gap-x-5">
+        {events.slice(0, 3).map((eventItem) => (
+          <CategoryCard key={eventItem._id} item={eventItem} showChart={false} showPrediction={false} showTime={true}/>
         ))}
       </div>
     </div>
