@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Zen_Kaku_Gothic_Antique, Zen_Antique } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Zen_Kaku_Gothic_Antique,
+  Zen_Antique,
+} from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "./Context/AppContext";
 import LayoutContent from "./LayoutContent";
