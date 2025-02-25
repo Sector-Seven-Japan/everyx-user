@@ -4,6 +4,8 @@ import { useContext } from "react";
 import { AppContext } from "./Context/AppContext";
 import Loader from "@/components/Loader/Loader";
 import { ToastContainer } from "react-toastify";
+import Menu from "@/components/Menu";
+
 
 export default function LayoutContent({
   children,
@@ -15,7 +17,8 @@ export default function LayoutContent({
   return (
     <>
       {isLoading && <Loader />}
-      {children}
+      <div className="mt-14">{children}</div>
+      <Menu />
       <ToastContainer
         position="top-center"
         autoClose={2000}

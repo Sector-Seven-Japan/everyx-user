@@ -309,6 +309,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
   // API Calls
   const fetchCategories = async () => {
     try {

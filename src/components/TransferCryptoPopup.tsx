@@ -86,13 +86,15 @@ export default function TransferCryptoPopup({
       {/* QR Code */}
       <div className="flex h-56 w-full items-center justify-center">
         {data && (
-          <QRCodeCanvas
-            value={data}
-            size={180}
-            fgColor="#000000"
-            bgColor="#ffffff"
-            level="Q"
-          />
+          <div className="p-1 border border-[#434343] rounded-lg bg-white">
+            <QRCodeCanvas
+              value={data}
+              size={180}
+              fgColor="#000"
+              bgColor="#fff"
+              level="Q"
+            />
+          </div>
         )}
       </div>
 
