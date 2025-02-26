@@ -44,7 +44,7 @@ export default function LoginPage() {
           setAuthToken(data.token);
           setIsLoggedIn(true);
           // Redirect to home page
-          router.push("/home");
+          router.push("/trade");
         } else {
           console.error("No token received from server");
         }
@@ -71,7 +71,7 @@ export default function LoginPage() {
 
   const handleContinue = async () => {
     if (!email) return;
-
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${API_BASE_URL}/auth/v2/user/exists/${email}`
@@ -83,6 +83,7 @@ export default function LoginPage() {
 
       if (!data) {
         setPopupContent("new user");
+        setIsLoading(false);
       } else {
         const res = await fetch(`${API_BASE_URL}/auth/v2/login/${email}`);
         if (!res.ok) throw new Error("Failed to log in user");
@@ -91,6 +92,7 @@ export default function LoginPage() {
       }
 
       setShowPopup(true);
+      setIsLoading(false);
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -116,7 +118,7 @@ export default function LoginPage() {
           localStorage.setItem("authToken", data.token);
           setAuthToken(data.token);
           setIsLoggedIn(true);
-          router.push("/home");
+          router.push("/trade");
         }
       } catch (error) {
         console.error("Error connecting wallet:", error);
@@ -249,14 +251,18 @@ export default function LoginPage() {
                 ? "It looks like you're new here! Create an account to get started."
                 : `We've sent a confirmation link to ${email}. Please check your inbox.`}
             </p>
-            <button
-              onClick={() => {
-                router.push(`/auth/signup?email=${encodeURIComponent(email)}`);
-              }}
-              className="px-3 py-2 mt-4 border border-[#00FFBB] rounded-md text-sm"
-            >
-              Continue
-            </button>
+            {popupContent === "new user" && (
+              <button
+                onClick={() => {
+                  router.push(
+                    `/auth/signup?email=${encodeURIComponent(email)}`
+                  );
+                }}
+                className="px-3 py-2 mt-4 border border-[#00FFBB] rounded-md text-sm"
+              >
+                Continue
+              </button>
+            )}
           </div>
         </div>
       )}

@@ -62,10 +62,8 @@ const TransactionButton: React.FC<TransactionButtonProps> = ({
 
 const HistoryMobile: React.FC = () => {
   const { authToken, API_BASE_URL, setIsLoading } = useContext(AppContext);
-
   const [wallet, setWallet] = useState<WalletResponse[]>([]);
   const [transactions, setTransactions] = useState<TransactionsResponse[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const getWalletData = async () => {
     try {
@@ -127,7 +125,7 @@ const HistoryMobile: React.FC = () => {
         <CurrentCashBalanceCard />
 
         <div className="my-10">
-          <CashWithdrawalCategories openDepositPopup={() => setIsOpen(true)} />
+          <CashWithdrawalCategories/>
         </div>
 
         <p className="text-[14px] text-center font-semibold">
@@ -174,7 +172,7 @@ const HistoryMobile: React.FC = () => {
           ))}
         </div>
       </div>
-      <DepositPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <DepositPopup/>
     </>
   );
 };

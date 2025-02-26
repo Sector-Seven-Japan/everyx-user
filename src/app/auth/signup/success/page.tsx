@@ -8,7 +8,7 @@ export default function SuccessPage() {
   const router = useRouter();
 
   const handleNextClick = () => {
-    router.push("/home"); // Redirect to home
+    router.push("/trade"); // Redirect to home
   };
 
   return (

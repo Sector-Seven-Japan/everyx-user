@@ -16,7 +16,7 @@ export default function AuthLogin() {
       localStorage.setItem("authToken", token); // Set token in local storage
       setAuthToken(token);
       setIsLoggedIn(true);
-      router.push("/home");
+      router.push("/trade");
     }
   }, [token, setAuthToken, setIsLoggedIn, router]);
 
