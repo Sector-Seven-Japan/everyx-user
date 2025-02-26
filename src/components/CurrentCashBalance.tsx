@@ -106,14 +106,18 @@ const CurrentCashBalanceCard: React.FC = () => {
                 <span className="text-[22px]">
                   $
                   {
-                    userStats?.best_case_fund_available
+                    (userStats?.best_case_fund_available || "0")
                       .toLocaleString()
                       .split(".")[0]
                   }
                 </span>
                 <span className="text-[14px]">
                   .
-                  {userStats?.best_case_fund_available.toFixed(2).split(".")[1]}
+                  {
+                    (userStats?.best_case_fund_available || 0.0)
+                      .toFixed(2)
+                      .split(".")[1]
+                  }
                 </span>
               </span>
             </div>
@@ -125,7 +129,7 @@ const CurrentCashBalanceCard: React.FC = () => {
                 <span className="text-[22px]">
                   $
                   {
-                    userStats?.best_case_cumulative_profit
+                    (userStats?.best_case_cumulative_profit || "0")
                       .toLocaleString()
                       .split(".")[0]
                   }
@@ -133,7 +137,7 @@ const CurrentCashBalanceCard: React.FC = () => {
                 <span className="text-[14px]">
                   .
                   {
-                    userStats?.best_case_cumulative_profit
+                    (userStats?.best_case_cumulative_profit || 0.0)
                       .toFixed(2)
                       .split(".")[1]
                   }

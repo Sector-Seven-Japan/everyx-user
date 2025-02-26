@@ -60,10 +60,10 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
           </p>
           <div className="flex justify-center mt-4 items-baseline font-bold">
             <span className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[20px]">
-              ${userStats?.fund_available.toString().split(".")[0]}
+              ${(userStats?.fund_available || "0").toString().split(".")[0]}
             </span>
             <span className="text-[14px] sm:text-[16px] md:text-[18px] lg:text-[18px]">
-              .{userStats?.fund_available.toFixed(2).split(".")[1]}
+              .{(userStats?.fund_available || 0.0).toFixed(2).split(".")[1]}
             </span>
           </div>
 
@@ -87,7 +87,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   <span className="text-[14px] sm:text-[10px] md:text-[14px] lg:text-[14px]">
                     $
                     {
-                      userStats?.best_case_fund_available
+                      (userStats?.best_case_fund_available || "0")
                         .toLocaleString()
                         .split(".")[0]
                     }
@@ -95,7 +95,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   <span className="text-[10px] sm:text-[9px] md:text-[11px] lg:text-[12px]">
                     .
                     {
-                      userStats?.best_case_fund_available
+                      (userStats?.best_case_fund_available || 0.0)
                         .toFixed(2)
                         .split(".")[1]
                     }
@@ -111,7 +111,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   <span className="text-[14px] sm:text-[10px] md:text-[14px] lg:text-[14px]">
                     $
                     {
-                      userStats?.best_case_cumulative_profit
+                      (userStats?.best_case_cumulative_profit || "0")
                         .toLocaleString()
                         .split(".")[0]
                     }
@@ -119,7 +119,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   <span className="text-[10px] sm:text-[9px] md:text-[11px] lg:text-[12px]">
                     .
                     {
-                      userStats?.best_case_cumulative_profit
+                      (userStats?.best_case_cumulative_profit || 0.0)
                         .toFixed(2)
                         .split(".")[1]
                     }
