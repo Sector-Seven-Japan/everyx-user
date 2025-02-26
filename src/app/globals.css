@@ -34,9 +34,7 @@ body {
 .Zenfont {
   font-family: "Zen Antique";
 }
-/* :root {
-  --font-noto-sans-jp: "Noto Sans JP", sans-serif;
+
+.cambria{
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
-* body {
-  font-family: var(--font-noto-sans-jp);
-} */

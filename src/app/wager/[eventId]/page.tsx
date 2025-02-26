@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import CategoryInfo from "@/components/CategoryInfo";
 import CategoryRule from "@/components/CategoryRule";
 import MakeOrderDesktop from "@/components/MakeOrderDesktop";
+import Footer from "@/components/Footer";
+import HeadingSlider from "@/components/HeadingSlider";
 
 interface WagerData {
   id: string;
@@ -93,6 +95,8 @@ export default function WagerPage() {
     makeOrder,
     setIsOrderMade,
     getCountdown,
+    filter,
+    setFilter,
   } = useContext(AppContext);
   const router = useRouter();
   const [option, setOption] = useState<string>("Order details");
@@ -168,7 +172,8 @@ export default function WagerPage() {
           10
         );
       }
-      if (window.innerWidth >= 768) { // Check if the view is desktop (768px and above)
+      if (window.innerWidth >= 768) {
+        // Check if the view is desktop (768px and above)
         setMarginClicked(true);
       }
     } catch (error) {
@@ -176,8 +181,7 @@ export default function WagerPage() {
     }
   };
 
-  console.log("margin button",marginClicked);
-  
+  console.log("margin button", marginClicked);
 
   const fetchEvent = async () => {
     if (!wagerData?.event_id) return;
@@ -269,8 +273,9 @@ export default function WagerPage() {
   return (
     <div>
       <Navbar />
-      <div className="flex md:px-[120px]">
-        <div className="md:w-[70%] md:block hidden">
+      <div className="md:block hidden"><HeadingSlider filter={filter} setFilter={setFilter} /></div>
+      <div className="flex flex-col md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
+        <div className="md:block hidden md:w-full">
           {eventData ? (
             <>
               <CategoryInfo eventData={eventData} />
@@ -292,30 +297,36 @@ export default function WagerPage() {
             </p>
           )}
         </div>
-        <div className="md:w-[30%]">
+        <div className="relative">
           {!marginClicked ? (
-            <div className="pb-10 md:bg-[#171717] rounded-2xl">
+            <div className="pb-10 md:pb-5 md:bg-[#171717] rounded-2xl sticky top-[70px] md:w-[280px]">
               <div className="p-5 md:mt-5">
-                <h1 className="text-[22px] mt-3 text-center">Your Order</h1>
+                <h1 className="text-[22px] mt-3 text-center md:text-[18px]">
+                  Your Order
+                </h1>
                 <div>
                   <div className="flex mt-7 gap-3">
-                    <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md">
+                    <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md md:text-[10px] md:px-3 md:py-[2px] md:rounded-sm">
                       {eventData && eventData.category.name}
                     </button>
                     <p className="text-[#2DC198] flex gap-1 items-center font-light">
-                      <Image
-                        src={"/Images/FreeClock i.png"}
-                        alt="clock"
-                        height={18}
-                        width={18}
-                      />
-                      <p className="text-[#2DC198] md:text-[12px]">{countdown}</p>
+                      <div className="md:w-3">
+                        <Image
+                          src={"/Images/FreeClock i.png"}
+                          alt="clock"
+                          height={18}
+                          width={18}
+                        />
+                      </div>
+                      <p className="text-[#2DC198] md:text-[11px]">
+                        {countdown}
+                      </p>
                     </p>
                   </div>
-                  <p className="text-[21px] font-light mt-4 md:text-[1vw]">
+                  <p className="text-[21px] font-light mt-4 md:text-[12px] md:mt-3">
                     {wagerData?.event?.description}
                   </p>
-                  <p className="text-[#3E3E3E] mt-2 md:text-[1vw]">
+                  <p className="text-[#3E3E3E] mt-2 md:text-[12px]">
                     ID: NDSJHDH676235
                   </p>
                 </div>
@@ -324,7 +335,7 @@ export default function WagerPage() {
               {/* Tabs */}
               <div className="flex border-b border-[#363636] pb-[6px] px-5 gap-8 mt-3 md:mt-0">
                 <h1
-                  className={`text-[17px] relative cursor-pointer md:text-[14px] ${
+                  className={`text-[17px] relative cursor-pointer md:text-[12px] ${
                     option === "Order details"
                       ? "text-[#00FFBB]"
                       : "text-[#323232]"
@@ -338,7 +349,7 @@ export default function WagerPage() {
                 </h1>
 
                 <h1
-                  className={`text-[17px] relative cursor-pointer md:text-[14px] ${
+                  className={`text-[17px] relative cursor-pointer md:text-[12px] ${
                     option === "Charts" ? "text-[#00FFBB]" : "text-[#323232]"
                   }`}
                   onClick={() => setOption("Charts")}
@@ -355,25 +366,25 @@ export default function WagerPage() {
                 <div className="p-5">
                   <div className="flex md:flex-col justify-between mt-5 md:mt-2 md:gap-3">
                     <div>
-                      <p className="text-[#5D5D5D] text-[17px] md:text-[12px] mb-1 md:mb-0">
+                      <p className="text-[#5D5D5D] text-[17px] md:text-[11px] mb-1 md:mb-0">
                         Potential payout
                       </p>
-                      <p className="flex justify-between text-[22px] text-[#00FFB8]">
+                      <p className="flex justify-between text-[22px] text-[#00FFB8] md:text-[16px]">
                         ${wagerData && Math.round(wagerData?.indicative_payout)}
-                        <span className="text-[14px] text-[#E49C29] flex items-end">
+                        <span className="text-[14px] text-[#E49C29] flex items-end md:text-[12px]">
                           +{wagerData?.indicative_return.toFixed(0)}%
                         </span>
                       </p>
                     </div>
                     <div>
-                      <p className="text-[#5D5D5D] text-[17px] md:text-[12px] mb-1 md:mb-0">
+                      <p className="text-[#5D5D5D] text-[17px] md:text-[11px] mb-1 md:mb-0">
                         Your Traded Probability
                       </p>
-                      <p className="flex justify-between text-[22px] text-[#00FFB8]">
+                      <p className="flex justify-between text-[22px] text-[#00FFB8] md:text-[16px]">
                         {wagerData?.probability &&
                           Math.round(wagerData?.probability * 100).toFixed(0)}
                         %
-                        <span className="text-[14px] text-[#E49C29] flex items-end">
+                        <span className="text-[14px] text-[#E49C29] flex items-end md:text-[12px]">
                           {wagerData &&
                           wagerData?.event?.outcomes[0].histories
                             ?.estimated_probability_24hr_change > 0
@@ -394,7 +405,7 @@ export default function WagerPage() {
                   {/* Order Data */}
                   <div className="mb-6">
                     <div className="flex flex-col gap-2">
-                      <p className="text-[19px] font-light md:text-[1.1vw]">
+                      <p className="text-[19px] font-light md:text-[12px]">
                         {wagerData?.event_outcome_id}.{" "}
                         {wagerData?.event_outcome.name}
                       </p>
@@ -409,7 +420,7 @@ export default function WagerPage() {
                             }}
                           ></div>
                         </div>
-                        <p className="text-[19px] font-light md:text-[1vw]">
+                        <p className="text-[19px] font-light md:text-[12px]">
                           {Math.round((wagerData?.probability ?? 0) * 100)}%
                         </p>
                         <div className="md:w-3">
@@ -428,10 +439,10 @@ export default function WagerPage() {
                   <div className="flex flex-col gap-4">
                     <div className="flex justify-between">
                       <div className="flex flex-col gap-[1px]">
-                        <p className="text-[#5D5D5D] text-[13px] md:text-[12px]">
+                        <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                           Cash used
                         </p>
-                        <p className="text-[22px] text-[#00FFB8]">
+                        <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                           ${wagerData?.pledge.toFixed(1)}
                         </p>
                       </div>
@@ -439,18 +450,18 @@ export default function WagerPage() {
 
                     <div className="flex justify-between">
                       <div className="flex flex-col gap-[1px]">
-                        <p className="text-[#5D5D5D] text-[13px] md:text-[12px]">
+                        <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                           Projected payout
                         </p>
-                        <p className="text-[22px] text-[#00FFB8]">
+                        <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                           ${wagerData?.indicative_payout.toFixed(0)}
                         </p>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
-                        <p className="text-[#5D5D5D] text-[13px] md:text-[12px]">
+                        <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
                           Your return
                         </p>
-                        <p className="text-[22px] text-[#00FFB8]">
+                        <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
                           +{wagerData?.indicative_return.toFixed(0)} %
                         </p>
                       </div>
@@ -524,11 +535,12 @@ export default function WagerPage() {
             </div>
           ) : (
             <div className="hidden md:block md:mt-5">
-              <MakeOrderDesktop/>
+              <MakeOrderDesktop />
             </div>
           )}
         </div>
       </div>
+      <div className="md:block hidden"><Footer /></div>
     </div>
   );
 }

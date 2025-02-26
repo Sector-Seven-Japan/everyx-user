@@ -146,14 +146,16 @@ export default function EventCategoryPageDetails() {
     <div className="relative">
       <Navbar />
       <HeadingSlider filter={filter} setFilter={setFilter} />
-      <div className="flex flex-col md:flex-row md:px-[120px] md:mt-5">
-        <div className="md:w-[73%]">
+      <div className="flex flex-col md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
+        <div className="md:w-full">
           {eventData ? (
             <>
               <CategoryInfo eventData={eventData} />
               <CategoryGraph eventData={eventData} />
               <div className="px-5">
-                <h1 className="text-[23px] mb-8 mt-5">Live Chart</h1>
+                <h1 className="text-[23px] mb-8 mt-5 md:text-[16px]">
+                  Live Chart
+                </h1>
                 {isLoadingGraph ? (
                   <div className="flex justify-center items-center h-40">
                     <p className="text-[#00FFBB] text-lg">Loading graph...</p>
@@ -170,13 +172,13 @@ export default function EventCategoryPageDetails() {
             </p>
           )}
         </div>
-        <div className="w-[27%] mt-5 hidden md:block">
-          <MakeOrderDesktop/>
+        <div className="mt-5 hidden md:block ">
+          <MakeOrderDesktop />
         </div>
       </div>
       <Footer />
       <div className="md:hidden">
-      <MakeOrder />
+        <MakeOrder />
       </div>
     </div>
   );

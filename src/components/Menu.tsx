@@ -65,17 +65,17 @@ export default function Menu() {
 
   return (
     <div 
-      className={`fixed top-0 right-0 w-full z-10 bg-[#0E0E0E] pt-16 h-full transition-all duration-300 ${
+      className={`fixed top-0 right-0 w-full z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 md:w-[25%] ${
         sidebar ? "" : "translate-x-full"
       }`}
     >
       <div className="mt-5 flex flex-row-reverse">
-        <ul className="flex flex-col w-[42%]">
+        <ul className="flex flex-col w-[42%] md:w-[55%]">
           {navbarItems.map((item, index) => (
             <Link
               key={index}
               href={`${item.link}`}
-              className={`pl-8 py-3 relative ${
+              className={`pl-8 py-3 relative md:py-2 md:text-[14px] ${
                 selectedMenu === item.name
                   ? "bg-[#151515] text-white"
                   : "text-[#323232] hover:bg-white hover:bg-opacity-[10%] hover:text-white"
@@ -87,7 +87,7 @@ export default function Menu() {
               }}
             >
               {selectedMenu === item.name && (
-                <div className="bg-white w-[2px] h-4 absolute top-4 left-4"></div>
+                <div className="bg-white w-[2px] h-4 absolute top-4 md:top-3 left-4"></div>
               )}
               {item.name}
             </Link>
@@ -95,16 +95,17 @@ export default function Menu() {
         </ul>
       </div>
 
-      <div className="p-5 mt-36">
+      <div className="p-5 mt-36 md:mt-28">
         {/* Login/Logout Button */}
         <button
-          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200"
+          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-3"
           onClick={() => {
             if (isLoggedIn) {
               handleLogoutUser();
             } else {
               router.push("/login1");
             }
+            setSidebar(false)
           }}
         >
           {isLoggedIn ? "Logout" : "Login / Signup"}

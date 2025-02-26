@@ -44,7 +44,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                 />
               </div>
             ) : (
-              <div className="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center">
+              <div className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center">
                 <MdCamera className="w-8 h-8 text-gray-400" />
               </div>
             )}

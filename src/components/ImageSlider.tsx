@@ -23,19 +23,19 @@ export default function ImageSlider() {
             <div className="h-full w-1/3 relative bg-gray-300">
               <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
             </div>
-            <div className="px-4 py-3 flex flex-col justify-between absolute h-full top-0 left-0">
+            <div className="px-4 py-3 flex flex-col justify-between md:justify-center absolute h-full top-0 left-0">
               <div className="flex items-center gap-4">
-                <div className="bg-white text-black px-2 py-1 rounded-md text-[12px]">
+                <div className="bg-white text-black px-2 py-1 rounded-md text-[12px] md:text-[20px]">
                   Politics
                 </div>
                 <img
-                  className="w-[15px] h-[15px]"
+                  className="w-[15px] h-[15px] md:w-[28px] md:h-[28px]"
                   src="/Images/logo.png"
                   alt=""
                 />
               </div>
               <div>
-                <p className="text-[22px] whitespace-nowrap">{item?.name}</p>
+                <p className="text-[22px] whitespace-nowrap md:text-[65px] cambria">{item?.name}</p>
               </div>
               <div className="flex gap-3 items-center">
                 <div className="w-[23px] h-[23px] bg-[#343434] rounded-full flex justify-center items-center">
