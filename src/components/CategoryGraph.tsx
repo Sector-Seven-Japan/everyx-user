@@ -51,7 +51,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
 
   useEffect(() => {
     if (eventData?.outcomes.length > 0) {
-      let outcome = eventData?.outcomes[0]
+      const outcome = eventData?.outcomes[0]
 
       setSelectedOrder(
         String.fromCharCode(65 + 0) +
