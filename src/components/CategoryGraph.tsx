@@ -33,6 +33,22 @@ interface CategoryInfoProps {
   eventData: EventData;
 }
 
+interface Histories {
+  num_users_participated: number;
+}
+
+interface Outcome {
+  _id: string;
+  event_id: string;
+  name: string;
+  description: string | null;
+  trader_info: TraderInfo;
+  histories: Histories;
+  has_wagered: boolean;
+  has_cash_wagered: boolean;
+  has_leveraged_wagered: boolean;
+}
+
 const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
 export default function CategoryGraph({ eventData }: CategoryInfoProps) {
@@ -43,7 +59,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
     null
   );
 
-  const runMe = async (outcome: any) => {
+  const runMe = async (outcome: Outcome) => {
     console.log(outcome)
     setSelectedOrder(
       String.fromCharCode(65 + 0) +
