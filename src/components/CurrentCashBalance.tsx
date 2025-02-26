@@ -43,7 +43,7 @@ const CurrentCashBalanceCard: React.FC = () => {
   return (
     <>
       <div className="flex justify-center items-center mt-5 relative">
-        {userProfile ? (
+        {userProfile?.avatar ? (
           <div className="w-20 h-20 rounded-full overflow-hidden">
             <Image
               src={userProfile.avatar}

@@ -34,7 +34,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
 
         <div className="flex flex-col bg-[rgba(255,255,255,0.08)] rounded-3xl px-3 py-8">
           <div className="flex justify-center items-center mt-5 relative">
-            {userProfile ? (
+            {userProfile?.avatar ? (
               <div className="h-14 w-14 relative rounded-full overflow-hidden">
                 <Image
                   src={userProfile.avatar}
