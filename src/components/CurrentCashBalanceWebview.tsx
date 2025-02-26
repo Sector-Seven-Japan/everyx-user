@@ -1,23 +1,37 @@
 import Image from "next/image";
 import React, { useContext, useState } from "react";
 import settingIcon from "../../public/Icons/settingIcon.png";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import CashWithdrawalCategories from "./CashWithdrawalCategories";
 import DepositPopup from "./DepositPopup";
+import Loader from "./Loader/Loader";
 
 const CurrentCashBalanceCardWebview: React.FC = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const { userStats, userProfile } = useContext(AppContext);
+  const currentPath = usePathname(); // Get the current page path
+
   const handleSettingsClick = () => {
-    router.push("/profile");
+    if (currentPath !== "/profile") {
+      setIsLoading(true);
+      router.push("/profile");
+    }
   };
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <>
       <div className="max-w-[280px] sticky top-20 ">
-        <div className="flex flex-col bg-[rgba(255,255,255,0.08)] rounded-3xl px-10 py-8">
+        {isLoading && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <Loader />
+          </div>
+        )}
+
+        <div className="flex flex-col bg-[rgba(255,255,255,0.08)] rounded-3xl px-3 py-8">
           <div className="flex justify-center items-center mt-5 relative">
             {userProfile && (
               <div className="h-14 w-14 relative rounded-full overflow-hidden">

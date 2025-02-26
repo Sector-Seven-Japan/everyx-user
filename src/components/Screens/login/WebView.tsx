@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [popupContent, setPopupContent] = useState("");
   const [isLoading, setIsLoading] = useState(false); // State for managing loading
   const router = useRouter();
-  const { setAuthToken, setIsLoggedIn } = useContext(AppContext);
+  const { setAuthToken, setIsLoggedIn, API_BASE_URL } = useContext(AppContext);
   const { isConnected: wagmiConnected, address } = useAccount();
   const { data: session, status } = useSession();
 
@@ -26,7 +26,7 @@ export default function LoginPage() {
       setIsLoading(true); // Show loader
       try {
         // Make API call to your backend to get the auth token
-        const response = await fetch(`https://everyx.weseegpt.com/auth/v2/`, {
+        const response = await fetch(`${API_BASE_URL}/auth/v2/`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: session.user.email }),
@@ -75,7 +75,7 @@ export default function LoginPage() {
 
     try {
       const response = await fetch(
-        `https://everyx.weseegpt.com/auth/v2/user/exists/${email}`
+        `${API_BASE_URL}/auth/v2/user/exists/${email}`
       );
 
       if (!response.ok) throw new Error("Failed to check user existence");
@@ -85,9 +85,7 @@ export default function LoginPage() {
       if (!data) {
         setPopupContent("new user");
       } else {
-        const res = await fetch(
-          `https://everyx.weseegpt.com/auth/v2/login/${email}`
-        );
+        const res = await fetch(`${API_BASE_URL}/auth/v2/login/${email}`);
         if (!res.ok) throw new Error("Failed to log in user");
 
         setPopupContent("existing user");
@@ -104,7 +102,7 @@ export default function LoginPage() {
       console.log("Connecting wallet:", address);
       setIsLoading(true); // Show loader
       try {
-        const response = await fetch(`https://everyx.weseegpt.com/auth/v2/`, {
+        const response = await fetch(`${API_BASE_URL}/auth/v2/`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: address }),
@@ -149,7 +147,9 @@ export default function LoginPage() {
             alt="EveryX Icon"
             className="mb-6"
           />
-          <h1 className="text-3xl font-semibold text-center">Welcome to EveryX</h1>
+          <h1 className="text-3xl font-semibold text-center">
+            Welcome to EveryX
+          </h1>
         </div>
 
         {/* Login Options Container */}
@@ -249,7 +249,9 @@ export default function LoginPage() {
               ✖
             </button>
             <h2 className="text-xl font-bold mb-4">
-              {popupContent === "new user" ? "Create Your Account" : "Check Your Email"}
+              {popupContent === "new user"
+                ? "Create Your Account"
+                : "Check Your Email"}
             </h2>
             <p className="text-gray-400">
               {popupContent === "new user"
