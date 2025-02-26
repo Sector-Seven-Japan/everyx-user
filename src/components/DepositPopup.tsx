@@ -19,20 +19,17 @@ interface DepositPopupProps {
 export default function DepositPopup({ isOpen, onClose }: DepositPopupProps) {
   const [showTransferCryptoPopup, setShowTransferCryptoPopup] = useState(false);
   const router = useRouter(); // Use Next.js router for navigation
-  const { authToken } = useContext(AppContext);
+  const { authToken, API_BASE_URL } = useContext(AppContext);
   const [depositAddress, setDepositAddress] = useState<string>(""); // Deposit address state
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch(
-        "https://everyx.weseegpt.com/deposit/create/wallet",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const res = await fetch(`${API_BASE_URL}/deposit/create/wallet`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       const data = await res.json();
       console.log(data);
       setDepositAddress(data.address);
@@ -156,7 +153,9 @@ export default function DepositPopup({ isOpen, onClose }: DepositPopupProps) {
 
       {/* Transfer Crypto Details Popup */}
       {showTransferCryptoPopup && (
-        <TransferCryptoPopup data={depositAddress} setShowTransferCryptoPopup={setShowTransferCryptoPopup}
+        <TransferCryptoPopup
+          data={depositAddress}
+          setShowTransferCryptoPopup={setShowTransferCryptoPopup}
         />
       )}
     </>

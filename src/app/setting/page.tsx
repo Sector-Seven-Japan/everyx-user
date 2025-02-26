@@ -323,7 +323,7 @@ const Setting: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mt-20 relative">
+        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mt-10 relative">
           <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-28 col-span-6">
             <h1 className="font-medium text-[29px] text-left mb-10">Setting</h1>
             <h2 className="font-medium text-[17px] text-left">Notifications</h2>

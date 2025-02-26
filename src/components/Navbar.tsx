@@ -12,6 +12,7 @@ export default function Navbar() {
     authToken,
     sidebar,
     setSidebar,
+    API_BASE_URL,
   } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname(); // Get the current route
@@ -26,15 +27,12 @@ export default function Navbar() {
 
   const getNewWalletBalance = async () => {
     try {
-      const response = await fetch(
-        "https://everyx.weseegpt.com/wallets/balance",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/wallets/balance`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
       if (response.ok) {
         const data = await response.json();

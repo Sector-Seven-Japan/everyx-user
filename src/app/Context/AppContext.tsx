@@ -166,6 +166,7 @@ interface AppContextProps {
   isMobile: boolean;
 }
 
+// const API_BASE_URL = "https://test-api.everyx.io";
 const API_BASE_URL = "https://test-api.everyx.io";
 
 // Initial context state
@@ -308,7 +309,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Cleanup event listener
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
 
   // API Calls
   const fetchCategories = async () => {
