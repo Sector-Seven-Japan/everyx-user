@@ -49,31 +49,30 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
     null
   );
 
-  const runMe = async (outcome: any) => {
-    console.log(outcome)
-    setSelectedOrder(
-      String.fromCharCode(65 + 0) +
-      ". " +
-      outcome.name.charAt(0).toUpperCase() +
-      outcome.name.slice(1)
-    );
-    setIsLoading(true);
-    await makeOrder(
-      outcome._id,
-      eventData._id,
-      false,
-      1,
-      0,
-      10,
-      10
-    );
-    setIsOrderMade(true);
-    setSelectedOutcomeId(outcome._id);
-  }
-
   useEffect(() => {
     if (eventData?.outcomes.length > 0) {
-      runMe(eventData?.outcomes[0])
+      let outcome = eventData?.outcomes[0]
+
+      setSelectedOrder(
+        String.fromCharCode(65 + 0) +
+        ". " +
+        outcome.name.charAt(0).toUpperCase() +
+        outcome.name.slice(1)
+      );
+      setIsLoading(true);
+      (async () => {
+        await makeOrder(
+          outcome._id,
+          eventData._id,
+          false,
+          1,
+          0,
+          10,
+          10
+        );
+        setIsOrderMade(true);
+        setSelectedOutcomeId(outcome._id);
+      })()
     }
     // setIsOrderMade(false);
   }, [eventData]);
