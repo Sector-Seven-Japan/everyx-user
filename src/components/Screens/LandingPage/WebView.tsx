@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { AppContext } from "@/app/Context/AppContext";
 
 const WebLanding = () => {
   const questions = [
@@ -46,6 +47,7 @@ const WebLanding = () => {
     },
   ];
   const [category, setCategory] = useState("Sports");
+  const { time } = useContext(AppContext);
   const [openQuestions, setOpenQuestions] = useState<boolean[]>(
     new Array(questions.length).fill(false)
   );
@@ -55,14 +57,6 @@ const WebLanding = () => {
       prev.map((open, i) => (i === index ? !open : open))
     );
   };
-  const [time, setTime] = useState(new Date(Date.now() + 5 * 60 * 1000));
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date(Date.now() + 5 * 60 * 1000));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const router = useRouter();
 
@@ -205,12 +199,7 @@ const WebLanding = () => {
                   Your ideal setup, in
                 </span>
                 <span className="border-[1px] px-[1vw] py-[0.5vw] mx-[1vw] rounded-lg text-[#CEFF00] text-[1vw]">
-                  {time.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    hour12: false,
-                  })}
+                  {time}
                 </span>
                 <span className="text-[1.5vw] tracking-widest font-light">
                   seconds
@@ -292,7 +281,7 @@ const WebLanding = () => {
             <button
               className="bg-[#D5D5D5] text-black text-[1.5vw] px-[1.25vw] py-[0.5vw] rounded-full mt-[1.25vw] font-medium cursor-pointer active:bg-gray-400 transition duration-150"
               onClick={() => {
-                router.push("/home");
+                router.push("/trade");
               }}
             >
               Get started
