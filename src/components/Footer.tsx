@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 const Footer: React.FC = () => {
   const router = useRouter();
   return (
-    <div className="bg-[#0E0E0E] w-full pt-20 px-10 sm:px-10 md:px-40 lg:px-40">
+    <div className="bg-[#0E0E0E] w-full pt-20 px-10 sm:px-10 md:px-40 lg:px-[15vw]">
       {/* Logo Section */}
       <div className="flex justify-center">
         <Image
@@ -53,9 +53,6 @@ const Footer: React.FC = () => {
         where you can engage in event gambling with real money leveraging. ABC
         Concepts B.V. is registered with the XYZ Agency under Article 2 of the
         Financial Authority&apos;s regulations for operating ZYX business.
-        <br />
-        <br />
-        Our official registration number is BVO123456789A.
         <br />
         <br />
         Our official registration number is BVO123456789A.

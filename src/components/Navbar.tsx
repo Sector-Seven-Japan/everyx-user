@@ -122,7 +122,7 @@ export default function Navbar() {
           </button>
           <button
             onClick={() => {
-              router.push("/login1");
+              router.push("/login");
             }}
             className="text-[13px] bg-[#d9d9d921] px-5 py-[6px] rounded-md"
           >

@@ -20,9 +20,9 @@ const Setting: React.FC = () => {
     Record<string, { name: string; enabled: boolean }>
   >({});
   const [wager, setWager] = useState({
-    default_wager_size: "",
-    default_leverage: "",
-    warn_when_market_impact_exceeds: "",
+    Default_wager_size: "",
+    Default_leverage: "",
+    Warn_when_market_impact_exceeds: "",
   });
 
   const [updatedNotifications, setUpdatedNotifications] = useState<
@@ -91,9 +91,9 @@ const Setting: React.FC = () => {
       setFavoriteTags(data.favorite_tags || []);
 
       setWager({
-        default_wager_size: data.wager.default_wager_size || "",
-        default_leverage: data.wager.default_leverage || "",
-        warn_when_market_impact_exceeds:
+        Default_wager_size: data.wager.default_wager_size || "",
+        Default_leverage: data.wager.default_leverage || "",
+        Warn_when_market_impact_exceeds:
           data.wager.warn_when_market_impact_exceeds || "",
       });
     } catch (error) {
@@ -214,11 +214,16 @@ const Setting: React.FC = () => {
       {isMobile ? (
         <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-28">
           <h1 className="font-medium text-[29px] text-center mb-10">Setting</h1>
-          <h2 className="font-medium text-[17px] text-left">Notifications</h2>
+          <h2 className="font-medium text-[19px] text-left">Notifications</h2>
           <div className="my-5 flex flex-col gap-5">
             {Object.keys(notifications).map((key) => (
-              <div key={key} className="flex items-center justify-between">
-                <label className="text-[14px]">{notifications[key].name}</label>
+              <div
+                key={key}
+                className="flex items-center justify-between px-[1.5vw]"
+              >
+                <label className="text-[14px] font-light text-white text-opacity-50">
+                  {notifications[key].name}
+                </label>
                 <Switch
                   checked={notifications[key]?.enabled ?? false}
                   onChange={() => {
@@ -255,16 +260,18 @@ const Setting: React.FC = () => {
             ))}
           </div>
 
-          <h2 className="font-medium text-[17px] text-left mt-10">
+          <h2 className="font-medium text-[19px] text-left mt-10">
             Favourites
           </h2>
           <div className="my-5 flex flex-col gap-5">
             {favoriteTags.map((item) => (
               <div
                 key={item.tag.slug}
-                className="flex items-center justify-between"
+                className="flex items-center justify-between px-[1.5vw]"
               >
-                <label className="text-[14px]">{item.tag.name}</label>
+                <label className="text-[14px] font-light text-white text-opacity-50">
+                  {item.tag.name}
+                </label>
                 <Switch
                   checked={item.enabled}
                   onChange={() => handleFavoriteTagToggle(item.tag.slug)}
@@ -282,7 +289,7 @@ const Setting: React.FC = () => {
             ))}
           </div>
 
-          <h2 className="font-medium text-[17px] text-left mt-10">Trades</h2>
+          <h2 className="font-medium text-[19px] text-left mt-10">Trades</h2>
           <div className="flex flex-col mt-5 gap-5">
             {Object.keys(wager).map((key) => (
               <div key={key}>
@@ -326,11 +333,14 @@ const Setting: React.FC = () => {
         <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mt-10 relative">
           <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-28 col-span-6">
             <h1 className="font-medium text-[29px] text-left mb-10">Setting</h1>
-            <h2 className="font-medium text-[17px] text-left">Notifications</h2>
+            <h2 className="font-medium text-[19px] text-left">Notifications</h2>
             <div className="my-5 flex flex-col gap-5">
               {Object.keys(notifications).map((key) => (
-                <div key={key} className="flex items-center justify-between">
-                  <label className="text-[14px]">
+                <div
+                  key={key}
+                  className="flex items-center justify-between px-[1.5vw]"
+                >
+                  <label className="text-[14px] font-light text-white text-opacity-50">
                     {notifications[key].name}
                   </label>
                   <Switch
@@ -371,16 +381,18 @@ const Setting: React.FC = () => {
               ))}
             </div>
 
-            <h2 className="font-medium text-[17px] text-left mt-10">
+            <h2 className="font-medium text-[19px] text-left mt-10">
               Favourites
             </h2>
-            <div className="my-5 flex flex-col gap-5">
+            <div className="my-5 flex flex-col gap-5 ">
               {favoriteTags.map((item) => (
                 <div
                   key={item.tag.slug}
-                  className="flex items-center justify-between"
+                  className="flex items-center justify-between px-[1.5vw]"
                 >
-                  <label className="text-[14px]">{item.tag.name}</label>
+                  <label className="text-[14px font-light text-white text-opacity-50">
+                    {item.tag.name}
+                  </label>
                   <Switch
                     checked={item.enabled}
                     onChange={() => handleFavoriteTagToggle(item.tag.slug)}
@@ -398,7 +410,7 @@ const Setting: React.FC = () => {
               ))}
             </div>
 
-            <h2 className="font-medium text-[17px] text-left mt-10">Trades</h2>
+            <h2 className="font-medium text-[19px] text-left mt-10">Trades</h2>
             <div className="flex flex-col mt-5 gap-5">
               {Object.keys(wager).map((key) => (
                 <div key={key}>
@@ -421,9 +433,9 @@ const Setting: React.FC = () => {
               ))}
             </div>
 
-            <div className="px-5 mt-10 flex justify-between items-center">
+            <div className="px-5 mt-10 flex justify-between items-center gap-5">
               <div
-                className="text-center mt-5 underline cursor-pointer"
+                className="text-center  cursor-pointer border-[#fff] rounded-lg w-56  border-[0.25px] h-9 flex justify-center items-center"
                 onClick={() => router.back()}
               >
                 Back

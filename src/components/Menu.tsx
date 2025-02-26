@@ -56,7 +56,7 @@ export default function Menu() {
 
       localStorage.removeItem("authToken"); // Clear auth token from local storage
 
-      router.push("/login1"); // Redirect to login page after sign out
+      router.push("/login"); // Redirect to login page after sign out
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
@@ -64,7 +64,7 @@ export default function Menu() {
   };
 
   return (
-    <div 
+    <div
       className={`fixed top-0 right-0 w-full z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 md:w-[25%] ${
         sidebar ? "" : "translate-x-full"
       }`}
@@ -103,9 +103,9 @@ export default function Menu() {
             if (isLoggedIn) {
               handleLogoutUser();
             } else {
-              router.push("/login1");
+              router.push("/login");
             }
-            setSidebar(false)
+            setSidebar(false);
           }}
         >
           {isLoggedIn ? "Logout" : "Login / Signup"}
