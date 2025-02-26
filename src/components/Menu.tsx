@@ -9,10 +9,10 @@ import { useDisconnect } from "wagmi";
 export default function Menu() {
   const router = useRouter();
   const { disconnect } = useDisconnect();
-  const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading, sidebar } =
+  const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading, sidebar ,API_BASE_URL} =
     useContext(AppContext);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
-  const { authToken } = useContext(AppContext);
+  const { authToken, setAuthToken } = useContext(AppContext);
 
   const navbarItems = isLoggedIn
     ? [
@@ -27,8 +27,9 @@ export default function Menu() {
     : [{ name: "Help", link: "/help" }];
 
   const handleLogoutUser = async () => {
+    setIsLoading(true);
     try {
-      const response = await fetch("https://test-api.everyx.io/tokens", {
+      const response = await fetch(`${API_BASE_URL}/tokens`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -38,6 +39,8 @@ export default function Menu() {
       console.log(response);
 
       await signOut({ redirect: false }); // Sign out without redirecting
+
+      setAuthToken("");
 
       // Clear all relevant cookies
       document.cookie =
@@ -56,7 +59,7 @@ export default function Menu() {
 
       localStorage.removeItem("authToken"); // Clear auth token from local storage
 
-      router.push("/login1"); // Redirect to login page after sign out
+      router.push("/"); // Redirect to login page after sign out
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
@@ -64,13 +67,13 @@ export default function Menu() {
   };
 
   return (
-    <div 
-      className={`fixed top-0 right-0 w-full z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 md:w-[25%] ${
+    <div
+      className={`fixed top-0 right-0 w-full z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 md:w-[200px] ${
         sidebar ? "" : "translate-x-full"
       }`}
     >
       <div className="mt-5 flex flex-row-reverse">
-        <ul className="flex flex-col w-[42%] md:w-[55%]">
+        <ul className="flex flex-col w-[42%] md:w-[90%]">
           {navbarItems.map((item, index) => (
             <Link
               key={index}
@@ -95,17 +98,17 @@ export default function Menu() {
         </ul>
       </div>
 
-      <div className="p-5 mt-36 md:mt-28">
+      <div className="p-5 mt-36 md:mt-20">
         {/* Login/Logout Button */}
         <button
-          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-3"
+          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-2"
           onClick={() => {
             if (isLoggedIn) {
               handleLogoutUser();
             } else {
               router.push("/login1");
             }
-            setSidebar(false)
+            setSidebar(false);
           }}
         >
           {isLoggedIn ? "Logout" : "Login / Signup"}

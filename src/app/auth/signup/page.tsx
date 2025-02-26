@@ -1,7 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import { AppContext } from "@/app/Context/AppContext";
+import React, { useState,useContext, useEffect } from "react";
 
 const Page = () => {
+
+  const {setIsLoading,API_BASE_URL} = useContext(AppContext);
+
+  useEffect(()=>{
+    setIsLoading(false);
+  },[])
+
   const [formData, setFormData] = useState({
     username: "",
     phone: "",
@@ -38,7 +46,7 @@ const Page = () => {
     }
   
     try {
-      const response = await fetch("https://test-api.everyx.io/register", {
+      const response = await fetch(`${API_BASE_URL}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

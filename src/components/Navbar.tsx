@@ -15,15 +15,8 @@ export default function Navbar() {
     API_BASE_URL,
   } = useContext(AppContext);
   const router = useRouter();
-  const pathname = usePathname(); // Get the current route
+  const pathname = usePathname();
   const [newWalletBalance, setNewWalletBalance] = useState<number>(0);
-
-  // Check if the current route is "/menu" and set sidebar to true
-  useEffect(() => {
-    if (authToken && pathname === "/") {
-      router.push("/home");
-    }
-  }, [pathname]);
 
   const getNewWalletBalance = async () => {
     try {
@@ -50,7 +43,7 @@ export default function Navbar() {
   }, [authToken]);
 
   return (
-    <div className="flex justify-between items-center p-5 bg-[#0E0E0E] fixed top-0 w-full z-20">
+    <div className="flex justify-between items-center p-5 bg-[#0e0e0e] fixed top-0 w-full z-20">
       {pathname === "/" ? (
         <Image
           src="/Images/logo_grey.png"
@@ -67,7 +60,7 @@ export default function Navbar() {
             setFilter("");
             router.push("/home");
           }}
-          src="/Images/logo.png"
+          src="/Images/logo_grey.png"
           className="cursor-pointer"
           alt="Logo image"
           width={25}
@@ -75,7 +68,37 @@ export default function Navbar() {
         />
       )}
 
-      {pathname !== "/" ? (
+      {pathname === "/" ? (
+        authToken ? (
+          <button
+            onClick={() => {
+              router.push("/home");
+            }}
+            className="text-[13px] bg-[#d9d9d921] px-5 py-[6px] rounded-md"
+          >
+            Home
+          </button>
+        ) : (
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                router.push("/auth/signup");
+              }}
+              className="text-[13px] text-[#d9d9d95e]"
+            >
+              Sign Up
+            </button>
+            <button
+              onClick={() => {
+                router.push("/login1");
+              }}
+              className="text-[13px] bg-[#d9d9d921] px-5 py-[6px] rounded-md"
+            >
+              Login
+            </button>
+          </div>
+        )
+      ) : (
         <div className="flex gap-3">
           {authToken !== null ? (
             <div className="text-xs flex flex-col items-end">
@@ -109,25 +132,6 @@ export default function Navbar() {
               height={20}
             />
           )}
-        </div>
-      ) : (
-        <div className="flex gap-3">
-          <button
-            onClick={() => {
-              router.push("/auth/signup");
-            }}
-            className="text-[13px] text-[#d9d9d95e]"
-          >
-            Sign Up
-          </button>
-          <button
-            onClick={() => {
-              router.push("/login1");
-            }}
-            className="text-[13px] bg-[#d9d9d921] px-5 py-[6px] rounded-md"
-          >
-            Login
-          </button>
         </div>
       )}
     </div>

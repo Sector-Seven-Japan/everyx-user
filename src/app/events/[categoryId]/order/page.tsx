@@ -80,8 +80,7 @@ export default function Order() {
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
   const [option, setOption] = useState<string>("Order details");
-  const [isLoaingGraph, setIsLoadingGraph] = useState(true);
-  console.log(isLoaingGraph);
+  const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [countdown, setCountdown] = useState<string>("");
 
   useEffect(() => {
@@ -146,6 +145,7 @@ export default function Order() {
       }
     };
 
+    setIsLoadingGraph(true);
     const fetchData = async () => {
       try {
         if (eventData) {
@@ -207,7 +207,9 @@ export default function Order() {
   return (
     <div>
       <Navbar />
-      <div className="hidden md:block"><HeadingSlider filter={filter} setFilter={setFilter} /></div>
+      <div className="hidden md:block">
+        <HeadingSlider filter={filter} setFilter={setFilter} />
+      </div>
       <div className="flex flex-col md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
         <div className="md:w-full md:block hidden">
           {eventData ? (
@@ -217,9 +219,9 @@ export default function Order() {
                 <h1 className="text-[23px] mb-8 mt-5 md:text-[16px]">
                   Live Chart
                 </h1>
-                {isLoaingGraph ? (
+                {isLoadingGraph ? (
                   <div className="flex justify-center items-center h-40">
-                    <p className="text-[#00FFBB] text-lg">Loading graph...</p>
+                    <p className="text-[#00FFBB] text-lg md:text-xs">Loading graph...</p>
                   </div>
                 ) : (
                   <DrawGraph data={graphData} />
@@ -253,9 +255,7 @@ export default function Order() {
                         width={18}
                       />
                     </div>
-                    <p className="text-[#2DC198] md:text-[10px]">
-                      {countdown}
-                    </p>
+                    <p className="text-[#2DC198] md:text-[10px]">{countdown}</p>
                   </p>
                 </div>
                 <p className="text-[21px] md:text-[12px] font-light mt-4">
@@ -444,7 +444,10 @@ export default function Order() {
                         </div>
                       </div>
                     </div>
-                    <DrawGraph data={graphData} />
+                    <DrawGraph
+                      data={graphData}
+                      outcomeIds={[orderDetails?.event_outcome_id]}
+                    />
                   </div>
                 </div>
               </div>

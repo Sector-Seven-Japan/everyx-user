@@ -9,7 +9,7 @@ import { AppContext } from "@/app/Context/AppContext";
 export default function Notification() {
   const [activeTab, setActiveTab] = useState("all");
   const [notifications, setNotifications] = useState([]);
-  const { authToken } = useContext(AppContext);
+  const { authToken,API_BASE_URL } = useContext(AppContext);
 
   useEffect(() => {
     if (authToken) {
@@ -24,7 +24,7 @@ export default function Notification() {
       const isUnreadOnly = tabType.toLowerCase() !== "all";
 
       const response = await fetch(
-        `https://test-api.everyx.io/notifications?with_archived=true&unread_only=${
+        `${API_BASE_URL}/notifications?with_archived=true&unread_only=${
           !isUnreadOnly ? "false" : "true"
         }&pagination=true&page=1&limit=10`,
         {

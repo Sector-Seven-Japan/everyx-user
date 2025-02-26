@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import { AppContext } from "@/app/Context/AppContext";
 
 const Verification: React.FC = () => {
   const [email, setEmail] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const {API_BASE_URL} = useContext(AppContext);
 
   // Fetch registered email from local storage
   useEffect(() => {
@@ -35,7 +37,7 @@ const Verification: React.FC = () => {
 
     const validateEmail = async () => {
       try {
-        const response = await fetch("https://test-api.everyx.io/register-validation", {
+        const response = await fetch(`${API_BASE_URL}/register-validation`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
