@@ -133,6 +133,26 @@ export default function Navbar() {
             />
           )}
         </div>
+      ) : (
+        <div className="flex gap-3">
+          <button
+            onClick={() => {
+              router.push("/auth/signup");
+            }}
+            className="text-[13px] text-[#d9d9d95e]"
+          >
+            Sign Up
+          </button>
+          <button
+            onClick={() => {
+              router.push("/login");
+            }}
+            className="text-[13px] bg-[#d9d9d921] px-5 py-[6px] rounded-md"
+          >
+            Login
+          </button>
+        </div>
+
       )}
     </div>
   );

@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const WebLanding = () => {
   const questions = [
@@ -54,272 +55,319 @@ const WebLanding = () => {
       prev.map((open, i) => (i === index ? !open : open))
     );
   };
+  const [time, setTime] = useState(new Date(Date.now() + 5 * 60 * 1000));
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date(Date.now() + 5 * 60 * 1000));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const router = useRouter();
 
   return (
-    <>
-      <div className="bg-[#0E0E0E] w-full min-h-screen py-20 px-48">
-        <div className="grid grid-cols-2">
+    <div className="bg-[#0E0E0E] w-full min-h-screen py-20 lg:px-[15vw] md:px-[20vw] sm:px-[10vw]">
+      {/* container1 */}
+      <div className="flex justify-between">
+        <div className="">
+          <p className="text-[4.5vw]  text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
+            Trade
+          </p>
+          <p className="text-[4.5vw]  text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
+            on the Outcome of
+          </p>
+          <p className=" text-[4.5vw]   text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
+            Global Events
+          </p>
+          <p className="text-[1.2vw] mt-20 text-white text-opacity-[78%] text-left font-thin ">
+            Use leverage to bet on real-world events and shape your
+          </p>
+          <p className="text-[1.2vw]  text-white text-opacity-[78%] text-left font-thin">
+            portfolio in a new way.
+          </p>
+        </div>
+
+        <div className="mt-5">
           <div className="">
-            <p className="text-5xl  text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
-              Trade
+            <p className="text-[1vw] tracking-widest text-right text-white text-opacity-[76%]">
+              Where every event is an
             </p>
-            <p className="text-[40px]  text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
-              on the Outcome of
-            </p>
-            <p className="text-[40px]  text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
-              Global Events
-            </p>
-            <p className="text-[16px] text-white text-opacity-[78%] text-left font-thin mt-5">
-              Use leverage to bet on real-world events and shape your portfolio
-              in a new way.
+            <p className=" text-[1vw] tracking-widest text-right text-white text-opacity-[76%]">
+              opportunity
             </p>
           </div>
-          <div className="flex flex-col items-end">
-            <div className="flex flex-col items-end ">
-              <p className="text-right text-[13px] text-white text-opacity-[76%]">
-                Where every event is an
-              </p>
-              <p className="text-right text-[13px] text-white text-opacity-[76%]">
-                opportunity
-              </p>
-            </div>
-            <div className="mt-16 relative w-[-100px] ">
-              <Image
-                src="/Images/LpImage1(web).png"
-                alt="Landing Page Image 1"
-                className="rounded-lg object-cover object-center"
-                height={200}
-                width={200}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mt-16 ">
-          <div className="relative w-full h-10 border-[1px] border-white rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[4px]">
-            <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3">
-              <FaArrowRight className="text-white text-sm" />
-            </div>
-            <div className="text-white text-sm">The journey begins.</div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-2 mt-20 px-32">
-          <div className="flex flex-col items-center justify-center gap-10">
-            <div>
-              <p className="text-[18px] sm:text-[21px] text-[#CACACA] text-center font-light">
-                Predict real-world outcomes and
-              </p>
-              <p className="text-[18px] sm:text-[21px] text-[#CACACA] text-center font-light">
-                profit when you’re right.
-              </p>
-            </div>
-            <div>
-              <div className="flex justify-center items-center gap-2 flex-wrap">
-                {["Sports", "Crypto", "Politics", "Weather"].map((cat) => (
-                  <span
-                    key={cat}
-                    className={`text-[14px] bg-[#B5B5B5] ${
-                      category === cat
-                        ? "text-black"
-                        : "text-[#B5B5B5] bg-opacity-[13%]"
-                    } px-3 py-1 rounded-full cursor-pointer`}
-                    onClick={() => setCategory(cat)}
-                  >
-                    {cat}
-                  </span>
-                ))}
-              </div>
-              <div className="pt-2 px-4 sm:px-10 flex justify-center items-center gap-2 flex-wrap">
-                {["Science", "Culture", "Tech"].map((cat) => (
-                  <span
-                    key={cat}
-                    className={`text-[14px] bg-[#B5B5B5] ${
-                      category === cat
-                        ? "text-black"
-                        : "text-[#B5B5B5] bg-opacity-[13%]"
-                    } px-3 py-1 rounded-full cursor-pointer`}
-                    onClick={() => setCategory(cat)}
-                  >
-                    {cat}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="text-[13px] text-white font-semibold text-center tracking-wider">
-                Leverage on event-based trades,
-              </p>
-              <p className="text-[13px] text-white font-semibold text-center tracking-wider">
-                simple onboarding, quick payouts,
-              </p>
-              <p className="text-[13px] text-white font-semibold text-center tracking-wider">
-                a global selection of events
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col items-start justify-center">
+          <div className="mt-[5vw] relative">
             <Image
-              src="/Images/LpImage3(web).png"
-              alt="Landing Page Image 3"
-              height={300}
-              width={300}
+              src="/Images/LpImage1.png"
+              alt="Landing Page Image 1"
+              className="rounded-lg object-cover object-center relative left-14"
+              height={150}
+              width={150}
+              style={{ width: "20vw", height: "20vw" }}
             />
           </div>
         </div>
+      </div>
+      <div className="mt-16 ">
+        <div className="relative w-full h-10 border-[1px] border-white rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[4px]">
+          <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3">
+            <FaArrowRight className="text-white text-sm" />
+          </div>
+          <div className="text-white text-sm">The journey begins.</div>
+        </div>
+      </div>
+      {/* container2 */}
+      <div className="flex  justify-between mt-[10vw] ">
+        <div className="flex flex-col items-center justify-center gap-[2.5vw] ">
+          <div>
+            <p className="text-[2.5vw]  text-[#fff] text-center font-light">
+              Predict real-world outcomes and
+            </p>
+            <p className="text-[2.5vw]  text-[#fff] text-center font-light">
+              profit when you’re right.
+            </p>
+          </div>
+          <div>
+            <div className="flex justify-center items-center gap-[0.5vw] flex-wrap">
+              {["Sports", "Crypto", "Politics", "Weather"].map((cat) => (
+                <span
+                  key={cat}
+                  className={`text-[0.9vw] bg-[#B5B5B5] ${
+                    category === cat
+                      ? "text-black"
+                      : "text-[#B5B5B5] bg-opacity-[13%]"
+                  } px-[1vw] py-[0.5vw] rounded-full cursor-pointer`}
+                  onClick={() => setCategory(cat)}
+                >
+                  {cat}
+                </span>
+              ))}
+            </div>
+            <div className="pt-[0.5vw] px-[1vw] flex justify-center items-center gap-[0.5vw] flex-wrap">
+              {["Science", "Culture", "Tech"].map((cat) => (
+                <span
+                  key={cat}
+                  className={`text-[0.9vw] bg-[#B5B5B5] ${
+                    category === cat
+                      ? "text-black"
+                      : "text-[#B5B5B5] bg-opacity-[13%]"
+                  } px-[1vw] py-[0.5vw] rounded-full cursor-pointer`}
+                  onClick={() => setCategory(cat)}
+                >
+                  {cat}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-[1vw] text-white text-opacity-30 font-semibold text-center tracking-wider">
+              Leverage on event-based trades,
+            </p>
+            <p className="text-[1vw] text-white text-opacity-30 font-semibold text-center tracking-wider">
+              simple onboarding, quick payouts,
+            </p>
+            <p className="text-[1vw] text-white text-opacity-30 font-semibold text-center tracking-wider">
+              a global selection of events
+            </p>
+          </div>
+        </div>
+        <div className="mb-[10vw]">
+          <Image
+            src="/Images/LpImage3(web).png"
+            alt="Landing Page Image 3"
+            width={100}
+            height={250}
+            className=""
+            style={{ width: "25vw", height: "40vw" }}
+          />
+        </div>
+      </div>
 
-        <div className="grid grid-cols-2 gap-2  items-center">
-          <div className="flex flex-col items-center justify-center ">
+      {/* container3 */}
+      <div className="flex gap-10 justify-between mt-[5vw] items-start relative">
+        <div className="mt-[5vw]">
+          <div className="flex flex-col items-center justify-center absolute  ">
             <div className="mt-2 ">
-              <p className="text-[19px] text-[#CACACA] font-light ZenAntiqueFont">
+              <p className="text-[2vw] text-[#CACACA] font-light ZenAntiqueFont">
                 Start trading in
               </p>
-              <p className="text-4xl sm:text-6xl text-[#CACACA]  font-semibold leading-[0.75] Zenfont">
+              <p className="text-[5vw]  text-[#CACACA] font-semibold leading-[0.75] Zenfont">
                 minutes.
               </p>
-              <div className=" mt-5">
-                <p className="text-[13px]  text-[#CACACA] font-light">
+              <div className="mt-5">
+                <p className="text-[1.2vw] text-[#CACACA] font-light">
                   A trading platform in your browser for free.
                 </p>
               </div>
               <div className="gap-2 mt-5">
-                <span className="text-[13px]">Your ideal setup, in</span>
-                <span className="border-[1px] text-[#CEFF00] text-[13px]">
-                  00:05:93
+                <span className="text-[1.5vw] tracking-widest font-light">
+                  Your ideal setup, in
                 </span>
-                <span className="text-[13px]">seconds</span>
+                <span className="border-[1px] px-[1vw] py-[0.5vw] mx-[1vw] rounded-lg text-[#CEFF00] text-[1vw]">
+                  {time.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false,
+                  })}
+                </span>
+                <span className="text-[1.5vw] tracking-widest font-light">
+                  seconds
+                </span>
               </div>
             </div>
           </div>
-          <div className="relative right-48 top-28">
-            <Image
-              src="/Images/LpImage4(web).png"
-              alt="Landing Page Image 4"
-              width={500}
-              height={500}
-            />
-          </div>
         </div>
 
-        <div className="mt-44 px-4 sm:px-10">
-          <div className="relative w-full h-10 border-[1px] border-white rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[4px]">
-            <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3">
-              <FaArrowRight className="text-white text-sm" />
-            </div>
-            <div className="text-white text-[11px]">
-              Change your life with just a flick of this button.
-            </div>
-          </div>
-        </div>
-        <div className="mt-32 flex justify-center items-center">
+        <div>
           <Image
-            src="/Images/LpImage7.png"
-            alt="Landing Page Image 7"
-            width={800}
-            height={600}
+            src="/Images/LpImage4(web).png"
+            alt="Landing Page Image 4"
+            width={400}
+            height={500}
+            style={{ width: "40vw", height: "40vw" }}
           />
         </div>
-        <div>
-          <p className="text-[30px] sm:text-[50px] text-center text-[#CACACA] ZenAntiqueFont font-semibold">
-            Secure.
-          </p>
-          <p className="text-[14px] text-center text-[#CACACA] font-light">
-            Enhanced Protection Against Major Vulnerabilities
-          </p>
-        </div>
+      </div>
 
-        <div className="grid grid-cols-2 mt-20">
-          <div className="flex flex-col gap-20 justify-center items-start">
-            <div className="mt-5 px-4 sm:px-10">
-              <p className="text-3xl text-[#CACACA] ZenAntiqueFont font-semibold">
-                Intuitive
-              </p>
-              <p className="text-4xl text-[#CACACA] ZenAntiqueFont font-regular">
-                User Interface
-              </p>
-              <p className="text-[13px] text-[#CACACA] mt-10">
-                EveryX is designed with user-friendly navigation, making it easy
-                for users to create predictions and manage trades.
-              </p>
-              <p className="text-[13px] text-[#CACACA]">
-                Whether you&apos;re a beginner or an experienced trader, the
-                platform ensures a seamless experience.
-              </p>
-            </div>
-            <div className="mt-5   px-4 sm:px-10 flex justify-center items-center flex-col">
-              <div className="flex justify-center items-center gap-2">
-                <CiCircleInfo className="text-lg" />
-                <span className="text-[13px] font-extralight">
-                  UIUX Friendly
-                </span>
-              </div>
-              <button className="bg-[#D5D5D5] text-black text-[12px] px-5 py-2 rounded-full mt-5 font-medium">
-                Get started
-              </button>
-            </div>
+      <div className="mt-16">
+        <div className="relative w-full h-10 border-[1px] border-white rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[4px]">
+          <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3">
+            <FaArrowRight className="text-white text-sm" />
           </div>
-          <div className="mt-1 ">
-            <Image
-              src="/Images/LpImage8.png"
-              alt="Landing Page Image 8"
-              width={300}
-              height={300}
-            />
+          <div className="text-white text-[11px]">
+            Change your life with just a flick of this button.
           </div>
-        </div>
-
-        <div className="mt-20 flex flex-col items-center">
-          <div className="mt-5 px-4 sm:px-10">
-            <p className="text-[70px] text-[#CCCCCC] ZenAntiqueFont">
-              More fun things
-            </p>
-            <p className="text-[70px] text-[#CCCCCC] ZenAntiqueFont">
-              will be &quot;Coming Soon &quot;
-            </p>
-            <p className="text-[15px] text-[#CCCCCC] mt-5">
-              Desktop, leaderboards, achievement bonuses, And more.
-            </p>
-          </div>
-          <div className="mt-10">
-            <Image
-              src="/Images/LpImage9.png"
-              alt="Landing Page Image 9"
-              width={500}
-              height={500}
-            />
-          </div>
-        </div>
-        <div className="my-12 px-4 sm:px-10">
-          <p className="text-[41px] text-center Zenfont">Q&A</p>
-        </div>
-        <div>
-          {questions.map((item, index) => (
-            <div key={index} className="my-5 border-b border-gray-800">
-              <div
-                className={`flex justify-between items-center px-4 sm:px-10 cursor-pointer ${
-                  openQuestions[index] ? "bg-[#707070]" : "bg-transparent"
-                } bg-opacity-[10%]`}
-                onClick={() => toggleOpen(index)}
-              >
-                <p className="text-[13px] w-full py-2">{item.question}</p>
-                {openQuestions[index] ? (
-                  <FaChevronUp size={15} color="#000" />
-                ) : (
-                  <FaChevronDown size={15} color="#000" />
-                )}
-              </div>
-              {openQuestions[index] && (
-                <div className="mt-3 px-4 sm:px-10">
-                  {item.answer.split("\n").map((para, i) => (
-                    <p key={i} className="text-[13px] mb-3 opacity-[38%]">
-                      {para}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
         </div>
       </div>
-    </>
+
+      {/* container4 */}
+
+      <div className="mt-[15vw] flex justify-center items-center">
+        <Image
+          src="/Images/LpImage7.png"
+          alt="Landing Page Image 7"
+          width={800}
+          height={600}
+          style={{ width: "80vw", height: "40vw" }}
+        />
+      </div>
+      <div>
+        <p className="text-[5vw]  text-center text-[#CACACA] ZenAntiqueFont font-semibold">
+          Secure.
+        </p>
+        <p className="text-[1.5vw] text-center text-[#CACACA] font-light tracking-widest">
+          Enhanced Protection Against Major Vulnerabilities
+        </p>
+      </div>
+
+      {/* container5 */}
+
+      <div className="flex justify-between mt-[10vw] gap-[2.5vw] items-start ">
+        <div className="flex flex-col gap-[5vw] justify-center items-start">
+          <div>
+            <p className="text-[3vw] text-[#CACACA] ZenAntiqueFont font-semibold">
+              Intuitive
+            </p>
+            <p className="text-[4vw] text-[#CACACA] ZenAntiqueFont font-semibold leading-none ">
+              User Interface
+            </p>
+            <p className="text-[1vw] text-[#CACACA] text-opacity-40 mt-[5vw] tracking-widest">
+              EveryX is designed with user-friendly navigation, making it easy
+              for users to create predictions and manage trades.
+            </p>
+            <p className="text-[1vw] text-[#CACACA] text-opacity-40 tracking-widest">
+              Whether you&apos;re a beginner or an experienced trader, the
+              platform ensures a seamless experience.
+            </p>
+          </div>
+          <div className="mt-[3vw] flex justify-center items-center flex-col">
+            <div className="flex justify-center items-center gap-[0.5vw]">
+              <CiCircleInfo className="text-[1.5vw]" />
+              <span className="text-[1.5vw] font-extralight">
+                UIUX Friendly
+              </span>
+            </div>
+            <button
+              className="bg-[#D5D5D5] text-black text-[1.5vw] px-[1.25vw] py-[0.5vw] rounded-full mt-[1.25vw] font-medium cursor-pointer active:bg-gray-400 transition duration-150"
+              onClick={() => {
+                router.push("/home");
+              }}
+            >
+              Get started
+            </button>
+          </div>
+        </div>
+        <div className="mt-[4vw]">
+          <Image
+            src="/Images/LpImage8.png"
+            alt="Landing Page Image 8"
+            width={500}
+            height={300}
+            style={{ width: "30vw", height: "35vw" }}
+          />
+        </div>
+      </div>
+
+      {/* container6 */}
+
+      <div>
+        <div className="mt-5 ">
+          <p className="text-[5vw] text-[#CCCCCC] ZenAntiqueFont ">
+            More fun things
+          </p>
+          <p className="text-[5vw] text-[#CCCCCC] ZenAntiqueFont ">
+            will be &quot;Coming Soon &quot;
+          </p>
+          <p className="text-[1.5vw] text-[#CCCCCC] mt-5  tracking-widest text-opacity-40">
+            Desktop, leaderboards, achievement bonuses, And more.
+          </p>
+        </div>
+        <div className="mt-10 flex items-center justify-center">
+          <Image
+            src="/Images/LpImage9.png"
+            alt="Landing Page Image 9"
+            width={500}
+            height={500}
+            style={{ width: "30vw", height: "30vw" }}
+          />
+        </div>
+      </div>
+
+      {/* container7 */}
+      <div className="my-12 px-4 sm:px-10">
+        <p className="text-[41px] text-center Zenfont">Q&A</p>
+      </div>
+      <div>
+        {questions.map((item, index) => (
+          <div key={index} className="my-5 border-b border-gray-800">
+            <div
+              className={`flex justify-between items-center px-5  py-3 cursor-pointer ${
+                openQuestions[index] ? "bg-[#707070]" : "bg-transparent"
+              } bg-opacity-[10%]`}
+              onClick={() => toggleOpen(index)}
+            >
+              <p className="text-[13px] w-full py-2">{item.question}</p>
+              {openQuestions[index] ? (
+                <FaChevronUp size={15} color="#000" />
+              ) : (
+                <FaChevronDown size={15} color="#000" />
+              )}
+            </div>
+            {openQuestions[index] && (
+              <div className="mt-3 px-4 sm:px-10">
+                {item.answer.split("\n").map((para, i) => (
+                  <p key={i} className="text-[13px] mb-3 opacity-[38%]">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

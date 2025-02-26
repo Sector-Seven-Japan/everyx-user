@@ -251,7 +251,7 @@ const Profile: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mb-10 pt-20">
+        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mb-10 mt-20">
           <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5  col-span-6">
             <div className="max-w-md mx-auto">
               <div>
