@@ -2,27 +2,50 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import React from "react";
 
-const terms: React.FC = () => {
+const Terms: React.FC = () => {
   return (
     <>
-      <Navbar/>
-      <div className={`bg-[#0E0E0E] w-full min-h-screen text-white px-5 py-4`}>
-        <h1 className="font-medium text-[29px] text-center">Terms of Use</h1>
-        <p className="font-normal text-[13px] opacity-[25%] mt-4 mb-10 text-justify">
-          Terms of Use - January 2025
-          <br />
-          <br />
-          <strong>Introduction</strong>
-          <br />
-          These Terms of Use (hereinafter referred to as the &quot;Terms of
-          Use&quot;) apply when customers (hereinafter referred to as
-          &quot;users&quot;, &quot;user&quot;) visit the EveryX website at
-          https://everyx.io and use the services provided therein (hereinafter
-          referred to as &quot;services&quot;).``
-          <br />
-          <br />
-          <strong>Scope</strong>
-          <br />
+      <Navbar />
+      <div className="bg-[#0E0E0E] w-full min-h-screen text-white">
+        {/* Main content container with responsive padding */}
+        <div className="max-w-[1200px] mx-auto px-5 md:px-8 lg:px-12 py-8 md:py-12">
+          <h1 className="font-medium text-[29px] md:text-[35px] text-center mb-8">
+            Terms of Use
+          </h1>
+          
+          {/* Terms content with improved readability */}
+          <div className="max-w-[900px] mx-auto">
+            <p className="font-normal text-[13px] md:text-[15px] opacity-[25%] 
+              hover:opacity-[45%] transition-opacity duration-300 
+              leading-relaxed md:leading-loose text-justify">
+              Terms of Use - January 2025
+              
+              {/* Section styling */}
+              <div className="mt-6 mb-8">
+                <strong className="block text-[15px] md:text-[17px] opacity-100 mb-4">
+                  Introduction
+                </strong>
+                These Terms of Use (hereinafter referred to as the &quot;Terms of
+                Use&quot;) apply when customers (hereinafter referred to as
+                &quot;users&quot;, &quot;user&quot;) visit the EveryX website at
+                https://everyx.io and use the services provided therein (hereinafter
+                referred to as &quot;services&quot;).
+              </div>
+
+              {/* Continue with the rest of the sections using the same pattern */}
+              <div className="mt-6 mb-8">
+                <strong className="block text-[15px] md:text-[17px] opacity-100 mb-4">
+                  Scope
+                </strong>
+                These Terms of Use shall apply to all relationships between our
+                company and users regarding the use of the services.
+                <br /><br />
+                Unless otherwise specified, if there is a conflict between the Terms
+                of Use and other documents regarding the Terms of Use, these Terms of
+                Use shall prevail.
+              </div>
+
+              <br />
           These Terms of Use shall apply to all relationships between our
           company and users regarding the use of the services.
           <br />
@@ -257,15 +280,22 @@ const terms: React.FC = () => {
           exclusive jurisdiction of the competent courts in that jurisdiction.
           <br />
           <br />
-          <strong>Contact Us</strong>
-          <br />
-          If you have any questions about these Terms of Use, please contact us
-          at support@everyx.io.
-        </p>
+              
+              {/* Example of how to style the remaining sections */}
+              <div className="mt-6 mb-8">
+                <strong className="block text-[15px] md:text-[17px] opacity-100 mb-4">
+                  Contact Us
+                </strong>
+                If you have any questions about these Terms of Use, please contact us
+                at support@everyx.io.
+              </div>
+            </p>
+          </div>
+        </div>
       </div>
       <Footer />
     </>
   );
 };
 
-export default terms;
+export default Terms;

@@ -215,7 +215,7 @@ export default function MakeOrder() {
             <div className="flex flex-col gap-[1px] items-end">
               <p className="text-[#5D5D5D] text-[13px]">Your return</p>
               <p className="text-[22px] text-[#00FFB8]">
-                +{orderDetails?.after_return.toFixed(0)} %
+                +{orderDetails?.after_return?.toFixed(0)} %
               </p>
             </div>
           </div>

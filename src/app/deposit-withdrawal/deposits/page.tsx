@@ -74,7 +74,7 @@ const Deposit: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-[#0E0E0E] lg:px-40 md:px-10 sm:px-10 pt-5 grid grid-cols-10 gap-5 h-screen">
+        <div className="bg-[#0E0E0E] lg:px-40 md:px-10 sm:px-10 pt-5 grid grid-cols-10 gap-5 h-screen ">
           <div className="bg-[#262626] bg-opacity-[31%]  flex flex-col items-center rounded-t-3xl  py-2 col-span-6 h-full">
             <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
 

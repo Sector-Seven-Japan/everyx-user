@@ -17,16 +17,15 @@ const VerifyIdentity: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-screen bg-black flex flex-col max-w-[430px] mx-auto">
-      <Navbar/>
-      <div className="flex flex-col items-center justify-center flex-1 text-white px-4">
+    <div className="min-h-screen bg-black text-white">
+      <Navbar />
+      <div className="flex flex-col items-center justify-center flex-1 px-4 md:px-10 lg:px-20 xl:px-40 2xl:px-60">
         {/* Title */}
-        <h1 className="text-2xl font-bold mb-4">Verify Identity</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-4">Verify Identity</h1>
 
         {/* Subtitle */}
-        <p className="text-center text-sm mb-10">
-          Confirm your country of residence to learn how your personal data will
-          be processed.
+        <p className="text-center text-sm md:text-base mb-10 max-w-2xl">
+          Confirm your country of residence to learn how your personal data will be processed.
         </p>
 
         {/* Progress Indicator */}
@@ -39,8 +38,8 @@ const VerifyIdentity: React.FC = () => {
         </div>
 
         {/* Country Selection */}
-        <div className="w-full">
-          <h2 className="text-lg mb-6">Select your country of residence:</h2>
+        <div className="w-full max-w-lg">
+          <h2 className="text-lg md:text-xl mb-6">Select your country of residence:</h2>
 
           {/* Option 1 */}
           <div
@@ -56,7 +55,7 @@ const VerifyIdentity: React.FC = () => {
                 <div className="w-3 h-3 rounded-full bg-[#0e0e0e]" />
               )}
             </div>
-            <p className="text-sm">All countries except USA</p>
+            <p className="text-sm md:text-base">All countries except USA</p>
           </div>
 
           {/* Option 2 */}
@@ -73,14 +72,14 @@ const VerifyIdentity: React.FC = () => {
                 <div className="w-3 h-3 rounded-full bg-[#0e0e0e]" />
               )}
             </div>
-            <p className="text-sm">United States of America</p>
+            <p className="text-sm md:text-base">United States of America</p>
           </div>
         </div>
 
         {/* Next Button */}
         <button
           onClick={handleNextClick}
-          className="w-full mt-16 py-4 rounded-lg bg-[#00ffb8] text-black text-center text-lg font-bold"
+          className="w-full max-w-lg mt-16 py-4 rounded-lg bg-[#00ffb8] text-black text-center text-lg font-bold"
         >
           Next
         </button>

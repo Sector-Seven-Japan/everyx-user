@@ -6,9 +6,9 @@ const About: React.FC = () => {
   return (
     <>
       <Navbar/>
-      <div className={`bg-[#0E0E0E] w-full min-h-screen text-white px-5 py-4`}>
-        <h1 className="font-medium text-[29px] text-center">About Us </h1>
-        <p className="font-normal text-[13px] opacity-[25%] mt-4 mb-10 text-justify">
+      <div className={`bg-[#0E0E0E] w-full min-h-screen text-white px-4 sm:px-6 md:px-8 lg:px-12 py-4 md:py-6`}>
+        <h1 className="font-medium text-[22px] sm:text-[25px] md:text-[29px] text-center">About Us</h1>
+        <p className="font-normal text-[14px] sm:text-[15px] md:text-[16px] opacity-[25%] mt-3 md:mt-4 mb-8 md:mb-10 text-justify max-w-4xl mx-auto">
           EveryX is a globally recognized leader in the field of prediction
           market platforms, revolutionizing how individuals and organizations
           engage with future outcomes. Our platform is uniquely designed to

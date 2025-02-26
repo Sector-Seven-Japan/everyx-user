@@ -307,7 +307,7 @@ export default function Order() {
                     <p className="flex justify-between text-[22px] text-[#00FFB8] md:text-[16px]">
                       ${Math.round(orderDetails?.indicative_payout)}
                       <span className="text-[14px] text-[#E49C29] flex items-end md:text-[12px]">
-                        +{orderDetails?.indicative_return.toFixed(0)}%
+                        +{orderDetails?.indicative_return?.toFixed(0)}%
                       </span>
                     </p>
                   </div>
@@ -318,7 +318,7 @@ export default function Order() {
                     <p className="flex justify-between text-[22px] text-[#00FFB8] md:text-[16px]">
                       {Math.round(orderDetails?.new_probability * 100)}%
                       <span className="text-[14px] text-[#E49C29] flex items-end md:text-[12px]">
-                        +{(orderDetails?.probability_change * 100).toFixed(1)}%
+                        +{(orderDetails?.probability_change * 100)?.toFixed(1)}%
                       </span>
                     </p>
                   </div>
@@ -395,7 +395,7 @@ export default function Order() {
                         Your return
                       </p>
                       <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
-                        +{orderDetails?.after_return.toFixed(0)} %
+                        +{orderDetails?.after_return?.toFixed(0)} %
                       </p>
                     </div>
                   </div>
@@ -406,7 +406,7 @@ export default function Order() {
                     Stop level
                   </p>
                   <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
-                    {(orderDetails?.after_stop_probability * 100).toFixed(0)}%
+                    {(orderDetails?.after_stop_probability * 100)?.toFixed(0)}%
                   </button>
                 </div>
               </div>

@@ -3,10 +3,12 @@ import React, { useContext, useEffect, useState } from "react";
 import settingIcon from "../../public/Icons/settingIcon.png";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
+import { MdCamera } from "react-icons/md";
 
 const CurrentCashBalanceCard: React.FC = () => {
   const router = useRouter();
-  const { userStats, userProfile, authToken } = useContext(AppContext);
+  const { userStats, userProfile, authToken, API_BASE_URL } =
+    useContext(AppContext);
   const pathname = usePathname();
   const handleSettingsClick = () => {
     router.push("/profile");
@@ -16,15 +18,12 @@ const CurrentCashBalanceCard: React.FC = () => {
 
   const getNewWalletBalance = async () => {
     try {
-      const response = await fetch(
-        "https://everyx.weseegpt.com/wallets/balance",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/wallets/balance`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -44,7 +43,7 @@ const CurrentCashBalanceCard: React.FC = () => {
   return (
     <>
       <div className="flex justify-center items-center mt-5 relative">
-        {userProfile && (
+        {userProfile?.avatar ? (
           <div className="w-20 h-20 rounded-full overflow-hidden">
             <Image
               src={userProfile.avatar}
@@ -53,6 +52,10 @@ const CurrentCashBalanceCard: React.FC = () => {
               width={80}
               height={80}
             />
+          </div>
+        ) : (
+          <div className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center">
+            <MdCamera className="w-8 h-8 text-gray-400" />
           </div>
         )}
         <Image
@@ -103,14 +106,18 @@ const CurrentCashBalanceCard: React.FC = () => {
                 <span className="text-[22px]">
                   $
                   {
-                    userStats?.best_case_fund_available
+                    (userStats?.best_case_fund_available || "0")
                       .toLocaleString()
                       .split(".")[0]
                   }
                 </span>
                 <span className="text-[14px]">
                   .
-                  {userStats?.best_case_fund_available.toFixed(2).split(".")[1]}
+                  {
+                    (userStats?.best_case_fund_available || 0.0)
+                      .toFixed(2)
+                      .split(".")[1]
+                  }
                 </span>
               </span>
             </div>
@@ -122,7 +129,7 @@ const CurrentCashBalanceCard: React.FC = () => {
                 <span className="text-[22px]">
                   $
                   {
-                    userStats?.best_case_cumulative_profit
+                    (userStats?.best_case_cumulative_profit || "0")
                       .toLocaleString()
                       .split(".")[0]
                   }
@@ -130,7 +137,7 @@ const CurrentCashBalanceCard: React.FC = () => {
                 <span className="text-[14px]">
                   .
                   {
-                    userStats?.best_case_cumulative_profit
+                    (userStats?.best_case_cumulative_profit || 0.0)
                       .toFixed(2)
                       .split(".")[1]
                   }
