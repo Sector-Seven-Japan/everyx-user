@@ -43,9 +43,34 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
     null
   );
 
+  const runMe = async (outcome: any) => {
+    console.log(outcome)
+    setSelectedOrder(
+      String.fromCharCode(65 + 0) +
+      ". " +
+      outcome.name.charAt(0).toUpperCase() +
+      outcome.name.slice(1)
+    );
+    setIsLoading(true);
+    await makeOrder(
+      outcome._id,
+      eventData._id,
+      false,
+      1,
+      0,
+      10,
+      10
+    );
+    setIsOrderMade(true);
+    setSelectedOutcomeId(outcome._id);
+  }
+
   useEffect(() => {
+    if (eventData?.outcomes.length > 0) {
+      runMe(eventData?.outcomes[0])
+    }
     // setIsOrderMade(false);
-  }, []);
+  }, [eventData]);
 
   return (
     <div className="mt-3">
@@ -63,9 +88,9 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                   onClick={async () => {
                     setSelectedOrder(
                       String.fromCharCode(65 + index) +
-                        ". " +
-                        outcome.name.charAt(0).toUpperCase() +
-                        outcome.name.slice(1)
+                      ". " +
+                      outcome.name.charAt(0).toUpperCase() +
+                      outcome.name.slice(1)
                     );
                     setIsLoading(true);
                     await makeOrder(
