@@ -561,9 +561,7 @@ const Portfolio: React.FC = () => {
                     );
                   })
                 ) : (
-                  <p className="text-center text-gray-400">
-                    No bets available.
-                  </p>
+                  <p className="text-left text-gray-400">No bets available.</p>
                 )}
               </div>
             </div>

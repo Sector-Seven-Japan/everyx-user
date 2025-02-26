@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-
+import { useRouter } from "next/navigation";
+import { AppContext } from "@/app/Context/AppContext";
 const MobileLanding = () => {
   const questions = [
     {
@@ -48,11 +49,14 @@ const MobileLanding = () => {
     new Array(questions.length).fill(false)
   );
 
+  const { time } = useContext(AppContext);
   const toggleOpen = (index: number) => {
     setOpenQuestions((prev) =>
       prev.map((open, i) => (i === index ? !open : open))
     );
   };
+
+  const router = useRouter();
 
   return (
     <>
@@ -178,7 +182,7 @@ const MobileLanding = () => {
           <div className="flex justify-center items-center gap-2 mt-5">
             <span className="text-[13px]">Your ideal setup, in</span>
             <span className="border-[1px] text-[#CEFF00] text-[13px]">
-              00:05:93
+              {time}
             </span>
             <span className="text-[13px]">seconds</span>
           </div>
@@ -270,7 +274,12 @@ const MobileLanding = () => {
             <CiCircleInfo className="text-lg" />
             <span className="text-[13px] font-extralight">UIUX Friendly</span>
           </div>
-          <button className="bg-[#D5D5D5] text-black text-[12px] px-5 py-2 rounded-full mt-5 font-medium">
+          <button
+            className="bg-[#D5D5D5] text-black text-[12px] px-5 py-2 rounded-full mt-5 font-medium  active:bg-gray-400 transition duration-150"
+            onClick={() => {
+              router.push("/trade");
+            }}
+          >
             Get started
           </button>
         </div>

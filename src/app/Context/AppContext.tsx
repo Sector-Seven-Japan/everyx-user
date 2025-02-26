@@ -164,6 +164,7 @@ interface AppContextProps {
   userStats: UserStats | null;
   getCountdown: (ends_at: string) => string;
   isMobile: boolean;
+  time: string;
 }
 
 // const API_BASE_URL = "https://test-api.everyx.io";
@@ -240,6 +241,7 @@ const initialState: AppContextProps = {
   userStats: null,
   getCountdown: () => "Ended",
   isMobile: false,
+  time: "0",
 };
 
 export const AppContext = createContext<AppContextProps>(initialState);
@@ -293,6 +295,31 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [time, setTime] = useState(0); // Time in seconds
+
+  // Handling the Screen time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime >= 5 * 60) {
+          return 0; // Reset to 0 after 5 minutes
+        }
+        return prevTime + 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}:${String(secs).padStart(2, "0")}`;
+  };
 
   // Handle screen size detection
   useEffect(() => {
@@ -576,6 +603,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     userStats,
     getCountdown,
     isMobile,
+    time: formatTime(time),
   };
 
   return (
