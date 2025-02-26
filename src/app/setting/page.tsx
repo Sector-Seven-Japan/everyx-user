@@ -20,9 +20,9 @@ const Setting: React.FC = () => {
     Record<string, { name: string; enabled: boolean }>
   >({});
   const [wager, setWager] = useState({
-    Default_wager_size: "",
-    Default_leverage: "",
-    Warn_when_market_impact_exceeds: "",
+    default_wager_size: "",
+    default_leverage: "",
+    warn_when_market_impact_exceeds: "",
   });
 
   const [updatedNotifications, setUpdatedNotifications] = useState<
@@ -91,9 +91,9 @@ const Setting: React.FC = () => {
       setFavoriteTags(data.favorite_tags || []);
 
       setWager({
-        Default_wager_size: data.wager.default_wager_size || "",
-        Default_leverage: data.wager.default_leverage || "",
-        Warn_when_market_impact_exceeds:
+        default_wager_size: data.wager.default_wager_size || "",
+        default_leverage: data.wager.default_leverage || "",
+        warn_when_market_impact_exceeds:
           data.wager.warn_when_market_impact_exceeds || "",
       });
     } catch (error) {
@@ -415,7 +415,9 @@ const Setting: React.FC = () => {
               {Object.keys(wager).map((key) => (
                 <div key={key}>
                   <label className="text-[14px] text-white opacity-[27%]">
-                    {key.replace(/_/g, " ")}
+                    {key
+                      .replace(/_/g, " ")
+                      .replace(/^\w/, (c) => c.toUpperCase())}
                   </label>
                   <input
                     type="text"
