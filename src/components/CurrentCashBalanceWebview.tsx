@@ -6,6 +6,7 @@ import { AppContext } from "@/app/Context/AppContext";
 import CashWithdrawalCategories from "./CashWithdrawalCategories";
 import DepositPopup from "./DepositPopup";
 import Loader from "./Loader/Loader";
+import { MdCamera } from "react-icons/md";
 
 const CurrentCashBalanceCardWebview: React.FC = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
 
         <div className="flex flex-col bg-[rgba(255,255,255,0.08)] rounded-3xl px-3 py-8">
           <div className="flex justify-center items-center mt-5 relative">
-            {userProfile && (
+            {userProfile ? (
               <div className="h-14 w-14 relative rounded-full overflow-hidden">
                 <Image
                   src={userProfile.avatar}
@@ -41,6 +42,10 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   className="object-cover rounded-full"
                   fill
                 />
+              </div>
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center">
+                <MdCamera className="w-8 h-8 text-gray-400" />
               </div>
             )}
             <Image
