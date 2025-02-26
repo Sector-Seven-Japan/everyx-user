@@ -7,15 +7,13 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { AppContext } from "../Context/AppContext";
 import { signIn, useSession } from "next-auth/react";
-import Loader from "@/components/Loader/Loader";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [popupContent, setPopupContent] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // State for managing loading
   const router = useRouter();
-  const { setAuthToken, setIsLoggedIn } = useContext(AppContext);
+  const { setAuthToken, setIsLoggedIn, setIsLoading } = useContext(AppContext);
   const { isConnected: wagmiConnected, address } = useAccount();
   const { data: session, status } = useSession();
 
@@ -72,6 +70,8 @@ export default function LoginPage() {
   const handleContinue = async () => {
     if (!email) return;
 
+    setIsLoading(true);
+
     try {
       const response = await fetch(
         `https://everyx.weseegpt.com/auth/v2/user/exists/${email}`
@@ -83,6 +83,7 @@ export default function LoginPage() {
 
       if (!data) {
         setPopupContent("new user");
+        setIsLoading(false)
       } else {
         const res = await fetch(
           `https://everyx.weseegpt.com/auth/v2/login/${email}`
@@ -93,6 +94,7 @@ export default function LoginPage() {
       }
 
       setShowPopup(true);
+      setIsLoading(false)
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -224,13 +226,6 @@ export default function LoginPage() {
         </p>
       </div>
 
-      {/* Loader */}
-      {isLoading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <Loader /> {/* Use the Loader component */}
-        </div>
-      )}
-
       {/* Popup Modal */}
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -251,14 +246,19 @@ export default function LoginPage() {
                 ? "It looks like you're new here! Create an account to get started."
                 : `We've sent a confirmation link to ${email}. Please check your inbox.`}
             </p>
-            <button
-              onClick={() => {
-                router.push(`/auth/signup?email=${encodeURIComponent(email)}`);
-              }}
-              className="px-3 py-2 mt-4 border border-[#00FFBB] rounded-md text-sm"
-            >
-              Continue
-            </button>
+            {popupContent === "new user" && (
+              <button
+                onClick={() => {
+                  setIsLoading(true);
+                  router.push(
+                    `/auth/signup?email=${encodeURIComponent(email)}`
+                  );
+                }}
+                className="px-3 py-2 mt-4 border border-[#00FFBB] rounded-md text-sm"
+              >
+                Continue
+              </button>
+            )}
           </div>
         </div>
       )}

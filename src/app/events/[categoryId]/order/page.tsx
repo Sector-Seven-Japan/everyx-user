@@ -207,7 +207,9 @@ export default function Order() {
   return (
     <div>
       <Navbar />
-      <div className="hidden md:block"><HeadingSlider filter={filter} setFilter={setFilter} /></div>
+      <div className="hidden md:block">
+        <HeadingSlider filter={filter} setFilter={setFilter} />
+      </div>
       <div className="flex flex-col md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
         <div className="md:w-full md:block hidden">
           {eventData ? (
@@ -253,9 +255,7 @@ export default function Order() {
                         width={18}
                       />
                     </div>
-                    <p className="text-[#2DC198] md:text-[10px]">
-                      {countdown}
-                    </p>
+                    <p className="text-[#2DC198] md:text-[10px]">{countdown}</p>
                   </p>
                 </div>
                 <p className="text-[21px] md:text-[12px] font-light mt-4">
@@ -444,7 +444,10 @@ export default function Order() {
                         </div>
                       </div>
                     </div>
-                    <DrawGraph data={graphData} />
+                    <DrawGraph
+                      data={graphData}
+                      outcomeIds={[orderDetails?.event_outcome_id]}
+                    />
                   </div>
                 </div>
               </div>

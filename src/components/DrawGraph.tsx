@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 
 interface GraphData {
@@ -13,12 +13,10 @@ interface GraphData {
 
 interface DrawGraphProps {
   data: GraphData[];
+  outcomeIds?: string[]; // Optional prop to filter outcomes
 }
 
-type ChartType = "probability" | "payout";
-
-const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
-  const [activeTab, setActiveTab] = useState<ChartType>("probability");
+const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
 
@@ -29,7 +27,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
       chartInstance.current.destroy();
     }
 
-    const processedData = processDataForChart(data, activeTab);
+    const processedData = processDataForChart(data, outcomeIds);
     const ctx = chartRef.current.getContext("2d");
     if (!ctx) return;
 
@@ -41,13 +39,14 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false, // Ensure the chart takes the full height of its container
         interaction: {
           mode: "index",
           intersect: false,
         },
         plugins: {
           legend: {
-            position: "top",
+            display: true, // Show legend
             labels: {
               color: "#fff",
             },
@@ -57,13 +56,22 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
             intersect: false,
           },
         },
+        elements: {
+          point: {
+            radius: function (context) {
+              const index = context.dataIndex;
+              const dataset = context.dataset;
+              return index === dataset.data.length - 1 ? 5 : 0; // Only show dot at the end
+            },
+          },
+        },
         scales: {
           x: {
             grid: {
-              color: "rgba(255, 255, 255, 0.1)",
+              display: false, // Remove grid lines
             },
             ticks: {
-              color: "#fff",
+              color: "rgba(255, 255, 255, 0.7)", // Make font lighter
               maxRotation: 0, // Ensures labels stay straight
               minRotation: 0, // Ensures labels stay straight
               callback: function (value) {
@@ -78,14 +86,12 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
           },
           y: {
             grid: {
-              color: "rgba(255, 255, 255, 0.1)",
+              display: false, // Remove grid lines
             },
             ticks: {
               color: "#fff",
-              callback: function (value) {
-                return activeTab === "probability"
-                  ? value + "%"
-                  : Number(value).toFixed(1) + "x";
+              callback: function () {
+                return ""; // Hide the percentage labels
               },
             },
           },
@@ -98,9 +104,9 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
         chartInstance.current.destroy();
       }
     };
-  }, [data, activeTab]);
+  }, [data, outcomeIds]);
 
-  const processDataForChart = (data: GraphData[], type: ChartType) => {
+  const processDataForChart = (data: GraphData[], outcomeIds?: string[]) => {
     const today = new Date().toISOString().split("T")[0];
 
     // Filter data up to today's date
@@ -117,7 +123,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
       .slice(0, 6) // Get only the latest 6 records
       .sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); // Re-sort ascending
 
-    const outcomes = [...new Set(filteredData.map((item) => item.event_outcome_id))];
+    const outcomes = outcomeIds || [...new Set(filteredData.map((item) => item.event_outcome_id))];
     const colors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
     const datasets = outcomes.map((outcome, index) => {
@@ -127,11 +133,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
             new Date(item.datetime).toISOString().split("T")[0] === date &&
             item.event_outcome_id === outcome
         );
-        return dataPoint
-          ? type === "probability"
-            ? dataPoint.probability * 100
-            : dataPoint.estimated_payout
-          : null;
+        return dataPoint ? dataPoint.probability * 100 : null; // Only probability data
       });
 
       return {
@@ -152,32 +154,8 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data }) => {
 
   return (
     <div className="w-full rounded-lg">
-      <div className="flex justify-center mb-4">
-        <div className="inline-flex gap-1 p-1 bg-[#1A1A1A] rounded-lg">
-          <button
-            onClick={() => setActiveTab("probability")}
-            className={`text-sm py-1 px-2 rounded-md transition-all duration-200 ${
-              activeTab === "probability"
-                ? "bg-[#00FFBB] text-black"
-                : "text-[#00FFBB] hover:bg-[#00FFBB]/10"
-            }`}
-          >
-            Probability
-          </button>
-          <button
-            onClick={() => setActiveTab("payout")}
-            className={`text-sm py-1 px-2 rounded-md transition-all duration-200 ${
-              activeTab === "payout"
-                ? "bg-[#00FFBB] text-black"
-                : "text-[#00FFBB] hover:bg-[#00FFBB]/10"
-            }`}
-          >
-            Estimated Payout
-          </button>
-        </div>
-      </div>
-      <div className="h-[200px] mt-8">
-        <canvas ref={chartRef}></canvas>
+      <div className="h-[200px] mt-8 w-full">
+        <canvas ref={chartRef} className="w-full h-full" style={{ backgroundColor: "transparent" }}></canvas> {/* Set background color to transparent */}
       </div>
     </div>
   );

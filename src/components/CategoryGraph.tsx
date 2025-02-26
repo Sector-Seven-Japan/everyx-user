@@ -44,7 +44,16 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
   );
 
   useEffect(() => {
-    // setIsOrderMade(false);
+    const outcome = eventData?.outcomes[0];
+    setSelectedOrder(
+      String.fromCharCode(65 + 0) +
+        ". " +
+        outcome.name.charAt(0).toUpperCase() +
+        outcome.name.slice(1)
+    );
+    makeOrder("A", eventData._id, false, 1, 0, 10, 10);
+    setSelectedOutcomeId("A");
+    setIsOrderMade(true);
   }, []);
 
   return (

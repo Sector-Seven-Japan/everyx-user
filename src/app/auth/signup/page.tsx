@@ -1,7 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import { AppContext } from "@/app/Context/AppContext";
+import React, { useState,useContext, useEffect } from "react";
 
 const Page = () => {
+
+  const {setIsLoading} = useContext(AppContext);
+
+  useEffect(()=>{
+    setIsLoading(false);
+  },[])
+
   const [formData, setFormData] = useState({
     username: "",
     phone: "",

@@ -161,7 +161,7 @@ export default function EventCategoryPageDetails() {
                     <p className="text-[#00FFBB] text-lg">Loading graph...</p>
                   </div>
                 ) : (
-                  <DrawGraph data={graphData} />
+                  <DrawGraph data={graphData}/>
                 )}
               </div>
               <CategoryRule />
