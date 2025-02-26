@@ -1,14 +1,16 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CategoryCard from "./CategoryCard";
+import { AppContext } from "@/app/Context/AppContext";
 
 export default function TopCategories() {
   const [topCategoies, setTopCategories] = useState([]);
+  const {API_BASE_URL} = useContext(AppContext);
 
   const fetchTopCategories = async () => {
     try {
       const response = await fetch(
-        "https://test-api.everyx.io/events?purpose=top&pagination=false&sortby=newest"
+        `${API_BASE_URL}/events?purpose=top&pagination=false&sortby=newest`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");

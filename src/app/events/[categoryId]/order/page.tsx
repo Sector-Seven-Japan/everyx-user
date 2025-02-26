@@ -80,8 +80,7 @@ export default function Order() {
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
   const [option, setOption] = useState<string>("Order details");
-  const [isLoaingGraph, setIsLoadingGraph] = useState(true);
-  console.log(isLoaingGraph);
+  const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [countdown, setCountdown] = useState<string>("");
 
   useEffect(() => {
@@ -146,6 +145,7 @@ export default function Order() {
       }
     };
 
+    setIsLoadingGraph(true);
     const fetchData = async () => {
       try {
         if (eventData) {
@@ -207,7 +207,9 @@ export default function Order() {
   return (
     <div>
       <Navbar />
-      <div className="hidden md:block"><HeadingSlider filter={filter} setFilter={setFilter} /></div>
+      <div className="hidden md:block">
+        <HeadingSlider filter={filter} setFilter={setFilter} />
+      </div>
       <div className="flex flex-col md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
         <div className="md:w-full md:block hidden">
           {eventData ? (
@@ -217,9 +219,9 @@ export default function Order() {
                 <h1 className="text-[23px] mb-8 mt-5 md:text-[16px]">
                   Live Chart
                 </h1>
-                {isLoaingGraph ? (
+                {isLoadingGraph ? (
                   <div className="flex justify-center items-center h-40">
-                    <p className="text-[#00FFBB] text-lg">Loading graph...</p>
+                    <p className="text-[#00FFBB] text-lg md:text-xs">Loading graph...</p>
                   </div>
                 ) : (
                   <DrawGraph data={graphData} />
@@ -253,9 +255,7 @@ export default function Order() {
                         width={18}
                       />
                     </div>
-                    <p className="text-[#2DC198] md:text-[10px]">
-                      {countdown}
-                    </p>
+                    <p className="text-[#2DC198] md:text-[10px]">{countdown}</p>
                   </p>
                 </div>
                 <p className="text-[21px] md:text-[12px] font-light mt-4">
@@ -307,7 +307,7 @@ export default function Order() {
                     <p className="flex justify-between text-[22px] text-[#00FFB8] md:text-[16px]">
                       ${Math.round(orderDetails?.indicative_payout)}
                       <span className="text-[14px] text-[#E49C29] flex items-end md:text-[12px]">
-                        +{orderDetails?.indicative_return.toFixed(0)}%
+                        +{orderDetails?.indicative_return?.toFixed(0)}%
                       </span>
                     </p>
                   </div>
@@ -318,7 +318,7 @@ export default function Order() {
                     <p className="flex justify-between text-[22px] text-[#00FFB8] md:text-[16px]">
                       {Math.round(orderDetails?.new_probability * 100)}%
                       <span className="text-[14px] text-[#E49C29] flex items-end md:text-[12px]">
-                        +{(orderDetails?.probability_change * 100).toFixed(1)}%
+                        +{(orderDetails?.probability_change * 100)?.toFixed(1)}%
                       </span>
                     </p>
                   </div>
@@ -395,7 +395,7 @@ export default function Order() {
                         Your return
                       </p>
                       <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
-                        +{orderDetails?.after_return.toFixed(0)} %
+                        +{orderDetails?.after_return?.toFixed(0)} %
                       </p>
                     </div>
                   </div>
@@ -406,7 +406,7 @@ export default function Order() {
                     Stop level
                   </p>
                   <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
-                    {(orderDetails?.after_stop_probability * 100).toFixed(0)}%
+                    {(orderDetails?.after_stop_probability * 100)?.toFixed(0)}%
                   </button>
                 </div>
               </div>
@@ -444,7 +444,10 @@ export default function Order() {
                         </div>
                       </div>
                     </div>
-                    <DrawGraph data={graphData} />
+                    <DrawGraph
+                      data={graphData}
+                      outcomeIds={[orderDetails?.event_outcome_id]}
+                    />
                   </div>
                 </div>
               </div>

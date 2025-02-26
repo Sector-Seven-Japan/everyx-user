@@ -11,7 +11,6 @@ import TopCategories from "@/components/TopCategoies";
 import CategoryCard from "@/components/CategoryCard"; // Add this import
 import Category from "@/components/Category";
 
-
 interface TraderInfo {
   max_leverage: number;
   estimated_payout: number;
@@ -72,7 +71,6 @@ export default function Home() {
           }
 
           const data = await response.json();
-          console.log(data);
           setSearchData(data);
         } catch (error) {
           console.error("Search error:", error);
@@ -104,8 +102,6 @@ export default function Home() {
 
       {!search &&
         categories.map((item, index) => {
-          console.log(item);
-
           if (typeof item === "object") {
             return <Category key={index} item={item} />;
           }

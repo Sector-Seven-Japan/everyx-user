@@ -378,7 +378,7 @@ export default function BettingPage() {
                         Your return
                       </p>
                       <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
-                        +{orderDetails?.after_return.toFixed(0)} %
+                        +{orderDetails?.after_return?.toFixed(0)} %
                       </p>
                     </div>
                   </div>

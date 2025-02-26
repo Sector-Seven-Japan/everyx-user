@@ -59,7 +59,6 @@ interface EventHistoryParams {
 
 export default function CategoryCard({
   item,
-  showTime,
   showChart,
   showPrediction,
 }: CategoryCardProps) {
@@ -76,8 +75,6 @@ export default function CategoryCard({
 
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
-  console.log(showTime, showChart, showPrediction);
-
   const handleNavigation = async () => {
     try {
       setIsLoading(true);
@@ -87,7 +84,6 @@ export default function CategoryCard({
     }
   };
 
-  // console.log("item at categoryCard", item);
 
   useEffect(() => {
     const getGraphData = async ({
@@ -97,7 +93,6 @@ export default function CategoryCard({
       to,
     }: EventHistoryParams) => {
       try {
-        // Build URL with query parameters
         const params = new URLSearchParams();
         if (precision) params.append("precision", precision);
         if (from) params.append("from", from);
@@ -112,7 +107,6 @@ export default function CategoryCard({
         }
 
         const data = await response.json();
-        // console.log("data at getGraphData", data);
         return data;
       } catch (error) {
         console.error("Error getting graph data:", error);
@@ -188,13 +182,13 @@ export default function CategoryCard({
       {
         <div>
           <div
-            className={`flex flex-col gap-5 mb-7 md:gap-1 ${
+            className={`flex flex-col gap-5 mb-7 md:gap-1 md:mb-0 ${
               !showChart && "hidden"
             } `}
           >
             {isLoadingGraph ? (
               <div className="flex justify-center items-center h-40">
-                <p className="text-[#00FFBB] text-lg">Loading graph...</p>
+                <p className="text-[#00FFBB] text-lg md:text-xs">Loading graph...</p>
               </div>
             ) : (
               <DrawGraph data={graphData} />
