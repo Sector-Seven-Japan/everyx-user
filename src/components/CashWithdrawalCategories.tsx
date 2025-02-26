@@ -3,25 +3,22 @@ import { BiTransfer } from "react-icons/bi";
 import { AiOutlineTrophy } from "react-icons/ai";
 import { VscHistory } from "react-icons/vsc";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Loader from "./Loader/Loader";
+import { AppContext } from "@/app/Context/AppContext";
 
-interface CashWithdrawalCategoriesProps {
-  openDepositPopup: () => void;
-}
-
-export default function CashWithdrawalCategories({
-  openDepositPopup,
-}: CashWithdrawalCategoriesProps) {
+export default function CashWithdrawalCategories() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const currentPath = usePathname(); // Get the current page path
+  const { getDepositAddress } = useContext(AppContext);
 
   const handleNavigation = (path: string) => {
     if (currentPath === path) return; // Don't show loader if already on the same page
     setIsLoading(true);
     router.push(path);
   };
+
   return (
     <div className="w-full bg-transparent">
       {isLoading && (
@@ -33,7 +30,7 @@ export default function CashWithdrawalCategories({
         <ul className="grid grid-cols-4 gap-2">
           <li>
             <button
-              onClick={openDepositPopup}
+              onClick={getDepositAddress}
               type="button"
               className="w-full flex flex-col items-center justify-center p-4 lg:p-2 md:p-2 rounded-lg bg-[rgba(255,255,255,0.1)] border border-transparent hover:border-white transition-colors gap-1"
             >

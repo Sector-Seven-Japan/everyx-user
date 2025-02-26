@@ -85,7 +85,11 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
               {outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1)}
             </p>
             <div className="flex justify-between items-center gap-2">
-              <div className="w-[80%] h-[19px] md:h-[19px]">
+              <div
+                className={`w-[80%] h-[19px] md:h-[19px] rounded-lg ${
+                  selectedOutcomeId === outcome._id && "bg-white"
+                }`}
+              >
                 <div
                   onClick={async () => {
                     setSelectedOrder(
@@ -120,7 +124,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                 <p className="text-[19px] font-light md:text-[14px]">
                   {Math.round(outcome.trader_info.estimated_probability * 100)}%
                 </p>
-                <div className="md:w-4">
+                <div className="md:w-[16px]">
                   <Image
                     src={
                       selectedOutcomeId === outcome._id

@@ -4,7 +4,6 @@ import settingIcon from "../../public/Icons/settingIcon.png";
 import { usePathname, useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import CashWithdrawalCategories from "./CashWithdrawalCategories";
-import DepositPopup from "./DepositPopup";
 import Loader from "./Loader/Loader";
 import { MdCamera } from "react-icons/md";
 
@@ -21,7 +20,6 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
     }
   };
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -138,13 +136,10 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
             ></div>
           </div>
           <div className="mt-5">
-            <CashWithdrawalCategories
-              openDepositPopup={() => setIsOpen(true)}
-            />
+            <CashWithdrawalCategories/>
           </div>
         </div>
       </div>
-      <DepositPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 };
