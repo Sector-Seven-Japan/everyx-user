@@ -1,6 +1,10 @@
 "use client";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultConfig, RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import {
+  getDefaultConfig,
+  RainbowKitProvider,
+  darkTheme,
+} from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
@@ -15,10 +19,10 @@ const config = getDefaultConfig({
 
 // Custom dark theme (optional)
 const customDarkTheme = darkTheme({
-  accentColor: '#1a1a1a', // Dark gray accent
-  accentColorForeground: '#ffffff', // White text
-  borderRadius: 'medium',
-  fontStack: 'system'
+  accentColor: "#1a1a1a", // Dark gray accent
+  accentColorForeground: "#ffffff", // White text
+  borderRadius: "medium",
+  fontStack: "system",
 });
 
 export default function RainbowKitWrapper({

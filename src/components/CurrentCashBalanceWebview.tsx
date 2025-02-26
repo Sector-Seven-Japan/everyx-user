@@ -6,6 +6,7 @@ import { AppContext } from "@/app/Context/AppContext";
 import CashWithdrawalCategories from "./CashWithdrawalCategories";
 import DepositPopup from "./DepositPopup";
 import Loader from "./Loader/Loader";
+import { MdCamera } from "react-icons/md";
 
 const CurrentCashBalanceCardWebview: React.FC = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
 
         <div className="flex flex-col bg-[rgba(255,255,255,0.08)] rounded-3xl px-3 py-8">
           <div className="flex justify-center items-center mt-5 relative">
-            {userProfile && (
+            {userProfile?.avatar ? (
               <div className="h-14 w-14 relative rounded-full overflow-hidden">
                 <Image
                   src={userProfile.avatar}
@@ -41,6 +42,10 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   className="object-cover rounded-full"
                   fill
                 />
+              </div>
+            ) : (
+              <div className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center">
+                <MdCamera className="w-8 h-8 text-gray-400" />
               </div>
             )}
             <Image
@@ -55,10 +60,10 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
           </p>
           <div className="flex justify-center mt-4 items-baseline font-bold">
             <span className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[20px]">
-              ${userStats?.fund_available.toString().split(".")[0]}
+              ${(userStats?.fund_available || "0").toString().split(".")[0]}
             </span>
             <span className="text-[14px] sm:text-[16px] md:text-[18px] lg:text-[18px]">
-              .{userStats?.fund_available.toFixed(2).split(".")[1]}
+              .{(userStats?.fund_available || 0.0).toFixed(2).split(".")[1]}
             </span>
           </div>
 
@@ -82,7 +87,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   <span className="text-[14px] sm:text-[10px] md:text-[14px] lg:text-[14px]">
                     $
                     {
-                      userStats?.best_case_fund_available
+                      (userStats?.best_case_fund_available || "0")
                         .toLocaleString()
                         .split(".")[0]
                     }
@@ -90,7 +95,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   <span className="text-[10px] sm:text-[9px] md:text-[11px] lg:text-[12px]">
                     .
                     {
-                      userStats?.best_case_fund_available
+                      (userStats?.best_case_fund_available || 0.0)
                         .toFixed(2)
                         .split(".")[1]
                     }
@@ -106,7 +111,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   <span className="text-[14px] sm:text-[10px] md:text-[14px] lg:text-[14px]">
                     $
                     {
-                      userStats?.best_case_cumulative_profit
+                      (userStats?.best_case_cumulative_profit || "0")
                         .toLocaleString()
                         .split(".")[0]
                     }
@@ -114,7 +119,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   <span className="text-[10px] sm:text-[9px] md:text-[11px] lg:text-[12px]">
                     .
                     {
-                      userStats?.best_case_cumulative_profit
+                      (userStats?.best_case_cumulative_profit || 0.0)
                         .toFixed(2)
                         .split(".")[1]
                     }
