@@ -45,7 +45,7 @@ export default function LoginPage() {
           setAuthToken(data.token);
           setIsLoggedIn(true);
           // Redirect to home page
-          router.push("/home");
+          router.push("/trade");
         } else {
           console.error("No token received from server");
         }
@@ -73,6 +73,8 @@ export default function LoginPage() {
   const handleContinue = async () => {
     if (!email) return;
 
+    setIsLoading(true);
+
     try {
       const response = await fetch(
         `${API_BASE_URL}/auth/v2/user/exists/${email}`
@@ -84,13 +86,14 @@ export default function LoginPage() {
 
       if (!data) {
         setPopupContent("new user");
+        setIsLoading(false);
       } else {
         const res = await fetch(`${API_BASE_URL}/auth/v2/login/${email}`);
         if (!res.ok) throw new Error("Failed to log in user");
 
         setPopupContent("existing user");
       }
-
+      setIsLoading(false);
       setShowPopup(true);
     } catch (error) {
       console.error("Login error:", error);
@@ -117,7 +120,7 @@ export default function LoginPage() {
           localStorage.setItem("authToken", data.token);
           setAuthToken(data.token);
           setIsLoggedIn(true);
-          router.push("/home");
+          router.push("/trade");
         }
       } catch (error) {
         console.error("Error connecting wallet:", error);
@@ -136,7 +139,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-black">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0e0e0e]">
       <div className="w-full max-w-md px-8 py-12">
         {/* Logo and Title */}
         <div className="flex flex-col items-center mb-12">
@@ -258,15 +261,19 @@ export default function LoginPage() {
                 ? "It looks like you're new here! Create an account to get started."
                 : `We've sent a confirmation link to ${email}. Please check your inbox.`}
             </p>
-            <button
-              onClick={() => {
-                router.push(`/auth/signup?email=${encodeURIComponent(email)}`);
-              }}
-              className="px-6 py-3 mt-6 border border-[#00FFBB] rounded-md text-sm 
+            {popupContent === "new user" && (
+              <button
+                onClick={() => {
+                  router.push(
+                    `/auth/signup?email=${encodeURIComponent(email)}`
+                  );
+                }}
+                className="px-6 py-3 mt-6 border border-[#00FFBB] rounded-md text-sm 
               hover:bg-[#00FFBB] hover:text-black transition-all duration-300"
-            >
-              Continue
-            </button>
+              >
+                Continue
+              </button>
+            )}
           </div>
         </div>
       )}

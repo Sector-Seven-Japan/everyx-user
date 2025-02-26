@@ -164,6 +164,11 @@ interface AppContextProps {
   userStats: UserStats | null;
   getCountdown: (ends_at: string) => string;
   isMobile: boolean;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  depositAddress: string;
+  setDepositAddress: React.Dispatch<React.SetStateAction<string>>;
+  getDepositAddress: () => Promise<void>;
 }
 
 // const API_BASE_URL = "https://test-api.everyx.io";
@@ -240,6 +245,11 @@ const initialState: AppContextProps = {
   userStats: null,
   getCountdown: () => "Ended",
   isMobile: false,
+  isOpen: false,
+  setIsOpen: () => {},
+  depositAddress: "",
+  setDepositAddress: () => {},
+  getDepositAddress: async () => {},
 };
 
 export const AppContext = createContext<AppContextProps>(initialState);
@@ -293,6 +303,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [depositAddress, setDepositAddress] = useState<string>("");
 
   // Handle screen size detection
   useEffect(() => {
@@ -499,6 +511,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     return `${days} Day${days !== 1 ? "s" : ""} and ${hours}h${minutes}m`;
   };
 
+  const getDepositAddress = async () => {
+    try {
+      setIsOpen(true);
+      const res = await fetch(`${API_BASE_URL}/deposit/create/wallet`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      const data = await res.json();
+      console.log(data);
+      setDepositAddress(data.address);
+    } catch (error) {
+      console.log("failed to fetch deposit address", error);
+    }
+  };
+
   useEffect(() => {
     if (authToken) {
       getProfileData();
@@ -576,6 +605,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     userStats,
     getCountdown,
     isMobile,
+    isOpen,
+    setIsOpen,
+    depositAddress,
+    setDepositAddress,
+    getDepositAddress,
   };
 
   return (

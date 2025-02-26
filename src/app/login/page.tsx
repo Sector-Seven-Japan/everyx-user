@@ -53,7 +53,7 @@ export default function Login() {
       document.cookie = `authToken=${data.token}`;
       setAuthToken(data.token);
       setIsLoggedIn(true);
-      router.push("/home")
+      router.push("/trade")
       ;
     } catch (error) {
       setIsLoading(false);
@@ -64,7 +64,7 @@ export default function Login() {
   // Handle Google Login (sign-in via Google provider)
   const handleGoogleLogin = () => {
     if (typeof window !== "undefined") {
-      signIn("google", { callbackUrl: `${window.location.origin}/home` });
+      signIn("google", { callbackUrl: `${window.location.origin}/trade` });
     }
   };
 

@@ -56,9 +56,6 @@ const Footer: React.FC = () => {
         <br />
         <br />
         Our official registration number is BVO123456789A.
-        <br />
-        <br />
-        Our official registration number is BVO123456789A.
       </p>
 
       {/* Bottom Logo Section */}

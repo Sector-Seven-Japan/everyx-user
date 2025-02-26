@@ -58,7 +58,7 @@ export default function Navbar() {
             setSidebar(false);
             setSelectedMenu("Home");
             setFilter("");
-            router.push("/home");
+            router.push("/trade");
           }}
           src="/Images/logo_grey.png"
           className="cursor-pointer"
@@ -72,7 +72,7 @@ export default function Navbar() {
         authToken ? (
           <button
             onClick={() => {
-              router.push("/home");
+              router.push("/trade");
             }}
             className="text-[13px] bg-[#d9d9d921] px-5 py-[6px] rounded-md"
           >

@@ -19,11 +19,11 @@ export default function Menu() {
 
   const navbarItems = isLoggedIn
     ? [
-        { name: "Home", link: "/home" },
+        { name: "Home", link: "/trade" },
         { name: "Portfolio", link: "/deposit-withdrawal/history" },
         { name: "Profile", link: "/profile" },
-        { name: "Message", link: "/home" },
-        { name: "Mission", link: "/home" },
+        { name: "Message", link: "/trade" },
+        { name: "Mission", link: "/trade" },
         { name: "Settings", link: "/setting" },
         { name: "Help", link: "/help" },
       ]
