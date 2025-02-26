@@ -1,14 +1,20 @@
 "use client";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MobileLanding from "@/components/Screens/LandingPage/MobileView";
 import WebLanding from "@/components/Screens/LandingPage/WebView";
 import LoadingPage from "@/components/LoadingPage";
+import { AppContext } from "./Context/AppContext";
 
 const LandingPage = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const { setIsLoading } = useContext(AppContext);
+  const [isLoadingl, setIsLoadingl] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   // Handle screen size detection
   useEffect(() => {
@@ -29,12 +35,12 @@ const LandingPage = () => {
   // Simulate loading
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setIsLoadingl(false);
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
+  if (isLoadingl) {
     return <LoadingPage />;
   }
 

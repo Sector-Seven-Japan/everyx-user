@@ -11,7 +11,7 @@ import { useDisconnect } from "wagmi";
 export default function Menu() {
   const router = useRouter();
   const { disconnect } = useDisconnect();
-  const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading } =
+  const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading ,API_BASE_URL} =
     useContext(AppContext);
   const [languageState, setLanguageState] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
@@ -31,7 +31,7 @@ export default function Menu() {
 
   const handleLogoutUser = async () => {
     try {
-      const response = await fetch("https://test-api.everyx.io/tokens", {
+      const response = await fetch(`${API_BASE_URL}/tokens`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

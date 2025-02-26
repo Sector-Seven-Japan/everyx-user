@@ -80,8 +80,7 @@ export default function Order() {
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
   const [option, setOption] = useState<string>("Order details");
-  const [isLoaingGraph, setIsLoadingGraph] = useState(true);
-  console.log(isLoaingGraph);
+  const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [countdown, setCountdown] = useState<string>("");
 
   useEffect(() => {
@@ -146,6 +145,7 @@ export default function Order() {
       }
     };
 
+    setIsLoadingGraph(true);
     const fetchData = async () => {
       try {
         if (eventData) {
@@ -219,9 +219,9 @@ export default function Order() {
                 <h1 className="text-[23px] mb-8 mt-5 md:text-[16px]">
                   Live Chart
                 </h1>
-                {isLoaingGraph ? (
+                {isLoadingGraph ? (
                   <div className="flex justify-center items-center h-40">
-                    <p className="text-[#00FFBB] text-lg">Loading graph...</p>
+                    <p className="text-[#00FFBB] text-lg md:text-xs">Loading graph...</p>
                   </div>
                 ) : (
                   <DrawGraph data={graphData} />

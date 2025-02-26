@@ -33,12 +33,6 @@ interface CategoryInfoProps {
   eventData: EventData;
 }
 
-interface Outcome {
-  _id: string;
-  name: string;
-  trader_info: TraderInfo;
-}
-
 const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
 export default function CategoryGraph({ eventData }: CategoryInfoProps) {
@@ -50,42 +44,34 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
   );
 
   useEffect(() => {
-    const outcome = eventData?.outcomes[0];
-    setSelectedOrder(
-      String.fromCharCode(65 + 0) +
-        ". " +
-        outcome.name.charAt(0).toUpperCase() +
-        outcome.name.slice(1)
-    );
-    makeOrder("A", eventData._id, false, 1, 0, 10, 10);
-    setSelectedOutcomeId("A");
-    setIsOrderMade(true);
-  }, []);
-    if (eventData?.outcomes.length > 0) {
-      const outcome = eventData?.outcomes[0]
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        // Assuming 1024px as the breakpoint for desktop mode
+        if (eventData?.outcomes.length > 0) {
+          const outcome = eventData?.outcomes[0];
 
-      setSelectedOrder(
-        String.fromCharCode(65 + 0) +
-        ". " +
-        outcome.name.charAt(0).toUpperCase() +
-        outcome.name.slice(1)
-      );
-      setIsLoading(true);
-      (async () => {
-        await makeOrder(
-          outcome._id,
-          eventData._id,
-          false,
-          1,
-          0,
-          10,
-          10
-        );
-        setIsOrderMade(true);
-        setSelectedOutcomeId(outcome._id);
-      })()
-    }
-    // setIsOrderMade(false);
+          setSelectedOrder(
+            String.fromCharCode(65 + 0) +
+              ". " +
+              outcome.name.charAt(0).toUpperCase() +
+              outcome.name.slice(1)
+          );
+          setIsLoading(true);
+          (async () => {
+            await makeOrder(outcome._id, eventData._id, false, 1, 0, 10, 10);
+            setIsOrderMade(true);
+            setSelectedOutcomeId(outcome._id);
+          })();
+        }
+      }
+    };
+
+    handleResize(); // Run on mount
+    window.addEventListener("resize", handleResize); // Run on resize
+
+    return () => {
+      window.removeEventListener("resize", handleResize); // Cleanup on unmount
+    };
   }, [eventData]);
 
   return (
@@ -104,9 +90,9 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                   onClick={async () => {
                     setSelectedOrder(
                       String.fromCharCode(65 + index) +
-                      ". " +
-                      outcome.name.charAt(0).toUpperCase() +
-                      outcome.name.slice(1)
+                        ". " +
+                        outcome.name.charAt(0).toUpperCase() +
+                        outcome.name.slice(1)
                     );
                     setIsLoading(true);
                     await makeOrder(

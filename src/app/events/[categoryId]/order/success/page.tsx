@@ -64,8 +64,7 @@ export default function OrderSuccess() {
   const categoryId = orderDetails?.event_id;
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [countdown, setCountdown] = useState<string>("");
-  const [isLoaingGraph, setIsLoadingGraph] = useState(true);
-  console.log(isLoaingGraph);
+  const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
 
   const fetchEvent = async () => {
@@ -130,6 +129,7 @@ export default function OrderSuccess() {
       }
     };
 
+    setIsLoadingGraph(true)
     const fetchData = async () => {
       try {
         if (eventData) {
@@ -166,9 +166,9 @@ export default function OrderSuccess() {
               <CategoryInfo eventData={eventData} />
               <div className="px-5">
                 <h1 className="text-[23px] mb-8 mt-5">Live Chart</h1>
-                {isLoaingGraph ? (
+                {isLoadingGraph ? (
                   <div className="flex justify-center items-center h-40">
-                    <p className="text-[#00FFBB] text-lg">Loading graph...</p>
+                    <p className="text-[#00FFBB] text-lg md:text-xs">Loading graph...</p>
                   </div>
                 ) : (
                   <DrawGraph data={graphData} />

@@ -94,7 +94,7 @@ export default function MakeOrder() {
 
   return (
     <div
-      className={`fixed bg-transparent w-full left-0 h-full transition-transform duration-200 ease-in-out ${
+      className={`fixed bg-transparent w-full left-0 h-full transition-transform duration-200 ease-in-out z-50 ${
         isOrderMade ? "translate-y-0" : "translate-y-[1000px]"
       }`}
       style={{ bottom: 0 }}

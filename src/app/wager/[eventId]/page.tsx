@@ -105,8 +105,7 @@ export default function WagerPage() {
   const [wagerData, setWagerData] = useState<WagerData | null>(null);
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
-  const [isLoaingGraph, setIsLoadingGraph] = useState(true);
-  console.log(isLoaingGraph);
+  const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [countdown, setCountdown] = useState<string>("");
   const [marginClicked, setMarginClicked] = useState<boolean>(false);
 
@@ -273,7 +272,9 @@ export default function WagerPage() {
   return (
     <div>
       <Navbar />
-      <div className="md:block hidden"><HeadingSlider filter={filter} setFilter={setFilter} /></div>
+      <div className="md:block hidden">
+        <HeadingSlider filter={filter} setFilter={setFilter} />
+      </div>
       <div className="flex flex-col md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
         <div className="md:block hidden md:w-full">
           {eventData ? (
@@ -281,9 +282,11 @@ export default function WagerPage() {
               <CategoryInfo eventData={eventData} />
               <div className="px-5">
                 <h1 className="text-[23px] mb-8 mt-5">Live Chart</h1>
-                {isLoaingGraph ? (
+                {isLoadingGraph ? (
                   <div className="flex justify-center items-center h-40">
-                    <p className="text-[#00FFBB] text-lg">Loading graph...</p>
+                    <p className="text-[#00FFBB] text-lg md:text-xs">
+                      Loading graph...
+                    </p>
                   </div>
                 ) : (
                   <DrawGraph data={graphData} />
@@ -503,7 +506,12 @@ export default function WagerPage() {
                           </div>
                         </div>
                       </div>
-                      <DrawGraph data={graphData} />
+                      {wagerData && (
+                        <DrawGraph
+                          data={graphData}
+                          outcomeIds={[wagerData?.event_outcome_id]}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -540,7 +548,9 @@ export default function WagerPage() {
           )}
         </div>
       </div>
-      <div className="md:block hidden"><Footer /></div>
+      <div className="md:block hidden">
+        <Footer />
+      </div>
     </div>
   );
 }

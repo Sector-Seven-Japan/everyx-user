@@ -111,7 +111,6 @@ export default function EventCategoryPageDetails() {
         }
 
         const data = await response.json();
-        // console.log("data at getGraphData", data);
         return data;
       } catch (error) {
         console.error("Error getting graph data:", error);
@@ -121,6 +120,7 @@ export default function EventCategoryPageDetails() {
 
     const fetchData = async () => {
       try {
+        setIsLoadingGraph(true); // Set loading state to true before fetching data
         if (eventData) {
           const currentDate = new Date().toISOString();
           const data = await getGraphData({
@@ -132,15 +132,15 @@ export default function EventCategoryPageDetails() {
           setGraphData(data);
         }
       } catch (error) {
-        // Handle error appropriately
         console.error("Failed to fetch graph data:", error);
       } finally {
-        setIsLoadingGraph(false); // Stop loading
+        setIsLoadingGraph(false); // Set loading state to false after fetching data
       }
     };
 
     fetchData();
   }, [eventData?._id, API_BASE_URL]);
+  
 
   return (
     <div className="relative">
@@ -158,10 +158,10 @@ export default function EventCategoryPageDetails() {
                 </h1>
                 {isLoadingGraph ? (
                   <div className="flex justify-center items-center h-40">
-                    <p className="text-[#00FFBB] text-lg">Loading graph...</p>
+                    <p className="text-[#00FFBB] text-lg md:text-xs">Loading graph...</p>
                   </div>
                 ) : (
-                  <DrawGraph data={graphData}/>
+                  <DrawGraph data={graphData} />
                 )}
               </div>
               <CategoryRule />
