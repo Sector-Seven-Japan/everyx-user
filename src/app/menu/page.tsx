@@ -59,7 +59,7 @@ export default function Menu() {
 
       localStorage.removeItem("authToken"); // Clear auth token from local storage
 
-      router.push("/login1"); // Redirect to login page after sign out
+      router.push("/login"); // Redirect to login page after sign out
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
@@ -129,7 +129,7 @@ export default function Menu() {
             if (isLoggedIn) {
               handleLogoutUser();
             } else {
-              router.push("/login1");
+              router.push("/login");
             }
           }}
         >

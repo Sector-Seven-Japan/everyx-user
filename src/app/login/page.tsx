@@ -1,37 +1,23 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
-import { signIn } from "next-auth/react";
-import { AppContext } from "../Context/AppContext";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import MobileLanding from "@/components/Screens/login/MobileView";
+import WebLanding from "@/components/Screens/login/WebView";
 
-export default function Login() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<{ email?: string; password?: string; general?: string }>({});
-  const { setIsLoggedIn, setAuthToken, API_BASE_URL, setIsLoading } = useContext(AppContext);
+const Login = () => {
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Handle login logic
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError({}); // Reset errors before validating
+  // Handle screen size detection
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Set breakpoint (e.g., 768px for mobile)
+    };
 
-    // Basic validation
-    const newErrors: { email?: string; password?: string; general?: string } = {};
-    if (!email) newErrors.email = "Email is required.";
-    if (!password) newErrors.password = "Password is required.";
-    if (Object.keys(newErrors).length > 0) {
-      setError(newErrors);
-      return;
-    }
+    // Set initial value
+    handleResize();
 
-    try {
-      const formData = new URLSearchParams();
-      formData.append("email", email);
-      formData.append("password", password);
+    // Add event listener for resize
+    window.addEventListener("resize", handleResize);
 
       setIsLoading(true);
       const response = await fetch(`${API_BASE_URL}/tokens`, {
@@ -68,73 +54,17 @@ export default function Login() {
     }
   };
 
+    // Cleanup event listener
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
   return (
-    <div>
+    <>
       <Navbar />
-      <h1 className="text-[27px] text-center py-20">Log In</h1>
-
-      <form onSubmit={handleLogin} className="px-8">
-        {/* Email Input */}
-        <div className="flex flex-col gap-2 mb-9">
-          <label className="text-xs text-white opacity-25">Email</label>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            className="w-full text-xs bg-transparent border-b border-gray-400 outline-none"
-          />
-          {error.email && <p className="text-red-500 text-xs mt-1">{error.email}</p>}
-        </div>
-
-        {/* Password Input */}
-        <div className="flex flex-col gap-2 relative mb-4">
-          <p className="text-xs text-white opacity-25">Password</p>
-          <p
-            onClick={() => router.push("/profile/forgot-password")}
-            className="text-[9px] underline absolute bottom-1 right-0 cursor-pointer"
-          >
-            Forgot Password?
-          </p>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            className="w-full text-xs bg-transparent border-b border-gray-400 outline-none"
-          />
-          {error.password && <p className="text-red-500 text-xs mt-1">{error.password}</p>}
-        </div>
-
-        {/* General Error Message */}
-        {error.general && <p className="text-red-500 text-xs text-center mt-3">{error.general}</p>}
-
-        <p className="text-xl opacity-25 text-center py-10">or</p>
-
-        {/* Google Login Button */}
-        <div
-          className="bg-[#131314] w-60 mx-auto flex justify-center items-center gap-4 py-2 rounded-full cursor-pointer"
-          onClick={handleGoogleLogin}
-        >
-          <Image src="/Images/google.svg" alt="Google Logo" width={20} height={20} />
-          Continue with Google
-        </div>
-
-        {/* Login Button */}
-        <button
-          type="submit"
-          className="text-[#2DC198] text-sm border border-[#2DC198] w-full py-2 rounded-md mt-10"
-        >
-          Login
-        </button>
-
-        <p className="text-white text-[12px] text-center mt-5">
-          New here?{" "}
-          <Link className="underline" href="/auth/signup">
-            Create an account
-          </Link>
-        </p>
-      </form>
-    </div>
+      {isMobile ? <MobileLanding /> : <WebLanding />}
+    </>
   );
-}
+};
+
+export default Login;
