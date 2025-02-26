@@ -17,7 +17,7 @@ const CurrentCashBalanceCard: React.FC = () => {
   const getNewWalletBalance = async () => {
     try {
       const response = await fetch(
-        "https://everyx.weseegpt.com/wallets/balance",
+        "https://test-api.everyx.io/wallets/balance",
         {
           headers: {
             "Content-Type": "application/json",
