@@ -191,13 +191,13 @@ export default function MakeOrder() {
             <div className="flex flex-col gap-[1px]">
               <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
               <p className="text-[22px] text-[#00FFB8]">
-                ${Math.round(orderDetails?.after_pledge)}
+                ${Math.round(orderDetails?.pledge)}
               </p>
             </div>
             <div className="flex flex-col gap-[1px] items-end">
               <p className="text-[#5D5D5D] text-[13px]">Leverage cash value</p>
               <p className="text-[22px] text-[#00FFB8]">
-                ${Math.round(orderDetails?.after_wager)}{" "}
+                ${Math.round(orderDetails?.wager)}{" "}
                 <span className="text-sm text-[#E49C29]">
                   x {orderDetails?.leverage}
                 </span>
@@ -209,13 +209,13 @@ export default function MakeOrder() {
             <div className="flex flex-col gap-[1px]">
               <p className="text-[#5D5D5D] text-[13px]">Projected payout</p>
               <p className="text-[22px] text-[#00FFB8]">
-                ${Math.round(orderDetails?.after_payout)}
+                ${Math.round(orderDetails?.indicative_payout)}
               </p>
             </div>
             <div className="flex flex-col gap-[1px] items-end">
               <p className="text-[#5D5D5D] text-[13px]">Your return</p>
               <p className="text-[22px] text-[#00FFB8]">
-                +{orderDetails?.after_return?.toFixed(0)} %
+                +{orderDetails?.indicative_return?.toFixed(0)} %
               </p>
             </div>
           </div>

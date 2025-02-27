@@ -20,7 +20,8 @@ export default function ImageSlider() {
             className="relative rounded-2xl overflow-hidden w-full min-w-full h-[120px] md:h-[220px] border border-[#242424] flex snap-center md:min-w-[calc(100%-120px)] md:mx-[120px]"
           >
             <div className="w-2/3"></div>
-            <div className="h-full w-1/3 relative bg-gray-300">
+            <div className="h-full w-1/3 relative">
+              <img src={item?.image_url} alt="" className="h-full w-full object-cover" />
               <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
             </div>
             <div className="px-4 py-3 flex flex-col justify-between md:justify-center absolute h-full top-0 left-0">
@@ -35,7 +36,9 @@ export default function ImageSlider() {
                 />
               </div>
               <div>
-                <p className="text-[22px] whitespace-nowrap md:text-[65px] cambria">{item?.name}</p>
+                <p className="text-[22px] whitespace-nowrap md:text-[65px] cambria">
+                  {item?.name}
+                </p>
               </div>
               <div className="flex gap-3 items-center">
                 <div className="w-[23px] h-[23px] bg-[#343434] rounded-full flex justify-center items-center">

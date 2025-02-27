@@ -150,6 +150,15 @@ interface AppContextProps {
     pledge: number,
     wager: number
   ) => Promise<void>;
+  makeOrderWithAuth: (
+    outcomeId: string,
+    eventId: string,
+    force_leverage: boolean,
+    leverage: number,
+    loan: number,
+    pledge: number,
+    wager: number
+  ) => Promise<void>;
   isOrderMade: boolean;
   setIsOrderMade: React.Dispatch<React.SetStateAction<boolean>>;
   orderDetails: OrderResponse;
@@ -173,7 +182,7 @@ interface AppContextProps {
 }
 
 // const API_BASE_URL = "https://test-api.everyx.io";
-const API_BASE_URL = "https://test-api.everyx.io";
+const API_BASE_URL = "https://dev-api.everyx.io";
 
 // Initial context state
 const initialState: AppContextProps = {
@@ -201,6 +210,7 @@ const initialState: AppContextProps = {
   authToken: null,
   setAuthToken: () => {},
   makeOrder: async () => {},
+  makeOrderWithAuth: async () => {},
   isOrderMade: false,
   orderDetails: {
     max_wager: 0,
@@ -402,12 +412,67 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       pledge: pledge,
       wager: wager,
     };
+
+    console.log(
+      orderPayload
+    );
+    
     try {
       const response = await fetch(`${API_BASE_URL}/quotes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(orderPayload),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Order placement failed");
+      }
+      const responseData = (await response.json()) as OrderResponse;
+      setOrderDetails(responseData);
+    } catch (error) {
+      console.error("Error making order:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+
+  const makeOrderWithAuth = async (
+    outcomeId: string,
+    eventId: string,
+    force_leverage: boolean,
+    leverage: number,
+    loan: number,
+    pledge: number,
+    wager: number
+  ) => {
+    if (!authToken) {
+      return router.push("/login");
+    }
+    const orderPayload: OrderPayload = {
+      event_id: eventId,
+      event_outcome_id: outcomeId,
+      force_leverage: force_leverage,
+      leverage: leverage,
+      loan: loan,
+      pledge: pledge,
+      wager: wager,
+    };
+
+    console.log(
+      orderPayload
+    );
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/quotes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${authToken}`
         },
         body: JSON.stringify(orderPayload),
       });
@@ -639,6 +704,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     depositAddress,
     setDepositAddress,
     getDepositAddress,
+    makeOrderWithAuth
   };
 
   return (
