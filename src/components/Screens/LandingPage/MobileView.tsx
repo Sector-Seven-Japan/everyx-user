@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { CiCircleInfo } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
+import LoadingPage from "@/components/LoadingPage";
 
 const MobileLanding = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const questions = [
     {
       question: "Q. What is EveryX?",
@@ -56,6 +58,37 @@ const MobileLanding = () => {
   };
 
   const router = useRouter();
+
+  useEffect(() => {
+    const handleImageLoad = () => {
+      const images = document.querySelectorAll("img");
+      const totalImages = images.length;
+      let loadedImages = 0;
+
+      images.forEach((img) => {
+        if (img.complete) {
+          loadedImages++;
+        } else {
+          img.addEventListener("load", () => {
+            loadedImages++;
+            if (loadedImages === totalImages) {
+              setIsLoading(false);
+            }
+          });
+        }
+      });
+
+      if (loadedImages === totalImages) {
+        setIsLoading(false);
+      }
+    };
+
+    handleImageLoad();
+  }, []);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <>

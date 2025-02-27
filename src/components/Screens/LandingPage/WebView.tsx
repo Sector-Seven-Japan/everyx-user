@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { CiCircleInfo } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import { FaArrowRightLong } from "react-icons/fa6";
+import LoadingPage from "@/components/LoadingPage";
 
 const WebLanding = () => {
   const questions = [
@@ -50,6 +51,7 @@ const WebLanding = () => {
   const [openQuestions, setOpenQuestions] = useState<boolean[]>(
     new Array(questions.length).fill(false)
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleOpen = (index: number) => {
     setOpenQuestions((prev) =>
@@ -58,6 +60,37 @@ const WebLanding = () => {
   };
 
   const router = useRouter();
+
+  useEffect(() => {
+    const handleImageLoad = () => {
+      const images = document.querySelectorAll("img");
+      const totalImages = images.length;
+      let loadedImages = 0;
+
+      images.forEach((img) => {
+        if (img.complete) {
+          loadedImages++;
+        } else {
+          img.addEventListener("load", () => {
+            loadedImages++;
+            if (loadedImages === totalImages) {
+              setIsLoading(false);
+            }
+          });
+        }
+      });
+
+      if (loadedImages === totalImages) {
+        setIsLoading(false);
+      }
+    };
+
+    handleImageLoad();
+  }, []);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="bg-[#0E0E0E] w-full min-h-screen py-24 lg:px-[19vw] md:px-[20vw] sm:px-[10vw]">

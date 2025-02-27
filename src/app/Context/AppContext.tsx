@@ -365,7 +365,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   // API Calls
   const fetchCategories = async () => {
-    setIsLoading(true)
     try {
       const response = await fetch(`${API_BASE_URL}/layout`);
       if (!response.ok) throw new Error("Failed to fetch categories");
