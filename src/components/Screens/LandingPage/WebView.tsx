@@ -105,8 +105,8 @@ const WebLanding = () => {
       </div>
       <div className="mt-16 ">
         <div className="relative w-full h-10 border-[1px] border-white rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[4px]">
-          <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3">
-            <FaArrowRight className="text-white text-sm" />
+          <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3 active:bg-gray-600 transition duration-150 cursor-pointer">
+            <FaArrowRight className="text-white text-sm active:text-black transition duration-150" />
           </div>
           <div className="text-white text-sm">The journey begins.</div>
         </div>
@@ -222,7 +222,7 @@ const WebLanding = () => {
 
       <div className="mt-16">
         <div className="relative w-full h-10 border-[1px] border-white rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[4px]">
-          <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3">
+          <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3 active:bg-gray-600 transition duration-150 cursor-pointer">
             <FaArrowRight className="text-white text-sm" />
           </div>
           <div className="text-white text-[11px]">
