@@ -1,5 +1,6 @@
 "use client";
 import { AppContext } from "@/app/Context/AppContext";
+import CategoryGraph from "@/components/CategoryGraph";
 import CategoryInfo from "@/components/CategoryInfo";
 import CategoryRule from "@/components/CategoryRule";
 import DrawGraph from "@/components/DrawGraph";
@@ -129,7 +130,7 @@ export default function OrderSuccess() {
       }
     };
 
-    setIsLoadingGraph(true)
+    setIsLoadingGraph(true);
     const fetchData = async () => {
       try {
         if (eventData) {
@@ -156,168 +157,193 @@ export default function OrderSuccess() {
   return (
     <div>
       <Navbar />
-      <div className="md:block hidden">
-        <HeadingSlider filter={filter} setFilter={setFilter} />
-      </div>
-      <div className="flex md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
-        <div className="md:block md:w-full hidden">
-          {eventData ? (
-            <>
-              <CategoryInfo eventData={eventData} />
-              <div className="px-5">
-                <h1 className="text-[23px] mb-8 mt-5">Live Chart</h1>
-                {isLoadingGraph ? (
-                  <div className="flex justify-center items-center h-40">
-                    <p className="text-[#00FFBB] text-lg md:text-xs">Loading graph...</p>
-                  </div>
-                ) : (
-                  <DrawGraph data={graphData} />
-                )}
-              </div>
-              <CategoryRule />
-            </>
-          ) : (
-            <p className="text-center text-gray-500">
-              Loading event details...
-            </p>
-          )}
+      <div className="md:px-[12%] 2xl:px-[19%]">
+        <div className="md:block hidden">
+          <HeadingSlider filter={filter} setFilter={setFilter} />
         </div>
-        <div className="">
-          <div className="px-8 py-5 md:bg-[#141414] md:rounded-xl md:mt-5 md:px-5 md:w-[300px] sticky top-[]">
-            <h1 className="text-center hidden md:block md:text-[18px]">
-              Your Order
-            </h1>
-            <div className="flex flex-col items-center justify-center text-center gap-8 mt-5 md:gap-2">
-              <div className="md:w-9">
-                <Image
-                  src="/Icons/SuccessIcon.png"
-                  alt=""
-                  width={70}
-                  height={70}
-                ></Image>
-              </div>
-              <p className="text-lg font-light md:text-[12px]">
-                Your order has been successfully processed!
+        <div className="flex flex-col md:flex-row md:mt-14">
+          <div className="md:w-[68%] xl:w-[72%] md:block hidden">
+            {eventData ? (
+              <>
+                <CategoryInfo eventData={eventData} />
+                <div className="px-5">
+                  <h1 className="text-[23px] mb-8 mt-5 md:text-[1.4vw] font-semibold">Live Chart</h1>
+                  {isLoadingGraph ? (
+                    <div className="flex justify-center items-center h-40">
+                      <p className="text-[#00FFBB] text-lg md:text-xs">
+                        Loading graph...
+                      </p>
+                    </div>
+                  ) : (
+                    <DrawGraph data={graphData} />
+                  )}
+                </div>
+                <CategoryGraph eventData={eventData}/>
+                <CategoryRule />
+              </>
+            ) : (
+              <p className="text-center text-gray-500">
+                Loading event details...
               </p>
-            </div>
-
-            <div className="mt-20 md:mt-5">
-              <div className="flex gap-3">
-                <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[10px]">
-                  {eventData?.category?.name?.split(" ")[0]}
-                </button>
-                <p className="text-[#2DC198] flex gap-1 items-center font-light">
-                  <div className="md:w-3">
-                    <Image
-                      src={"/Images/FreeClock i.png"}
-                      alt="clock"
-                      height={18}
-                      width={18}
-                    />
-                  </div>
-                  <p className="text-[#2DC198] md:text-[10px]">{countdown}</p>
+            )}
+          </div>
+          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%]">
+            <div className="px-8 py-5 md:bg-[#141414] md:rounded-xl md:px-5 sticky top-[70px]">
+              <h1 className="text-center mb-3 text-[1.1vw] md:mb-[1.2vw]">
+                Your Order
+              </h1>
+              <div className="flex flex-col items-center justify-center text-center gap-8 mt-5 md:gap-2">
+                <div className="">
+                  <Image
+                    src="/Icons/SuccessIcon.png"
+                    alt=""
+                    width={70}
+                    height={70}
+                    className="md:w-[2vw] md:h-[2vw]"
+                  ></Image>
+                </div>
+                <p className="text-lg font-light md:text-[0.7vw] md:mt-2">
+                  Your order has been successfully processed!
                 </p>
               </div>
-              <p className="text-[21px] font-light mt-4 md:text-[12px]">
-                {eventData?.description}
-              </p>
-              <p className="text-[#3E3E3E] mt-2 md:text-[12px]">
-                ID: NDSJHDH676235
-              </p>
 
-              <div className="h-[0.5px] w-[70%] mb-6 border-t border-dashed mx-auto mt-6 border-[#575757]"></div>
-
-              <div className="mb-8">
-                <div className="flex flex-col gap-2">
-                  <p className="text-[19px] font-light md:text-[12px]">
-                    {selectedOrder}
-                  </p>
-                  <div className="flex justify-between items-center gap-2">
-                    <div className="w-[80%] h-[19px]">
-                      <div
-                        className="h-[19px] rounded-lg bg-[#00FFBB] md:h-[14px]"
-                        style={{
-                          width: `${Math.round(
-                            orderDetails?.new_probability * 100
-                          )}%`,
-                        }}
-                      ></div>
-                    </div>
-                    <p className="text-[19px] font-light md:text-[12px]">
-                      {Math.round(orderDetails?.new_probability * 100)}%
-                    </p>
+              <div className="mt-20 md:mt-[1.5vw]">
+                <div className="flex gap-3">
+                  <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
+                    {eventData?.category?.name?.split(" ")[0]}
+                  </button>
+                  <p className="text-[#2DC198] flex gap-1 items-center font-light">
                     <div className="md:w-3">
                       <Image
-                        src="/Images/checkbox.png"
-                        alt="checkbox"
-                        height={20}
-                        width={20}
+                        src={"/Images/FreeClock i.png"}
+                        alt="clock"
+                        height={18}
+                        width={18}
                       />
                     </div>
+                    <p className="text-[#2DC198] md:text-[0.7vw]">
+                      {countdown}
+                    </p>
+                  </p>
+                </div>
+                <p className="text-[21px] font-light mt-4 md:text-[0.8vw] md:tracking-[1.5px] md:leading-[1.4vw]">
+                  {eventData?.description}
+                </p>
+                <p className="text-[#3E3E3E] mt-2 md:text-[0.8vw] md:mt-[0.8vw]">
+                  ID: {orderDetails?.event_id}
+                </p>
+
+                <div className="flex justify-center">
+                  <Image
+                    src="/Images/line.png"
+                    alt=""
+                    height={300}
+                    width={300}
+                    className="my-5"
+                  />
+                </div>
+
+                <div className="mb-8">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-[19px] font-light md:text-[0.7vw]">
+                      {selectedOrder}
+                    </p>
+                    <div className="flex justify-between items-center gap-2">
+                      <div className="w-[80%] h-[19px]">
+                        <div
+                          className="h-[19px] rounded-lg bg-[#00FFBB] md:h-[14px]"
+                          style={{
+                            width:  `${Math.round(
+                              orderDetails?.new_probability * 100
+                            )}%`,
+                          }}
+                        ></div>
+                      </div>
+                      <p className="text-[19px] font-light md:text-[0.7vw]">
+                        {Math.round(orderDetails?.new_probability * 100)}%
+                      </p>
+                      <div className="">
+                        <Image
+                          src="/Images/checkbox.png"
+                          alt="checkbox"
+                          height={20}
+                          width={20}
+                          className="md:w-[0.7vw] md:h-[0.7vw]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-center">
+                  <Image
+                    src="/Images/line.png"
+                    alt=""
+                    height={300}
+                    width={300}
+                    className="mb-5"
+                  />
+                </div>
+
+                <div className="flex justify-between">
+                  <div className="flex flex-col gap-[1px]">
+                    <p className="text-[#5D5D5D] text-[13px] md:text-[0.75vw]">
+                      Cash used
+                    </p>
+                    <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
+                      ${Math.round(orderDetails?.after_pledge)}
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-[1px] items-end">
+                    <p className="text-[#5D5D5D] text-[13px] md:text-[0.75vw]">
+                      Leverage cash value
+                    </p>
+                    <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
+                      ${Math.round(orderDetails?.after_wager)}{" "}
+                      <span className="text-sm text-[#E49C29] md:text-[0.85vw]">
+                        x {orderDetails?.after_leverage}
+                      </span>
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="h-[0.5px] w-[70%] mb-6 border-t border-dashed mx-auto mt-6 border-[#575757]"></div>
-
-              <div className="flex justify-between">
-                <div className="flex flex-col gap-[1px]">
-                  <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
-                    Cash used
-                  </p>
-                  <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
-                    ${Math.round(orderDetails?.after_pledge)}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-[1px] items-end">
-                  <p className="text-[#5D5D5D] text-[13px] md:text-[11px]">
-                    Leverage cash value
-                  </p>
-                  <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
-                    ${Math.round(orderDetails?.after_wager)}{" "}
-                    <span className="text-sm text-[#E49C29] md:text-[12px]">
-                      x {orderDetails?.after_leverage}
-                    </span>
-                  </p>
-                </div>
+              <div className="flex flex-col mt-10 gap-4 md:gap-[1vw]">
+                <button
+                  onClick={() => {
+                    setIsLoading(true);
+                    setIsOrderMade(false);
+                    router.push(`/events/${categoryId}`);
+                  }}
+                  className="bg-[#00FFB8] py-3 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw] md:py-[0.65vw]"
+                >
+                  Trade on this event again
+                  <div className="md:w-2">
+                    <Image
+                      src="/Images/rightarrowicon.png"
+                      alt=""
+                      height={15}
+                      width={12}
+                    />
+                  </div>
+                </button>
+                <button
+                  onClick={() => {
+                    setIsLoading(true);
+                    setIsOrderMade(false);
+                    router.push("/deposit-withdrawal/history");
+                  }}
+                  className="bg-[#222222] py-3 rounded-md text-[#00FFB8] text-[18px] md:text-[0.9vw] md:py-[0.65vw] md:mb-5"
+                >
+                  View in Portfolio
+                </button>
               </div>
-            </div>
-
-            <div className="flex flex-col mt-10 gap-4 md:gap-2">
-              <button
-                onClick={() => {
-                  setIsLoading(true);
-                  setIsOrderMade(false);
-                  router.push(`/events/${categoryId}`);
-                }}
-                className="bg-[#00FFB8] py-3 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[13px] md:py-2"
-              >
-                Trade on this event again
-                <div className="md:w-2">
-                  <Image
-                    src="/Images/rightarrowicon.png"
-                    alt=""
-                    height={15}
-                    width={12}
-                  />
-                </div>
-              </button>
-              <button
-                onClick={() => {
-                  setIsLoading(true);
-                  setIsOrderMade(false);
-                  router.push("/deposit-withdrawal/history");
-                }}
-                className="bg-[#222222] py-3 rounded-md text-[#00FFB8] text-[18px] md:text-[13px] md:py-2"
-              >
-                View in Portfolio
-              </button>
             </div>
           </div>
         </div>
-      </div>
-      <div className="md:block hidden">
-        <Footer />
+        <div className="md:block hidden">
+          <Footer />
+        </div>
       </div>
     </div>
   );

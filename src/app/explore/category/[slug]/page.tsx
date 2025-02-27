@@ -85,13 +85,14 @@ export default function EventCategoryPage() {
   return (
     <div>
       <Navbar />
+      <div className="w-full md:px-[10%] 2xl:px-[13%]">
       <HeadingSlider setFilter={setFilter} filter={filter} />
       <SearchBar search={search} setSearch={setSearch} />
-      <div className="p-5 md:px-[76px]">
-        <div className="flex justify-between items-end">
-          <h1 className="text-xl mb-6 md:text-[25px] md:mt-10">{heading || safeSlug}</h1>
+      <div className="p-5 md:p-0">
+        <div className="flex justify-between items-end md:mb-10 relative">
+          <h1 className="text-xl mb-6 md:text-[25px] md:mt-20">{heading || safeSlug}</h1>
           <div className="gap-2 mb-2 hidden md:flex">
-            <p>{filterC}</p>
+            <p className="md:text-[1vw]">{filterC}</p>
             <div
               className="flex justify-center items-center flex-col gap-1"
               onClick={() => {
@@ -106,7 +107,7 @@ export default function EventCategoryPage() {
         </div>
 
         <div
-          className={`w-30 cursor-pointer flex flex-col absolute right-10 mt-3 ${
+          className={`w-30 cursor-pointer flex flex-col absolute right-[220px] top-[420px] z-10 bg-[#0e0e0e] ${
             open ? "block" : "hidden"
           }`}
         >
@@ -138,7 +139,7 @@ export default function EventCategoryPage() {
             Prediction view
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
         {events.length !== 0 ? (
           events.map((item) => (
             <div
@@ -150,6 +151,7 @@ export default function EventCategoryPage() {
                 showTime={filterC === "Time"}
                 showChart={filterC === "Chart"}
                 showPrediction={filterC === "Prediction view"}
+                hide={false}
               />
             </div>
           ))
@@ -159,6 +161,7 @@ export default function EventCategoryPage() {
           </div>
         )}
         </div>
+      </div>
       </div>
       <Footer />
     </div>

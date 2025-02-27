@@ -49,6 +49,7 @@ interface CategoryCardProps {
   showTime: boolean;
   showChart: boolean;
   showPrediction: boolean;
+  hide:boolean;
 }
 
 interface EventHistoryParams {
@@ -62,6 +63,7 @@ export default function CategoryCard({
   item,
   showChart,
   showPrediction,
+  hide
 }: CategoryCardProps) {
   const [graphData, setGraphData] = useState<GraphData[]>([]);
   const { API_BASE_URL, getCountdown } = useContext(AppContext);
@@ -161,7 +163,7 @@ export default function CategoryCard({
 
         {/* Card Details */}
         <div className="flex mt-3 gap-3 md:mt-2 items-center">
-          <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#00FFB8] rounded-sm md:text-[9px] md:px-4 md:py-[1px]">
+          <button className="border border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[0.65vw] md:px-4 md:py-[1px]">
             {item?.category?.name?.split(" ")[0]}
           </button>
           <p className="text-[#2DC198] flex gap-1 items-center font-light">
@@ -173,28 +175,28 @@ export default function CategoryCard({
                 width={18}
               />
             </div>
-            <p className="text-[#2DC198] md:text-[10px]">{countdown}</p>
+            <p className="text-[#2DC198] md:text-[0.68vw]">{countdown}</p>
           </p>
         </div>
         <div className="pt-4">
-          <p className="font-light md:text-[14px] md:line-clamp-2 md:min-h-[43px]">
+          <p className={`font-light md:text-[0.7vw] md:line-clamp-2 md:min-h-[20px] ${!hide && "md:text-[0.8vw]"}`}>
             {item?.name}
           </p>
         </div>
-        <div className={`flex gap-3 mt-5 leading-0 md:mb-0 mb-5`}>
-          <div className={`w-1/2 px-4 py-3 bg-[#131313] rounded-md`}>
+        <div className={`flex gap-3 mt-5 leading-0 md:mb-0 mb-5 ${hide && "hidden"}`}>
+          <div className={`w-1/2 px-4 py-3 bg-[#131313] rounded-md md:py-2`}>
             <p className="text-[#2DC198] text-[24px] font-light md:text-[14px]">
               {item?.outcomes?.length
                 ? `${calculateMaxLeverage(item.outcomes)}x`
                 : "N/A"}
             </p>
-            <p className="text-[13px] md:text-[10px]">Maximum leverage:</p>
+            <p className="text-[13px] md:text-[0.5vw]">Maximum leverage:</p>
           </div>
-          <div className={`w-1/2 px-4 py-3 bg-[#131313] rounded-md`}>
+          <div className={`w-1/2 px-4 py-3 bg-[#131313] rounded-md md:py-2`}>
             <p className="text-[#2DC198] text-[24px] font-light md:text-[14px]">
               {calculateMaxEstimatedPayout(item?.outcomes).toFixed(0)}%
             </p>
-            <p className="text-[13px] md:text-[10px]">Maximum return:</p>
+            <p className="text-[13px] md:text-[0.5vw]">Maximum return:</p>
           </div>
         </div>
         {
@@ -217,16 +219,16 @@ export default function CategoryCard({
             <div
               className={`${
                 !showPrediction && "hidden"
-              } md:mt-5 flex flex-col gap-3`}
+              } md:mt-5 flex flex-col gap-4`}
             >
               {item?.outcomes.map((outcome: Outcome, index: number) => (
-                <div key={outcome._id} className={`flex flex-col gap-1`}>
-                  <p className="text-[19px] font-light md:text-[13px]">
+                <div key={outcome._id} className={`flex flex-col gap-1 md:gap-2`}>
+                  <p className="text-[19px] font-light md:text-[0.85vw]">
                     {String.fromCharCode(65 + index)}.{" "}
                     {outcome.name.charAt(0).toUpperCase() +
                       outcome.name.slice(1)}
                   </p>
-                  <div className="flex justify-between items-center gap-2 md:gap-1 md:mb-2">
+                  <div className="flex justify-between items-center md:flex-col md:items-start gap-2 md:gap-1 md:mb-0">
                     <div
                       className="h-[19px] md:h-[15px] rounded-lg"
                       style={{
@@ -236,7 +238,7 @@ export default function CategoryCard({
                         )}%`,
                       }}
                     ></div>
-                    <p className="text-[19px] font-light md:text-[13px]">
+                    <p className="text-[19px] font-light md:text-[13px] md:hidden">
                       {Math.round(
                         outcome.trader_info.estimated_probability * 100
                       )}
@@ -251,7 +253,7 @@ export default function CategoryCard({
       </div>
       <button
         onClick={handleNavigation}
-        className="text-[#00FFBB] text-sm border border-[#00FFBB] w-full rounded-md mb-2 py-[10px] md:py-[7px] md:text-[10px] mt-5"
+        className="text-[#2DC198] text-sm border border-[#2DC198] w-full rounded-md mb-2 py-[10px] md:py-[.5vw] md:font-light md:text-[0.68vw] mt-5"
       >
         View More
       </button>

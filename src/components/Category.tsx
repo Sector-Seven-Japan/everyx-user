@@ -70,22 +70,29 @@ export default function Category({ item }: CategoryProps) {
   }
 
   return (
-    <div className="px-5 py-8 md:px-[76px]">
+    <div className="px-5 py-8 md:px-0">
       <div className="flex justify-between">
-        <h1 className="text-xl mb-6 md:text-[25px] md:mb-10">{item?.name}</h1>
+        <h1 className="text-xl mb-6 md:text-[25px] md:mb-14">{item?.name}</h1>
         <button
           onClick={() => {
             setFilter(item?.name);
             router.push(`/explore/category/${item?.slug}`);
           }}
-          className="bg-[#161616] h-9 px-5 mb-8 rounded-md text-[10px]"
+          className="bg-[#161616] h-9 px-5 mb-8 rounded-md text-[10px] md:text-[0.7vw] md:h-[3vw] md:px-[2vw]"
         >
           View ALL
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-5 2xl:grid-cols-5">
-        {events.slice(0, 3).map((eventItem) => (
-          <CategoryCard key={eventItem._id} item={eventItem} showChart={false} showPrediction={false} showTime={true}/>
+      <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5 2xl:grid-cols-5">
+        {events.slice(0,8).map((eventItem) => (
+          <CategoryCard
+            key={eventItem._id}
+            item={eventItem}
+            showChart={false}
+            showPrediction={false}
+            showTime={true}
+            hide={false}
+          />
         ))}
       </div>
     </div>

@@ -7,15 +7,15 @@ interface searchProps {
 
 export default function SearchBar({ search, setSearch }: searchProps) {
   return (
-    <div className="md:px-40">
-      <h1 className="text-center hidden md:block text-[36px] md:mt-16 cambria">
+    <div className="md:px-[9vw]">
+      <h1 className="text-center hidden md:block text-[2.5vw] md:mt-[3vw] cambria">
         Search Market with EveryX
       </h1>
-      <div className="flex gap-3 px-4 py-2 md:py-3 rounded-2xl md:rounded-3xl bg-[#161616] mx-5 mt-7 items-center">
+      <div className="flex gap-3 px-4 py-2 md:py-3 rounded-2xl md:rounded-3xl bg-[#161616] mx-5 mt-[2vw] items-center">
         {/* Search Icon */}
 
         <Image
-          className="pl-2"
+          className="pl-2 md:w-[2vw]"
           src="/Images/search.svg"
           alt="Search icon"
           width={20}
@@ -25,7 +25,7 @@ export default function SearchBar({ search, setSearch }: searchProps) {
         {/* Search Input */}
         <input
           type="text"
-          className="text-[13px] md:text-[16px] bg-transparent outline-none flex-1 text-[#454545] placeholder-[#454545]"
+          className="text-[13px] md:text-[16px] bg-transparent outline-none flex-1 text-[#454545] placeholder-[#454545] placeholder:text-[1.2vw]"
           placeholder="Search by market"
           aria-label="Search by market"
           value={search}
