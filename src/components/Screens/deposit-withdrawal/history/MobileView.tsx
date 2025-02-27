@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import CashWithdrawalCategories from "@/components/CashWithdrawalCategories";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import { AppContext } from "@/app/Context/AppContext";
-import DepositPopup from "@/components/DepositPopup";
+// import DepositPopup from "@/components/DepositPopup";
 // import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 
 interface TransactionButtonProps
@@ -125,7 +125,7 @@ const HistoryMobile: React.FC = () => {
         <CurrentCashBalanceCard />
 
         <div className="my-10">
-          <CashWithdrawalCategories/>
+          <CashWithdrawalCategories />
         </div>
 
         <p className="text-[14px] text-center font-semibold">
@@ -172,7 +172,7 @@ const HistoryMobile: React.FC = () => {
           ))}
         </div>
       </div>
-      <DepositPopup/>
+      {/* <DepositPopup/> */}
     </>
   );
 };

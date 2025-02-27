@@ -5,6 +5,7 @@ import {
   Geist_Mono,
   Zen_Kaku_Gothic_Antique,
   Zen_Antique,
+  Noto_Sans_JP,
 } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "./Context/AppContext";
@@ -20,6 +21,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const NotoSansJP = Noto_Sans_JP({
+  variable: "--font-noto-sans-jp",
   subsets: ["latin"],
 });
 
@@ -51,7 +57,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" type="image/png" />
       </Head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${zenKakuGothicAntique.variable} ${zenAntique.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${zenKakuGothicAntique.variable} ${zenAntique.variable} ${NotoSansJP.variable} antialiased`}
       >
         <RainbowKitWrapper>
           <SessionWrapper>

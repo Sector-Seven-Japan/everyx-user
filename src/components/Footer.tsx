@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 const Footer: React.FC = () => {
   const router = useRouter();
   return (
-    <div className="bg-[#0E0E0E] w-full pt-20 px-10 sm:px-10 md:px-40 lg:px-[15vw]">
+    <div className="bg-[#0E0E0E] w-full pt-20 px-10 sm:px-10 md:px-40 lg:px-[19vw]">
       {/* Logo Section */}
       <div className="flex justify-center md:mb-[5vw]">
         <Image
@@ -19,8 +19,7 @@ const Footer: React.FC = () => {
         />
       </div>
 
-      {/* Footer Links */}
-      <div className="text-[#fff] opacity-[90%] text-[14px] flex flex-row justify-center items-center gap-4 sm:gap-8 mt-10 flex-wrap md:justify-between md:px-[9vw] md:text-[1.1vw] md:mb-[5vw]">
+      <div className="text-[#fff] font-thin text-[14px] md:text-[16px] flex flex-row justify-between  items-center gap-10 sm:gap-8 mt-10 opacity-[80%] flex-wrap px-[5vw] mb-[7vw]">
         <button
           type="button"
           onClick={() => {
@@ -48,7 +47,9 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Footer Description */}
-      <p className="text-[#fff] opacity-[90%] text-[12px] mt-10 text-justify md:text-[1vw] md:leading-9">
+
+      <p className="text-[#fff] text-[12px] md:text-[14px] mt-10 opacity-[90%] text-justify leading-[1.5rem] font-thin">
+
         EveryX is owned and operated by ABC Concepts B.V., the only platform
         where you can engage in event gambling with real money leveraging. ABC
         Concepts B.V. is registered with the XYZ Agency under Article 2 of the
@@ -56,7 +57,9 @@ const Footer: React.FC = () => {
         <br />
         Our official registration number is BVO123456789A.
         <br />
-        ©2024 All rights reserved. Unauthorized reproduction or redistribution is prohibited
+        ©2024 All rights reserved. Unauthorized reproduction or redistribution
+        is prohibited.
+
       </p>
 
       {/* Bottom Logo Section */}
