@@ -26,7 +26,7 @@ export default function ImageSlider() {
             </div>
             <div className="px-4 md:pl-0 py-3 flex flex-col justify-between md:justify-center absolute h-full top-0 left-0">
               <div className="flex items-center gap-4">
-                <div className="bg-white text-black px-5 py-1 rounded-md text-[12px] md:text-[1.3vw] cambria md:py-[0.1vw] md:px-[1vw]">
+                <div className="bg-white text-black px-5 py-1 rounded-md text-[12px] md:text-[1.3vw] Zenfont md:py-[0.1vw] md:px-[1vw]">
                   Events
                 </div>
                 <img
@@ -36,7 +36,7 @@ export default function ImageSlider() {
                 />
               </div>
               <div>
-                <p className="text-[22px] whitespace-nowrap md:text-[3.6vw] cambria md:mb-5">
+                <p className="text-[22px] whitespace-nowrap md:text-[3.6vw] Zenfont md:mb-5">
                   {item?.name}
                 </p>
               </div>

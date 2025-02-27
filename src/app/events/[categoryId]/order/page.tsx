@@ -486,9 +486,9 @@ export default function Order() {
             </div>
           </div>
         </div>
-        <div className="hidden md:block">
-          <Footer />
-        </div>
+      </div>
+      <div className="hidden md:block">
+        <Footer />
       </div>
     </div>
   );

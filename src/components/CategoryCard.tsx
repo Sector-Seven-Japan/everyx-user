@@ -179,7 +179,7 @@ export default function CategoryCard({
           </p>
         </div>
         <div className="pt-4">
-          <p className={`font-light md:text-[0.7vw] md:line-clamp-2 md:min-h-[20px] ${!hide && "md:text-[0.8vw]"}`}>
+          <p className={`font-light md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] inter tracking-[1.2px] ${!hide && "md:text-[0.7vw]"}`}>
             {item?.name}
           </p>
         </div>

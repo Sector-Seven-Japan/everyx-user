@@ -13,7 +13,6 @@ import MakeOrderDesktop from "@/components/MakeOrderDesktop";
 import Footer from "@/components/Footer";
 import HeadingSlider from "@/components/HeadingSlider";
 
-
 interface WagerData {
   id: string;
   event_id: string;
@@ -563,9 +562,9 @@ export default function WagerPage() {
             )}
           </div>
         </div>
-        <div className="md:block hidden">
-          <Footer />
-        </div>
+      </div>
+      <div className="md:block hidden">
+        <Footer />
       </div>
     </div>
   );

@@ -409,10 +409,11 @@ export default function BettingPage() {
             </div>
           </div>
         </div>
-        <div className="md:block hidden">
+        
+      </div>
+      <div className="md:block hidden">
           <Footer />
         </div>
-      </div>
     </div>
   );
 }

@@ -167,7 +167,9 @@ export default function OrderSuccess() {
               <>
                 <CategoryInfo eventData={eventData} />
                 <div className="px-5">
-                  <h1 className="text-[23px] mb-8 mt-5 md:text-[1.4vw] font-semibold">Live Chart</h1>
+                  <h1 className="text-[23px] mb-8 mt-5 md:text-[1.4vw] font-semibold">
+                    Live Chart
+                  </h1>
                   {isLoadingGraph ? (
                     <div className="flex justify-center items-center h-40">
                       <p className="text-[#00FFBB] text-lg md:text-xs">
@@ -178,7 +180,7 @@ export default function OrderSuccess() {
                     <DrawGraph data={graphData} />
                   )}
                 </div>
-                <CategoryGraph eventData={eventData}/>
+                <CategoryGraph eventData={eventData} />
                 <CategoryRule />
               </>
             ) : (
@@ -253,7 +255,7 @@ export default function OrderSuccess() {
                         <div
                           className="h-[19px] rounded-lg bg-[#00FFBB] md:h-[14px]"
                           style={{
-                            width:  `${Math.round(
+                            width: `${Math.round(
                               orderDetails?.new_probability * 100
                             )}%`,
                           }}
@@ -341,9 +343,9 @@ export default function OrderSuccess() {
             </div>
           </div>
         </div>
-        <div className="md:block hidden">
-          <Footer />
-        </div>
+      </div>
+      <div className="md:block hidden">
+        <Footer />
       </div>
     </div>
   );

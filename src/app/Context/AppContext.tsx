@@ -365,6 +365,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   // API Calls
   const fetchCategories = async () => {
+    setIsLoading(true)
     try {
       const response = await fetch(`${API_BASE_URL}/layout`);
       if (!response.ok) throw new Error("Failed to fetch categories");
@@ -372,10 +373,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const data = await response.json();
       setCategories(data.top_categories || []);
       setBannerData(data.new_collections || []);
+      setIsLoading(false)
     } catch (error) {
       console.error("Failed to fetch categories:", error);
       setCategories([]);
       setBannerData([]);
+      setIsLoading(false)
     }
   };
 
