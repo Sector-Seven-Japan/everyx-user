@@ -92,46 +92,49 @@ export default function Home() {
   }, [search, API_BASE_URL]);
 
   return (
-    <div className="w-full relative">
+    <div>
       <Navbar />
-      <HeadingSlider setFilter={setFilter} filter={filter} />
-      <ImageSlider />
-      <SearchBar search={search} setSearch={setSearch} />
+      <div className="w-full md:px-[10%] 2xl:px-[13%]">
+        <HeadingSlider setFilter={setFilter} filter={filter} />
+        <ImageSlider />
+        <SearchBar search={search} setSearch={setSearch} />
 
-      {!search && <TopCategories />}
+        {!search && <TopCategories />}
 
-      {!search &&
-        categories.map((item, index) => {
-          if (typeof item === "object") {
-            return <Category key={index} item={item} />;
-          }
-          return null;
-        })}
+        {!search &&
+          categories.map((item, index) => {
+            if (typeof item === "object") {
+              return <Category key={index} item={item} />;
+            }
+            return null;
+          })}
 
-      <div className="p-5">
-        {isSearching ? (
-          <div className="text-center text-gray-500 h-52 flex items-center justify-center">
-            Searching...
-          </div>
-        ) : (
-          <div className="md:px-[70px] grid grid-cols-1 md:grid-cols-4 gap-5 md:mt-10">
-            {searchData.length > 0 ? (
-              searchData.map((item) => (
-                <CategoryCard
-                  key={item._id}
-                  item={item}
-                  showChart={false}
-                  showPrediction={false}
-                  showTime={true}
-                />
-              ))
-            ) : search.trim() ? (
-              <div className="text-center text-gray-500 h-52 flex items-center justify-center">
-                No results found
-              </div>
-            ) : null}
-          </div>
-        )}
+        <div className="p-5">
+          {isSearching ? (
+            <div className="text-center text-gray-500 h-52 flex items-center justify-center">
+              Searching...
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:mt-10">
+              {searchData.length > 0 ? (
+                searchData.map((item) => (
+                  <CategoryCard
+                    key={item._id}
+                    item={item}
+                    showChart={false}
+                    showPrediction={false}
+                    showTime={true}
+                    hide={false}
+                  />
+                ))
+              ) : search.trim() ? (
+                <div className="text-center text-gray-500 h-52 flex items-center justify-center">
+                  No results found
+                </div>
+              ) : null}
+            </div>
+          )}
+        </div>
       </div>
       <Footer />
     </div>

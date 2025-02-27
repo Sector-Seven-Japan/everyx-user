@@ -75,20 +75,18 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
   }, [eventData]);
 
   return (
-    <div className="mt-3">
-      <h1 className="px-5 text-[23px] md:text-[16px]">What do you predict ?</h1>
+    <div className="mt-3 md:mt-20">
+      <h1 className="px-5 text-[23px] md:text-[1.2vw] md:tracking-[1.1px] md:mb-9">What do you predict ?</h1>
       <div className="pl-5 pr-5 py-8 flex flex-col gap-5">
         {eventData?.outcomes.map((outcome: Outcome, index: number) => (
           <div key={outcome._id} className="flex flex-col gap-1">
-            <p className="text-[19px] font-light md:text-[14px]">
+            <p className="text-[19px] font-light md:text-[1.2vw]">
               {String.fromCharCode(65 + index)}.{" "}
               {outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1)}
             </p>
             <div className="flex justify-between items-center gap-2">
               <div
-                className={`w-[80%] h-[19px] md:h-[19px] rounded-lg ${
-                  selectedOutcomeId === outcome._id && "bg-white"
-                }`}
+                className={`w-[80%] h-[19px] md:h-[1.5vw] rounded-lg`}
               >
                 <div
                   onClick={async () => {
@@ -111,7 +109,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                     setIsOrderMade(true);
                     setSelectedOutcomeId(outcome._id);
                   }}
-                  className="h-[19px] rounded-lg cursor-pointer hover:opacity-80 transition-opacity md:h-[19px]"
+                  className="h-[19px] rounded-lg cursor-pointer hover:opacity-80 transition-opacity md:h-[1.5vw] md:rounded-xl"
                   style={{
                     backgroundColor: outcomeColors[index],
                     width: `${Math.round(
@@ -121,10 +119,10 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                 ></div>
               </div>
               <div className="flex gap-5 items-center">
-                <p className="text-[19px] font-light md:text-[14px]">
+                <p className="text-[19px] font-light md:text-[1.3vw]">
                   {Math.round(outcome.trader_info.estimated_probability * 100)}%
                 </p>
-                <div className="md:w-[16px]">
+                <div className="">
                   <Image
                     src={
                       selectedOutcomeId === outcome._id
@@ -134,6 +132,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                     alt="checkbox"
                     height={20}
                     width={20}
+                    className="md:h-[1.5vw] md:w-[1.5vw]"
                   />
                 </div>
               </div>

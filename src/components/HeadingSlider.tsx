@@ -21,8 +21,8 @@ const HeadingSlider: React.FC<HeadingSliderProps> = ({ setFilter, filter }) => {
   });
 
   return (
-    <div className="w-full overflow-x-scroll mb-1 px-4 py-2 no-scrollbar border-t border-gray-900 bg-[#0E0E0E]">
-      <ul className="flex whitespace-nowrap gap-10 pt-1 md:justify-center">
+    <div className="w-full overflow-x-scroll mb-1 px-4 py-2 no-scrollbar border-t border-gray-900 bg-[#0E0E0E] md:mt-5">
+      <ul className="flex whitespace-nowrap gap-10 pt-1 justify-between">
         {processedCategories.map((category, index) => (
           <li
             key={index}
@@ -32,12 +32,12 @@ const HeadingSlider: React.FC<HeadingSliderProps> = ({ setFilter, filter }) => {
               setFilter(category.name); // Use category.name here
               router.push(`/explore/category/${category.slug}`); // Use category.slug here
             }}
-            className={`cursor-pointer text-[13px] flex flex-col items-center gap-1 ${
+            className={`cursor-pointer text-[13px] flex flex-col items-center gap-1 md:text-[#ffffff] tracking-[1.2px] md:font-light md:text-[0.7vw] ${
               filter === category.name ? "text-white" : "text-[#707070]"
             }`}
           >
             {category.name}
-            {filter === category.name && (
+            {filter === category.name && ( 
               <div className="w-1 h-1 bg-white rounded-full"></div>
             )}
           </li>

@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
-import toast from "react-hot-toast"
 
 export default function MakeOrder() {
-  const { orderDetails, makeOrder, setIsLoading,walletData,setIsOrderMade } = useContext(AppContext);
+  const { orderDetails, makeOrder, setIsLoading } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
   const [leverage, setLeverage] = useState<number>(1.0); // Allow decimal values
@@ -45,18 +44,6 @@ export default function MakeOrder() {
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    if (walletData[0]?.balance < value) {
-      toast("You have insufficient balance", {
-        style: {
-          background: '#333',
-          color: '#fff',
-        },
-      });
-      setIsOrderMade(false);
-      setIsLoading(false);
-      return;
-    }
-
     console.log(
       "submitting with this data",
       outcomeId,
@@ -92,13 +79,13 @@ export default function MakeOrder() {
   }, [value, leverage]);
 
   return (
-    <div className="bg-[#141414] rounded-xl p-5 sticky top-[70px] w-[280px]">
-      <h1 className="text-center text-[18px] mb-3 md:text-[18px]">
+    <div className="bg-[#141414] rounded-xl sticky top-[70px] w-full p-6">
+      <h1 className="text-center mb-3 text-[1.1vw] md:mb-[1.2vw]">
         Your Order
       </h1>
-      <div className="mb-10">
-        <h1 className="text-[12px] mb-1">Total Size</h1>
-        <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2">
+      <div className="mb-[2vw]">
+        <h1 className="text-[0.7vw] mb-2">Total Size</h1>
+        <div className="border-[#aeaeae68] border-[0.4px] flex rounded-md gap-2 p-2">
           <div className="w-[60%] px-2 text-[13px]">
             ${wholePart}.{decimalPart}
           </div>
@@ -114,7 +101,7 @@ export default function MakeOrder() {
             );
           })}
         </div>
-        <div className="pl-2 mt-1">
+        <div className="pl-2 mt-2">
           <input
             type="range"
             min="0"
@@ -125,21 +112,21 @@ export default function MakeOrder() {
             style={{
               background: `linear-gradient(to right, #00FFB8 ${tradeSizePercentage}%, #171717 ${tradeSizePercentage}%)`,
             }}
-            className="w-full h-[2px] rounded-lg appearance-none cursor-pointer 
-                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
-                [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
+            className="w-full h-[3px] rounded-lg appearance-none cursor-pointer 
+                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
+                [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
           />
           <div className="flex flex-row-reverse">
-            <p className="text-[#00FFB8] text-[9px] mt-2">
+            <p className="text-[#00FFB8] text-[0.6vw] mt-4">
               Max trade size | ${maxTradeSize.toFixed(1)} MAX
             </p>
           </div>
         </div>
       </div>
 
-      <div className="mb-8">
-        <h1 className="text-[12px] mb-1">Leverage</h1>
-        <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2">
+      <div className="mb-[2vw]">
+        <h1 className="text-[0.7vw] mb-2">Leverage</h1>
+        <div className="border-[#aeaeae68] flex rounded-md border-[0.4px] gap-2 p-2">
           <div className="w-[60%] text-[13px] px-2">x{leverage}</div>
           {[20, 50, 100].map((item, index) => {
             return (
@@ -153,7 +140,7 @@ export default function MakeOrder() {
             );
           })}
         </div>
-        <div className="pl-2 mt-1">
+        <div className="pl-2 mt-2">
           <input
             type="range"
             min="1"
@@ -164,12 +151,12 @@ export default function MakeOrder() {
             style={{
               background: `linear-gradient(to right, #00FFB8 ${leveragePercentage}%, #171717 ${leveragePercentage}%)`,
             }}
-            className="w-full h-[2px] rounded-lg appearance-none cursor-pointer 
-    [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
-    [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
+            className="w-full h-[3px] rounded-lg appearance-none cursor-pointer 
+    [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
+    [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
           />
           <div className="flex flex-row-reverse">
-            <p className="text-[#FF4E00] text-[9px] mt-2">
+            <p className="text-[#FF4E00] text-[0.6vw] mt-4">
               Max Available leverage | {maxLeverage}MAX
             </p>
           </div>
@@ -181,18 +168,18 @@ export default function MakeOrder() {
           <div className="flex flex-col gap-4">
             <div className="flex justify-between">
               <div className="flex flex-col gap-[1px]">
-                <p className="text-[#5D5D5D] text-[11px]">Cash used</p>
-                <p className="text-[16px] text-[#00FFB8]">
+                <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">Cash used</p>
+                <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
                   ${Math.round(orderDetails?.after_pledge)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
-                <p className="text-[#5D5D5D] text-[11px]">
+                <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">
                   Leverage cash value
                 </p>
-                <p className="text-[16px] text-[#00FFB8]">
+                <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
                   ${Math.round(orderDetails?.after_wager)}{" "}
-                  <span className="text-[12px] text-[#E49C29]">
+                  <span className="text-[12px] text-[#E49C29] md:text-[0.85vw]">
                     x {orderDetails?.leverage}
                   </span>
                 </p>
@@ -201,14 +188,14 @@ export default function MakeOrder() {
 
             <div className="flex justify-between">
               <div className="flex flex-col gap-[1px]">
-                <p className="text-[#5D5D5D] text-[11px]">Projected payout</p>
-                <p className="text-[16px] text-[#00FFB8]">
+                <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">Projected payout</p>
+                <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
                   ${Math.round(orderDetails?.after_payout)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
-                <p className="text-[#5D5D5D] text-[11px]">Your return</p>
-                <p className="text-[16px] text-[#00FFB8]">
+                <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">Your return</p>
+                <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
                   +{orderDetails?.after_return?.toFixed(0)} %
                 </p>
               </div>
@@ -216,10 +203,10 @@ export default function MakeOrder() {
           </div>
 
           <div className="flex justify-between mt-7 md:items-center">
-            <p className="text-[#FF2E2E] text-[17px] md:text-[12px]">
+            <p className="text-[#FF2E2E] text-[17px] md:text-[0.85vw]">
               Stop level
             </p>
-            <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
+            <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2.5px] md:text-[0.75vw]">
               {(orderDetails?.after_stop_probability * 100).toFixed(0)}%
             </button>
           </div>
@@ -228,7 +215,7 @@ export default function MakeOrder() {
 
       <button
         onClick={handleSubmit}
-        className="text-[#00FFB8] w-full border border-[#00FFB8] py-2 rounded-xl text-[13px] mt-3"
+        className="text-[#2DC198] w-full border border-[#2DC198] py-[0.7vw] xl:rounded-lg 2xl:rounded-2xl text-[1vw] mt-3 mb-[1vw]"
       >
         Proceed
       </button>

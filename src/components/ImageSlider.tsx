@@ -8,7 +8,7 @@ export default function ImageSlider() {
   const { bannerData, setIsLoading } = useContext(AppContext);
 
   return (
-    <div className={`w-full bg-[#0E0E0E] relative px-4 md:mt-10`}>
+    <div className={`w-full bg-[#0E0E0E] relative px-4 md:px-0 md:mt-10`}>
       <div className="flex overflow-x-scroll no-scrollbar snap-x snap-mandatory">
         {bannerData.map((item, index) => (
           <div
@@ -17,16 +17,16 @@ export default function ImageSlider() {
               router.push(`/explore/collections/${item?.slug}`);
             }}
             key={index}
-            className="relative rounded-2xl overflow-hidden w-full min-w-full h-[120px] md:h-[220px] border border-[#242424] flex snap-center md:min-w-[calc(100%-120px)] md:mx-[120px]"
+            className="relative rounded-2xl overflow-hidden w-full min-w-full h-[120px] md:h-[14vw] border border-[#242424] md:border-0 flex snap-center md:mx-[120px]"
           >
             <div className="w-2/3"></div>
             <div className="h-full w-1/3 relative">
               <img src={item?.image_url} alt="" className="h-full w-full object-cover" />
               <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
             </div>
-            <div className="px-4 py-3 flex flex-col justify-between md:justify-center absolute h-full top-0 left-0">
+            <div className="px-4 md:pl-0 py-3 flex flex-col justify-between md:justify-center absolute h-full top-0 left-0">
               <div className="flex items-center gap-4">
-                <div className="bg-white text-black px-2 py-1 rounded-md text-[12px] md:text-[20px]">
+                <div className="bg-white text-black px-5 py-1 rounded-md text-[12px] md:text-[1.3vw] cambria md:py-[0.1vw] md:px-[1vw]">
                   Events
                 </div>
                 <img
@@ -36,7 +36,7 @@ export default function ImageSlider() {
                 />
               </div>
               <div>
-                <p className="text-[22px] whitespace-nowrap md:text-[65px] cambria">
+                <p className="text-[22px] whitespace-nowrap md:text-[3.6vw] cambria md:mb-5">
                   {item?.name}
                 </p>
               </div>
@@ -48,7 +48,7 @@ export default function ImageSlider() {
                     alt=""
                   />
                 </div>
-                <p className="text-[#343434]">check now</p>
+                <p className="text-[#343434] md:text-[1.5vw]">Check now</p>
               </div>
             </div>
           </div>

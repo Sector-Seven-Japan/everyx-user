@@ -140,46 +140,50 @@ export default function EventCategoryPageDetails() {
 
     fetchData();
   }, [eventData?._id, API_BASE_URL]);
-  
 
   return (
-    <div className="relative">
+    <div className="w-full">
       <Navbar />
-      <HeadingSlider filter={filter} setFilter={setFilter} />
-      <div className="flex flex-col md:flex-row md:px-[10vw] md:mt-5 xl:px-[15vw]">
-        <div className="md:w-full">
-          {eventData ? (
-            <>
-              <CategoryInfo eventData={eventData} />
-              <CategoryGraph eventData={eventData} />
-              <div className="px-5">
-                <h1 className="text-[23px] mb-8 mt-5 md:text-[16px]">
-                  Live Chart
-                </h1>
-                {isLoadingGraph ? (
-                  <div className="flex justify-center items-center h-40">
-                    <p className="text-[#00FFBB] text-lg md:text-xs">Loading graph...</p>
-                  </div>
-                ) : (
-                  <DrawGraph data={graphData} />
-                )}
-              </div>
-              <CategoryRule />
-            </>
-          ) : (
-            <p className="text-center text-gray-500">
-              Loading event details...
-            </p>
-          )}
-        </div>
-        <div className="mt-5 hidden md:block ">
-          <MakeOrderDesktop />
+      <div className="md:px-[12%] 2xl:px-[19%]">
+        <HeadingSlider filter={filter} setFilter={setFilter} />
+
+        <div className="flex flex-col md:flex-row md:mt-14">
+          <div className="xl:w-[72%] w-full">
+            {eventData ? (
+              <>
+                <CategoryInfo eventData={eventData} />
+                <div className="px-5">
+                  <h1 className="text-[23px] mb-8 mt-5 xl:text-[1.4vw] font-semibold">
+                    Live Chart
+                  </h1>
+                  {isLoadingGraph ? (
+                    <div className="flex justify-center items-center h-40">
+                      <p className="text-[#00FFBB] text-lg md:text-xs">
+                        Loading graph...
+                      </p>
+                    </div>
+                  ) : (
+                    <DrawGraph data={graphData} />
+                  )}
+                </div>
+                <CategoryGraph eventData={eventData} />
+                <CategoryRule />
+              </>
+            ) : (
+              <p className="text-center text-gray-500">
+                Loading event details...
+              </p>
+            )}
+          </div>
+          <div className="mt-5 hidden md:block md:w-[28%]">
+            <MakeOrderDesktop />
+          </div>
         </div>
       </div>
-      <Footer />
-      <div className="md:hidden">
+      <div className="md:hidden block">
         <MakeOrder />
       </div>
+      <Footer />
     </div>
   );
 }
