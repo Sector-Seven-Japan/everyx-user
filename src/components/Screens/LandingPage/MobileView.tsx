@@ -519,7 +519,7 @@ const MobileLanding = () => {
                 } bg-opacity-[10%]`}
                 onClick={() => toggleOpen(index)}
               >
-                <p className="text-[3.5vw] w-full py-2 tracking-[0.25rem] font-thin">
+                <p className="text-[3vw] w-full py-2 font-thin">
                   {item.question}
                 </p>
                 {openQuestions[index] ? (
@@ -564,7 +564,7 @@ const MobileLanding = () => {
                   {item.answer.split("\n").map((para, i) => (
                     <p
                       key={i}
-                      className="text-[3.5vw] mb-3 text-white text-opacity-[50%] font-thin tracking-[0.3rem] leading-[5vw]"
+                      className="text-[3vw] mb-3 text-white text-opacity-[50%] font-thin tracking-[0.2rem] leading-[5vw]"
                     >
                       {para}
                     </p>
