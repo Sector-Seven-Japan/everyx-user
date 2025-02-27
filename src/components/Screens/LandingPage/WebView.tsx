@@ -6,7 +6,6 @@ import { CiCircleInfo } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { GoChevronDown, GoChevronUp } from "react-icons/go";
 
 const WebLanding = () => {
   const questions = [
@@ -93,7 +92,7 @@ const WebLanding = () => {
           </div>
           <div className="mt-[5vw] relative">
             <Image
-              src="/Images/LpImage1.png"
+              src="/Images/LpImage1(gif).gif"
               alt="Landing Page Image 1"
               className="rounded-lg object-cover object-center relative left-10"
               height={150}
@@ -197,14 +196,14 @@ const WebLanding = () => {
             </p>
           </div>
         </div>
-        <div className="mb-[5vw] relative ">
+        <div className="mb-[10vw] relative ">
           <Image
-            src="/Images/LpImage3(web).png"
+            src="/Images/LpImage3(gif).gif"
             alt="Landing Page Image 3"
             width={100}
             height={250}
             className="relative left-10"
-            style={{ width: "33vw", height: "38vw" }}
+            style={{ width: "31vw", height: "40vw" }}
           />
         </div>
       </div>
@@ -258,7 +257,7 @@ const WebLanding = () => {
                 <span className="text-[1.2vw] tracking-widest font-light">
                   Your ideal setup, in
                 </span>
-                <span className="border-[1px] border-gray-500 px-[1vw] py-[0.5vw] mx-[1vw] rounded-2xl text-[#CEFF00] text-[2vw] kaisotia">
+                <span className="border-[1px] border-gray-500 px-[1vw] py-[0.5vw] mx-[1vw] rounded-lg text-[#CEFF00] text-[2vw] kaisotia tracking-[0.3rem]">
                   {time}
                 </span>
                 <span className="text-[1.2vw] tracking-widest font-light">
@@ -271,7 +270,7 @@ const WebLanding = () => {
 
         <div className="relative">
           <Image
-            src="/Images/LpImage4(web).png"
+            src="/Images/LpImage4(gif).gif"
             alt="Landing Page Image 4"
             width={400}
             height={500}
@@ -326,7 +325,7 @@ const WebLanding = () => {
 
       <div className="mt-[5vw] flex justify-center items-center">
         <Image
-          src="/Images/LpImage7.png"
+          src="/Images/LpImage7(gif).gif"
           alt="Landing Page Image 7"
           width={800}
           height={600}
@@ -414,11 +413,11 @@ const WebLanding = () => {
         </div>
         <div className="mt-5">
           <Image
-            src="/Images/LpImage8.png"
+            src="/Images/LpImage8(gif).gif"
             alt="Landing Page Image 8"
             width={500}
             height={300}
-            style={{ width: "70vw", height: "45vw" }}
+            style={{ width: "65vw", height: "42vw" }}
           />
         </div>
       </div>
@@ -468,16 +467,16 @@ const WebLanding = () => {
         </div>
         <div className="mt-14 flex items-center justify-center">
           <Image
-            src="/Images/LpImage9.png"
+            src="/Images/LpImage9(gif).gif"
             alt="Landing Page Image 9"
             width={500}
             height={500}
-            style={{ width: "30vw", height: "30vw" }}
+            style={{ width: "26vw", height: "24vw" }}
           />
         </div>
       </div>
 
-      <div className="flex justify-center  ">
+      <div className="flex justify-center mt-5 ">
         <svg
           width="2"
           height="90"
@@ -511,9 +510,9 @@ const WebLanding = () => {
       <div className="mt-16 px-4 sm:px-10 mb[10vw]">
         <p className="text-[3vw] text-center Zenfont">Q&A</p>
       </div>
-      <div>
+      <div className="mt-5">
         {questions.map((item, index) => (
-          <div key={index} className="my-5 border-b-[0.2px] border-[#1c1c1c]">
+          <div key={index} className=" border-b-[0.2px] border-[#1c1c1c]">
             <div
               className={`flex justify-between items-center px-10 py-8 cursor-pointer ${
                 openQuestions[index] ? "bg-[#707070]" : "bg-transparent"
