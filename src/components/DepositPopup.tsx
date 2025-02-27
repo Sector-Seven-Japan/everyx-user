@@ -165,8 +165,8 @@ export default function DepositPopup() {
             <p className="text-[#00ffbb] text-[12px]">Withdrawal</p>
           </div>
 
-          <div className="px-[10vw]">
-            <div className="flex justify-center mt-6">
+          <div className="px-[12vw]  py-20  ">
+            <div className="flex justify-center">
               <div className="w-[45vw]">
                 <h1 className="text-[#5b5b5b] mb-1 mt-4 text-[12px]">
                   YOUR DEPOSIT ADDRESS
@@ -228,17 +228,24 @@ export default function DepositPopup() {
 
                   return (
                     <div
-                      className={`flex items-center w-[50vw] rounded-xl gap-3 bg-[#00FFB8] p-2 cursor-pointer text-black justify-center ${
-                        !ready ? " pointer-events-none" : "bg-opacity-10"
+                      className={`flex items-center w-[50vw] rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between text-black  ${
+                        !ready
+                          ? "pointer-events-none bg-opacity-10"
+                          : connected
+                          ? "opacity-50"
+                          : ""
                       }`}
                       onClick={handleClick}
                     >
-                      <Image
-                        src="/Images/connect.png"
-                        alt=""
-                        height={18}
-                        width={18}
-                      />
+                      <div className="relative">
+                        <Image
+                          src="/Images/connect.png"
+                          alt=""
+                          height={18}
+                          width={18}
+                        />
+                      </div>
+
                       <div>
                         {connected ? (
                           <div className="flex flex-col">
@@ -252,6 +259,7 @@ export default function DepositPopup() {
                           </button>
                         )}
                       </div>
+                      <div></div>
                     </div>
                   );
                 }}
