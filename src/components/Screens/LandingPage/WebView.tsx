@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import React, { useContext, useState } from "react";
-import { FaArrowRight } from "react-icons/fa";
 import { CiCircleInfo } from "react-icons/ci";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const WebLanding = () => {
   const questions = [
@@ -61,41 +60,41 @@ const WebLanding = () => {
   const router = useRouter();
 
   return (
-    <div className="bg-[#0E0E0E] w-full min-h-screen py-20 lg:px-[15vw] md:px-[20vw] sm:px-[10vw]">
+    <div className="bg-[#0E0E0E] w-full min-h-screen py-24 lg:px-[19vw] md:px-[20vw] sm:px-[10vw]">
       {/* container1 */}
       <div className="flex justify-between">
-        <div className="">
-          <p className="text-[4.5vw]  text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
+        <div>
+          <p className="text-[4.5vw]  text-white text-opacity-[78%] text-left Zenfont font-extralight leading-normal">
             Trade
           </p>
-          <p className="text-[4.5vw]  text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
+          <p className="text-[4vw]  text-white text-opacity-[78%] text-left Zenfont font-extralight leading-none">
             on the Outcome of
           </p>
-          <p className=" text-[4.5vw]   text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
+          <p className=" text-[4.5vw]   text-white text-opacity-[78%] text-left Zenfont font-extralight leading-tight">
             Global Events
           </p>
-          <p className="text-[1.2vw] mt-20 text-white text-opacity-[78%] text-left font-thin ">
+          <p className="text-[1.1vw] mt-[5vw] text-white text-opacity-[80%] text-left font-normal leading-[2.5rem] ">
             Use leverage to bet on real-world events and shape your
           </p>
-          <p className="text-[1.2vw]  text-white text-opacity-[78%] text-left font-thin">
+          <p className="text-[1.1vw]  text-white text-opacity-[80%] text-left font-normal">
             portfolio in a new way.
           </p>
         </div>
 
         <div className="mt-5">
           <div className="">
-            <p className="text-[1vw] tracking-widest text-right text-white text-opacity-[76%]">
+            <p className="text-[0.8vw] tracking-[0.2rem] text-right text-white text-opacity-[60%]">
               Where every event is an
             </p>
-            <p className=" text-[1vw] tracking-widest text-right text-white text-opacity-[76%]">
+            <p className=" text-[0.8vw]  tracking-[0.2rem] text-right text-white text-opacity-[60%]">
               opportunity
             </p>
           </div>
           <div className="mt-[5vw] relative">
             <Image
-              src="/Images/LpImage1.png"
+              src="/Images/LpImage1(gif).gif"
               alt="Landing Page Image 1"
-              className="rounded-lg object-cover object-center relative left-14"
+              className="rounded-lg object-cover object-center relative left-10"
               height={150}
               width={150}
               style={{ width: "20vw", height: "20vw" }}
@@ -103,22 +102,53 @@ const WebLanding = () => {
           </div>
         </div>
       </div>
-      <div className="mt-16 ">
-        <div className="relative w-full h-10 border-[1px] border-white rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[4px]">
-          <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3 active:bg-gray-600 transition duration-150 cursor-pointer">
-            <FaArrowRight className="text-white text-sm active:text-black transition duration-150" />
+      <div className="mt-12 ">
+        <div className="relative w-full h-14 border-[1px] border-gray-500 rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[5px]">
+          <div className="blur-[30%] relative flex items-center justify-center bg-[#fff] bg-opacity-10 rounded-full w-10 h-10 mr-3 active:bg-gray-600 transition duration-150 cursor-pointer">
+            <FaArrowRightLong className="text-white text-sm active:text-black transition duration-150" />
           </div>
-          <div className="text-white text-sm">The journey begins.</div>
+          <div className="text-white text-sm text-opacity-75 font-thin">
+            The journey begins.
+          </div>
         </div>
       </div>
+      <div className="flex justify-center my-[5vw]">
+        <svg
+          width="2"
+          height="90"
+          viewBox="0 0 2 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 0L1 90"
+            stroke="url(#paint0_linear_536_1409)"
+            stroke-dasharray="3 3"
+          />
+          <defs>
+            <linearGradient
+              id="paint0_linear_536_1409"
+              x1="1.5"
+              y1="-2.18557e-08"
+              x2="1.5"
+              y2="90"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#0E0E0E" />
+              <stop offset="0.5" stop-color="#585858" />
+              <stop offset="1" stop-color="#0E0E0E" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
       {/* container2 */}
-      <div className="flex  justify-between mt-[10vw] ">
-        <div className="flex flex-col items-center justify-center gap-[2.5vw] ">
+      <div className="flex  justify-between gap-10  mt-[5vw] ">
+        <div className="flex flex-col items-center justify-center gap-[5vw]  w-[70%]">
           <div>
-            <p className="text-[2.5vw]  text-[#fff] text-center font-light">
+            <p className="text-[2vw]  text-[#cacaca] text-center font-light Zenfont leading-none">
               Predict real-world outcomes and
             </p>
-            <p className="text-[2.5vw]  text-[#fff] text-center font-light">
+            <p className="text-[2vw]  text-[#cacaca] text-center font-light Zenfont leading-none">
               profit when you’re right.
             </p>
           </div>
@@ -127,26 +157,26 @@ const WebLanding = () => {
               {["Sports", "Crypto", "Politics", "Weather"].map((cat) => (
                 <span
                   key={cat}
-                  className={`text-[0.9vw] bg-[#B5B5B5] ${
+                  className={`text-[1vw] bg-[#B5B5B5] ${
                     category === cat
                       ? "text-black"
                       : "text-[#B5B5B5] bg-opacity-[13%]"
-                  } px-[1vw] py-[0.5vw] rounded-full cursor-pointer`}
+                  } px-[2vw] py-[0.5vw] rounded-full cursor-pointer Zenfont`}
                   onClick={() => setCategory(cat)}
                 >
                   {cat}
                 </span>
               ))}
             </div>
-            <div className="pt-[0.5vw] px-[1vw] flex justify-center items-center gap-[0.5vw] flex-wrap">
+            <div className="pt-[1vw] px-[1vw] flex justify-center items-center gap-[0.5vw] flex-wrap">
               {["Science", "Culture", "Tech"].map((cat) => (
                 <span
                   key={cat}
-                  className={`text-[0.9vw] bg-[#B5B5B5] ${
+                  className={`text-[1vw] bg-[#B5B5B5] ${
                     category === cat
                       ? "text-black"
                       : "text-[#B5B5B5] bg-opacity-[13%]"
-                  } px-[1vw] py-[0.5vw] rounded-full cursor-pointer`}
+                  } px-[2vw] py-[0.5vw] rounded-full cursor-pointer Zenfont`}
                   onClick={() => setCategory(cat)}
                 >
                   {cat}
@@ -155,53 +185,82 @@ const WebLanding = () => {
             </div>
           </div>
           <div>
-            <p className="text-[1vw] text-white text-opacity-30 font-semibold text-center tracking-wider">
+            <p className="text-[1vw] text-white  text-opacity-80 font-thin text-center tracking-[0.2rem]">
               Leverage on event-based trades,
             </p>
-            <p className="text-[1vw] text-white text-opacity-30 font-semibold text-center tracking-wider">
+            <p className="text-[1vw] text-white  text-opacity-80 font-thin text-center tracking-[0.2rem]">
               simple onboarding, quick payouts,
             </p>
-            <p className="text-[1vw] text-white text-opacity-30 font-semibold text-center tracking-wider">
+            <p className="text-[1vw] text-white  text-opacity-80 font-thin text-center tracking-[0.2rem]">
               a global selection of events
             </p>
           </div>
         </div>
-        <div className="mb-[10vw]">
+        <div className="mb-[10vw] relative ">
           <Image
-            src="/Images/LpImage3(web).png"
+            src="/Images/LpImage3(gif).gif"
             alt="Landing Page Image 3"
             width={100}
             height={250}
-            className=""
-            style={{ width: "25vw", height: "40vw" }}
+            className="relative left-10"
+            style={{ width: "31vw", height: "40vw" }}
           />
         </div>
       </div>
+      <div className="flex justify-center ">
+        <svg
+          width="2"
+          height="90"
+          viewBox="0 0 2 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 0L1 90"
+            stroke="url(#paint0_linear_536_1409)"
+            stroke-dasharray="3 3"
+          />
+          <defs>
+            <linearGradient
+              id="paint0_linear_536_1409"
+              x1="1.5"
+              y1="-2.18557e-08"
+              x2="1.5"
+              y2="90"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#0E0E0E" />
+              <stop offset="0.5" stop-color="#585858" />
+              <stop offset="1" stop-color="#0E0E0E" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
 
       {/* container3 */}
-      <div className="flex gap-10 justify-between mt-[5vw] items-start relative">
+      <div className="flex gap-10 justify-between items-start relative">
         <div className="mt-[5vw]">
           <div className="flex flex-col items-center justify-center absolute  ">
             <div className="mt-2 ">
-              <p className="text-[2vw] text-[#CACACA] font-light ZenAntiqueFont">
+              <p className="text-[1.8vw] text-[#CACACA] font-light Zenfont">
                 Start trading in
               </p>
-              <p className="text-[5vw]  text-[#CACACA] font-semibold leading-[0.75] Zenfont">
+              <p className="text-[6.3vw]  text-[#CACACA] font-semibold leading-[0.85] Zenfont">
                 minutes.
               </p>
-              <div className="mt-5">
-                <p className="text-[1.2vw] text-[#CACACA] font-light">
+              <div className="mt-20">
+                <p className="text-[1.5vw] text-[#CACACA] font-light">
                   A trading platform in your browser for free.
                 </p>
               </div>
-              <div className="gap-2 mt-5">
-                <span className="text-[1.5vw] tracking-widest font-light">
+              <div className="gap-2 mt-10">
+                <span className="text-[1.2vw] tracking-widest font-light">
                   Your ideal setup, in
                 </span>
-                <span className="border-[1px] px-[1vw] py-[0.5vw] mx-[1vw] rounded-lg text-[#CEFF00] text-[1vw]">
+                <span className="border-[1px] border-gray-500 px-[1vw] py-[0.5vw] mx-[1vw] rounded-lg text-[#CEFF00] text-[2vw] kaisotia tracking-[0.3rem]">
                   {time}
                 </span>
-                <span className="text-[1.5vw] tracking-widest font-light">
+                <span className="text-[1.2vw] tracking-widest font-light">
                   seconds
                 </span>
               </div>
@@ -209,77 +268,141 @@ const WebLanding = () => {
           </div>
         </div>
 
-        <div>
+        <div className="relative">
           <Image
-            src="/Images/LpImage4(web).png"
+            src="/Images/LpImage4(gif).gif"
             alt="Landing Page Image 4"
             width={400}
             height={500}
+            className="relative right-10 top-24"
             style={{ width: "40vw", height: "40vw" }}
           />
         </div>
       </div>
 
-      <div className="mt-16">
-        <div className="relative w-full h-10 border-[1px] border-white rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[4px]">
-          <div className="blur-[30%] relative flex items-center justify-center bg-[#161616] rounded-full w-8 h-8 mr-3 active:bg-gray-600 transition duration-150 cursor-pointer">
-            <FaArrowRight className="text-white text-sm" />
+      <div className="mt-32 ">
+        <div className="relative w-full h-14 border-[1px] border-gray-500 rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[5px]">
+          <div className="blur-[30%] relative flex items-center justify-center bg-[#fff] bg-opacity-10 rounded-full w-10 h-10 mr-3 active:bg-gray-600 transition duration-150 cursor-pointer">
+            <FaArrowRightLong className="text-white text-sm active:text-black transition duration-150" />
           </div>
-          <div className="text-white text-[11px]">
+          <div className="text-white text-sm text-opacity-75 font-thin">
             Change your life with just a flick of this button.
           </div>
         </div>
       </div>
 
+      <div className="flex justify-center mt-[5vw] ">
+        <svg
+          width="2"
+          height="90"
+          viewBox="0 0 2 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 0L1 90"
+            stroke="url(#paint0_linear_536_1409)"
+            stroke-dasharray="3 3"
+          />
+          <defs>
+            <linearGradient
+              id="paint0_linear_536_1409"
+              x1="1.5"
+              y1="-2.18557e-08"
+              x2="1.5"
+              y2="90"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#0E0E0E" />
+              <stop offset="0.5" stop-color="#585858" />
+              <stop offset="1" stop-color="#0E0E0E" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
       {/* container4 */}
 
-      <div className="mt-[15vw] flex justify-center items-center">
+      <div className="mt-[5vw] flex justify-center items-center">
         <Image
-          src="/Images/LpImage7.png"
+          src="/Images/LpImage7(gif).gif"
           alt="Landing Page Image 7"
           width={800}
           height={600}
-          style={{ width: "80vw", height: "40vw" }}
+          style={{ width: "80vw", height: "35vw" }}
         />
       </div>
       <div>
-        <p className="text-[5vw]  text-center text-[#CACACA] ZenAntiqueFont font-semibold">
+        <p className="text-[4vw]  text-center -mt-[5vw] text-[#CACACA] Zenfont font-normal">
           Secure.
         </p>
-        <p className="text-[1.5vw] text-center text-[#CACACA] font-light tracking-widest">
+        <p className="text-[1vw] text-center text-[#CACACA] font-light tracking-widest">
           Enhanced Protection Against Major Vulnerabilities
         </p>
       </div>
 
+      <div className="flex justify-center mt-[5vw] ">
+        <svg
+          width="2"
+          height="90"
+          viewBox="0 0 2 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 0L1 90"
+            stroke="url(#paint0_linear_536_1409)"
+            stroke-dasharray="3 3"
+          />
+          <defs>
+            <linearGradient
+              id="paint0_linear_536_1409"
+              x1="1.5"
+              y1="-2.18557e-08"
+              x2="1.5"
+              y2="90"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#0E0E0E" />
+              <stop offset="0.5" stop-color="#585858" />
+              <stop offset="1" stop-color="#0E0E0E" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
       {/* container5 */}
 
-      <div className="flex justify-between mt-[10vw] gap-[2.5vw] items-start ">
+      <div className="flex justify-between mt-[5vw] gap-[2.5vw] items-start ">
         <div className="flex flex-col gap-[5vw] justify-center items-start">
           <div>
-            <p className="text-[3vw] text-[#CACACA] ZenAntiqueFont font-semibold">
+            <p className="text-[3vw] text-[#CACACA] Zenfont font-normal">
               Intuitive
             </p>
-            <p className="text-[4vw] text-[#CACACA] ZenAntiqueFont font-semibold leading-none ">
+            <p className="text-[4.5vw] text-[#CACACA] Zenfont font-normal leading-none ">
               User Interface
             </p>
-            <p className="text-[1vw] text-[#CACACA] text-opacity-40 mt-[5vw] tracking-widest">
+            <p className="text-[1.2vw] text-[#CACACA] text-opacity-60 mt-[5vw] tracking-[0.25rem] font-thin">
               EveryX is designed with user-friendly navigation, making it easy
               for users to create predictions and manage trades.
             </p>
-            <p className="text-[1vw] text-[#CACACA] text-opacity-40 tracking-widest">
+            <p className="text-[1.2vw] text-[#CACACA] text-opacity-60 tracking-[0.25rem] font-thin">
               Whether you&apos;re a beginner or an experienced trader, the
               platform ensures a seamless experience.
             </p>
           </div>
-          <div className="mt-[3vw] flex justify-center items-center flex-col">
-            <div className="flex justify-center items-center gap-[0.5vw]">
-              <CiCircleInfo className="text-[1.5vw]" />
-              <span className="text-[1.5vw] font-extralight">
+          <div className="mt-[4.5vw] flex justify-center items-center flex-col">
+            <div className="flex justify-center items-center gap-[1vw] ">
+              <CiCircleInfo
+                className="text-[2vw] opacity-50 "
+                color="#f0f0f0"
+              />
+              <span className="text-[0.9vw] font-extralight tracking-[0.15rem] text-opacity-50">
                 UIUX Friendly
               </span>
             </div>
             <button
-              className="bg-[#D5D5D5] text-black text-[1.5vw] px-[1.25vw] py-[0.5vw] rounded-full mt-[1.25vw] font-medium cursor-pointer active:bg-gray-400 transition duration-150"
+              className="bg-[#D5D5D5] text-black text-[1vw]  px-[3vw] py-[1.5vw] rounded-full mt-[1.25vw] font-normal cursor-pointer active:bg-gray-400 transition duration-150"
               onClick={() => {
                 router.push("/trade");
               }}
@@ -288,66 +411,161 @@ const WebLanding = () => {
             </button>
           </div>
         </div>
-        <div className="mt-[4vw]">
+        <div className="mt-5">
           <Image
-            src="/Images/LpImage8.png"
+            src="/Images/LpImage8(gif).gif"
             alt="Landing Page Image 8"
             width={500}
             height={300}
-            style={{ width: "30vw", height: "35vw" }}
+            style={{ width: "65vw", height: "42vw" }}
           />
         </div>
+      </div>
+      <div className="flex justify-center mt-[5vw] ">
+        <svg
+          width="2"
+          height="90"
+          viewBox="0 0 2 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 0L1 90"
+            stroke="url(#paint0_linear_536_1409)"
+            stroke-dasharray="3 3"
+          />
+          <defs>
+            <linearGradient
+              id="paint0_linear_536_1409"
+              x1="1.5"
+              y1="-2.18557e-08"
+              x2="1.5"
+              y2="90"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#0E0E0E" />
+              <stop offset="0.5" stop-color="#585858" />
+              <stop offset="1" stop-color="#0E0E0E" />
+            </linearGradient>
+          </defs>
+        </svg>
       </div>
 
       {/* container6 */}
 
       <div>
         <div className="mt-5 ">
-          <p className="text-[5vw] text-[#CCCCCC] ZenAntiqueFont ">
+          <p className="text-[5vw] text-[#CCCCCC] Zenfont font-extralight tracking-[0.3rem]">
             More fun things
           </p>
-          <p className="text-[5vw] text-[#CCCCCC] ZenAntiqueFont ">
+          <p className="text-[4.5vw] text-[#CCCCCC] Zenfont leading-none tracking-[0.3rem]">
             will be &quot;Coming Soon &quot;
           </p>
-          <p className="text-[1.5vw] text-[#CCCCCC] mt-5  tracking-widest text-opacity-40">
+          <p className="text-[1.4vw] text-[#CCCCCC] mt-5   text-opacity-70 font-thin tracking-[0.2rem]">
             Desktop, leaderboards, achievement bonuses, And more.
           </p>
         </div>
-        <div className="mt-10 flex items-center justify-center">
+        <div className="mt-14 flex items-center justify-center">
           <Image
-            src="/Images/LpImage9.png"
+            src="/Images/LpImage9(gif).gif"
             alt="Landing Page Image 9"
             width={500}
             height={500}
-            style={{ width: "30vw", height: "30vw" }}
+            style={{ width: "26vw", height: "24vw" }}
           />
         </div>
       </div>
 
-      {/* container7 */}
-      <div className="my-12 px-4 sm:px-10">
-        <p className="text-[41px] text-center Zenfont">Q&A</p>
+      <div className="flex justify-center mt-5 ">
+        <svg
+          width="2"
+          height="90"
+          viewBox="0 0 2 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 0L1 90"
+            stroke="url(#paint0_linear_536_1409)"
+            stroke-dasharray="3 3"
+          />
+          <defs>
+            <linearGradient
+              id="paint0_linear_536_1409"
+              x1="1.5"
+              y1="-2.18557e-08"
+              x2="1.5"
+              y2="90"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#0E0E0E" />
+              <stop offset="0.5" stop-color="#585858" />
+              <stop offset="1" stop-color="#0E0E0E" />
+            </linearGradient>
+          </defs>
+        </svg>
       </div>
-      <div>
+
+      {/* container7 */}
+      <div className="mt-16 px-4 sm:px-10 mb[10vw]">
+        <p className="text-[3vw] text-center Zenfont">Q&A</p>
+      </div>
+      <div className="mt-5">
         {questions.map((item, index) => (
-          <div key={index} className="my-5 border-b border-gray-800">
+          <div key={index} className=" border-b-[0.2px] border-[#1c1c1c]">
             <div
-              className={`flex justify-between items-center px-5  py-3 cursor-pointer ${
+              className={`flex justify-between items-center px-10 py-8 cursor-pointer ${
                 openQuestions[index] ? "bg-[#707070]" : "bg-transparent"
               } bg-opacity-[10%]`}
               onClick={() => toggleOpen(index)}
             >
-              <p className="text-[13px] w-full py-2">{item.question}</p>
+              <p className="text-[1.1vw] w-full py-2 tracking-[0.25rem] font-thin">
+                {item.question}
+              </p>
               {openQuestions[index] ? (
-                <FaChevronUp size={15} color="#000" />
+                <svg
+                  width="30"
+                  height="18"
+                  viewBox="0 0 36 19"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.21484 18L18.5905 1.42773L34.9522 18"
+                    stroke="#EEEEEE"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               ) : (
-                <FaChevronDown size={15} color="#000" />
+                <div>
+                  <svg
+                    width="30"
+                    height="18"
+                    viewBox="0 0 36 23"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      opacity="0.36"
+                      d="M34.7949 1.23047L17.4193 21.6465L1.05762 1.23047"
+                      stroke="#757274"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               )}
             </div>
             {openQuestions[index] && (
-              <div className="mt-3 px-4 sm:px-10">
+              <div className="mt-3 px-20 py-10">
                 {item.answer.split("\n").map((para, i) => (
-                  <p key={i} className="text-[13px] mb-3 opacity-[38%]">
+                  <p
+                    key={i}
+                    className="text-[1.1vw] mb-3 text-white text-opacity-[50%] font-thin tracking-[0.3rem] leading-[2.5vw]"
+                  >
                     {para}
                   </p>
                 ))}
