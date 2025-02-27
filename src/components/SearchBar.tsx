@@ -31,7 +31,7 @@ export default function SearchBar({ search, setSearch }: searchProps) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Image src="/Images/logo_grey.png" alt="" height={20} width={20} />
+        <Image src="/Images/logo_grey.png" alt="" height={20} width={20} className="hidden md:block"/>
       </div>
     </div>
   );

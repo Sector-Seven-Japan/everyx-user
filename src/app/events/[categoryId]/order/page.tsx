@@ -406,7 +406,7 @@ export default function Order() {
                     Stop level
                   </p>
                   <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
-                    {(orderDetails?.after_stop_probability * 100)?.toFixed(0)}%
+                    {(orderDetails?.stop_probability * 100)?.toFixed(0)}%
                   </button>
                 </div>
               </div>

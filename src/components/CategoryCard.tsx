@@ -157,7 +157,7 @@ export default function CategoryCard({
         </p>
       </div>
       <div className="pt-4">
-        <p className="font-light md:text-[10px]">{item?.description}</p>
+        <p className="font-light md:text-[10px]">{item?.name}</p>
       </div>
       <div
         className={`flex gap-3 mt-5 leading-0 md:mb-0`}
@@ -194,9 +194,9 @@ export default function CategoryCard({
               <DrawGraph data={graphData} />
             )}
           </div>
-          <div className={`${!showPrediction && "hidden"} md:mt-5`}>
+          <div className={`${!showPrediction && "hidden"} md:mt-5 flex flex-col gap-3`}>
             {item?.outcomes.map((outcome: Outcome, index: number) => (
-              <div key={outcome._id} className={`flex flex-col gap-1 md:gap-1`}>
+              <div key={outcome._id} className={`flex flex-col gap-1`}>
                 <p className="text-[19px] font-light md:text-[12px]">
                   {String.fromCharCode(65 + index)}.{" "}
                   {outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1)}

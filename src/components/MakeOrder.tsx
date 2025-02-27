@@ -77,8 +77,8 @@ export default function MakeOrder() {
     }
   };
   useEffect(() => {
-    if (!eventId || !outcomeId) return;
     setIsLoading(true);
+    if (!eventId || !outcomeId) return;
     const wager = value * leverage;
     const loan = wager - value;
 
@@ -94,7 +94,7 @@ export default function MakeOrder() {
 
   return (
     <div
-      className={`fixed bg-transparent w-full left-0 h-full transition-transform duration-200 ease-in-out z-50 ${
+      className={`fixed bg-transparent w-full left-0 h-full transition-transform duration-200 ease-in-out z-10 ${
         isOrderMade ? "translate-y-0" : "translate-y-[1000px]"
       }`}
       style={{ bottom: 0 }}
