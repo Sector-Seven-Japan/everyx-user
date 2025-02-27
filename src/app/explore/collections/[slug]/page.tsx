@@ -137,12 +137,12 @@ export default function EventCategoryPage() {
             )}
           </div>
         </div>
-
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {events.length !== 0 ? (
           events.map((item) => (
             <div
               key={item._id}
-              className="grid grid-cols-1 md:grid-cols-4 gap-x-5"
+              className=""
             >
               <CategoryCard
                 key={item._id}
@@ -158,6 +158,7 @@ export default function EventCategoryPage() {
             No Result found
           </div>
         )}
+        </div>
       </div>
       <Footer />
     </div>

@@ -68,7 +68,7 @@ interface OrderResponse {
 interface Wallet {
   id: number;
   currency: string;
-  balance: string;
+  balance: number;
 }
 
 interface UserProfile {

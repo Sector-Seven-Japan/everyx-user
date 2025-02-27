@@ -1,3 +1,4 @@
+import Head from "next/head";
 import type { Metadata } from "next";
 import {
   Geist,
@@ -46,6 +47,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <link rel="icon" href="/favicon.png" type="image/png" />
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${zenKakuGothicAntique.variable} ${zenAntique.variable} antialiased`}
       >
