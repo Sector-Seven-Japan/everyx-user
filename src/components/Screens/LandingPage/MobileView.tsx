@@ -61,6 +61,7 @@ const MobileLanding = () => {
   return (
     <>
       <div className="bg-[#0E0E0E] w-full min-h-screen py-10">
+        {/* container1 */}
         <div className="px-4 sm:px-10">
           <p className="text-right text-[13px] text-white text-opacity-[76%]">
             Where every event is an
@@ -79,13 +80,13 @@ const MobileLanding = () => {
           />
         </div>
         <div className="px-4 sm:px-10">
-          <p className="text-[24px] sm:text-[33px] text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
+          <p className="text-[24px] sm:text-[33px] text-white text-opacity-[78%] text-left Zenfont font-bold">
             Trade
           </p>
-          <p className="text-[24px] sm:text-[33px] text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
+          <p className="text-[24px] sm:text-[33px] text-white text-opacity-[78%] text-left Zenfont font-bold">
             on the Outcome of
           </p>
-          <p className="text-[24px] sm:text-[33px] text-white text-opacity-[78%] text-left ZenAntiqueFont font-bold">
+          <p className="text-[24px] sm:text-[33px] text-white text-opacity-[78%] text-left Zenfont font-bold">
             Global Events
           </p>
           <p className="text-[13px] text-white text-opacity-[78%] text-left font-medium mt-5">
@@ -101,8 +102,35 @@ const MobileLanding = () => {
             <div className="text-white text-sm">The journey begins.</div>
           </div>
         </div>
-        <div className="flex justify-center mt-10">
-          <div className="w-1 h-[50px] border-l-2 border-dashed border-[#8B8B8B]"></div>
+        {/* vertical line */}
+        <div className="flex justify-center my-[5vw]">
+          <svg
+            width="2"
+            height="90"
+            viewBox="0 0 2 90"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 0L1 90"
+              stroke="url(#paint0_linear_536_1409)"
+              stroke-dasharray="3 3"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_536_1409"
+                x1="1.5"
+                y1="-2.18557e-08"
+                x2="1.5"
+                y2="90"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#0E0E0E" />
+                <stop offset="0.5" stop-color="#585858" />
+                <stop offset="1" stop-color="#0E0E0E" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
         <div className="px-4 sm:px-10 mt-2 justify-center flex items-center">
           <Image
@@ -113,10 +141,10 @@ const MobileLanding = () => {
           />
         </div>
         <div>
-          <p className="text-[18px] sm:text-[21px] text-[#CACACA] text-center font-light">
+          <p className="text-[18px] sm:text-[21px] text-[#CACACA] text-center font-light Zenfont">
             Predict real-world outcomes and
           </p>
-          <p className="text-[18px] sm:text-[21px] text-[#CACACA] text-center font-light">
+          <p className="text-[18px] sm:text-[21px] text-[#CACACA] text-center font-light Zenfont">
             profit when you’re right.
           </p>
         </div>
@@ -124,10 +152,10 @@ const MobileLanding = () => {
           {["Sports", "Crypto", "Politics", "Weather"].map((cat) => (
             <span
               key={cat}
-              className={`text-[14px] bg-[#B5B5B5] ${
+              className={`text-[14px] bg-[#B5B5B5] Zenfont ${
                 category === cat
                   ? "text-black"
-                  : "text-[#B5B5B5] bg-opacity-[13%]"
+                  : "text-[#B5B5B5] bg-opacity-[13%] "
               } px-3 py-1 rounded-full cursor-pointer`}
               onClick={() => setCategory(cat)}
             >
@@ -139,7 +167,7 @@ const MobileLanding = () => {
           {["Science", "Culture", "Tech"].map((cat) => (
             <span
               key={cat}
-              className={`text-[14px] bg-[#B5B5B5] ${
+              className={`text-[14px] bg-[#B5B5B5] Zenfont ${
                 category === cat
                   ? "text-black"
                   : "text-[#B5B5B5] bg-opacity-[13%]"
@@ -169,11 +197,37 @@ const MobileLanding = () => {
             a global selection of events
           </p>
         </div>
-        <div className="flex justify-center mt-10">
-          <div className="w-1 h-[50px] border-l-2 border-dashed border-[#8B8B8B]"></div>
+        <div className="flex justify-center my-[5vw]">
+          <svg
+            width="2"
+            height="90"
+            viewBox="0 0 2 90"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 0L1 90"
+              stroke="url(#paint0_linear_536_1409)"
+              stroke-dasharray="3 3"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_536_1409"
+                x1="1.5"
+                y1="-2.18557e-08"
+                x2="1.5"
+                y2="90"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#0E0E0E" />
+                <stop offset="0.5" stop-color="#585858" />
+                <stop offset="1" stop-color="#0E0E0E" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
         <div className="mt-2">
-          <p className="text-[19px] text-[#CACACA] text-center font-light ZenAntiqueFont">
+          <p className="text-[13px] text-[#CACACA] text-center font-light Zenfont">
             Start trading in
           </p>
           <p className="text-4xl sm:text-6xl text-[#CACACA] text-center font-semibold leading-[0.75] Zenfont">
@@ -181,7 +235,7 @@ const MobileLanding = () => {
           </p>
           <div className="flex justify-center items-center gap-2 mt-5">
             <span className="text-[13px]">Your ideal setup, in</span>
-            <span className="border-[1px] text-[#CEFF00] text-[13px]">
+            <span className="border-[1px] text-[#CEFF00] text-[13px] kaisotia px-1 rounded-sm border-gray-600">
               {time}
             </span>
             <span className="text-[13px]">seconds</span>
@@ -235,21 +289,47 @@ const MobileLanding = () => {
           />
         </div>
         <div>
-          <p className="text-[30px] sm:text-[50px] text-center text-[#CACACA] ZenAntiqueFont font-semibold">
+          <p className="text-[30px] sm:text-[50px] text-center text-[#CACACA] Zenfont font-semibold">
             Secure.
           </p>
           <p className="text-[14px] text-center text-[#CACACA] font-light">
             Enhanced Protection Against Major Vulnerabilities
           </p>
         </div>
-        <div className="flex justify-center mt-10">
-          <div className="w-1 h-[50px] border-l-2 border-dashed border-[#8B8B8B]"></div>
+        <div className="flex justify-center my-[5vw]">
+          <svg
+            width="2"
+            height="90"
+            viewBox="0 0 2 90"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 0L1 90"
+              stroke="url(#paint0_linear_536_1409)"
+              stroke-dasharray="3 3"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_536_1409"
+                x1="1.5"
+                y1="-2.18557e-08"
+                x2="1.5"
+                y2="90"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#0E0E0E" />
+                <stop offset="0.5" stop-color="#585858" />
+                <stop offset="1" stop-color="#0E0E0E" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
         <div className="mt-5 px-4 sm:px-10">
-          <p className="text-3xl text-[#CACACA] ZenAntiqueFont font-semibold">
+          <p className="text-3xl text-[#CACACA] Zenfont font-semibold">
             Intuitive
           </p>
-          <p className="text-4xl text-[#CACACA] ZenAntiqueFont font-regular">
+          <p className="text-4xl text-[#CACACA] Zenfont font-regular">
             User Interface
           </p>
           <p className="text-[13px] text-[#CACACA] mt-5">
@@ -283,14 +363,38 @@ const MobileLanding = () => {
             Get started
           </button>
         </div>
-        <div className="flex justify-center mt-10">
-          <div className="w-1 h-[50px] border-l-2 border-dashed border-[#8B8B8B]"></div>
+        <div className="flex justify-center my-[5vw]">
+          <svg
+            width="2"
+            height="90"
+            viewBox="0 0 2 90"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 0L1 90"
+              stroke="url(#paint0_linear_536_1409)"
+              stroke-dasharray="3 3"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_536_1409"
+                x1="1.5"
+                y1="-2.18557e-08"
+                x2="1.5"
+                y2="90"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#0E0E0E" />
+                <stop offset="0.5" stop-color="#585858" />
+                <stop offset="1" stop-color="#0E0E0E" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
         <div className="mt-5 px-4 sm:px-10">
-          <p className="text-[29px] text-[#CCCCCC] ZenAntiqueFont">
-            More fun things
-          </p>
-          <p className="text-[29px] text-[#CCCCCC] ZenAntiqueFont">
+          <p className="text-[29px] text-[#CCCCCC] Zenfont">More fun things</p>
+          <p className="text-[29px] text-[#CCCCCC] Zenfont">
             will be &quot;Coming Soon &quot;
           </p>
           <p className="text-[13px] text-[#CCCCCC] mt-5">
@@ -300,7 +404,7 @@ const MobileLanding = () => {
             achievement bonuses, And more.
           </p>
         </div>
-        <div className="relative h-[200px] sm:h-[420px] w-full">
+        <div className="relative h-[400px] sm:h-[420px] mt-5 w-full">
           <Image
             src="/Images/LpImage9.png"
             alt="Landing Page Image 9"
@@ -308,8 +412,34 @@ const MobileLanding = () => {
             objectFit="cover"
           />
         </div>
-        <div className="flex justify-center mt-5">
-          <div className="w-1 h-[50px] border-l-2 border-dashed border-[#8B8B8B]"></div>
+        <div className="flex justify-center my-[5vw]">
+          <svg
+            width="2"
+            height="90"
+            viewBox="0 0 2 90"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 0L1 90"
+              stroke="url(#paint0_linear_536_1409)"
+              stroke-dasharray="3 3"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_536_1409"
+                x1="1.5"
+                y1="-2.18557e-08"
+                x2="1.5"
+                y2="90"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#0E0E0E" />
+                <stop offset="0.5" stop-color="#585858" />
+                <stop offset="1" stop-color="#0E0E0E" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
         <div className="my-12 px-4 sm:px-10">
           <p className="text-[41px] text-center Zenfont">Q&A</p>

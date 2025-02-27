@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"); */
+/* @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap"); */
 
 @tailwind base;
 @tailwind components;
@@ -16,9 +17,19 @@
     /* Firefox */
   }
 }
+@font-face {
+  font-family: "CustomFont";
+  src: url("../../public/assets/Kaisotai-Next-UP-B.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.kaisotia {
+  font-family: "CustomFont";
+}
 
 * {
-  font-family: "Noto Sans";
+  font-family: "Noto Sans Jp";
   color: #ffffff;
   padding: 0;
   margin: 0;
@@ -35,6 +46,6 @@ body {
   font-family: "Zen Antique";
 }
 
-.cambria{
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+.cambria {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
