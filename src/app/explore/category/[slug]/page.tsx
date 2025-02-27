@@ -138,10 +138,11 @@ export default function EventCategoryPage() {
             Prediction view
           </div>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {events.length !== 0 ? (
           events.map((item) => (
             <div
-              className="grid grid-cols-1 md:grid-cols-4 gap-x-5"
+              className=""
               key={item._id}
             >
               <CategoryCard
@@ -157,6 +158,7 @@ export default function EventCategoryPage() {
             No Result found
           </div>
         )}
+        </div>
       </div>
       <Footer />
     </div>

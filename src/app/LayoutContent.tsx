@@ -5,7 +5,7 @@ import { AppContext } from "./Context/AppContext";
 import Loader from "@/components/Loader/Loader";
 import { ToastContainer } from "react-toastify";
 import Menu from "@/components/Menu";
-
+import { Toaster } from 'react-hot-toast';
 
 export default function LayoutContent({
   children,
@@ -19,6 +19,7 @@ export default function LayoutContent({
       {isLoading && <Loader />}
       <div className="mt-14">{children}</div>
       <Menu />
+      <Toaster />
       <ToastContainer
         position="top-center"
         autoClose={2000}

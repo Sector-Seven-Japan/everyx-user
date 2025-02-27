@@ -27,7 +27,7 @@ export default function ImageSlider() {
             <div className="px-4 py-3 flex flex-col justify-between md:justify-center absolute h-full top-0 left-0">
               <div className="flex items-center gap-4">
                 <div className="bg-white text-black px-2 py-1 rounded-md text-[12px] md:text-[20px]">
-                  Politics
+                  Events
                 </div>
                 <img
                   className="w-[15px] h-[15px] md:w-[28px] md:h-[28px]"

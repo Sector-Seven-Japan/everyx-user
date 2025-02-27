@@ -262,7 +262,7 @@ export default function Order() {
                   {eventData?.description}
                 </p>
                 <p className="text-[#3E3E3E] mt-2 md:text-[12px]">
-                  ID: NDSJHDH676235
+                  ID: {orderDetails?.event_id}
                 </p>
               </div>
             </div>
@@ -365,7 +365,7 @@ export default function Order() {
                         Cash used
                       </p>
                       <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
-                        ${Math.round(orderDetails?.pledge)}
+                        ${Math.round(orderDetails?.after_pledge)}
                       </p>
                     </div>
                     <div className="flex flex-col gap-[1px] items-end">
@@ -373,7 +373,7 @@ export default function Order() {
                         Leverage cash value
                       </p>
                       <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
-                        ${Math.round(orderDetails?.wager)}{" "}
+                        ${Math.round(orderDetails?.after_wager)}{" "}
                         <span className="text-sm text-[#E49C29] md:text-[12px]">
                           x {orderDetails?.leverage}
                         </span>
@@ -387,7 +387,7 @@ export default function Order() {
                         Projected payout
                       </p>
                       <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
-                        ${Math.round(orderDetails?.indicative_payout)}
+                        ${Math.round(orderDetails?.after_payout)}
                       </p>
                     </div>
                     <div className="flex flex-col gap-[1px] items-end">
@@ -395,7 +395,7 @@ export default function Order() {
                         Your return
                       </p>
                       <p className="text-[22px] text-[#00FFB8] md:text-[16px]">
-                        +{orderDetails?.indicative_return?.toFixed(0)} %
+                        +{orderDetails?.after_return?.toFixed(0)} %
                       </p>
                     </div>
                   </div>

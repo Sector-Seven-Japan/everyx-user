@@ -114,7 +114,7 @@ export default function Home() {
             Searching...
           </div>
         ) : (
-          <div className="md:px-[76px] grid grid-cols-1 md:grid-cols-4 gap-x-5 md:mt-10">
+          <div className="md:px-[70px] grid grid-cols-1 md:grid-cols-4 gap-5 md:mt-10">
             {searchData.length > 0 ? (
               searchData.map((item) => (
                 <CategoryCard

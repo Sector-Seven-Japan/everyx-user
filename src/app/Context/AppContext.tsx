@@ -62,12 +62,13 @@ interface OrderResponse {
   loan: number;
   before_pledge: number;
   after_pledge: number;
+  stop_probability:number;
 }
 
 interface Wallet {
   id: number;
   currency: string;
-  balance: string;
+  balance: number;
 }
 
 interface UserProfile {
@@ -182,7 +183,7 @@ interface AppContextProps {
 }
 
 // const API_BASE_URL = "https://test-api.everyx.io";
-const API_BASE_URL = "https://dev-api.everyx.io";
+const API_BASE_URL = "https://test-api.everyx.io";
 
 // Initial context state
 const initialState: AppContextProps = {
@@ -241,6 +242,7 @@ const initialState: AppContextProps = {
     loan: 0,
     before_pledge: 0,
     after_pledge: 0,
+    stop_probability:0,
   },
   setIsOrderMade: () => {},
   setOrderDetails: () => {},
@@ -311,6 +313,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     loan: 0,
     before_pledge: 0,
     after_pledge: 0,
+    stop_probability:0
   });
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
@@ -422,6 +425,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(orderPayload),
       });
