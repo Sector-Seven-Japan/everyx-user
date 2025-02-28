@@ -117,13 +117,19 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
 
     // Extract unique sorted dates
     const dates = [
-      ...new Set(filteredData.map((item) => new Date(item.datetime).toISOString().split("T")[0])),
+      ...new Set(
+        filteredData.map(
+          (item) => new Date(item.datetime).toISOString().split("T")[0]
+        )
+      ),
     ]
       .sort((a, b) => new Date(b).getTime() - new Date(a).getTime()) // Sort descending
       .slice(0, 6) // Get only the latest 6 records
       .sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); // Re-sort ascending
 
-    const outcomes = outcomeIds || [...new Set(filteredData.map((item) => item.event_outcome_id))];
+    const outcomes = outcomeIds || [
+      ...new Set(filteredData.map((item) => item.event_outcome_id)),
+    ];
     const colors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
     const datasets = outcomes.map((outcome, index) => {
@@ -137,7 +143,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
       });
 
       return {
-        label: `Outcome ${outcome}`,
+        label: `${outcome}`,
         data: outcomeData,
         borderColor: colors[index % colors.length],
         backgroundColor: colors[index % colors.length],
@@ -155,7 +161,12 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
   return (
     <div className="w-full rounded-lg">
       <div className="h-[200px] mt-8 w-full">
-        <canvas ref={chartRef} className="w-full h-full" style={{ backgroundColor: "transparent" }}></canvas> {/* Set background color to transparent */}
+        <canvas
+          ref={chartRef}
+          className="w-full h-full"
+          style={{ backgroundColor: "transparent" }}
+        ></canvas>{" "}
+        {/* Set background color to transparent */}
       </div>
     </div>
   );
