@@ -159,73 +159,75 @@ const PasswordChange: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mb-10 mt-20 ">
-          <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5  col-span-6">
-            <p className="text-left text-[17px] font-medium ">
-              Change Password
-            </p>
+        <div className="md:px-[12%] 2xl:px-[19%]">
+          <div className="flex md:flex-row md:mt-32 justify-between gap-5 md:pb-20">
+            <div className="bg-[#0E0E0E] md:w-[60%] xl:w-[75%] w-full">
+              <p className="text-left text-[17px] font-medium ">
+                Change Password
+              </p>
 
-            <div className="space-y-6 my-10">
-              {["oldPassword", "newPassword", "confirmPassword"].map(
-                (field, index) => (
-                  <div key={index} className="border-b border-gray-800">
-                    <label className="block text-[12px] mb-1 opacity-[27%]">
-                      {field === "oldPassword"
-                        ? "Old Password"
-                        : field === "newPassword"
-                        ? "New Password"
-                        : "Confirm New Password"}
-                    </label>
-                    <div className="flex items-center justify-between">
-                      <input
-                        type={
-                          visibility[field as keyof typeof visibility]
-                            ? "text"
-                            : "password"
-                        }
-                        name={field}
-                        value={passwords[field as keyof typeof passwords]}
-                        onChange={handleChange}
-                        placeholder=".........."
-                        className="flex-1 bg-transparent py-2 text-[12px] outline-none"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          toggleVisibility(field as keyof typeof visibility)
-                        }
-                        className="ml-2 text-gray-400"
-                      >
-                        {visibility[field as keyof typeof visibility] ? (
-                          <IoEyeOutline size={18} />
-                        ) : (
-                          <IoEyeOffOutline size={18} />
-                        )}
-                      </button>
+              <div className="space-y-6 my-10">
+                {["oldPassword", "newPassword", "confirmPassword"].map(
+                  (field, index) => (
+                    <div key={index} className="border-b border-gray-800">
+                      <label className="block text-[12px] mb-1 opacity-[27%]">
+                        {field === "oldPassword"
+                          ? "Old Password"
+                          : field === "newPassword"
+                          ? "New Password"
+                          : "Confirm New Password"}
+                      </label>
+                      <div className="flex items-center justify-between">
+                        <input
+                          type={
+                            visibility[field as keyof typeof visibility]
+                              ? "text"
+                              : "password"
+                          }
+                          name={field}
+                          value={passwords[field as keyof typeof passwords]}
+                          onChange={handleChange}
+                          placeholder=".........."
+                          className="flex-1 bg-transparent py-2 text-[12px] outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            toggleVisibility(field as keyof typeof visibility)
+                          }
+                          className="ml-2 text-gray-400"
+                        >
+                          {visibility[field as keyof typeof visibility] ? (
+                            <IoEyeOutline size={18} />
+                          ) : (
+                            <IoEyeOffOutline size={18} />
+                          )}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                )
-              )}
-            </div>
+                  )
+                )}
+              </div>
 
-            <div className="mt-1 flex justify-between items-center gap-5">
-              <button
-                className="w-56  border-[#fff]  rounded-lg py-3 px-4 border-[0.25px]  text-white text-[14px]"
-                type="button"
-                onClick={() => router.push("/profile")}
-              >
-                Back
-              </button>
-              <button
-                className="w-56 py-3 px-4 border-[#2DC198] border-[0.25px] rounded-lg transition-colors text-[14px] text-[#2DC198]"
-                onClick={handlePasswordChange}
-              >
-                SAVE
-              </button>
+              <div className="mt-1 flex justify-between items-center gap-5">
+                <button
+                  className="w-56  border-[#fff]  rounded-lg py-3 px-4 border-[0.25px]  text-white text-[14px]"
+                  type="button"
+                  onClick={() => router.push("/profile")}
+                >
+                  Back
+                </button>
+                <button
+                  className="w-56 py-3 px-4 border-[#2DC198] border-[0.25px] rounded-lg transition-colors text-[14px] text-[#2DC198]"
+                  onClick={handlePasswordChange}
+                >
+                  SAVE
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="col-span-4 flex justify-end">
-            <CurrentCashBalanceCardWebview />
+            <div className="m:w-[40%] xl:w-[25%]">
+              <CurrentCashBalanceCardWebview />
+            </div>
           </div>
         </div>
       )}

@@ -191,7 +191,7 @@ export default function OrderSuccess() {
           </div>
           <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%]">
             <div className="px-8 py-5 md:bg-[#141414] md:rounded-xl md:px-5 sticky top-[70px]">
-              <h1 className="text-center mb-3 text-[1.1vw] md:mb-[1.2vw]">
+              <h1 className="text-center mb-4 md:text-[1.1vw] md:mb-[1.2vw] text-[22px]">
                 Your Order
               </h1>
               <div className="flex flex-col items-center justify-center text-center gap-8 mt-5 md:gap-2">
@@ -211,7 +211,7 @@ export default function OrderSuccess() {
 
               <div className="mt-20 md:mt-[1.5vw]">
                 <div className="flex gap-3">
-                  <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
+                  <button className="border border-[#00FFB8] px-4 py-2 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
                     {eventData?.category?.name?.split(" ")[0]}
                   </button>
                   <p className="text-[#2DC198] flex gap-1 items-center font-light">
@@ -228,10 +228,10 @@ export default function OrderSuccess() {
                     </p>
                   </p>
                 </div>
-                <p className="text-[21px] font-light mt-4 md:text-[0.8vw] md:tracking-[1.5px] md:leading-[1.4vw]">
+                <p className="text-[21px] tracking-[2px] font-light mt-8 md:text-[0.8vw] md:tracking-[1.5px] md:leading-[1.4vw]">
                   {eventData?.description}
                 </p>
-                <p className="text-[#3E3E3E] mt-2 md:text-[0.8vw] md:mt-[0.8vw]">
+                <p className="text-[#3E3E3E] text-[16px] mt-2 md:text-[0.8vw] md:mt-[0.8vw]">
                   ID: {orderDetails?.event_id}
                 </p>
 
@@ -317,7 +317,7 @@ export default function OrderSuccess() {
                     setIsOrderMade(false);
                     router.push(`/events/${categoryId}`);
                   }}
-                  className="bg-[#00FFB8] py-3 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw] md:py-[0.65vw]"
+                  className="bg-[#00FFB8] py-4 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw] md:py-[0.65vw]"
                 >
                   Trade on this event again
                   <div className="md:w-2">
@@ -335,7 +335,7 @@ export default function OrderSuccess() {
                     setIsOrderMade(false);
                     router.push("/deposit-withdrawal/history");
                   }}
-                  className="bg-[#222222] py-3 rounded-md text-[#00FFB8] text-[18px] md:text-[0.9vw] md:py-[0.65vw] md:mb-5"
+                  className="bg-[#222222] py-4 rounded-md text-[#00FFB8] text-[18px] md:text-[0.9vw] md:py-[0.65vw] md:mb-5"
                 >
                   View in Portfolio
                 </button>

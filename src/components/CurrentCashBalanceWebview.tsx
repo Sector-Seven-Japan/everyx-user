@@ -29,6 +29,8 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
           </div>
         )}
 
+
+
         <div className="flex flex-col bg-[white] bg-opacity-[3%] rounded-3xl px-[1vw] py-10">
           <div className="flex justify-center items-center mt-5 relative">
             {userProfile?.avatar ? (
@@ -41,6 +43,8 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                 />
               </div>
             ) : (
+
+
               <div className="w-14 h-14 rounded-full bg-transparent flex items-center justify-center">
                 <IoPersonCircleOutline className="w-14 h-14 text-gray-400" />
               </div>
@@ -53,7 +57,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
               onClick={handleSettingsClick}
             />
           </div>
-          <p className="text-[10px] sm:text-[9px] md:text-[10px] lg:text-[13px] text-center mt-4">
+          <p className="text-[10px] sm:text-[9px] md:text-[0.7vw] text-center mt-7">
             Current Cash Balance
           </p>
           <div className="flex justify-center mt-4 items-baseline font-bold">

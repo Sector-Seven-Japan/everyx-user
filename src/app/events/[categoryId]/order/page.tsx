@@ -243,12 +243,12 @@ export default function Order() {
           <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%]">
             <div className="md:pb-10  md:bg-[#141414] md:rounded-xl sticky top-[70px]">
               <div className="p-5">
-                <h1 className="text-center mb-3 text-[1.1vw] md:mb-[1.2vw]">
+                <h1 className="text-center mb-4 md:text-[1.1vw] md:mb-[1.2vw] text-[22px]">
                   Your Order
                 </h1>
                 <div>
                   <div className="flex mt-7 gap-3">
-                    <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
+                    <button className="border border-[#00FFB8] px-4 py-2 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
                       {eventData?.category?.name?.split(" ")[0]}
                     </button>
                     <p className="text-[#2DC198] flex gap-1 items-center font-light">
@@ -265,10 +265,10 @@ export default function Order() {
                       </p>
                     </p>
                   </div>
-                  <p className="text-[21px] md:text-[0.8vw] md:tracking-[1.5px] md:leading-[1.4vw] font-light mt-4">
+                  <p className="text-[21px] md:text-[0.8vw] tracking-[2.5px] md:tracking-[1.5px] md:leading-[1.4vw] font-light mt-4">
                     {eventData?.description}
                   </p>
-                  <p className="text-[#3E3E3E] mt-2 md:text-[0.8vw] md:mt-[0.8vw]">
+                  <p className="text-[#3E3E3E] text-[16px] mt-2 md:text-[0.8vw] md:mt-[0.8vw]">
                     ID: {orderDetails?.event_id}
                   </p>
                 </div>
@@ -478,7 +478,7 @@ export default function Order() {
               <div className="px-5">
                 <button
                   onClick={handleSubmit}
-                  className="text-[#2DC198] w-full border border-[#2DC198] py-[0.7vw] xl:rounded-lg 2xl:rounded-2xl text-[1vw] mt-3 mb-[1vw]"
+                  className="text-[#00ffbb] text-[16px] py-4 rounded-xl w-full border border-[#00ffbb] md:py-[0.7vw] xl:rounded-lg 2xl:rounded-2xl md:text-[1vw] mt-3 mb-[1vw]"
                 >
                   Proceed
                 </button>
