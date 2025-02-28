@@ -212,7 +212,7 @@ export default function OrderSuccess() {
               <div className="mt-20 md:mt-[1.5vw]">
                 <div className="flex gap-3">
                   <button className="border border-[#00FFB8] px-4 py-2 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
-                    {eventData?.category?.name?.split(" ")[0]}
+                    {eventData?.category?.name?.split(" ")[0] || "Global"}
                   </button>
                   <p className="text-[#2DC198] flex gap-1 items-center font-light">
                     <div className="md:w-3">
@@ -315,11 +315,11 @@ export default function OrderSuccess() {
                   onClick={() => {
                     setIsLoading(true);
                     setIsOrderMade(false);
-                    router.push(`/events/${categoryId}`);
+                    router.push(`/trade`);
                   }}
                   className="bg-[#00FFB8] py-4 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw] md:py-[0.65vw]"
                 >
-                  Trade on this event again
+                  Recommend Events
                   <div className="md:w-2">
                     <Image
                       src="/Images/rightarrowicon.png"

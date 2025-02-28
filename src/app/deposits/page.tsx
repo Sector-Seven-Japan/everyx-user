@@ -158,8 +158,8 @@ const Deposit: React.FC = () => {
         </div>
       ) : (
         <div className="bg-[#0E0E0E] md:px-[12%] 2xl:px-[19%]">
-          <div className="flex md:flex-row md:mt-32 justify-between gap-5">
-            <div className="bg-[#262626] bg-opacity-[31%] md:w-[60%] xl:w-[75%] w-full pb-[4vw] rounded-2xl">
+          <div className="flex md:flex-row md:pt-28 justify-between gap-5">
+            <div className="bg-[#262626] bg-opacity-[31%] md:w-[60%] xl:w-[70%] w-full pb-[4vw] rounded-2xl">
              
 
               {/* Deposit and Withdrawal Section */}
@@ -275,7 +275,7 @@ const Deposit: React.FC = () => {
                 </ConnectButton.Custom>
               </div>
             </div>
-            <div className="m:w-[40%]  xl:w-[25%]">
+            <div className="m:w-[40%]  xl:w-[30%]">
               <CurrentCashBalanceCardWebview />
             </div>
           </div>

@@ -23,7 +23,6 @@ export default function TopCategories() {
     } catch (error) {
       console.error("Failed to fetch categories:", error);
       setTopCategories([]);
-
     } finally {
       setFetchingData(false);
     }
@@ -33,17 +32,29 @@ export default function TopCategories() {
     fetchTopCategories();
   }, []);
 
-
-  return fetchingData == false ?
+  return fetchingData == false ? (
     <div className="px-5 py-8 md:px-0">
       <div className="flex justify-between">
-        <h1 className="text-xl mb-6 md:mb-10 md:text-[1.5vw] md:tracking-[1.5px] md:mt-20 inter font-[700]">TOP Topics</h1>
+        <h1 className="text-xl mb-6 md:mb-10 md:text-[1.5vw] md:tracking-[1.5px] md:mt-20 inter font-[700]">
+          TOP Topics
+        </h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 md:gap-x-14 gap-y-5">
         {topCategoies.slice(0, 4).map((item, index) => {
-          return <CategoryCard key={index} item={item} showChart={true} showPrediction={true} showTime={true} hide={true} />;
+          return (
+            <CategoryCard
+              key={index}
+              item={item}
+              showChart={true}
+              showPrediction={true}
+              showTime={true}
+              hide={true}
+            />
+          );
         })}
       </div>
     </div>
-    : <LoadingPage />
+  ) : (
+    <LoadingPage />
+  );
 }

@@ -49,7 +49,7 @@ interface CategoryCardProps {
   showTime: boolean;
   showChart: boolean;
   showPrediction: boolean;
-  hide:boolean;
+  hide: boolean;
 }
 
 interface EventHistoryParams {
@@ -63,7 +63,7 @@ export default function CategoryCard({
   item,
   showChart,
   showPrediction,
-  hide
+  hide,
 }: CategoryCardProps) {
   const [graphData, setGraphData] = useState<GraphData[]>([]);
   const { API_BASE_URL, getCountdown } = useContext(AppContext);
@@ -73,6 +73,10 @@ export default function CategoryCard({
     setIsLoading,
     calculateMaxLeverage,
     calculateMaxEstimatedPayout,
+    makeOrder,
+    setIsOrderMade,
+    setSelectedOrder,
+    setSelectedOutcomeId,
   } = useContext(AppContext);
   const [countdown, setCountdown] = useState<string>("");
 
@@ -81,6 +85,21 @@ export default function CategoryCard({
   const handleNavigation = async () => {
     try {
       setIsLoading(true);
+      if (window.innerWidth >= 1024) {
+        const outcome = item?.outcomes[0];
+        setSelectedOrder(
+          String.fromCharCode(65 + 0) +
+            ". " +
+            outcome.name.charAt(0).toUpperCase() +
+            outcome.name.slice(1)
+        );
+        setSelectedOutcomeId(outcome._id);
+        (async () => {
+          await makeOrder(outcome._id, item._id, false, 1, 0, 10, 10);
+          setIsOrderMade(true);
+        })();
+      }
+
       router.push(`/events/${item?._id}`);
     } catch (error) {
       console.error("Navigation error:", error);
@@ -92,7 +111,7 @@ export default function CategoryCard({
       setCountdown(getCountdown(item.ends_at));
       const interval = setInterval(() => {
         setCountdown(getCountdown(item.ends_at));
-      }, 60000); // Update every minute
+      }, 1000); // Update every minute
 
       return () => clearInterval(interval);
     }
@@ -164,7 +183,7 @@ export default function CategoryCard({
         {/* Card Details */}
         <div className="flex mt-3 gap-3 md:mt-2 items-center">
           <button className="border border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[0.65vw] md:px-4 md:py-[1px]">
-            {item?.category?.name?.split(" ")[0]}
+            {item?.category?.name?.split(" ")[0] || "Global"}
           </button>
           <p className="text-[#2DC198] flex gap-1 items-center font-light">
             <div className="md:w-3">
@@ -179,11 +198,19 @@ export default function CategoryCard({
           </p>
         </div>
         <div className="pt-4">
-          <p className={`font-light md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] inter tracking-[1.2px] ${!hide && "md:text-[0.7vw]"}`}>
+          <p
+            className={`font-light md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] inter tracking-[1.2px] ${
+              !hide && "md:text-[0.7vw]"
+            }`}
+          >
             {item?.name}
           </p>
         </div>
-        <div className={`flex gap-3 mt-5 leading-0 md:mb-0 mb-5 ${hide && "hidden"}`}>
+        <div
+          className={`flex gap-3 mt-5 leading-0 md:mb-0 mb-5 ${
+            hide && "hidden"
+          }`}
+        >
           <div className={`w-1/2 px-4 py-3 bg-[#131313] rounded-md md:py-2`}>
             <p className="text-[#2DC198] text-[24px] font-light md:text-[14px]">
               {item?.outcomes?.length
@@ -222,7 +249,10 @@ export default function CategoryCard({
               } md:mt-5 flex flex-col gap-4`}
             >
               {item?.outcomes.map((outcome: Outcome, index: number) => (
-                <div key={outcome._id} className={`flex flex-col gap-1 md:gap-2`}>
+                <div
+                  key={outcome._id}
+                  className={`flex flex-col gap-1 md:gap-2`}
+                >
                   <p className="text-[19px] font-light md:text-[0.85vw]">
                     {String.fromCharCode(65 + index)}.{" "}
                     {outcome.name.charAt(0).toUpperCase() +

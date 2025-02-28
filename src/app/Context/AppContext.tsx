@@ -62,7 +62,7 @@ interface OrderResponse {
   loan: number;
   before_pledge: number;
   after_pledge: number;
-  stop_probability:number;
+  stop_probability: number;
 }
 
 interface Wallet {
@@ -180,7 +180,9 @@ interface AppContextProps {
   depositAddress: string;
   setDepositAddress: React.Dispatch<React.SetStateAction<string>>;
   getDepositAddress: () => Promise<void>;
-  fetchingData: boolean
+  fetchingData: boolean;
+  selectedOutcomeId: string;
+  setSelectedOutcomeId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // const API_BASE_URL = "https://test-api.everyx.io";
@@ -243,7 +245,7 @@ const initialState: AppContextProps = {
     loan: 0,
     before_pledge: 0,
     after_pledge: 0,
-    stop_probability:0,
+    stop_probability: 0,
   },
   setIsOrderMade: () => {},
   setOrderDetails: () => {},
@@ -265,7 +267,9 @@ const initialState: AppContextProps = {
   depositAddress: "",
   setDepositAddress: () => {},
   getDepositAddress: async () => {},
-  fetchingData: false
+  fetchingData: false,
+  selectedOutcomeId: "",
+  setSelectedOutcomeId: () => {},
 };
 
 export const AppContext = createContext<AppContextProps>(initialState);
@@ -316,7 +320,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     loan: 0,
     before_pledge: 0,
     after_pledge: 0,
-    stop_probability:0
+    stop_probability: 0,
   });
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
@@ -324,6 +328,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [depositAddress, setDepositAddress] = useState<string>("");
   const [time, setTime] = useState(0); // Time in seconds
+  const [selectedOutcomeId, setSelectedOutcomeId] = useState<string>("");
 
   // Handling the Screen time
   useEffect(() => {
@@ -348,7 +353,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       "0"
     )}:${String(secs).padStart(2, "0")}`;
   };
- 
 
   // Handle screen size detection
   useEffect(() => {
@@ -368,23 +372,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   // API Calls
   const fetchCategories = async () => {
-    try { 
-      setFetchingDataStatus(true)
+    try {
+      setFetchingDataStatus(true);
       const response = await fetch(`${API_BASE_URL}/layout`);
       if (!response.ok) throw new Error("Failed to fetch categories");
 
       const data = await response.json();
       setCategories(data.top_categories || []);
       setBannerData(data.new_collections || []);
-      setIsLoading(false)
-      
+      setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
       setCategories([]);
       setBannerData([]);
-      setIsLoading(false)
+      setIsLoading(false);
     } finally {
-      setFetchingDataStatus(false)
+      setFetchingDataStatus(false);
     }
   };
 
@@ -425,10 +428,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       wager: wager,
     };
 
-    console.log(
-      orderPayload
-    );
-    
+    console.log(orderPayload);
+
     try {
       const response = await fetch(`${API_BASE_URL}/quotes`, {
         method: "POST",
@@ -452,8 +453,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-
-
   const makeOrderWithAuth = async (
     outcomeId: string,
     eventId: string,
@@ -476,16 +475,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       wager: wager,
     };
 
-    console.log(
-      orderPayload
-    );
-    
+    console.log(orderPayload);
+
     try {
       const response = await fetch(`${API_BASE_URL}/quotes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${authToken}`
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(orderPayload),
       });
@@ -613,8 +610,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const hours = Math.floor(diff / (60 * 60));
     diff %= 60 * 60;
     const minutes = Math.floor(diff / 60);
+    const seconds = diff % 60;
 
-    return `${days} Day${days !== 1 ? "s" : ""} and ${hours}h${minutes}m`;
+    const daysStr = days > 0 ? `${days}d ` : "";
+    const hoursStr = hours > 0 ? `${hours}h` : "";
+    const minutesStr =
+      minutes > 0 ? `${String(minutes).padStart(2, "0")}m` : "";
+    const secondsStr = `${String(seconds).padStart(2, "0")}s`;
+
+    return `${daysStr}${hoursStr}${minutesStr}${secondsStr}`.trim();
   };
 
   const getDepositAddress = async () => {
@@ -718,7 +722,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     depositAddress,
     setDepositAddress,
     getDepositAddress,
-    makeOrderWithAuth
+    makeOrderWithAuth,
+    selectedOutcomeId,
+    setSelectedOutcomeId,
   };
 
   return (

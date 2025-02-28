@@ -1,8 +1,8 @@
 "use client";
 import { AppContext } from "@/app/Context/AppContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import useCountdown from "@/hooks/useCountdown";
+
 
 // Define the structure of the eventData
 interface EventData {
@@ -30,10 +30,20 @@ interface CategoryInfoProps {
 }
 
 export default function CategoryInfo({ eventData }: CategoryInfoProps) {
-  const { calculateMaxEstimatedPayout, calculateMaxLeverage } =
-    useContext(AppContext)
+  const { calculateMaxEstimatedPayout, calculateMaxLeverage, getCountdown } =
+    useContext(AppContext);
+  const [countdown, setCountdown] = useState("");
 
-  const countdown = useCountdown(eventData?.ends_at);
+  useEffect(() => {
+    if (eventData?.ends_at) {
+      setCountdown(getCountdown(eventData.ends_at));
+      const interval = setInterval(() => {
+        setCountdown(getCountdown(eventData.ends_at));
+      }, 1000); // Update every minute
+
+      return () => clearInterval(interval);
+    }
+  }, [eventData?.ends_at, getCountdown]);
 
   // Handle the case when eventData is null
   if (!eventData) {
@@ -52,7 +62,7 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
       {/* Card Details */}
       <div className="flex mt-3 gap-3 md:gap-7">
         <button className="border-[1px] border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[1.2vw] md:py-[0.65vw] md:px-[1.4vw] md:rounded-md">
-          {eventData?.category?.name?.split(" ")[0]}
+          {eventData?.category?.name?.split(" ")[0] || "Global"}
         </button>
         <p className="text-[#2DC198] flex gap-2 items-center font-light">
           <Image
