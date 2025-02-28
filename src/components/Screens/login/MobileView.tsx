@@ -220,7 +220,8 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center mt-36 font-semibold text-[#434343]">
-          Terms Privacy
+          By signing up you agree to our{" "}
+          <span className="text-[#00FFB8] cursor-pointer">Terms of Service</span>{" "}
         </p>
       </div>
 

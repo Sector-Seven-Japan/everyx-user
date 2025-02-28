@@ -80,7 +80,7 @@ export default function Navbar() {
           <div className="flex gap-3">
             <button
               onClick={() => {
-                router.push("/auth/signup");
+                router.push("/login");
               }}
               className="text-[13px] text-[#d9d9d95e]"
             >

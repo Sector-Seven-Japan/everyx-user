@@ -19,8 +19,8 @@ export default function Menu() {
         { name: "Home", link: "/trade" },
         { name: "Portfolio", link: "/deposit-withdrawal/history" },
         { name: "Profile", link: "/profile" },
-        { name: "Message", link: "/trade" },
-        { name: "Mission", link: "/trade" },
+        { name: "Message", link: "/trade", disabled: true },
+        { name: "Mission", link: "/trade", disabled: true },
         { name: "Settings", link: "/setting" },
         { name: "Help", link: "/help" },
       ]
@@ -76,7 +76,7 @@ export default function Menu() {
             <Link
               key={index}
               href={`${item.link}`}
-              className={`pl-8 py-3 relative md:py-2 md:text-[14px] ${
+              className={`pl-8 py-3 ${item?.disabled ? "pointer-events-none" : ""} relative md:py-2 md:text-[14px] ${
                 selectedMenu === item.name
                   ? "bg-[#151515] text-white"
                   : "text-[#323232] hover:bg-white hover:bg-opacity-[10%] hover:text-white"

@@ -229,8 +229,12 @@ export default function LoginPage() {
         </div>
 
         {/* Terms and Privacy */}
-        <p className="text-center mt-12 font-semibold text-[#434343] hover:text-[#666666] cursor-pointer">
-          Terms Privacy
+        <p className="text-center mt-36 font-semibold text-[#434343]">
+          By signing up you agree to our&nbsp;<span onClick={() => {
+                  router.push(
+                    `/terms`
+                  );
+                }} className="text-[#00FFB8] cursor-pointer">Terms of Service</span>{" "}
         </p>
       </div>
 

@@ -3,8 +3,9 @@ export default function LoadingPage() {
     <div className="h-screen w-screen bg-black flex flex-col mx-auto">
       {/* Logo */}
       <div className="flex-1 flex items-center justify-center">
-        <div className="w-12 h-12">
-          <svg
+        <div className="w-20 h-20">
+          <img src="/images/logo_animation.gif" alt="Loading animation" />
+          {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             width="45.643"
             height="46.771"
@@ -37,7 +38,7 @@ export default function LoadingPage() {
                 />
               </g>
             </g>
-          </svg>
+          </svg> */}
         </div>
       </div>
     </div>
