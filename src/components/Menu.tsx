@@ -19,7 +19,7 @@ export default function Menu() {
         { name: "Home", link: "/trade" },
         { name: "Portfolio", link: "/deposit-withdrawal/history" },
         { name: "Profile", link: "/profile" },
-        { name: "Message", link: "/trade", disabled: true },
+        { name: "Message", link: "/notification"},
         { name: "Mission", link: "/trade", disabled: true },
         { name: "Settings", link: "/setting" },
         { name: "Help", link: "/help" },
