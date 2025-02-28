@@ -47,11 +47,10 @@ export default function Home() {
     setSearch,
     setIsLoading,
     categories,
+    fetchingData,
   } = useContext(AppContext);
   const [searchData, setSearchData] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
-
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(false);
@@ -95,7 +94,7 @@ export default function Home() {
     }
   }, [search, API_BASE_URL]);
 
-  return loading ?
+  return fetchingData == false ?
     < div >
       <Navbar />
       <div className="w-full md:px-[10%] 2xl:px-[13%]">

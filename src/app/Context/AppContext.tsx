@@ -180,6 +180,7 @@ interface AppContextProps {
   depositAddress: string;
   setDepositAddress: React.Dispatch<React.SetStateAction<string>>;
   getDepositAddress: () => Promise<void>;
+  fetchingData: boolean
 }
 
 // const API_BASE_URL = "https://test-api.everyx.io";
@@ -264,6 +265,7 @@ const initialState: AppContextProps = {
   depositAddress: "",
   setDepositAddress: () => {},
   getDepositAddress: async () => {},
+  fetchingData: false
 };
 
 export const AppContext = createContext<AppContextProps>(initialState);
@@ -284,6 +286,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [selectedOrder, setSelectedOrder] = useState<string>("");
   const [walletData, setWalletData] = useState<Wallet[]>([]);
   const [sidebar, setSidebar] = useState<boolean>(false);
+  const [fetchingData, setFetchingDataStatus] = useState<boolean>(true);
   const [orderDetails, setOrderDetails] = useState<OrderResponse>({
     max_wager: 0,
     min_wager: 0,
@@ -365,7 +368,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   // API Calls
   const fetchCategories = async () => {
-    try {
+    try { 
+      setFetchingDataStatus(true)
       const response = await fetch(`${API_BASE_URL}/layout`);
       if (!response.ok) throw new Error("Failed to fetch categories");
 
@@ -373,11 +377,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setCategories(data.top_categories || []);
       setBannerData(data.new_collections || []);
       setIsLoading(false)
+      
     } catch (error) {
       console.error("Failed to fetch categories:", error);
       setCategories([]);
       setBannerData([]);
       setIsLoading(false)
+    } finally {
+      setFetchingDataStatus(false)
     }
   };
 
@@ -664,6 +671,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [authToken]); // Runs when authToken is updated
 
   const contextValue: AppContextProps = {
+    fetchingData,
     filter,
     setFilter,
     slugHeading,
