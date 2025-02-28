@@ -144,7 +144,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
 
   return (
     <div className="w-full rounded-lg">
-      <div className="h-[12vw] mt-8 w-full">
+      <div className="lg:h-[12vw] md:h-[15vw] sm:h-[40vw] mt-8 w-full">
         <canvas
           ref={chartRef}
           className="w-full h-full"
