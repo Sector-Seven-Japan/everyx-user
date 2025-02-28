@@ -78,7 +78,7 @@ export default function CategoryCard({
     setSelectedOrder,
     setSelectedOutcomeId,
   } = useContext(AppContext);
-  const [countdown, setCountdown] = useState<string>("");
+  
 
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
@@ -240,7 +240,9 @@ export default function CategoryCard({
                   </p>
                 </div>
               ) : (
-                <DrawGraph data={graphData} />
+                <div className="flex justify-center items-center w-full h-full ">
+                  <DrawGraph data={graphData} />
+                </div>
               )}
             </div>
             <div

@@ -314,6 +314,7 @@ export default function WagerPage() {
                     <div className="flex mt-7 gap-3">
                       <button className="border border-[#00FFB8] px-4 py-2 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
                         {(eventData && eventData?.category?.name) || "Global"}
+
                       </button>
                       <div className="text-[#2DC198] flex gap-1 items-center font-light">
                         <span className="md:w-3 inline-block">

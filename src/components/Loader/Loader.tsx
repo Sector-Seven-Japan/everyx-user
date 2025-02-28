@@ -9,7 +9,7 @@ export default function Loader() {
         <span></span>
         <span></span>
         <span></span> */}
-        <div style={{ width: "150px", height: "150px" }}>
+        <div style={{ width: "100%", height: "150px" }}>
           <img src="/Images/logo_animation.gif" alt="Loading animation" />
         </div>
       </div>
