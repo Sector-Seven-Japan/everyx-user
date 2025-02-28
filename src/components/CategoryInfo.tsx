@@ -1,8 +1,8 @@
 "use client";
 import { AppContext } from "@/app/Context/AppContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import useCountdown from "@/hooks/useCountdown";
+
 
 // Define the structure of the eventData
 interface EventData {
@@ -30,10 +30,20 @@ interface CategoryInfoProps {
 }
 
 export default function CategoryInfo({ eventData }: CategoryInfoProps) {
-  const { calculateMaxEstimatedPayout, calculateMaxLeverage } =
-    useContext(AppContext)
+  const { calculateMaxEstimatedPayout, calculateMaxLeverage, getCountdown } =
+    useContext(AppContext);
+  const [countdown, setCountdown] = useState("");
 
-  const countdown = useCountdown(eventData?.ends_at);
+  useEffect(() => {
+    if (eventData?.ends_at) {
+      setCountdown(getCountdown(eventData.ends_at));
+      const interval = setInterval(() => {
+        setCountdown(getCountdown(eventData.ends_at));
+      }, 1000); // Update every minute
+
+      return () => clearInterval(interval);
+    }
+  }, [eventData?.ends_at, getCountdown]);
 
   // Handle the case when eventData is null
   if (!eventData) {

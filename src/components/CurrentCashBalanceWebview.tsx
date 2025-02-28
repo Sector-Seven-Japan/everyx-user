@@ -22,7 +22,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
 
   return (
     <>
-      <div className="sticky top-20 w-[22vw] ">
+      <div className="sticky top-20">
         {isLoading && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ">
             <Loader />

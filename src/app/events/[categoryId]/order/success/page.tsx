@@ -315,11 +315,11 @@ export default function OrderSuccess() {
                   onClick={() => {
                     setIsLoading(true);
                     setIsOrderMade(false);
-                    router.push(`/events/${categoryId}`);
+                    router.push(`/trade`);
                   }}
                   className="bg-[#00FFB8] py-4 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw] md:py-[0.65vw]"
                 >
-                  Trade on this event again
+                  Recommend Events
                   <div className="md:w-2">
                     <Image
                       src="/Images/rightarrowicon.png"

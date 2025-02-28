@@ -69,15 +69,37 @@ export default function CategoryCard({
   const { API_BASE_URL, getCountdown } = useContext(AppContext);
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const router = useRouter();
-  const { setIsLoading, calculateMaxLeverage, calculateMaxEstimatedPayout } =
-    useContext(AppContext);
-  const [countdown, setCountdown] = useState<string>("");
+  const {
+    setIsLoading,
+    calculateMaxLeverage,
+    calculateMaxEstimatedPayout,
+    makeOrder,
+    setIsOrderMade,
+    setSelectedOrder,
+    setSelectedOutcomeId,
+  } = useContext(AppContext);
+  
 
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
   const handleNavigation = async () => {
     try {
       setIsLoading(true);
+      if (window.innerWidth >= 1024) {
+        const outcome = item?.outcomes[0];
+        setSelectedOrder(
+          String.fromCharCode(65 + 0) +
+            ". " +
+            outcome.name.charAt(0).toUpperCase() +
+            outcome.name.slice(1)
+        );
+        setSelectedOutcomeId(outcome._id);
+        (async () => {
+          await makeOrder(outcome._id, item._id, false, 1, 0, 10, 10);
+          setIsOrderMade(true);
+        })();
+      }
+
       router.push(`/events/${item?._id}`);
     } catch (error) {
       console.error("Navigation error:", error);
@@ -89,7 +111,7 @@ export default function CategoryCard({
       setCountdown(getCountdown(item.ends_at));
       const interval = setInterval(() => {
         setCountdown(getCountdown(item.ends_at));
-      }, 60000); // Update every minute
+      }, 1000); // Update every minute
 
       return () => clearInterval(interval);
     }

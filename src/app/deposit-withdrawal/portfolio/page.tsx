@@ -358,8 +358,8 @@ const Portfolio: React.FC = () => {
         </div>
       ) : (
         <div className="bg-[#0E0E0E] md:px-[12%] 2xl:px-[19%]">
-          <div className="flex md:flex-row md:mt-32 justify-between gap-5">
-            <div className="bg-[#0E0E0E] text-white px-5  pb-5 md:w-[60%] xl:w-[75%] w-full">
+          <div className="flex md:flex-row md:pt-28 justify-between gap-5">
+            <div className="bg-[#0E0E0E] text-white px-5  pb-5 md:w-[60%] xl:w-[70%]">
               <div className="flex justify-between items-start">
                 <div>Results : </div>
                 <div className="flex items-start gap-4">
@@ -563,7 +563,7 @@ const Portfolio: React.FC = () => {
                 )}
               </div>
             </div>
-            <div className="md:w-[40%] xl:w-[25%]">
+            <div className="md:w-[40%] xl:w-[30%]">
               <div className="sticky top-20">
                 <CurrentCashBalanceCardWebview />
               </div>
