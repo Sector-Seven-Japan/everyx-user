@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import { MdCamera } from "react-icons/md";
 import { FiLock } from "react-icons/fi";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,6 +10,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Don't forget to import the CSS for the toast styles
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 import HeadingSlider from "@/components/HeadingSlider";
+import { IoPersonCircleOutline } from "react-icons/io5";
+
 const VerificationStatus: React.FC<{ isVerified: boolean | null }> = ({
   isVerified,
 }) => (
@@ -150,8 +151,8 @@ const Profile: React.FC = () => {
                     className="rounded-full object-top object-cover"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center">
-                    <MdCamera className="w-8 h-8 text-gray-400" />
+                  <div className="w-20 h-20 rounded-full  flex items-center justify-center">
+                    <IoPersonCircleOutline className="w-20 h-20 text-gray-400" />
                   </div>
                 )}
               </div>
@@ -252,6 +253,7 @@ const Profile: React.FC = () => {
           </div>
         </div>
       ) : (
+
         <div className="md:px-[12%] 2xl:px-[19%]">
           <HeadingSlider filter={filter} setFilter={setFilter}/>
           <div className="flex md:flex-row md:mt-10 justify-between gap-5">
@@ -259,6 +261,8 @@ const Profile: React.FC = () => {
               <div className="w-full mx-auto">
                 <div>
                   <p className="text-[1.6vw] mb-10 tracking-widest">Setting</p>
+
+n
                 </div>
                 <div className="flex gap-10 items-center justify-start">
                   <div className="relative w-20 h-20">

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import CashWithdrawalCategories from "@/components/CashWithdrawalCategories";
+
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { LuClock7 } from "react-icons/lu";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
+import CashWithdrawalCategoriesMobile from "@/components/CashWithdrawalCategoriesMobile";
 
 interface BetEntry {
   id: string;
@@ -161,7 +162,7 @@ const Portfolio: React.FC = () => {
         <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-5">
           <CurrentCashBalanceCard />
           <div className="my-10">
-            <CashWithdrawalCategories />
+            <CashWithdrawalCategoriesMobile />
           </div>
 
           <div className="flex justify-end items-center gap-4">
@@ -570,6 +571,7 @@ const Portfolio: React.FC = () => {
           </div>
         </div>
       )}
+
       <Footer />
     </>
   );

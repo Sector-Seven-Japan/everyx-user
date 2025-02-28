@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import CashWithdrawalCategories from "@/components/CashWithdrawalCategories";
+
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import { AppContext } from "@/app/Context/AppContext";
+import CashWithdrawalCategoriesMobile from "@/components/CashWithdrawalCategoriesMobile";
 // import DepositPopup from "@/components/DepositPopup";
 // import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 
@@ -125,7 +126,7 @@ const HistoryMobile: React.FC = () => {
         <CurrentCashBalanceCard />
 
         <div className="my-10">
-          <CashWithdrawalCategories />
+          <CashWithdrawalCategoriesMobile />
         </div>
 
         <p className="text-[14px] text-center font-semibold">

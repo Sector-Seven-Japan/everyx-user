@@ -40,7 +40,12 @@ const Deposit: React.FC = () => {
           <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-5">
             <div className="flex justify-between items-center">
               <div>
-                <MdOutlineKeyboardArrowLeft className="text-[30px]" />
+                <MdOutlineKeyboardArrowLeft
+                  className="text-[30px]"
+                  onClick={() => {
+                    router.back();
+                  }}
+                />
               </div>
               <p className="text-[16px]">Deposit:</p>
               <p className="text-[#00ffbb] text-[13px]">Withdrawal</p>

@@ -7,8 +7,6 @@ import HistoryMobile from "@/components/Screens/deposit-withdrawal/history/Mobil
 import HistoryWeb from "@/components/Screens/deposit-withdrawal/history/WebView";
 
 
-// import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
-
 const History = () => {
   const [isMobile, setIsMobile] = useState(false);
 
