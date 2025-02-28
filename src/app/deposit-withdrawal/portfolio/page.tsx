@@ -571,7 +571,6 @@ const Portfolio: React.FC = () => {
           </div>
         </div>
       )}
-      <DepositPopup />
 
       <Footer />
     </>
