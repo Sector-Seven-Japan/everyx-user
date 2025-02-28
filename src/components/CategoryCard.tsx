@@ -78,9 +78,9 @@ export default function CategoryCard({
     setSelectedOrder,
     setSelectedOutcomeId,
   } = useContext(AppContext);
-  
 
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
+  const [countdown, setCountdown] = useState("");
 
   const handleNavigation = async () => {
     try {
