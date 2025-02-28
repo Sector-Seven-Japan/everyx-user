@@ -20,7 +20,6 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
     }
   };
 
-
   return (
     <>
       <div className="max-w-[280px] sticky top-20 ">
@@ -30,7 +29,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
           </div>
         )}
 
-        <div className="flex flex-col bg-[rgba(255,255,255,0.08)] rounded-3xl px-3 py-8">
+        <div className="flex flex-col bg-[white] bg-opacity-[3%] rounded-3xl px-3 py-8">
           <div className="flex justify-center items-center mt-5 relative">
             {userProfile?.avatar ? (
               <div className="h-14 w-14 relative rounded-full overflow-hidden">
@@ -46,6 +45,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                 <MdCamera className="w-8 h-8 text-gray-400" />
               </div>
             )}
+
             <Image
               src={settingIcon}
               alt="Setting icon"
@@ -136,7 +136,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
             ></div>
           </div>
           <div className="mt-5">
-            <CashWithdrawalCategories/>
+            <CashWithdrawalCategories />
           </div>
         </div>
       </div>
