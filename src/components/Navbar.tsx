@@ -2,7 +2,7 @@
 import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 
 export default function Navbar() {
   const {
@@ -12,35 +12,33 @@ export default function Navbar() {
     authToken,
     sidebar,
     setSidebar,
-    API_BASE_URL,
   } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
-  const [newWalletBalance, setNewWalletBalance] = useState<number>(0);
 
-  const getNewWalletBalance = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/wallets/balance`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+  // const getNewWalletBalance = async () => {
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/wallets/balance`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${authToken}`,
+  //       },
+  //     });
 
-      if (response.ok) {
-        const data = await response.json();
-        setNewWalletBalance(data?.balance || 0);
-      }
-    } catch (error) {
-      console.log("Error fetching the new Wallet balance", error);
-    }
-  };
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setNewWalletBalance(data?.balance || 0);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error fetching the new Wallet balance", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (authToken) {
-      getNewWalletBalance();
-    }
-  }, [authToken]);
+  // useEffect(() => {
+  //   if (authToken) {
+  //     getNewWalletBalance();
+  //   }
+  // }, [authToken]);
 
   return (
     <div className="flex justify-between items-center p-5 bg-[#0e0e0e] fixed top-0 w-full z-20">
@@ -106,7 +104,7 @@ export default function Navbar() {
                 Current Cash Balance
               </p>
               <p className={`${!sidebar ? "text-[#585858]" : "text-white"}`}>
-                USDT {walletData[0]?.balance || newWalletBalance}
+                USDT {walletData[0]?.balance }
               </p>
             </div>
           ) : (

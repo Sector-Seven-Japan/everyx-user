@@ -72,7 +72,7 @@ export default function Category({ item }: CategoryProps) {
   return (
     <div className="px-5 py-8 md:px-0">
       <div className="flex justify-between">
-        <h1 className="text-xl mb-6 md:text-[25px] md:mb-14">{item?.name}</h1>
+        <h1 className="text-xl mb-6 md:text-[25px] md:mb-14 inter font-[700]">{item?.name}</h1>
         <button
           onClick={() => {
             setFilter(item?.name);

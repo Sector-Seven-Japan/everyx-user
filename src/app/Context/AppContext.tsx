@@ -372,10 +372,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const data = await response.json();
       setCategories(data.top_categories || []);
       setBannerData(data.new_collections || []);
+      setIsLoading(false)
     } catch (error) {
       console.error("Failed to fetch categories:", error);
       setCategories([]);
       setBannerData([]);
+      setIsLoading(false)
     }
   };
 
