@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import { MdCamera } from "react-icons/md";
 import { FiLock } from "react-icons/fi";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -10,6 +9,8 @@ import { AppContext } from "../Context/AppContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Don't forget to import the CSS for the toast styles
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
+
+import { IoPersonCircleOutline } from "react-icons/io5";
 const VerificationStatus: React.FC<{ isVerified: boolean | null }> = ({
   isVerified,
 }) => (
@@ -149,8 +150,8 @@ const Profile: React.FC = () => {
                     className="rounded-full object-top object-cover"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center">
-                    <MdCamera className="w-8 h-8 text-gray-400" />
+                  <div className="w-20 h-20 rounded-full  flex items-center justify-center">
+                    <IoPersonCircleOutline className="w-20 h-20 text-gray-400" />
                   </div>
                 )}
               </div>
@@ -267,8 +268,8 @@ const Profile: React.FC = () => {
                       className="rounded-full object-top object-cover"
                     />
                   ) : (
-                    <div className="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center">
-                      <MdCamera className="w-8 h-8 text-gray-400" />
+                    <div className="w-20 h-20 rounded-full flex items-center justify-center">
+                      <IoPersonCircleOutline className="w-20 h-20 text-gray-400" />
                     </div>
                   )}
                 </div>
