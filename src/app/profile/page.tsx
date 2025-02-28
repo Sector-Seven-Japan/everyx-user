@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css"; // Don't forget to import the CS
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 import HeadingSlider from "@/components/HeadingSlider";
 import { IoPersonCircleOutline } from "react-icons/io5";
-import { MdCamera } from "react-icons/md";
+// import { MdCamera } from "react-icons/md";
 
 const VerificationStatus: React.FC<{ isVerified: boolean | null }> = ({
   isVerified,
@@ -276,7 +276,7 @@ n
                       />
                     ) : (
                       <div className="w-[4.8vw] h-[4.8vw] rounded-full bg-gray-800 flex items-center justify-center">
-                        <MdCamera className="w-8 h-8 text-gray-400" />
+                        <IoPersonCircleOutline  className="w-8 h-8 text-gray-400" />
                       </div>
                     )}
                   </div>
