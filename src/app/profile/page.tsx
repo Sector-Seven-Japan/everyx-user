@@ -262,8 +262,6 @@ const Profile: React.FC = () => {
               <div className="w-full mx-auto">
                 <div>
                   <p className="text-[1.6vw] mb-10 tracking-widest">Setting</p>
-
-n
                 </div>
                 <div className="flex gap-10 items-center justify-start">
                   <div className="relative w-20 h-20">
