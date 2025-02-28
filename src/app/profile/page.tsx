@@ -275,9 +275,9 @@ n
                         className="rounded-full object-top object-cover"
                       />
                     ) : (
-                      <div className="w-[4.8vw] h-[4.8vw] rounded-full bg-gray-800 flex items-center justify-center">
-                        <IoPersonCircleOutline  className="w-8 h-8 text-gray-400" />
-                      </div>
+                     <div className="w-20 h-20 rounded-full flex items-center justify-center">
+                      <IoPersonCircleOutline className="w-20 h-20 text-gray-400" />
+                    </div>
                     )}
                   </div>
                   <label className="cursor-pointer">
