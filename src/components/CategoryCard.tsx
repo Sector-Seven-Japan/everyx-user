@@ -164,7 +164,7 @@ export default function CategoryCard({
         {/* Card Details */}
         <div className="flex mt-3 gap-3 md:mt-2 items-center">
           <button className="border border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[0.65vw] md:px-4 md:py-[1px]">
-            {item?.category?.name?.split(" ")[0]}
+            {item?.category?.name?.split(" ")[0] || "Global"}
           </button>
           <p className="text-[#2DC198] flex gap-1 items-center font-light">
             <div className="md:w-3">
