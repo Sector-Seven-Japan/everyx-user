@@ -52,7 +52,7 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
       {/* Card Details */}
       <div className="flex mt-3 gap-3 md:gap-7">
         <button className="border-[1px] border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[1.2vw] md:py-[0.65vw] md:px-[1.4vw] md:rounded-md">
-          {eventData?.category?.name?.split(" ")[0]}
+          {eventData?.category?.name?.split(" ")[0] || "Global"}
         </button>
         <p className="text-[#2DC198] flex gap-2 items-center font-light">
           <Image
