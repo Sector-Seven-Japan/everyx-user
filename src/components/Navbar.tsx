@@ -2,7 +2,7 @@
 import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 export default function Navbar() {
   const {
