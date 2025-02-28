@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
-import Image from "next/image";
 
 interface GraphData {
   datetime: string;
@@ -40,14 +39,14 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false, // Ensure the chart takes the full height of its container
+        maintainAspectRatio: false,
         interaction: {
           mode: "index",
           intersect: false,
         },
         plugins: {
           legend: {
-            display: true, // Show legend
+            display: true,
             labels: {
               color: "#fff",
             },
@@ -62,37 +61,37 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
             radius: function (context) {
               const index = context.dataIndex;
               const dataset = context.dataset;
-              return index === dataset.data.length - 1 ? 5 : 0; // Only show dot at the end
+              return index === dataset.data.length - 1 ? 5 : 0;
             },
           },
         },
         scales: {
           x: {
             grid: {
-              display: false, // Remove grid lines
+              display: false,
             },
             ticks: {
-              color: "rgba(255, 255, 255, 0.7)", // Make font lighter
-              maxRotation: 0, // Ensures labels stay straight
-              minRotation: 0, // Ensures labels stay straight
+              color: "rgba(255, 255, 255, 0.7)",
+              maxRotation: 0,
+              minRotation: 0,
               callback: function (value) {
                 const label = this.getLabelForValue(value as number);
                 const date = new Date(label);
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
+                return date.toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "2-digit",
+                }); // Display hour and minute
               },
             },
           },
           y: {
             grid: {
-              display: false, // Remove grid lines
+              display: false,
             },
             ticks: {
               color: "#fff",
               callback: function () {
-                return ""; // Hide the percentage labels
+                return ""; // Hide percentage labels
               },
             },
           },
@@ -108,43 +107,27 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
   }, [data, outcomeIds]);
 
   const processDataForChart = (data: GraphData[], outcomeIds?: string[]) => {
-    const today = new Date().toISOString().split("T")[0];
-
-    // Filter data up to today's date
-    const filteredData = data.filter((item) => {
-      const itemDate = new Date(item.datetime).toISOString().split("T")[0];
-      return itemDate <= today; // Only past & today's records
-    });
-
-    // Extract unique sorted dates
-    const dates = [
-      ...new Set(
-        filteredData.map(
-          (item) => new Date(item.datetime).toISOString().split("T")[0]
-        )
-      ),
-    ]
-      .sort((a, b) => new Date(b).getTime() - new Date(a).getTime()) // Sort descending
-      .slice(0, 6) // Get only the latest 6 records
-      .sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); // Re-sort ascending
+    // Extract unique sorted hourly timestamps
+    const timestamps = [...new Set(data.map((item) => item.datetime))].sort(
+      (a, b) => new Date(a).getTime() - new Date(b).getTime()
+    ); // Sort ascending by time
 
     const outcomes = outcomeIds || [
-      ...new Set(filteredData.map((item) => item.event_outcome_id)),
+      ...new Set(data.map((item) => item.event_outcome_id)),
     ];
     const colors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
     const datasets = outcomes.map((outcome, index) => {
-      const outcomeData = dates.map((date) => {
-        const dataPoint = filteredData.find(
+      const outcomeData = timestamps.map((timestamp) => {
+        const dataPoint = data.find(
           (item) =>
-            new Date(item.datetime).toISOString().split("T")[0] === date &&
-            item.event_outcome_id === outcome
+            item.datetime === timestamp && item.event_outcome_id === outcome
         );
-        return dataPoint ? dataPoint.probability * 100 : null; // Only probability data
+        return dataPoint ? dataPoint.probability * 100 : null; // Convert to percentage
       });
 
       return {
-        label: `${outcome}`,
+        label: `${outcome}`, // e.g., "A", "B", "C", "D"
         data: outcomeData,
         borderColor: colors[index % colors.length],
         backgroundColor: colors[index % colors.length],
@@ -154,27 +137,19 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
     });
 
     return {
-      labels: dates,
+      labels: timestamps, // Full hourly timestamps
       datasets,
     };
   };
 
   return (
     <div className="w-full rounded-lg">
-      <div className="h-[200px] mt-8 w-full">
-        {/* <canvas
+      <div className="h-[12vw] mt-8 w-full">
+        <canvas
           ref={chartRef}
           className="w-full h-full"
           style={{ backgroundColor: "transparent" }}
-        ></canvas>{" "} */}
-        {/* Set background color to transparent */}
-        <Image
-          src="/Images/graphdefault.png"
-          alt="Default graph"
-          width={100}
-          height={100}
-          className="w-full h-full cover"
-        />
+        ></canvas>
       </div>
     </div>
   );

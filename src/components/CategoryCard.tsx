@@ -49,7 +49,7 @@ interface CategoryCardProps {
   showTime: boolean;
   showChart: boolean;
   showPrediction: boolean;
-  hide:boolean;
+  hide: boolean;
 }
 
 interface EventHistoryParams {
@@ -63,17 +63,14 @@ export default function CategoryCard({
   item,
   showChart,
   showPrediction,
-  hide
+  hide,
 }: CategoryCardProps) {
   const [graphData, setGraphData] = useState<GraphData[]>([]);
   const { API_BASE_URL, getCountdown } = useContext(AppContext);
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const router = useRouter();
-  const {
-    setIsLoading,
-    calculateMaxLeverage,
-    calculateMaxEstimatedPayout,
-  } = useContext(AppContext);
+  const { setIsLoading, calculateMaxLeverage, calculateMaxEstimatedPayout } =
+    useContext(AppContext);
   const [countdown, setCountdown] = useState<string>("");
 
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
@@ -179,11 +176,19 @@ export default function CategoryCard({
           </p>
         </div>
         <div className="pt-4">
-          <p className={`font-light md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] inter tracking-[1.2px] ${!hide && "md:text-[0.7vw]"}`}>
+          <p
+            className={`font-light md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] inter tracking-[1.2px] ${
+              !hide && "md:text-[0.7vw]"
+            }`}
+          >
             {item?.name}
           </p>
         </div>
-        <div className={`flex gap-3 mt-5 leading-0 md:mb-0 mb-5 ${hide && "hidden"}`}>
+        <div
+          className={`flex gap-3 mt-5 leading-0 md:mb-0 mb-5 ${
+            hide && "hidden"
+          }`}
+        >
           <div className={`w-1/2 px-4 py-3 bg-[#131313] rounded-md md:py-2`}>
             <p className="text-[#2DC198] text-[24px] font-light md:text-[14px]">
               {item?.outcomes?.length
@@ -213,7 +218,9 @@ export default function CategoryCard({
                   </p>
                 </div>
               ) : (
-                <DrawGraph data={graphData} />
+                <div className="flex justify-center items-center w-full h-full ">
+                  <DrawGraph data={graphData} />
+                </div>
               )}
             </div>
             <div
@@ -222,7 +229,10 @@ export default function CategoryCard({
               } md:mt-5 flex flex-col gap-4`}
             >
               {item?.outcomes.map((outcome: Outcome, index: number) => (
-                <div key={outcome._id} className={`flex flex-col gap-1 md:gap-2`}>
+                <div
+                  key={outcome._id}
+                  className={`flex flex-col gap-1 md:gap-2`}
+                >
                   <p className="text-[19px] font-light md:text-[0.85vw]">
                     {String.fromCharCode(65 + index)}.{" "}
                     {outcome.name.charAt(0).toUpperCase() +
