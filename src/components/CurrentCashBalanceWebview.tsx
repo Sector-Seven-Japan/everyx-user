@@ -22,7 +22,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
 
   return (
     <>
-      <div className="max-w-[280px] sticky top-20 ">
+      <div className="sticky top-[70px] ">
         {isLoading && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <Loader />
@@ -30,7 +30,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
         )}
 
         <div className="flex flex-col bg-[white] bg-opacity-[3%] rounded-3xl px-3 py-8">
-          <div className="flex justify-center items-center mt-5 relative">
+          <div className="flex justify-center items-center relative">
             {userProfile?.avatar ? (
               <div className="h-14 w-14 relative rounded-full overflow-hidden">
                 <Image
@@ -41,8 +41,8 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                 />
               </div>
             ) : (
-              <div className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center">
-                <MdCamera className="w-8 h-8 text-gray-400" />
+              <div className="w-[3.3vw] h-[3.3vw] rounded-full bg-gray-800 flex items-center justify-center">
+                <MdCamera className="w-full h-full text-gray-400" />
               </div>
             )}
 
@@ -53,7 +53,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
               onClick={handleSettingsClick}
             />
           </div>
-          <p className="text-[10px] sm:text-[9px] md:text-[10px] lg:text-[13px] text-center mt-4">
+          <p className="text-[10px] sm:text-[9px] md:text-[0.7vw] text-center mt-7">
             Current Cash Balance
           </p>
           <div className="flex justify-center mt-4 items-baseline font-bold">

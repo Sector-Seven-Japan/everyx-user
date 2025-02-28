@@ -184,7 +184,7 @@ interface AppContextProps {
 }
 
 // const API_BASE_URL = "https://test-api.everyx.io";
-const API_BASE_URL = "https://test-api.everyx.io";
+const API_BASE_URL = "https://dev-api.everyx.io";
 
 // Initial context state
 const initialState: AppContextProps = {

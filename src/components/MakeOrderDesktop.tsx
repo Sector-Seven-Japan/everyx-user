@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
+import toast from "react-hot-toast";
 
 export default function MakeOrder() {
-  const { orderDetails, makeOrder, setIsLoading } = useContext(AppContext);
+  const { orderDetails, makeOrder, setIsLoading,walletData ,setIsOrderMade} = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
   const [leverage, setLeverage] = useState<number>(1.0); // Allow decimal values
@@ -42,6 +43,19 @@ export default function MakeOrder() {
   const [wholePart, decimalPart] = displayValue.split(".");
 
   const handleSubmit = async () => {
+
+    if (walletData[0]?.balance < value) {
+      toast("You have insufficient balance", {
+        style: {
+          background: '#333',
+          color: '#fff',
+        },
+      });
+      setIsOrderMade(false);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
 
     console.log(

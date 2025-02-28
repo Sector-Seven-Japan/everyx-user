@@ -307,12 +307,12 @@ export default function WagerPage() {
             {!marginClicked ? (
               <div className="pb-10 md:pb-5 md:bg-[#171717] rounded-2xl sticky top-[70px]">
                 <div className="p-5">
-                  <h1 className="text-center mb-3 text-[1.1vw] md:mb-[1.2vw]">
+                  <h1 className="text-center text-[22px] mb-4 md:text-[1.1vw] md:mb-[1.2vw]">
                     Your Order
                   </h1>
                   <div>
                     <div className="flex mt-7 gap-3">
-                      <button className="border border-[#00FFB8] px-4 py-1 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
+                      <button className="border border-[#00FFB8] px-4 py-2 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
                         {eventData && eventData.category.name}
                       </button>
                       <p className="text-[#2DC198] flex gap-1 items-center font-light">
@@ -329,10 +329,10 @@ export default function WagerPage() {
                         </p>
                       </p>
                     </div>
-                    <p className="text-[21px] md:text-[0.8vw] md:tracking-[1.5px] md:leading-[1.4vw] font-light mt-4">
+                    <p className="text-[21px] tracking-[2px] md:text-[0.8vw] md:tracking-[1.5px] md:leading-[1.4vw] font-light mt-4">
                       {wagerData?.event?.description}
                     </p>
-                    <p className="text-[#3E3E3E] mt-2 md:text-[0.8vw] md:mt-[0.8vw]">
+                    <p className="text-[#3E3E3E] text-[16px] mt-2 md:text-[0.8vw] md:mt-[0.8vw]">
                       ID: {wagerData?.event_id}
                     </p>
                   </div>
@@ -535,7 +535,7 @@ export default function WagerPage() {
                   {wagerData && wagerData?.is_leveraged ? (
                     <button
                       onClick={handleSubmit}
-                      className="text-[#000] w-full border bg-[#5DFF00] mt-6 py-4 rounded-2xl md:text-[0.9vw] md:py-[0.65vw] md:mb-5"
+                      className="text-[#000] w-full text-[18px] border bg-[#5DFF00] mt-6 py-5 rounded-2xl md:text-[0.9vw] md:py-[0.65vw] md:mb-5"
                     >
                       Add Margin
                     </button>
@@ -545,7 +545,7 @@ export default function WagerPage() {
                         setIsLoading(true);
                         router.push(`/events/${wagerData?.event_id}`);
                       }}
-                      className="text-[#000] w-full border bg-[#5DFF00] mt-6 py-4 rounded-2xl md:text-[0.9vw] md:py-[0.65vw] md:mb-5"
+                      className="text-[#000] w-full text-[18px] border bg-[#5DFF00] mt-6 py-5 rounded-2xl md:text-[0.9vw] md:py-[0.65vw] md:mb-5"
                     >
                       Trade on this event again
                     </button>

@@ -2,8 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "@/app/Context/AppContext";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
-
-
+import HeadingSlider from "@/components/HeadingSlider";
 
 interface TransactionButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
@@ -59,7 +58,8 @@ const TransactionButton: React.FC<TransactionButtonProps> = ({
 };
 
 const HistoryWeb: React.FC = () => {
-  const { authToken, API_BASE_URL, setIsLoading } = useContext(AppContext);
+  const { authToken, API_BASE_URL, setIsLoading, filter, setFilter } =
+    useContext(AppContext);
 
   const [wallet, setWallet] = useState<WalletResponse[]>([]);
   const [transactions, setTransactions] = useState<TransactionsResponse[]>([]);
@@ -119,54 +119,59 @@ const HistoryWeb: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-[#0E0E0E] w-full min-h-screen text-white lg:px-40  pb-5 md:px-10 sm:px-10 mt-20 relative">
-      <div className="grid grid-cols-10 gap-10 mx-5 ">
-        <div className="lg:col-span-6 md:col-span-6 sm:col-span-6">
-          <p className="text-[24px] font-semibold">
-            Deposit ＆ Withdrawal History :
-          </p>
+    <div className="bg-[#0E0E0E] w-full min-h-screen text-white relative">
+      <div className="md:px-[12%] 2xl:px-[19%]">
+        <HeadingSlider filter={filter} setFilter={setFilter} />
+        <div className="flex md:flex-row md:mt-10 justify-between gap-5">
+          <div className="md:w-[60%] xl:w-[75%] w-full">
+            <p className="text-[24px] font-semibold">
+              Deposit ＆ Withdrawal History :
+            </p>
 
-          {transactions.length === 0 ? (
-            <p className=" text-gray-400 mt-10">No transactions available.</p>
-          ) : (
-            transactions.map((transaction, index) => (
-              <React.Fragment key={transaction.id + "" + index}>
-                <div className="flex items-center justify-between text-white my-5">
-                  <p className="text-sm text-gray-400">
-                    {new Date(transaction.datetime).toLocaleString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false,
-                    })}
-                  </p>
-                  <div className="w-52">
-                    <p className="text-lg font-medium text-left">
-                      $ {Math.abs(transaction.amount).toFixed(2)}
-                      <span className="text-sm text-gray-400 ml-1">(USDT)</span>
+            {transactions.length === 0 ? (
+              <p className=" text-gray-400 mt-10">No transactions available.</p>
+            ) : (
+              transactions.map((transaction, index) => (
+                <React.Fragment key={transaction.id + "" + index}>
+                  <div className="flex items-center justify-between text-white my-5">
+                    <p className="text-sm text-gray-400">
+                      {new Date(transaction.datetime).toLocaleString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false,
+                      })}
                     </p>
-                  </div>
+                    <div className="w-52">
+                      <p className="text-lg font-medium text-left">
+                        $ {Math.abs(transaction.amount).toFixed(2)}
+                        <span className="text-sm text-gray-400 ml-1">
+                          (USDT)
+                        </span>
+                      </p>
+                    </div>
 
-                  <TransactionButton type={transaction.transaction_type} />
-                </div>
-                <div
-                  className="border-t-2 border-dashed border-gray-400 w-full"
-                  style={{
-                    maskImage:
-                      "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                    WebkitMaskImage:
-                      "linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                  }}
-                ></div>
-              </React.Fragment>
-            ))
-          )}
-        </div>
-        <div className="lg:col-span-4 md:col-span-4 sm:col-span-4 flex justify-end">
-          <div>
-            <CurrentCashBalanceCardWebview />
+                    <TransactionButton type={transaction.transaction_type} />
+                  </div>
+                  <div
+                    className="border-t-2 border-dashed border-gray-400 w-full"
+                    style={{
+                      maskImage:
+                        "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
+                      WebkitMaskImage:
+                        "linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
+                    }}
+                  ></div>
+                </React.Fragment>
+              ))
+            )}
+          </div>
+          <div className="mt-5 m:w-[40%] xl:w-[25%]">
+            <div className="sticky top-20">
+              <CurrentCashBalanceCardWebview />
+            </div>
           </div>
         </div>
       </div>

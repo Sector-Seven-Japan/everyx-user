@@ -237,7 +237,7 @@ export default function BettingPage() {
           <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%]">
             <div className="md:bg-[#171717] rounded-2xl md:pb-5 sticky top-[70px]">
               <div className="p-5 md:pb-0">
-                <h1 className="text-[22px] mt-3 text-center md:text-[18px]">
+                <h1 className="text-[22px] mt-4 text-center md:text-[18px]">
                   Your Order
                 </h1>
                 <div className="mb-6 mt-8">
@@ -401,7 +401,7 @@ export default function BettingPage() {
               <div className="px-5">
                 <button
                   onClick={handleSubmit}
-                  className="text-[#2DC198] w-full border border-[#2DC198] py-[0.7vw] xl:rounded-lg 2xl:rounded-2xl text-[1vw] mt-3 mb-[1vw] md:mt-10"
+                  className="text-[#00ffbb] rounded-2xl text-[16px] py-5 w-full border border-[#00ffbb] md:py-[0.7vw] xl:rounded-lg 2xl:rounded-2xl md:text-[1vw] mt-3 mb-[1vw] md:mt-10"
                 >
                   Proceed
                 </button>

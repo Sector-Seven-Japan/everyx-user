@@ -8,10 +8,11 @@ import "./settings.css";
 import Navbar from "@/components/Navbar";
 import { AppContext } from "../Context/AppContext";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
+import HeadingSlider from "@/components/HeadingSlider";
 
 const Setting: React.FC = () => {
   const router = useRouter();
-  const { authToken, API_BASE_URL, setIsLoading, isMobile } =
+  const { authToken, API_BASE_URL, setIsLoading, isMobile,filter,setFilter } =
     useContext(AppContext);
   const [favoriteTags, setFavoriteTags] = useState<
     { tag: { slug: string; name: string }; enabled: boolean }[]
@@ -330,130 +331,139 @@ const Setting: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mt-10 relative">
-          <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5 pt-4 pb-28 col-span-6">
-            <h1 className="font-medium text-[29px] text-left mb-10">Setting</h1>
-            <h2 className="font-medium text-[19px] text-left">Notifications</h2>
-            <div className="my-5 flex flex-col gap-5">
-              {Object.keys(notifications).map((key) => (
-                <div
-                  key={key}
-                  className="flex items-center justify-between px-[1.5vw]"
-                >
-                  <label className="text-[14px] font-light text-white text-opacity-50">
-                    {notifications[key].name}
-                  </label>
-                  <Switch
-                    checked={notifications[key]?.enabled ?? false}
-                    onChange={() => {
-                      setNotifications((prev) => {
-                        const updatedNotificationsMap = {
-                          ...prev,
-                          [key]: {
-                            ...prev[key],
-                            enabled: !prev[key]?.enabled,
-                          },
-                        };
-
-                        setUpdatedNotifications((prevState) => ({
-                          ...prevState,
-                          [key]: !prev[key]?.enabled,
-                        }));
-
-                        return updatedNotificationsMap;
-                      });
-                    }}
-                    className={`${
-                      notifications[key]?.enabled
-                        ? "bg-green-500"
-                        : "bg-gray-900"
-                    } relative inline-flex h-6 w-11 items-center rounded-full transition`}
+        <div className="md:px-[12%] 2xl:px-[19%]">
+          <HeadingSlider filter={filter} setFilter={setFilter}/>
+          <div className="flex md:flex-row md:mt-10 justify-between gap-5 md:pb-20">
+            <div className="bg-[#0E0E0E] md:w-[60%] xl:w-[75%] w-full">
+              <h1 className="font-medium text-[29px] text-left mb-10">
+                Setting
+              </h1>
+              <h2 className="font-medium text-[19px] text-left">
+                Notifications
+              </h2>
+              <div className="my-5 flex flex-col gap-5">
+                {Object.keys(notifications).map((key) => (
+                  <div
+                    key={key}
+                    className="flex items-center justify-between px-[1.5vw]"
                   >
-                    <span
+                    <label className="text-[14px] font-light text-white text-opacity-50">
+                      {notifications[key].name}
+                    </label>
+                    <Switch
+                      checked={notifications[key]?.enabled ?? false}
+                      onChange={() => {
+                        setNotifications((prev) => {
+                          const updatedNotificationsMap = {
+                            ...prev,
+                            [key]: {
+                              ...prev[key],
+                              enabled: !prev[key]?.enabled,
+                            },
+                          };
+
+                          setUpdatedNotifications((prevState) => ({
+                            ...prevState,
+                            [key]: !prev[key]?.enabled,
+                          }));
+
+                          return updatedNotificationsMap;
+                        });
+                      }}
                       className={`${
                         notifications[key]?.enabled
-                          ? "translate-x-6"
-                          : "translate-x-1"
-                      } inline-block h-4 w-4 transform bg-white rounded-full transition`}
-                    />
-                  </Switch>
-                </div>
-              ))}
-            </div>
-
-            <h2 className="font-medium text-[19px] text-left mt-10">
-              Favourites
-            </h2>
-            <div className="my-5 flex flex-col gap-5 ">
-              {favoriteTags.map((item) => (
-                <div
-                  key={item.tag.slug}
-                  className="flex items-center justify-between px-[1.5vw]"
-                >
-                  <label className="text-[14px font-light text-white text-opacity-50">
-                    {item.tag.name}
-                  </label>
-                  <Switch
-                    checked={item.enabled}
-                    onChange={() => handleFavoriteTagToggle(item.tag.slug)}
-                    className={`${
-                      item.enabled ? "bg-green-500" : "bg-gray-900"
-                    } relative inline-flex h-6 w-11 items-center rounded-full transition`}
-                  >
-                    <span
-                      className={`${
-                        item.enabled ? "translate-x-6" : "translate-x-1"
-                      } inline-block h-4 w-4 transform bg-white rounded-full transition`}
-                    />
-                  </Switch>
-                </div>
-              ))}
-            </div>
-
-            <h2 className="font-medium text-[19px] text-left mt-10">Trades</h2>
-            <div className="flex flex-col mt-5 gap-5">
-              {Object.keys(wager).map((key) => (
-                <div key={key}>
-                  <label className="text-[14px] text-white opacity-[27%]">
-                    {key
-                      .replace(/_/g, " ")
-                      .replace(/^\w/, (c) => c.toUpperCase())}
-                  </label>
-                  <input
-                    type="text"
-                    value={wager[key as keyof typeof wager]}
-                    onChange={(e) =>
-                      setWager((prev) => ({
-                        ...prev,
-                        [key as keyof typeof wager]: e.target.value,
-                      }))
-                    }
-                    placeholder={`Enter ${key.replace(/_/g, " ")}`}
-                    className="w-full mt-2 bg-transparent border-b-[1px] text-[14px] text-white pb-1 border-[#707070] outline-none"
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div className="px-5 mt-10 flex justify-between items-center gap-5">
-              <div
-                className="text-center  cursor-pointer border-[#fff] rounded-lg w-56  border-[0.25px] h-9 flex justify-center items-center"
-                onClick={() => router.back()}
-              >
-                Back
+                          ? "bg-green-500"
+                          : "bg-gray-900"
+                      } relative inline-flex h-6 w-11 items-center rounded-full transition`}
+                    >
+                      <span
+                        className={`${
+                          notifications[key]?.enabled
+                            ? "translate-x-6"
+                            : "translate-x-1"
+                        } inline-block h-4 w-4 transform bg-white rounded-full transition`}
+                      />
+                    </Switch>
+                  </div>
+                ))}
               </div>
-              <button
-                type="button"
-                className="w-56 bg-transparent border-[0.25px] border-[#2DC198] rounded-lg h-9 flex justify-center items-center"
-                onClick={saveData}
-              >
-                <span className="text-[16px] text-[#2DC198]">SAVE</span>
-              </button>
+
+              <h2 className="font-medium text-[19px] text-left mt-10">
+                Favourites
+              </h2>
+              <div className="my-5 flex flex-col gap-5 ">
+                {favoriteTags.map((item) => (
+                  <div
+                    key={item.tag.slug}
+                    className="flex items-center justify-between px-[1.5vw]"
+                  >
+                    <label className="text-[14px font-light text-white text-opacity-50">
+                      {item.tag.name}
+                    </label>
+                    <Switch
+                      checked={item.enabled}
+                      onChange={() => handleFavoriteTagToggle(item.tag.slug)}
+                      className={`${
+                        item.enabled ? "bg-green-500" : "bg-gray-900"
+                      } relative inline-flex h-6 w-11 items-center rounded-full transition`}
+                    >
+                      <span
+                        className={`${
+                          item.enabled ? "translate-x-6" : "translate-x-1"
+                        } inline-block h-4 w-4 transform bg-white rounded-full transition`}
+                      />
+                    </Switch>
+                  </div>
+                ))}
+              </div>
+
+              <h2 className="font-medium text-[19px] text-left mt-10">
+                Trades
+              </h2>
+              <div className="flex flex-col mt-5 gap-5">
+                {Object.keys(wager).map((key) => (
+                  <div key={key}>
+                    <label className="text-[14px] text-white opacity-[27%]">
+                      {key
+                        .replace(/_/g, " ")
+                        .replace(/^\w/, (c) => c.toUpperCase())}
+                    </label>
+                    <input
+                      type="text"
+                      value={wager[key as keyof typeof wager]}
+                      onChange={(e) =>
+                        setWager((prev) => ({
+                          ...prev,
+                          [key as keyof typeof wager]: e.target.value,
+                        }))
+                      }
+                      placeholder={`Enter ${key.replace(/_/g, " ")}`}
+                      className="w-full mt-2 bg-transparent border-b-[1px] text-[14px] text-white pb-1 border-[#707070] outline-none"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="px-5 mt-10 flex justify-between items-center gap-5">
+                <div
+                  className="text-center  cursor-pointer border-[#fff] rounded-lg w-56  border-[0.25px] h-9 flex justify-center items-center"
+                  onClick={() => router.back()}
+                >
+                  Back
+                </div>
+                <button
+                  type="button"
+                  className="w-56 bg-transparent border-[0.25px] border-[#2DC198] rounded-lg h-9 flex justify-center items-center"
+                  onClick={saveData}
+                >
+                  <span className="text-[16px] text-[#2DC198]">SAVE</span>
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="col-span-4 flex justify-end">
-            <div>
-              <CurrentCashBalanceCardWebview />
+            <div className="mt-5 m:w-[40%] xl:w-[25%]">
+              <div className="sticky top-20">
+                <CurrentCashBalanceCardWebview />
+              </div>
             </div>
           </div>
         </div>

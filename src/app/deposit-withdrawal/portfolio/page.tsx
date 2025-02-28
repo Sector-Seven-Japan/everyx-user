@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { LuClock7 } from "react-icons/lu";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
-import DepositPopup from "@/components/DepositPopup";
+
 interface BetEntry {
   id: string;
   question: string;
@@ -356,9 +356,9 @@ const Portfolio: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-[#0E0E0E] w-full min-h-screen text-white lg:px-40  pb-5 md:px-10 sm:px-10 mt-20  relative">
-          <div className="grid grid-cols-10 gap-10 mx-5  ">
-            <div className="bg-[#0E0E0E]  min-h-screen text-white px-5  pb-5 col-span-6">
+        <div className="bg-[#0E0E0E] md:px-[12%] 2xl:px-[19%]">
+          <div className="flex md:flex-row md:mt-32 justify-between gap-5">
+            <div className="bg-[#0E0E0E] text-white px-5  pb-5 md:w-[60%] xl:w-[75%] w-full">
               <div className="flex justify-between items-start">
                 <div>Results : </div>
                 <div className="flex items-start gap-4">
@@ -562,16 +562,14 @@ const Portfolio: React.FC = () => {
                 )}
               </div>
             </div>
-            <div className="col-span-4 flex justify-end">
-              <div>
+            <div className="md:w-[40%] xl:w-[25%]">
+              <div className="sticky top-20">
                 <CurrentCashBalanceCardWebview />
               </div>
             </div>
           </div>
         </div>
       )}
-      <DepositPopup />
-
       <Footer />
     </>
   );

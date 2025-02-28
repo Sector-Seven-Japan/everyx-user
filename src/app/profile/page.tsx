@@ -10,6 +10,7 @@ import { AppContext } from "../Context/AppContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Don't forget to import the CSS for the toast styles
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
+import HeadingSlider from "@/components/HeadingSlider";
 const VerificationStatus: React.FC<{ isVerified: boolean | null }> = ({
   isVerified,
 }) => (
@@ -24,7 +25,7 @@ const VerificationStatus: React.FC<{ isVerified: boolean | null }> = ({
 
 const Profile: React.FC = () => {
   const router = useRouter();
-  const { authToken, API_BASE_URL, setIsLoading, isMobile } =
+  const { authToken, API_BASE_URL, setIsLoading, isMobile,filter,setFilter } =
     useContext(AppContext);
 
   const [profileImage, setProfileImage] = useState<string>("");
@@ -251,125 +252,128 @@ const Profile: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-10 gap-5 lg:px-40 md:px-10 sm:px-10 mb-10 mt-20">
-          <div className="bg-[#0E0E0E] w-full min-h-screen text-white px-5  col-span-6">
-            <div className="max-w-md mx-auto">
-              <div>
-                <p className="text-[20px] mb-10 tracking-widest">Setting</p>
-              </div>
-              <div className="flex gap-5 items-center justify-start">
-                <div className="relative w-20 h-20">
-                  {profileImage ? (
-                    <Image
-                      src={profileImage}
-                      alt="Profile"
-                      fill
-                      className="rounded-full object-top object-cover"
-                    />
-                  ) : (
-                    <div className="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center">
-                      <MdCamera className="w-8 h-8 text-gray-400" />
-                    </div>
-                  )}
+        <div className="md:px-[12%] 2xl:px-[19%]">
+          <HeadingSlider filter={filter} setFilter={setFilter}/>
+          <div className="flex md:flex-row md:mt-10 justify-between gap-5">
+            <div className="bg-[#0E0E0E] md:w-[60%] xl:w-[75%] w-full">
+              <div className="w-full mx-auto">
+                <div>
+                  <p className="text-[1.6vw] mb-10 tracking-widest">Setting</p>
                 </div>
-                <label className="cursor-pointer">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                  <span className="text-[13px] py-2 px-5 border-[1px] border-[#707070] rounded-lg">
-                    Upload Photo
-                  </span>
-                </label>
-              </div>
-
-              <div className="space-y-6 px-5 my-11">
-                <FormField
-                  label="Username"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
-                  placeholder="Alex Kapawski"
-                />
-
-                <FormField
-                  label="Phone Number"
-                  value={phone?.toString() ?? ""}
-                  onChange={(e) => setPhone(Number(e.target.value))}
-                  placeholder="81 080-9662-4545"
-                  type="tel"
-                  append={<VerificationStatus isVerified={phone_verified} />}
-                />
-
-                <div className="border-b border-gray-800">
-                  <label className="block text-[12px] mb-1 opacity-[27%]">
-                    Email
-                  </label>
-                  <div className="flex items-center justify-between">
-                    <input
-                      type="email"
-                      placeholder="AlexKapawski@ibtex.org"
-                      value={email}
-                      className="flex-1 bg-transparent py-2 text-[12px] outline-none"
-                      readOnly={true}
-                    />
-                    {email_verified ? (
-                      <span className="ml-2 text-green-400 flex items-center text-[9px]">
-                        Verified
-                      </span>
+                <div className="flex gap-10 items-center justify-start">
+                  <div className="relative w-20 h-20">
+                    {profileImage ? (
+                      <Image
+                        src={profileImage}
+                        alt="Profile"
+                        fill
+                        className="rounded-full object-top object-cover"
+                      />
                     ) : (
-                      <span className="ml-2 text-red-400 flex items-center text-[9px]">
-                        Not Verified
-                      </span>
+                      <div className="w-[4.8vw] h-[4.8vw] rounded-full bg-gray-800 flex items-center justify-center">
+                        <MdCamera className="w-8 h-8 text-gray-400" />
+                      </div>
                     )}
                   </div>
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <span className="text-[13px] py-2 px-5 border-[1px] border-[#707070] rounded-lg">
+                      Upload Photo
+                    </span>
+                  </label>
                 </div>
 
-                <div className="border-b border-gray-800">
-                  <label className="block text-[12px] mb-1 opacity-[27%]">
-                    Password
-                  </label>
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 flex items-center">
-                      <FiLock className="w-4 h-4 text-gray-400 mr-2" />
+                <div className="space-y-6 my-11">
+                  <FormField
+                    label="Username"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    placeholder="Alex Kapawski"
+                  />
+
+                  <FormField
+                    label="Phone Number"
+                    value={phone?.toString() ?? ""}
+                    onChange={(e) => setPhone(Number(e.target.value))}
+                    placeholder="81 080-9662-4545"
+                    type="tel"
+                    append={<VerificationStatus isVerified={phone_verified} />}
+                  />
+
+                  <div className="border-b border-gray-800">
+                    <label className="block text-[12px] mb-1 opacity-[27%]">
+                      Email
+                    </label>
+                    <div className="flex items-center justify-between">
                       <input
-                        type="password"
-                        placeholder="••••••••••"
+                        type="email"
+                        placeholder="AlexKapawski@ibtex.org"
+                        value={email}
                         className="flex-1 bg-transparent py-2 text-[12px] outline-none"
                         readOnly={true}
                       />
+                      {email_verified ? (
+                        <span className="ml-2 text-green-400 flex items-center text-[9px]">
+                          Verified
+                        </span>
+                      ) : (
+                        <span className="ml-2 text-red-400 flex items-center text-[9px]">
+                          Not Verified
+                        </span>
+                      )}
                     </div>
-                    <button
-                      className="ml-2 text-[9px] underline"
-                      type="button"
-                      onClick={() => router.push("/profile/change-password")}
-                    >
-                      Change Password
-                    </button>
+                  </div>
+
+                  <div className="border-b border-gray-800">
+                    <label className="block text-[12px] mb-1 opacity-[27%]">
+                      Password
+                    </label>
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1 flex items-center">
+                        <FiLock className="w-4 h-4 text-gray-400 mr-2" />
+                        <input
+                          type="password"
+                          placeholder="••••••••••"
+                          className="flex-1 bg-transparent py-2 text-[12px] outline-none"
+                          readOnly={true}
+                        />
+                      </div>
+                      <button
+                        className="ml-2 text-[9px] underline"
+                        type="button"
+                        onClick={() => router.push("/profile/change-password")}
+                      >
+                        Change Password
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className=" mt-1 flex justify-between items-center gap-5">
-                <button
-                  className=" w-56  border-[#fff]  rounded-lg py-3 px-4 border-[0.25px]  text-white text-[14px]"
-                  type="button"
-                  onClick={() => router.push("/deposit-withdrawal/history")}
-                >
-                  Back
-                </button>
-                <button
-                  className="w-56 py-3 px-4 border-[#2DC198] border-[0.25px] rounded-lg transition-colors text-[14px] text-[#2DC198]"
-                  onClick={UpdateProfile}
-                >
-                  SAVE
-                </button>
+                <div className=" mt-1 flex justify-between items-center gap-5">
+                  <button
+                    className=" w-56  border-[#fff]  rounded-lg py-3 px-4 border-[0.25px]  text-white text-[14px]"
+                    type="button"
+                    onClick={() => router.push("/deposit-withdrawal/history")}
+                  >
+                    Back
+                  </button>
+                  <button
+                    className="w-56 py-3 px-4 border-[#2DC198] border-[0.25px] rounded-lg transition-colors text-[14px] text-[#2DC198]"
+                    onClick={UpdateProfile}
+                  >
+                    SAVE
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-span-4 flex justify-end">
-            <CurrentCashBalanceCardWebview />
+            <div className="mt-5 m:w-[40%]  xl:w-[25%]">
+              <CurrentCashBalanceCardWebview />
+            </div>
           </div>
         </div>
       )}

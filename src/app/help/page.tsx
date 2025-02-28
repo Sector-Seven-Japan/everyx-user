@@ -7,9 +7,10 @@ import { useContext, useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { AppContext } from "../Context/AppContext";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
+import HeadingSlider from "@/components/HeadingSlider";
 
 const Help: React.FC = () => {
-  const { setIsLoading, API_BASE_URL, isMobile } = useContext(AppContext);
+  const { setIsLoading, API_BASE_URL, isMobile,filter,setFilter } = useContext(AppContext);
   const [categories, setCategories] = useState<
     { category: string; faqs: { question: string; answer: string }[] }[]
   >([]);
@@ -136,8 +137,10 @@ const Help: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-10 lg:px-40 md:px-10 sm:px-10 gap-5 mt-20 ">
-          <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-4 col-span-6">
+        <div className="md:px-[12%] 2xl:px-[19%]">
+          <HeadingSlider filter={filter} setFilter={setFilter}/>
+          <div className="flex md:flex-row md:mt-10 justify-between gap-5">
+          <div className="bg-[#0E0E0E] md:w-[60%] xl:w-[75%] w-full">
             <h1 className="font-medium text-[29px] text-left mb-10 ml-3">
               Q & A
             </h1>
@@ -203,11 +206,12 @@ const Help: React.FC = () => {
             </div>
           </div>
 
-          <div className="col-span-4 flex justify-end">
-            <div>
+          <div className="mt-5 m:w-[40%] xl:w-[25%]">
+            <div className="sticky top-20">
               <CurrentCashBalanceCardWebview />
             </div>
           </div>
+        </div>
         </div>
       )}
 
