@@ -4,7 +4,7 @@ export default function LoadingPage() {
       {/* Logo */}
       <div className="flex-1 flex items-center justify-center">
         <div style={{ width: "150px", height: "150px" }}>
-          <img src="/images/logo_animation.gif" alt="Loading animation" />
+          <img src="/Images/logo_animation.gif" alt="Loading animation" />
         </div>
       </div>
     </div>
