@@ -27,7 +27,12 @@ export default function CashWithdrawalCategoriesMobile() {
             <button
               onClick={() => handleNavigation("/deposits")}
               type="button"
-              className="w-full flex flex-col items-center justify-center p-4 rounded-xl  border border-white opacity-10 hover:opacity-100 transition-colors gap-1"
+              className={`w-full flex flex-col items-center justify-center p-4 rounded-xl  border border-white opacity-10 hover:opacity-100 transition-colors gap-1 
+                ${
+                  currentPath === "/deposits"
+                    ? "opacity-100"
+                    : "opacity-10 hover:opacity-100"
+                }`}
             >
               <svg
                 width="5vw"
@@ -48,7 +53,12 @@ export default function CashWithdrawalCategoriesMobile() {
           </li>
           <li>
             <button
-              className="w-full flex flex-col items-center justify-center p-4 lg:p-2 md:p-2 rounded-xl  border border-white opacity-10 hover:opacity-100 transition-colors gap-1"
+              className={`w-full flex flex-col items-center justify-center p-4 lg:p-2 md:p-2 rounded-xl  border border-white opacity-10 hover:opacity-10 transition-colors gap-1
+                ${
+                  currentPath === "/deposit-withdrawal/withdrawal"
+                    ? "opacity-100"
+                    : "opacity-10 hover:opacity-100"
+                }`}
               type="button"
               // onClick={() => handleNavigation("/deposit-withdrawal/withdrawal")}
             >
@@ -73,7 +83,12 @@ export default function CashWithdrawalCategoriesMobile() {
           <li>
             <button
               type="button"
-              className="w-full flex flex-col items-center justify-center p-4 lg:p-2 md:p-2 rounded-xl  border border-white opacity-10 hover:opacity-100 transition-colors gap-1"
+              className={`w-full flex flex-col items-center justify-center p-4 lg:p-2 md:p-2 rounded-xl  border border-white opacity-10 hover:opacity-100 transition-colors gap-1
+                ${
+                  currentPath === "/deposit-withdrawal/portfolio"
+                    ? "opacity-100"
+                    : "opacity-10 hover:opacity-100"
+                }`}
               onClick={() => handleNavigation("/deposit-withdrawal/portfolio")}
             >
               <svg
@@ -101,7 +116,12 @@ export default function CashWithdrawalCategoriesMobile() {
           <li>
             <button
               type="button"
-              className="w-full flex flex-col items-center justify-center p-4 lg:p-2 md:p-2 rounded-xl  border border-white opacity-10 hover:opacity-100 transition-colors gap-1"
+              className={`w-full flex flex-col items-center justify-center p-4 lg:p-2 md:p-2 rounded-xl  border border-white opacity-10 hover:opacity-100 transition-colors gap-1
+                 ${
+                   currentPath === "/deposit-withdrawal/history"
+                     ? "opacity-100"
+                     : "opacity-10 hover:opacity-100"
+                 }`}
               onClick={() => handleNavigation("/deposit-withdrawal/history")}
             >
               <svg

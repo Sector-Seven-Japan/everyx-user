@@ -44,24 +44,24 @@ const CurrentCashBalanceCard: React.FC = () => {
     <>
       <div className="flex justify-center items-center mt-5 relative">
         {userProfile?.avatar ? (
-          <div className="w-20 h-20 rounded-full overflow-hidden">
+          <div className="w-14 h-14 rounded-full overflow-hidden">
             <Image
               src={userProfile.avatar}
               alt="User Profile Pic"
               className="object-cover rounded-full"
-              width={80}
-              height={80}
+              width={70}
+              height={70}
             />
           </div>
         ) : (
           <div className="w-14 h-14 rounded-full bg-transparent flex items-center justify-center">
-            <IoPersonCircleOutline className="w-8 h-8 text-gray-400" />
+            <IoPersonCircleOutline className="w-14 h-14 text-gray-400" />
           </div>
         )}
         <Image
           src={settingIcon}
           alt="Setting icon"
-          className="absolute top-1 left-[55%]"
+          className="absolute top-1 left-[58%]"
           onClick={handleSettingsClick}
         />
       </div>

@@ -10,7 +10,6 @@ import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { LuClock7 } from "react-icons/lu";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
-import DepositPopup from "@/components/DepositPopup";
 import CashWithdrawalCategoriesMobile from "@/components/CashWithdrawalCategoriesMobile";
 interface BetEntry {
   id: string;
