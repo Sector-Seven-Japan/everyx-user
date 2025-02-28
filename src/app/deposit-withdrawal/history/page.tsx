@@ -33,7 +33,6 @@ const History = () => {
       {" "}
       <Navbar />
       {isMobile ? <HistoryMobile /> : <HistoryWeb />}
-      <DepositPopup />
       <Footer />
     </>
   );
