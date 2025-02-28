@@ -163,7 +163,9 @@ export default function EventCategoryPageDetails() {
                       </p>
                     </div>
                   ) : (
-                    <DrawGraph data={graphData} />
+                    <div className="flex justify-center items-center w-full h-full ">
+                      <DrawGraph data={graphData} />
+                    </div>
                   )}
                 </div>
                 <CategoryGraph eventData={eventData} />
