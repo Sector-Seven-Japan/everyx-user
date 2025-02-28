@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import settingIcon from "../../public/Icons/settingIcon.png";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
-import { MdCamera } from "react-icons/md";
+import { IoPersonCircleOutline } from "react-icons/io5";
 
 const CurrentCashBalanceCard: React.FC = () => {
   const router = useRouter();
@@ -54,14 +54,14 @@ const CurrentCashBalanceCard: React.FC = () => {
             />
           </div>
         ) : (
-          <div className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center">
-            <MdCamera className="w-8 h-8 text-gray-400" />
+          <div className="w-14 h-14 rounded-full bg-transparent flex items-center justify-center">
+            <IoPersonCircleOutline className="w-8 h-8 text-gray-400" />
           </div>
         )}
         <Image
           src={settingIcon}
           alt="Setting icon"
-          className="absolute top-1 left-[65%]"
+          className="absolute top-1 left-[55%]"
           onClick={handleSettingsClick}
         />
       </div>
