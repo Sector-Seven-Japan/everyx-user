@@ -11,6 +11,8 @@ import TopCategories from "@/components/TopCategoies";
 import CategoryCard from "@/components/CategoryCard"; // Add this import
 import Category from "@/components/Category";
 
+import LoadingPage from "@/components/LoadingPage";
+
 interface TraderInfo {
   max_leverage: number;
   estimated_payout: number;
@@ -48,6 +50,8 @@ export default function Home() {
   } = useContext(AppContext);
   const [searchData, setSearchData] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(false);
@@ -91,8 +95,8 @@ export default function Home() {
     }
   }, [search, API_BASE_URL]);
 
-  return (
-    <div>
+  return loading ?
+    < div >
       <Navbar />
       <div className="w-full md:px-[10%] 2xl:px-[13%]">
         <HeadingSlider setFilter={setFilter} filter={filter} />
@@ -137,6 +141,7 @@ export default function Home() {
         </div>
       </div>
       <Footer />
-    </div>
-  );
+    </div >
+
+    : <LoadingPage />
 }
