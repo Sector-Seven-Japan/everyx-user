@@ -124,7 +124,7 @@ const HistoryWeb: React.FC = () => {
         <HeadingSlider filter={filter} setFilter={setFilter} />
         <div className="flex md:flex-row md:mt-7 justify-between gap-5">
           <div className="md:w-[60%] xl:w-[70%]">
-            <p className="text-[24px] font-semibold">
+            <p className="text-2xl font-semibold">
               Deposit ＆ Withdrawal History :
             </p>
 
