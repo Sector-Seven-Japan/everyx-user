@@ -89,10 +89,10 @@ const Withdrawal: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-[#0E0E0E] md:px-[12%] 2xl:px-[19%]">
+        <div className="bg-[#0E0E0E] md:px-[12%] lg:px-[20vw]">
           <HeadingSlider filter={filter} setFilter={setFilter} />
-          <div className="pt-[4.65%] grid grid-cols-10 gap-5 h-screen">
-            <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl  py-2 col-span-6 h-full">
+          <div className="pt-[4.65%] flex justify-center gap-5 h-screen">
+            <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl  py-2  h-full w-full">
               <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
 
               {/* Deposit and Withdrawal Section */}
@@ -127,7 +127,7 @@ const Withdrawal: React.FC = () => {
                 USD
               </div>
             </div>
-            <div className="col-span-4 flex justify-end">
+            <div className="flex justify-end">
               <CurrentCashBalanceCardWebview />
             </div>
           </div>

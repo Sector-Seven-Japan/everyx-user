@@ -88,15 +88,77 @@ const CurrentCashBalanceCard: React.FC = () => {
       pathname === "/deposit-withdrawal/history" ? (
         <div className="mt-5">
           {/* Top Dashed Border */}
-          <div
-            className="border-t-2 border-dashed border-gray-400 w-full my-3"
-            style={{
-              maskImage:
-                "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-              WebkitMaskImage:
-                "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-            }}
-          ></div>
+          <div>
+            <svg
+              width="380"
+              height="9"
+              viewBox="0 0 380 9"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g filter="url(#filter0_d_633_3647)">
+                <line
+                  x1="4"
+                  y1="0.5"
+                  x2="376"
+                  y2="0.5"
+                  stroke="url(#paint0_linear_633_3647)"
+                  stroke-opacity="0.54"
+                  stroke-dasharray="2 2"
+                  shape-rendering="crispEdges"
+                />
+              </g>
+              <defs>
+                <filter
+                  id="filter0_d_633_3647"
+                  x="0"
+                  y="0"
+                  width="380"
+                  height="9"
+                  filterUnits="userSpaceOnUse"
+                  color-interpolation-filters="sRGB"
+                >
+                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feColorMatrix
+                    in="SourceAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    result="hardAlpha"
+                  />
+                  <feOffset dy="4" />
+                  <feGaussianBlur stdDeviation="2" />
+                  <feComposite in2="hardAlpha" operator="out" />
+                  <feColorMatrix
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow_633_3647"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_633_3647"
+                    result="shape"
+                  />
+                </filter>
+                <linearGradient
+                  id="paint0_linear_633_3647"
+                  x1="4"
+                  y1="1.5"
+                  x2="376"
+                  y2="1.5"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop stop-color="#0E0E0E" />
+                  <stop offset="0.495" stop-color="#C9C9C9" />
+                  <stop offset="1" stop-color="#0E0E0E" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
 
           <div className="my-5 space-y-4">
             {/* Best Case Cash Balance */}
@@ -146,15 +208,77 @@ const CurrentCashBalanceCard: React.FC = () => {
             </div>
           </div>
 
-          <div
-            className="border-t-2 border-dashed border-gray-400 w-full my-3"
-            style={{
-              maskImage:
-                "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-              WebkitMaskImage:
-                "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-            }}
-          ></div>
+          <div>
+            <svg
+              width="380"
+              height="9"
+              viewBox="0 0 380 9"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g filter="url(#filter0_d_633_3647)">
+                <line
+                  x1="4"
+                  y1="0.5"
+                  x2="376"
+                  y2="0.5"
+                  stroke="url(#paint0_linear_633_3647)"
+                  stroke-opacity="0.54"
+                  stroke-dasharray="2 2"
+                  shape-rendering="crispEdges"
+                />
+              </g>
+              <defs>
+                <filter
+                  id="filter0_d_633_3647"
+                  x="0"
+                  y="0"
+                  width="380"
+                  height="9"
+                  filterUnits="userSpaceOnUse"
+                  color-interpolation-filters="sRGB"
+                >
+                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feColorMatrix
+                    in="SourceAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    result="hardAlpha"
+                  />
+                  <feOffset dy="4" />
+                  <feGaussianBlur stdDeviation="2" />
+                  <feComposite in2="hardAlpha" operator="out" />
+                  <feColorMatrix
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow_633_3647"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_633_3647"
+                    result="shape"
+                  />
+                </filter>
+                <linearGradient
+                  id="paint0_linear_633_3647"
+                  x1="4"
+                  y1="1.5"
+                  x2="376"
+                  y2="1.5"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop stop-color="#0E0E0E" />
+                  <stop offset="0.495" stop-color="#C9C9C9" />
+                  <stop offset="1" stop-color="#0E0E0E" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
         </div>
       ) : null}
     </>

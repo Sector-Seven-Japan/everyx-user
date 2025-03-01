@@ -52,8 +52,8 @@ const Success: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-5 grid grid-cols-10 gap-3 lg:px-40 md:px-10 sm:px-10 ">
-          <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col items-center rounded-t-3xl  py-2 px-5 col-span-7">
+        <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-5 flex justify-center gap-5 lg:px-[20vw] md:px-10 sm:px-10 ">
+          <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col items-center rounded-t-3xl  py-2 px-5 w-full">
             <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
 
             {/* Deposit and Withdrawal Section */}
@@ -81,7 +81,7 @@ const Success: React.FC = () => {
               Done
             </button>
           </div>
-          <div className="col-span-3 flex justify-end">
+          <div className=" flex justify-end">
             <CurrentCashBalanceCardWebview />
           </div>
         </div>
