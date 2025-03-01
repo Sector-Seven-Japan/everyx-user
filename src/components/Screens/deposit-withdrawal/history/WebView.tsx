@@ -124,7 +124,7 @@ const HistoryWeb: React.FC = () => {
         <HeadingSlider filter={filter} setFilter={setFilter} />
         <div className="flex md:flex-row md:mt-7 justify-between gap-5">
           <div className="md:w-[60%] xl:w-[70%]">
-            <p className="text-2xl font-semibold">
+            <p className="text-2xl font-regular">
               Deposit ＆ Withdrawal History :
             </p>
 
@@ -155,15 +155,80 @@ const HistoryWeb: React.FC = () => {
 
                     <TransactionButton type={transaction.transaction_type} />
                   </div>
-                  <div
-                    className="border-t-2 border-dashed border-gray-400 w-full"
-                    style={{
-                      maskImage:
-                        "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                      WebkitMaskImage:
-                        "linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                    }}
-                  ></div>
+                  <div>
+                    <svg
+                      width="100%"
+                      height="9"
+                      viewBox="0 0 793 9"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g filter="url(#filter0_d_658_36764)">
+                        <line
+                          x1="4"
+                          y1="0.5"
+                          x2="789"
+                          y2="0.5"
+                          stroke="url(#paint0_linear_658_36764)"
+                          stroke-opacity="0.54"
+                          stroke-dasharray="2 2"
+                          shape-rendering="crispEdges"
+                        />
+                      </g>
+                      <defs>
+                        <filter
+                          id="filter0_d_658_36764"
+                          x="0"
+                          y="0"
+                          width="793"
+                          height="9"
+                          filterUnits="userSpaceOnUse"
+                          color-interpolation-filters="sRGB"
+                        >
+                          <feFlood
+                            flood-opacity="0"
+                            result="BackgroundImageFix"
+                          />
+                          <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                          />
+                          <feOffset dy="4" />
+                          <feGaussianBlur stdDeviation="2" />
+                          <feComposite in2="hardAlpha" operator="out" />
+                          <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                          />
+                          <feBlend
+                            mode="normal"
+                            in2="BackgroundImageFix"
+                            result="effect1_dropShadow_658_36764"
+                          />
+                          <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="effect1_dropShadow_658_36764"
+                            result="shape"
+                          />
+                        </filter>
+                        <linearGradient
+                          id="paint0_linear_658_36764"
+                          x1="4"
+                          y1="1.5"
+                          x2="789"
+                          y2="1.5"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop stop-color="#0E0E0E" />
+                          <stop offset="0.495" stop-color="#C9C9C9" />
+                          <stop offset="1" stop-color="#0E0E0E" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
                 </React.Fragment>
               ))
             )}

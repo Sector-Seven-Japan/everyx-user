@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 import { AppContext } from "@/app/Context/AppContext";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
-import { LuClock7 } from "react-icons/lu";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 import CashWithdrawalCategoriesMobile from "@/components/CashWithdrawalCategoriesMobile";
 import HeadingSlider from "@/components/HeadingSlider";
@@ -271,15 +270,80 @@ const Portfolio: React.FC = () => {
                       </div>
 
                       {/* Dotted Line Separator */}
-                      <div
-                        className="border-t-2 border-dashed border-gray-400 w-full mt-4"
-                        style={{
-                          maskImage:
-                            "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                          WebkitMaskImage:
-                            "linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                        }}
-                      ></div>
+                      <div>
+                        <svg
+                          width="380"
+                          height="9"
+                          viewBox="0 0 380 9"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g filter="url(#filter0_d_633_3647)">
+                            <line
+                              x1="4"
+                              y1="0.5"
+                              x2="376"
+                              y2="0.5"
+                              stroke="url(#paint0_linear_633_3647)"
+                              stroke-opacity="0.54"
+                              stroke-dasharray="2 2"
+                              shape-rendering="crispEdges"
+                            />
+                          </g>
+                          <defs>
+                            <filter
+                              id="filter0_d_633_3647"
+                              x="0"
+                              y="0"
+                              width="380"
+                              height="9"
+                              filterUnits="userSpaceOnUse"
+                              color-interpolation-filters="sRGB"
+                            >
+                              <feFlood
+                                flood-opacity="0"
+                                result="BackgroundImageFix"
+                              />
+                              <feColorMatrix
+                                in="SourceAlpha"
+                                type="matrix"
+                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                result="hardAlpha"
+                              />
+                              <feOffset dy="4" />
+                              <feGaussianBlur stdDeviation="2" />
+                              <feComposite in2="hardAlpha" operator="out" />
+                              <feColorMatrix
+                                type="matrix"
+                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                              />
+                              <feBlend
+                                mode="normal"
+                                in2="BackgroundImageFix"
+                                result="effect1_dropShadow_633_3647"
+                              />
+                              <feBlend
+                                mode="normal"
+                                in="SourceGraphic"
+                                in2="effect1_dropShadow_633_3647"
+                                result="shape"
+                              />
+                            </filter>
+                            <linearGradient
+                              id="paint0_linear_633_3647"
+                              x1="4"
+                              y1="1.5"
+                              x2="376"
+                              y2="1.5"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop stop-color="#0E0E0E" />
+                              <stop offset="0.495" stop-color="#C9C9C9" />
+                              <stop offset="1" stop-color="#0E0E0E" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
                     </div>
                   ));
                 }
@@ -334,21 +398,115 @@ const Portfolio: React.FC = () => {
                       </ul>
                       {/* Time Remaining */}
                       <div className="text-[12px] text-[#2dc198] flex items-center gap-1 mt-5">
-                        <LuClock7 color="#2dc198" />{" "}
+                        <div>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clip-path="url(#clip0_658_36693)">
+                              <path
+                                d="M7.60094 0.921875C3.40973 0.921875 0 4.15641 0 8.13202C0 12.1079 3.40973 15.3422 7.60094 15.3422C11.7921 15.3422 15.2019 12.1079 15.2019 8.13202C15.2019 4.15641 11.7921 0.921875 7.60094 0.921875ZM7.60094 13.6254C4.40774 13.6254 1.80977 11.1613 1.80977 8.13202C1.80977 5.103 4.40774 2.63859 7.60094 2.63859C10.7941 2.63859 13.3921 5.103 13.3921 8.13202C13.3921 11.1613 10.7941 13.6254 7.60094 13.6254Z"
+                                fill="#00FFB8"
+                              />
+                              <path
+                                d="M7.67494 4.18164C7.29459 4.18164 6.98625 4.47407 6.98625 4.83492V7.79243L4.78771 9.87794C4.51868 10.1329 4.51868 10.5466 4.78771 10.8019C5.05665 11.0569 5.4927 11.0569 5.7617 10.8019L8.36368 8.3337V7.66434V4.83492C8.36368 4.47407 8.05534 4.18164 7.67494 4.18164Z"
+                                fill="#00FFB8"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_658_36693">
+                                <rect
+                                  width="15.2019"
+                                  height="14.4203"
+                                  fill="white"
+                                  transform="translate(0 0.921875)"
+                                />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        </div>
                         {timeRemaining(bet.ends_at)}
                       </div>
                     </div>
 
                     {/* Dotted Line Separator */}
-                    <div
-                      className="border-t-2 border-dashed border-gray-400 w-full mt-4"
-                      style={{
-                        maskImage:
-                          "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                        WebkitMaskImage:
-                          "linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                      }}
-                    ></div>
+                    <div>
+                      <svg
+                        width="380"
+                        height="9"
+                        viewBox="0 0 380 9"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g filter="url(#filter0_d_633_3647)">
+                          <line
+                            x1="4"
+                            y1="0.5"
+                            x2="376"
+                            y2="0.5"
+                            stroke="url(#paint0_linear_633_3647)"
+                            stroke-opacity="0.54"
+                            stroke-dasharray="2 2"
+                            shape-rendering="crispEdges"
+                          />
+                        </g>
+                        <defs>
+                          <filter
+                            id="filter0_d_633_3647"
+                            x="0"
+                            y="0"
+                            width="380"
+                            height="9"
+                            filterUnits="userSpaceOnUse"
+                            color-interpolation-filters="sRGB"
+                          >
+                            <feFlood
+                              flood-opacity="0"
+                              result="BackgroundImageFix"
+                            />
+                            <feColorMatrix
+                              in="SourceAlpha"
+                              type="matrix"
+                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                              result="hardAlpha"
+                            />
+                            <feOffset dy="4" />
+                            <feGaussianBlur stdDeviation="2" />
+                            <feComposite in2="hardAlpha" operator="out" />
+                            <feColorMatrix
+                              type="matrix"
+                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                            />
+                            <feBlend
+                              mode="normal"
+                              in2="BackgroundImageFix"
+                              result="effect1_dropShadow_633_3647"
+                            />
+                            <feBlend
+                              mode="normal"
+                              in="SourceGraphic"
+                              in2="effect1_dropShadow_633_3647"
+                              result="shape"
+                            />
+                          </filter>
+                          <linearGradient
+                            id="paint0_linear_633_3647"
+                            x1="4"
+                            y1="1.5"
+                            x2="376"
+                            y2="1.5"
+                            gradientUnits="userSpaceOnUse"
+                          >
+                            <stop stop-color="#0E0E0E" />
+                            <stop offset="0.495" stop-color="#C9C9C9" />
+                            <stop offset="1" stop-color="#0E0E0E" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </div>
                   </div>
                 );
               })
@@ -362,74 +520,70 @@ const Portfolio: React.FC = () => {
           <div className=" md:px-[12%] 2xl:px-[19%]">
             <HeadingSlider filter={filter} setFilter={setFilter} />
             <div className="flex md:flex-row md:mt-10 justify-between gap-5">
-              <div className="bg-[#0E0E0E] text-white px-5  pb-5 md:w-[60%] xl:w-[70%]">
-                <div className="flex justify-between items-start">
+              <div className=" text-white px-5  pb-5 md:w-[60%] xl:w-[70%]">
+                <div className="flex justify-between items-start ">
                   <div className="text-2xl">Results : </div>
-                  <div className="flex items-start gap-4">
-                    <p className="text-[14px] text-left font-semibold">
-                      Results :
-                    </p>
-                    <div className="flex flex-col items-end  gap-2">
-                      <div className="flex w-36 bg-[rgba(255,255,255,0.1)] rounded-md justify-between items-center px-2 py-1">
-                        <div className="text-[14px]">{filter}</div>
-                        <div
-                          className="flex justify-center items-center flex-col gap-1 cursor-pointer"
-                          onClick={() => {
-                            setOpen((con) => !con);
-                          }}
-                        >
-                          <div className="w-[20px] h-[1.5px] bg-white"></div>
-                          <div className="w-[18px] h-[1.5px] bg-white"></div>
-                          <div className="w-[12px] h-[1.5px] bg-white"></div>
-                        </div>
+
+                  <div className="flex flex-col items-end  gap-2">
+                    <div className="flex w-36 bg-[rgba(255,255,255,0.1)] rounded-md justify-between items-center px-2 py-1">
+                      <div className="text-[14px]">{filter}</div>
+                      <div
+                        className="flex justify-center items-center flex-col gap-1 cursor-pointer"
+                        onClick={() => {
+                          setOpen((con) => !con);
+                        }}
+                      >
+                        <div className="w-[20px] h-[1.5px] bg-white"></div>
+                        <div className="w-[18px] h-[1.5px] bg-white"></div>
+                        <div className="w-[12px] h-[1.5px] bg-white"></div>
+                      </div>
+                    </div>
+                    <div
+                      className={`w-24 flex flex-col  right-10  ${
+                        open ? "block" : "hidden"
+                      }`}
+                    >
+                      <div
+                        onClick={() => {
+                          setFilter("All");
+                          setOpen(false);
+                        }}
+                        className="bg-transparent hover:bg-white/10 transition duration-300  pl-5 text-[14px] cursor-pointer"
+                      >
+                        All
                       </div>
                       <div
-                        className={`w-24 flex flex-col  right-10  ${
-                          open ? "block" : "hidden"
-                        }`}
+                        onClick={() => {
+                          setFilter("Active");
+                          setOpen(false);
+                        }}
+                        className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
                       >
-                        <div
-                          onClick={() => {
-                            setFilter("All");
-                            setOpen(false);
-                          }}
-                          className="bg-transparent hover:bg-white/10 transition duration-300  pl-5 text-[14px] cursor-pointer"
-                        >
-                          All
-                        </div>
-                        <div
-                          onClick={() => {
-                            setFilter("Active");
-                            setOpen(false);
-                          }}
-                          className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
-                        >
-                          Active
-                        </div>
-                        <div
-                          onClick={() => {
-                            setFilter("Success");
-                            setOpen(false);
-                          }}
-                          className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
-                        >
-                          Success
-                        </div>
-                        <div
-                          onClick={() => {
-                            setFilter("Failed");
-                            setOpen(false);
-                          }}
-                          className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
-                        >
-                          Failed
-                        </div>
+                        Active
+                      </div>
+                      <div
+                        onClick={() => {
+                          setFilter("Success");
+                          setOpen(false);
+                        }}
+                        className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
+                      >
+                        Success
+                      </div>
+                      <div
+                        onClick={() => {
+                          setFilter("Failed");
+                          setOpen(false);
+                        }}
+                        className="bg-transparent hover:bg-white/10 transition duration-300 pl-5 text-[14px] cursor-pointer"
+                      >
+                        Failed
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="max-w-2xl mx-auto space-y-8 mt-24">
+                <div className=" space-y-8 mt-24 ">
                   {filteredBets.length > 0 ? (
                     filteredBets.map((bet) => {
                       const isExpired = new Date(bet.ends_at) < new Date();
@@ -479,15 +633,83 @@ const Portfolio: React.FC = () => {
                             </div>
 
                             {/* Dotted Line Separator */}
-                            <div
-                              className="border-t-2 border-dashed border-gray-400 w-full mt-4"
-                              style={{
-                                maskImage:
-                                  "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                                WebkitMaskImage:
-                                  "linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                              }}
-                            ></div>
+                            <div>
+                              <svg
+                                width="100%"
+                                height="9"
+                                viewBox="0 0 793 9"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <g filter="url(#filter0_d_658_36764)">
+                                  <line
+                                    x1="4"
+                                    y1="0.5"
+                                    x2="789"
+                                    y2="0.5"
+                                    stroke="url(#paint0_linear_658_36764)"
+                                    stroke-opacity="0.54"
+                                    stroke-dasharray="2 2"
+                                    shape-rendering="crispEdges"
+                                  />
+                                </g>
+                                <defs>
+                                  <filter
+                                    id="filter0_d_658_36764"
+                                    x="0"
+                                    y="0"
+                                    width="793"
+                                    height="9"
+                                    filterUnits="userSpaceOnUse"
+                                    color-interpolation-filters="sRGB"
+                                  >
+                                    <feFlood
+                                      flood-opacity="0"
+                                      result="BackgroundImageFix"
+                                    />
+                                    <feColorMatrix
+                                      in="SourceAlpha"
+                                      type="matrix"
+                                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                      result="hardAlpha"
+                                    />
+                                    <feOffset dy="4" />
+                                    <feGaussianBlur stdDeviation="2" />
+                                    <feComposite
+                                      in2="hardAlpha"
+                                      operator="out"
+                                    />
+                                    <feColorMatrix
+                                      type="matrix"
+                                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                                    />
+                                    <feBlend
+                                      mode="normal"
+                                      in2="BackgroundImageFix"
+                                      result="effect1_dropShadow_658_36764"
+                                    />
+                                    <feBlend
+                                      mode="normal"
+                                      in="SourceGraphic"
+                                      in2="effect1_dropShadow_658_36764"
+                                      result="shape"
+                                    />
+                                  </filter>
+                                  <linearGradient
+                                    id="paint0_linear_658_36764"
+                                    x1="4"
+                                    y1="1.5"
+                                    x2="789"
+                                    y2="1.5"
+                                    gradientUnits="userSpaceOnUse"
+                                  >
+                                    <stop stop-color="#0E0E0E" />
+                                    <stop offset="0.495" stop-color="#C9C9C9" />
+                                    <stop offset="1" stop-color="#0E0E0E" />
+                                  </linearGradient>
+                                </defs>
+                              </svg>
+                            </div>
                           </div>
                         ));
                       }
@@ -496,10 +718,44 @@ const Portfolio: React.FC = () => {
                       return (
                         <div key={bet.id} className="space-y-3 mb-5">
                           {/* Status Indicator */}
-                          <div className="inline-block">
-                            <span className="px-3 py-1 rounded text-sm border-[#5dff00] border text-[#5dff00]">
+                          <div className="flex justify-start   items-center gap-5">
+                            <span className="px-4 py-1 rounded text-sm border-[#5dff00] border text-[#5dff00]">
                               Active
                             </span>
+                            {/* Time Remaining */}
+                            <div className="text-[14px] text-[#2dc198] flex items-center gap-1">
+                              <div>
+                                <svg
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <g clip-path="url(#clip0_658_36693)">
+                                    <path
+                                      d="M7.60094 0.921875C3.40973 0.921875 0 4.15641 0 8.13202C0 12.1079 3.40973 15.3422 7.60094 15.3422C11.7921 15.3422 15.2019 12.1079 15.2019 8.13202C15.2019 4.15641 11.7921 0.921875 7.60094 0.921875ZM7.60094 13.6254C4.40774 13.6254 1.80977 11.1613 1.80977 8.13202C1.80977 5.103 4.40774 2.63859 7.60094 2.63859C10.7941 2.63859 13.3921 5.103 13.3921 8.13202C13.3921 11.1613 10.7941 13.6254 7.60094 13.6254Z"
+                                      fill="#00FFB8"
+                                    />
+                                    <path
+                                      d="M7.67494 4.18164C7.29459 4.18164 6.98625 4.47407 6.98625 4.83492V7.79243L4.78771 9.87794C4.51868 10.1329 4.51868 10.5466 4.78771 10.8019C5.05665 11.0569 5.4927 11.0569 5.7617 10.8019L8.36368 8.3337V7.66434V4.83492C8.36368 4.47407 8.05534 4.18164 7.67494 4.18164Z"
+                                      fill="#00FFB8"
+                                    />
+                                  </g>
+                                  <defs>
+                                    <clipPath id="clip0_658_36693">
+                                      <rect
+                                        width="15.2019"
+                                        height="14.4203"
+                                        fill="white"
+                                        transform="translate(0 0.921875)"
+                                      />
+                                    </clipPath>
+                                  </defs>
+                                </svg>
+                              </div>
+                              {timeRemaining(bet.ends_at)}
+                            </div>
                           </div>
 
                           {/* Event Question */}
@@ -541,23 +797,83 @@ const Portfolio: React.FC = () => {
                                 </li>
                               ))}
                             </ul>
-                            {/* Time Remaining */}
-                            <div className="text-[12px] text-[#2dc198] flex items-center gap-1 mt-5">
-                              <LuClock7 color="#2dc198" />{" "}
-                              {timeRemaining(bet.ends_at)}
-                            </div>
                           </div>
 
                           {/* Dotted Line Separator */}
-                          <div
-                            className="border-t-2 border-dashed border-gray-400 w-full mt-4"
-                            style={{
-                              maskImage:
-                                "linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                              WebkitMaskImage:
-                                "linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4))",
-                            }}
-                          ></div>
+                          <div>
+                            <svg
+                              width="100%"
+                              height="9"
+                              viewBox="0 0 793 9"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g filter="url(#filter0_d_658_36764)">
+                                <line
+                                  x1="4"
+                                  y1="0.5"
+                                  x2="789"
+                                  y2="0.5"
+                                  stroke="url(#paint0_linear_658_36764)"
+                                  stroke-opacity="0.54"
+                                  stroke-dasharray="2 2"
+                                  shape-rendering="crispEdges"
+                                />
+                              </g>
+                              <defs>
+                                <filter
+                                  id="filter0_d_658_36764"
+                                  x="0"
+                                  y="0"
+                                  width="793"
+                                  height="9"
+                                  filterUnits="userSpaceOnUse"
+                                  color-interpolation-filters="sRGB"
+                                >
+                                  <feFlood
+                                    flood-opacity="0"
+                                    result="BackgroundImageFix"
+                                  />
+                                  <feColorMatrix
+                                    in="SourceAlpha"
+                                    type="matrix"
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                    result="hardAlpha"
+                                  />
+                                  <feOffset dy="4" />
+                                  <feGaussianBlur stdDeviation="2" />
+                                  <feComposite in2="hardAlpha" operator="out" />
+                                  <feColorMatrix
+                                    type="matrix"
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                                  />
+                                  <feBlend
+                                    mode="normal"
+                                    in2="BackgroundImageFix"
+                                    result="effect1_dropShadow_658_36764"
+                                  />
+                                  <feBlend
+                                    mode="normal"
+                                    in="SourceGraphic"
+                                    in2="effect1_dropShadow_658_36764"
+                                    result="shape"
+                                  />
+                                </filter>
+                                <linearGradient
+                                  id="paint0_linear_658_36764"
+                                  x1="4"
+                                  y1="1.5"
+                                  x2="789"
+                                  y2="1.5"
+                                  gradientUnits="userSpaceOnUse"
+                                >
+                                  <stop stop-color="#0E0E0E" />
+                                  <stop offset="0.495" stop-color="#C9C9C9" />
+                                  <stop offset="1" stop-color="#0E0E0E" />
+                                </linearGradient>
+                              </defs>
+                            </svg>
+                          </div>
                         </div>
                       );
                     })
