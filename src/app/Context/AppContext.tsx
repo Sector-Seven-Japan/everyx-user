@@ -612,11 +612,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const minutes = Math.floor(diff / 60);
     const seconds = diff % 60;
 
-    const daysStr = days > 0 ? `${days}d ` : "";
-    const hoursStr = hours > 0 ? `${hours}h` : "";
+    const daysStr = days > 0 ? `${days}D:` : "";
+    const hoursStr = hours > 0 ? `${hours}H:` : "";
     const minutesStr =
-      minutes > 0 ? `${String(minutes).padStart(2, "0")}m` : "";
-    const secondsStr = `${String(seconds).padStart(2, "0")}s`;
+      minutes > 0 ? `${String(minutes).padStart(2, "0")}M:` : "";
+    const secondsStr = `${String(seconds).padStart(2, "0")}S`;
 
     return `${daysStr}${hoursStr}${minutesStr}${secondsStr}`.trim();
   };

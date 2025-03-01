@@ -11,6 +11,7 @@ import MakeOrder from "@/components/MakeOrder";
 import CategoryRule from "@/components/CategoryRule";
 import DrawGraph from "@/components/DrawGraph";
 import MakeOrderDesktop from "@/components/MakeOrderDesktop";
+import CategoryActivity from "@/components/CategoryActivity";
 
 // EventData interface
 interface EventData {
@@ -170,6 +171,7 @@ export default function EventCategoryPageDetails() {
                 </div>
                 <CategoryGraph eventData={eventData} />
                 <CategoryRule />
+                <CategoryActivity eventData={eventData}/>
               </>
             ) : (
               <p className="text-center text-gray-500">

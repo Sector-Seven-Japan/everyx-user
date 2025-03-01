@@ -24,6 +24,18 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "gothic";
+  src: url("../../public/assets//Franklin_Gothic_Book_Regular.ttf")
+    format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.gothic_font {
+  font-family: "gothic";
+}
+
 .kaisotia {
   font-family: "CustomFont";
 }
@@ -50,6 +62,6 @@ body {
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
-.inter{
+.inter {
   font-family: "Inter";
 }

@@ -12,6 +12,7 @@ import CategoryRule from "@/components/CategoryRule";
 import MakeOrderDesktop from "@/components/MakeOrderDesktop";
 import Footer from "@/components/Footer";
 import HeadingSlider from "@/components/HeadingSlider";
+import CategoryActivity from "@/components/CategoryActivity";
 
 interface WagerData {
   id: string;
@@ -296,6 +297,7 @@ export default function WagerPage() {
                   )}
                 </div>
                 <CategoryRule />
+                <CategoryActivity eventData={eventData}/>
               </>
             ) : (
               <p className="text-center text-gray-500">

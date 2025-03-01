@@ -1,5 +1,6 @@
 "use client";
 import { AppContext } from "@/app/Context/AppContext";
+import CategoryActivity from "@/components/CategoryActivity";
 import CategoryGraph from "@/components/CategoryGraph";
 import CategoryInfo from "@/components/CategoryInfo";
 import CategoryRule from "@/components/CategoryRule";
@@ -182,6 +183,7 @@ export default function OrderSuccess() {
                 </div>
                 <CategoryGraph eventData={eventData} />
                 <CategoryRule />
+                <CategoryActivity eventData={eventData}/>
               </>
             ) : (
               <p className="text-center text-gray-500">
