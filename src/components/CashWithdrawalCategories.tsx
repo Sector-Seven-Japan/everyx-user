@@ -46,7 +46,7 @@ export default function CashWithdrawalCategories() {
                 />
               </svg>
 
-              <span className="text-[0.7vw] font-thin text-white  ">
+              <span className="text-[0.6vw] font-thin text-white  ">
                 Deposit
               </span>
               {/* <BsWallet2 className="w-5 h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" /> */}
@@ -75,7 +75,7 @@ export default function CashWithdrawalCategories() {
                 />
               </svg>
 
-              <span className="text-[0.7vw] font-thin text-white ">
+              <span className="text-[0.6vw] font-thin text-white ">
                 Withdrawal
               </span>
               {/* <BiTransfer className="w-5 h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" /> */}
@@ -109,7 +109,7 @@ export default function CashWithdrawalCategories() {
                 />
               </svg>
 
-              <span className="text-[0.7vw] font-thin text-white ">
+              <span className="text-[0.6vw] font-thin text-white ">
                 Results
               </span>
               {/* <AiOutlineTrophy className="w-5 h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" /> */}
@@ -186,7 +186,7 @@ export default function CashWithdrawalCategories() {
                 />
               </svg>
 
-              <span className="text-[0.7vw] font-thin text-white ">
+              <span className="text-[0.6vw] font-thin text-white ">
                 History
               </span>
               {/* <VscHistory className="w-5 h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" /> */}
