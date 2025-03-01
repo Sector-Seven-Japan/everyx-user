@@ -27,7 +27,7 @@ const VerificationStatus: React.FC<{ isVerified: boolean | null }> = ({
 
 const Profile: React.FC = () => {
   const router = useRouter();
-  const { authToken, API_BASE_URL, setIsLoading, isMobile,filter,setFilter } =
+  const { authToken, API_BASE_URL, setIsLoading, isMobile, filter, setFilter } =
     useContext(AppContext);
 
   const [profileImage, setProfileImage] = useState<string>("");
@@ -254,9 +254,8 @@ const Profile: React.FC = () => {
           </div>
         </div>
       ) : (
-
         <div className="md:px-[12%] 2xl:px-[19%]">
-          <HeadingSlider filter={filter} setFilter={setFilter}/>
+          <HeadingSlider filter={filter} setFilter={setFilter} />
           <div className="flex md:flex-row md:mt-10 justify-between gap-5">
             <div className="bg-[#0E0E0E] md:w-[60%] xl:w-[70%]">
               <div className="w-full mx-auto">
@@ -273,9 +272,9 @@ const Profile: React.FC = () => {
                         className="rounded-full object-top object-cover"
                       />
                     ) : (
-                     <div className="w-20 h-20 rounded-full flex items-center justify-center">
-                      <IoPersonCircleOutline className="w-20 h-20 text-gray-400" />
-                    </div>
+                      <div className="w-20 h-20 rounded-full flex items-center justify-center">
+                        <IoPersonCircleOutline className="w-20 h-20 text-gray-400" />
+                      </div>
                     )}
                   </div>
                   <label className="cursor-pointer">

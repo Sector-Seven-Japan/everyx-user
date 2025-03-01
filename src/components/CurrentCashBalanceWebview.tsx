@@ -22,14 +22,12 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
 
   return (
     <>
-      <div className="sticky top-20">
+      <div className="sticky top-20 ">
         {isLoading && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ">
             <Loader />
           </div>
         )}
-
-
 
         <div className="flex flex-col bg-[white] bg-opacity-[3%] rounded-3xl px-[1vw] py-10">
           <div className="flex justify-center items-center mt-5 relative">
@@ -43,8 +41,6 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                 />
               </div>
             ) : (
-
-
               <div className="w-14 h-14 rounded-full bg-transparent flex items-center justify-center">
                 <IoPersonCircleOutline className="w-14 h-14 text-gray-400" />
               </div>
