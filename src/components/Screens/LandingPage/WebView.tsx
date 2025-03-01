@@ -450,7 +450,7 @@ const WebLanding = () => {
             alt="Landing Page Image 8"
             width={500}
             height={300}
-            style={{ width: "65vw", height: "42vw" }}
+            style={{ width: "50vw", height: "42vw" }}
           />
         </div>
       </div>
