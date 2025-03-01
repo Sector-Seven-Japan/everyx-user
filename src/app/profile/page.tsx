@@ -258,7 +258,7 @@ const Profile: React.FC = () => {
         <div className="md:px-[12%] 2xl:px-[19%]">
           <HeadingSlider filter={filter} setFilter={setFilter}/>
           <div className="flex md:flex-row md:mt-10 justify-between gap-5">
-            <div className="bg-[#0E0E0E] md:w-[60%] xl:w-[75%] w-full">
+            <div className="bg-[#0E0E0E] md:w-[60%] xl:w-[70%]">
               <div className="w-full mx-auto">
                 <div>
                   <p className="text-[1.6vw] mb-10 tracking-widest">Setting</p>
@@ -374,7 +374,7 @@ const Profile: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-5 m:w-[40%]  xl:w-[25%]">
+            <div className="mt-5 m:w-[40%]  xl:w-[30%]">
               <CurrentCashBalanceCardWebview />
             </div>
           </div>

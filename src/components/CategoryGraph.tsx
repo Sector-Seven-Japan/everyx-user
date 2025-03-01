@@ -1,7 +1,8 @@
 "use client";
 import { AppContext } from "@/app/Context/AppContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import Image from "next/image";
+
 
 interface TraderInfo {
   max_leverage: number;
@@ -36,47 +37,14 @@ interface CategoryInfoProps {
 const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
 export default function CategoryGraph({ eventData }: CategoryInfoProps) {
-  const { makeOrder, setIsOrderMade, setSelectedOrder, setIsLoading } =
-    useContext(AppContext);
-
-  const [selectedOutcomeId, setSelectedOutcomeId] = useState<string | null>(
-    null
-  );
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        // Assuming 1024px as the breakpoint for desktop mode
-        if (eventData?.outcomes.length > 0) {
-          const outcome = eventData?.outcomes[0];
-
-          setSelectedOrder(
-            String.fromCharCode(65 + 0) +
-              ". " +
-              outcome.name.charAt(0).toUpperCase() +
-              outcome.name.slice(1)
-          );
-          setIsLoading(true);
-          (async () => {
-            await makeOrder(outcome._id, eventData._id, false, 1, 0, 10, 10);
-            setIsOrderMade(true);
-            setSelectedOutcomeId(outcome._id);
-          })();
-        }
-      }
-    };
-
-    handleResize(); // Run on mount
-    window.addEventListener("resize", handleResize); // Run on resize
-
-    return () => {
-      window.removeEventListener("resize", handleResize); // Cleanup on unmount
-    };
-  }, [eventData]);
+  const { makeOrder, setIsOrderMade, setSelectedOrder, setIsLoading,setSelectedOutcomeId,selectedOutcomeId } =
+    useContext(AppContext); 
 
   return (
     <div className="mt-3 md:mt-20">
-      <h1 className="px-5 text-[23px] md:text-[1.2vw] md:tracking-[1.1px] md:mb-9">What do you predict ?</h1>
+      <h1 className="px-5 text-[23px] md:text-[1.2vw] md:tracking-[1.1px] md:mb-9">
+        What do you predict ?
+      </h1>
       <div className="pl-5 pr-5 py-8 flex flex-col gap-5">
         {eventData?.outcomes.map((outcome: Outcome, index: number) => (
           <div key={outcome._id} className="flex flex-col gap-1">
@@ -85,9 +53,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
               {outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1)}
             </p>
             <div className="flex justify-between items-center gap-2">
-              <div
-                className={`w-[80%] h-[19px] md:h-[1.5vw] rounded-lg`}
-              >
+              <div className={`w-[80%] h-[19px] md:h-[1.5vw] rounded-lg`}>
                 <div
                   onClick={async () => {
                     setSelectedOrder(

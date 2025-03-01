@@ -313,21 +313,22 @@ export default function WagerPage() {
                   <div>
                     <div className="flex mt-7 gap-3">
                       <button className="border border-[#00FFB8] px-4 py-2 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
-                        {eventData && eventData.category.name}
+                        {(eventData && eventData?.category?.name) || "Global"}
+
                       </button>
-                      <p className="text-[#2DC198] flex gap-1 items-center font-light">
-                        <div className="md:w-3">
+                      <div className="text-[#2DC198] flex gap-1 items-center font-light">
+                        <span className="md:w-3 inline-block">
                           <Image
                             src={"/Images/FreeClock i.png"}
                             alt="clock"
                             height={18}
                             width={18}
                           />
-                        </div>
-                        <p className="text-[#2DC198] md:text-[0.7vw]">
+                        </span>
+                        <span className="text-[#2DC198] md:text-[0.7vw]">
                           {countdown}
-                        </p>
-                      </p>
+                        </span>
+                      </div>
                     </div>
                     <p className="text-[21px] tracking-[2px] md:text-[0.8vw] md:tracking-[1.5px] md:leading-[1.4vw] font-light mt-4">
                       {wagerData?.event?.description}
@@ -556,7 +557,7 @@ export default function WagerPage() {
                 </div>
               </div>
             ) : (
-              <div className="hidden md:block md:mt-5">
+              <div className="hidden md:block sticky top-[70px]">
                 <MakeOrderDesktop />
               </div>
             )}

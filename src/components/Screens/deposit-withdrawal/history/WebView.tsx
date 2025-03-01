@@ -120,10 +120,10 @@ const HistoryWeb: React.FC = () => {
 
   return (
     <div className="bg-[#0E0E0E] w-full min-h-screen text-white relative">
-      <div className="md:px-[12%] 2xl:px-[19%]">
+      <div className="  md:px-[12%] 2xl:px-[19%]">
         <HeadingSlider filter={filter} setFilter={setFilter} />
-        <div className="flex md:flex-row md:mt-10 justify-between gap-5">
-          <div className="md:w-[60%] xl:w-[75%] w-full">
+        <div className="flex md:flex-row md:mt-7 justify-between gap-5">
+          <div className="md:w-[60%] xl:w-[70%]">
             <p className="text-[24px] font-semibold">
               Deposit ＆ Withdrawal History :
             </p>
@@ -168,7 +168,7 @@ const HistoryWeb: React.FC = () => {
               ))
             )}
           </div>
-          <div className="mt-5 m:w-[40%] xl:w-[25%]">
+          <div className="mt-5 md:w-[40%] xl:w-[30%]">
             <div className="sticky top-20">
               <CurrentCashBalanceCardWebview />
             </div>

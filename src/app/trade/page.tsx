@@ -94,8 +94,8 @@ export default function Home() {
     }
   }, [search, API_BASE_URL]);
 
-  return fetchingData == false ?
-    < div >
+  return fetchingData == false ? (
+    <div>
       <Navbar />
       <div className="w-full md:px-[10%] 2xl:px-[13%]">
         <HeadingSlider setFilter={setFilter} filter={filter} />
@@ -131,8 +131,8 @@ export default function Home() {
                   />
                 ))
               ) : search.trim() ? (
-                <div className="text-center text-gray-500 h-52 flex items-center justify-center">
-                  No results found
+                <div className="text-white h-[100px] justify-center">
+                  No Result found
                 </div>
               ) : null}
             </div>
@@ -140,7 +140,8 @@ export default function Home() {
         </div>
       </div>
       <Footer />
-    </div >
-
-    : <LoadingPage />
+    </div>
+  ) : (
+    <LoadingPage />
+  );
 }

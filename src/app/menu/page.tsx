@@ -11,7 +11,7 @@ import { useDisconnect } from "wagmi";
 export default function Menu() {
   const router = useRouter();
   const { disconnect } = useDisconnect();
-  const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading ,API_BASE_URL} =
+  const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading, API_BASE_URL } =
     useContext(AppContext);
   const [languageState, setLanguageState] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
@@ -22,7 +22,7 @@ export default function Menu() {
         { name: "Home", link: "/trade" },
         { name: "Portfolio", link: "/deposit-withdrawal/history" },
         { name: "Profile", link: "/profile" },
-        { name: "Message", link: "/trade", disabled: true },
+        { name: "Message", link: "/notification" },
         { name: "Mission", link: "/trade", disabled: true },
         { name: "Settings", link: "/setting" },
         { name: "Help", link: "/help" },
@@ -40,7 +40,7 @@ export default function Menu() {
       });
       console.log(response);
 
-      await signOut({ redirect: false }); // Sign out without redirecting
+      await signOut({ redirect: false });
 
       // Clear all relevant cookies
       document.cookie =
@@ -57,9 +57,9 @@ export default function Menu() {
       // Disconnect wallet
       disconnect();
 
-      localStorage.removeItem("authToken"); // Clear auth token from local storage
+      localStorage.removeItem("authToken");
 
-      router.push("/login"); // Redirect to login page after sign out
+      router.push("/login");
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
@@ -83,7 +83,13 @@ export default function Menu() {
               onClick={() => {
                 setIsLoading(true);
                 setSelectedMenu(item.name);
-                setSidebar(false);
+
+                // Open sidebar only when "Message" is clicked
+                if (item.name === "Message") {
+                  setSidebar(true);
+                } else {
+                  setSidebar(false);
+                }
               }}
             >
               {selectedMenu === item.name && (

@@ -140,7 +140,7 @@ const Help: React.FC = () => {
         <div className="md:px-[12%] 2xl:px-[19%]">
           <HeadingSlider filter={filter} setFilter={setFilter}/>
           <div className="flex md:flex-row md:mt-10 justify-between gap-5">
-          <div className="bg-[#0E0E0E] md:w-[60%] xl:w-[75%] w-full">
+          <div className="bg-[#0E0E0E] md:w-[60%] xl:w-[70%]">
             <h1 className="font-medium text-[29px] text-left mb-10 ml-3">
               Q & A
             </h1>
@@ -206,7 +206,7 @@ const Help: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-5 m:w-[40%] xl:w-[25%]">
+          <div className="mt-5 md:w-[40%] xl:w-[30%]">
             <div className="sticky top-20">
               <CurrentCashBalanceCardWebview />
             </div>
