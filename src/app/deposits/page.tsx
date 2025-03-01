@@ -3,6 +3,7 @@
 import { AppContext } from "@/app/Context/AppContext";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
+import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
@@ -15,7 +16,7 @@ import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 const Deposit: React.FC = () => {
   const router = useRouter();
 
-  const { getDepositAddress, depositAddress, isMobile } =
+  const { getDepositAddress, depositAddress, isMobile, filter, setFilter } =
     useContext(AppContext);
 
   const handleCopy = async () => {
@@ -158,7 +159,8 @@ const Deposit: React.FC = () => {
         </div>
       ) : (
         <div className="bg-[#0E0E0E] md:px-[12%] 2xl:px-[19%]">
-          <div className="flex md:flex-row md:pt-28 justify-between gap-5">
+          <HeadingSlider filter={filter} setFilter={setFilter} />
+          <div className="flex md:flex-row md:pt-[4.65%] justify-between gap-5">
             <div className="bg-[#262626] bg-opacity-[31%] md:w-[60%] xl:w-[70%] w-full pb-[4vw] rounded-2xl">
              
 

@@ -60,7 +60,7 @@ export default function CashWithdrawalCategories() {
                   : "opacity-10 hover:opacity-100"
               }`}
               type="button"
-              // onClick={() => handleNavigation("/deposit-withdrawal/withdrawal")}
+              onClick={() => handleNavigation("/deposit-withdrawal/withdrawal")}
             >
               <svg
                 width="3.5vw"

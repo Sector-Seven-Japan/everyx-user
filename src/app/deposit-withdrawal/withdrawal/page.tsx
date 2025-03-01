@@ -1,12 +1,15 @@
 "use client";
 
+import { AppContext } from "@/app/Context/AppContext";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
+import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 const Withdrawal: React.FC = () => {
+  const { filter, setFilter } = useContext(AppContext);
   const [inputValue, setInputValue] = useState<string>("");
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
@@ -86,44 +89,47 @@ const Withdrawal: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-[#0E0E0E] lg:px-40 md:px-10 sm:px-10 pt-5 grid grid-cols-10 gap-5 h-screen">
-          <div className="bg-[#262626] bg-opacity-[31%]  flex flex-col items-center rounded-t-3xl  py-2 col-span-6 h-full">
-            <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
+        <div className="bg-[#0E0E0E] md:px-[12%] 2xl:px-[19%]">
+          <HeadingSlider filter={filter} setFilter={setFilter} />
+          <div className="pt-[4.65%] grid grid-cols-10 gap-5 h-screen">
+            <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl  py-2 col-span-6 h-full">
+              <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
 
-            {/* Deposit and Withdrawal Section */}
-            <div className="mt-10 flex items-center justify-between w-full px-5">
-              <div></div>
-              <button className="text-white text-[16px] pl-14">
-                Withdrawal :
-              </button>
-              <button
-                className="text-[#2DC198] text-[14px] "
-                type="button"
-                onClick={() => router.push("/deposit-withdrawal/deposits")}
-              >
-                Deposit
-              </button>
-            </div>
+              {/* Deposit and Withdrawal Section */}
+              <div className="mt-10 flex items-center justify-between w-full px-5">
+                <div></div>
+                <button className="text-white text-[16px] pl-14">
+                  Withdrawal :
+                </button>
+                <button
+                  className="text-[#2DC198] text-[14px] "
+                  type="button"
+                  onClick={() => router.push("/deposit-withdrawal/deposits")}
+                >
+                  Deposit
+                </button>
+              </div>
 
-            {/* Input Box with Integrated Dollar Sign */}
-            <div className=" mt-10  flex items-center bg-transparent justify-center px-10 pt-40">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                placeholder="$0.00"
-                className="text-white bg-transparent text-[34px] font-bold outline-none placeholder-[#707070] w-full  pl-2 text-center"
-              />
-            </div>
+              {/* Input Box with Integrated Dollar Sign */}
+              <div className=" mt-10  flex items-center bg-transparent justify-center px-10 pt-40">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                  placeholder="$0.00"
+                  className="text-white bg-transparent text-[34px] font-bold outline-none placeholder-[#707070] w-full  pl-2 text-center"
+                />
+              </div>
 
-            {/* Currency Box */}
-            <div className="bg-[#707070] bg-opacity-[20%] px-5 py-1 rounded-3xl mt-5">
-              USD
+              {/* Currency Box */}
+              <div className="bg-[#707070] bg-opacity-[20%] px-5 py-1 rounded-3xl mt-5">
+                USD
+              </div>
             </div>
-          </div>
-          <div className="col-span-4 flex justify-end">
-            <CurrentCashBalanceCardWebview />
+            <div className="col-span-4 flex justify-end">
+              <CurrentCashBalanceCardWebview />
+            </div>
           </div>
         </div>
       )}

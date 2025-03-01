@@ -4,7 +4,7 @@ import { AppContext } from "@/app/Context/AppContext";
 import toast from "react-hot-toast";
 
 export default function MakeOrder() {
-  const { orderDetails, makeOrder, setIsLoading,walletData ,setIsOrderMade} = useContext(AppContext);
+  const { orderDetails, makeOrder, setIsLoading, walletData, setIsOrderMade } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
   const [leverage, setLeverage] = useState<number>(1.0); // Allow decimal values
@@ -142,7 +142,7 @@ export default function MakeOrder() {
         <h1 className="text-[0.7vw] mb-2">Leverage</h1>
         <div className="border-[#aeaeae68] flex rounded-md border-[0.4px] gap-2 p-2">
           <div className="w-[60%] text-[13px] px-2">x{leverage}</div>
-          {[20, 50, 100].map((item, index) => {
+          {[2, 10, 25].map((item, index) => {
             return (
               <button
                 key={index}

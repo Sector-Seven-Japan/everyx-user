@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { LuClock7 } from "react-icons/lu";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 import CashWithdrawalCategoriesMobile from "@/components/CashWithdrawalCategoriesMobile";
+import HeadingSlider from "@/components/HeadingSlider";
 
 interface BetEntry {
   id: string;
@@ -358,7 +359,8 @@ const Portfolio: React.FC = () => {
         </div>
       ) : (
         <div className="bg-[#0E0E0E] md:px-[12%] 2xl:px-[19%]">
-          <div className="flex md:flex-row md:pt-28 justify-between gap-5">
+          <HeadingSlider filter={filter} setFilter={setFilter} />
+          <div className="flex md:flex-row md:pt-[4.65%] justify-between gap-5">
             <div className="bg-[#0E0E0E] text-white px-5  pb-5 md:w-[60%] xl:w-[70%]">
               <div className="flex justify-between items-start">
                 <div>Results : </div>
