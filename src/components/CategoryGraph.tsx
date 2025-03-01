@@ -3,7 +3,6 @@ import { AppContext } from "@/app/Context/AppContext";
 import { useContext } from "react";
 import Image from "next/image";
 
-
 interface TraderInfo {
   max_leverage: number;
   estimated_payout: number;
@@ -37,8 +36,14 @@ interface CategoryInfoProps {
 const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
 export default function CategoryGraph({ eventData }: CategoryInfoProps) {
-  const { makeOrder, setIsOrderMade, setSelectedOrder, setIsLoading,setSelectedOutcomeId,selectedOutcomeId } =
-    useContext(AppContext); 
+  const {
+    makeOrder,
+    setIsOrderMade,
+    setSelectedOrder,
+    setIsLoading,
+    setSelectedOutcomeId,
+    selectedOutcomeId,
+  } = useContext(AppContext);
 
   return (
     <div className="mt-3 md:mt-20">
@@ -47,7 +52,22 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
       </h1>
       <div className="pl-5 pr-5 py-8 flex flex-col gap-5">
         {eventData?.outcomes.map((outcome: Outcome, index: number) => (
-          <div key={outcome._id} className="flex flex-col gap-1">
+          <div
+            onClick={async () => {
+              setSelectedOrder(
+                String.fromCharCode(65 + index) +
+                  ". " +
+                  outcome.name.charAt(0).toUpperCase() +
+                  outcome.name.slice(1)
+              );
+              setIsLoading(true);
+              await makeOrder(outcome._id, eventData._id, false, 1, 0, 10, 10);
+              setIsOrderMade(true);
+              setSelectedOutcomeId(outcome._id);
+            }}
+            key={outcome._id}
+            className="flex flex-col gap-1"
+          >
             <p className="text-[19px] font-light md:text-[1.2vw]">
               {String.fromCharCode(65 + index)}.{" "}
               {outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1)}
@@ -55,26 +75,6 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
             <div className="flex justify-between items-center gap-2">
               <div className={`w-[80%] h-[19px] md:h-[1.5vw] rounded-lg`}>
                 <div
-                  onClick={async () => {
-                    setSelectedOrder(
-                      String.fromCharCode(65 + index) +
-                        ". " +
-                        outcome.name.charAt(0).toUpperCase() +
-                        outcome.name.slice(1)
-                    );
-                    setIsLoading(true);
-                    await makeOrder(
-                      outcome._id,
-                      eventData._id,
-                      false,
-                      1,
-                      0,
-                      10,
-                      10
-                    );
-                    setIsOrderMade(true);
-                    setSelectedOutcomeId(outcome._id);
-                  }}
                   className="h-[19px] rounded-lg cursor-pointer hover:opacity-80 transition-opacity md:h-[1.5vw] md:rounded-xl"
                   style={{
                     backgroundColor: outcomeColors[index],

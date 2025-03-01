@@ -10,6 +10,7 @@ import CategoryInfo from "@/components/CategoryInfo";
 import HeadingSlider from "@/components/HeadingSlider";
 import Footer from "@/components/Footer";
 import CategoryGraph from "@/components/CategoryGraph";
+import CategoryActivity from "@/components/CategoryActivity";
 
 interface WagerPayload {
   event_id: string;
@@ -233,6 +234,7 @@ export default function Order() {
                 </div>
                 <CategoryGraph eventData={eventData} />
                 <CategoryRule />
+                <CategoryActivity eventData={eventData} />
               </>
             ) : (
               <p className="text-center text-gray-500">

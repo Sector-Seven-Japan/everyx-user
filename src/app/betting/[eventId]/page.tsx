@@ -9,6 +9,7 @@ import CategoryRule from "@/components/CategoryRule";
 import DrawGraph from "@/components/DrawGraph";
 import HeadingSlider from "@/components/HeadingSlider";
 import Footer from "@/components/Footer";
+import CategoryActivity from "@/components/CategoryActivity";
 
 interface WagerPayload {
   event_id: string;
@@ -227,6 +228,7 @@ export default function BettingPage() {
                   )}
                 </div>
                 <CategoryRule />
+                <CategoryActivity eventData={eventData} />
               </>
             ) : (
               <p className="text-center text-gray-500">
@@ -338,7 +340,7 @@ export default function BettingPage() {
                       Cash used
                     </p>
                     <p className="text-[22px] text-[#00FFB8] md:text-[1.5vw]">
-                      ${orderDetails?.wager}
+                      ${Math.round(orderDetails?.wager)}
                     </p>
                   </div>
                   <Image src="/Images/down.png" alt="" height={10} width={10} />
@@ -409,11 +411,10 @@ export default function BettingPage() {
             </div>
           </div>
         </div>
-        
       </div>
       <div className="md:block hidden">
-          <Footer />
-        </div>
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
-import toast  from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export default function MakeOrder() {
   const {
@@ -14,8 +14,10 @@ export default function MakeOrder() {
   } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
-  const [leverage, setLeverage] = useState<number>(1.0); // Allow decimal values
+  const [leverage, setLeverage] = useState<number>(1.0);
   const [value, setValue] = useState<number>(10);
+  const [inputValue, setInputValue] = useState<string>("10");
+  const [inputLeverage, setInputLeverage] = useState<string>("1.0");
   const [startY, setStartY] = useState<number | null>(null);
   const maxTradeSize = orderDetails?.max_wager;
   const maxLeverage = orderDetails?.max_leverage;
@@ -35,13 +37,61 @@ export default function MakeOrder() {
   };
 
   const handleTradeSize = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseFloat(e.target.value);
+    // Allow any input to be entered first
+    const val = e.target.value;
+    setInputValue(val);
+    
+    // Only update the actual value if it's a valid number
+    const newValue = parseFloat(val);
+    if (!isNaN(newValue)) {
+      setValue(newValue);
+    }
+  };
+
+  const handleTradeSizeBlur = () => {
+    let newValue = parseFloat(inputValue);
+    if (isNaN(newValue) || newValue < 10) {
+      newValue = 10;
+    } else if (newValue > maxTradeSize) {
+      newValue = maxTradeSize;
+    }
     setValue(newValue);
+    setInputValue(newValue.toString());
   };
 
   const handleLeverage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLeverage(parseFloat(parseFloat(e.target.value).toFixed(1))); // Ensures one decimal place
+    // Allow any input to be entered first
+    const val = e.target.value;
+    setInputLeverage(val);
+    
+    // Only update the actual value if it's a valid number
+    const newValue = parseFloat(val);
+    if (!isNaN(newValue)) {
+      setLeverage(newValue);
+    }
   };
+
+  const handleLeverageBlur = () => {
+    let newValue = parseFloat(inputLeverage);
+    if (isNaN(newValue) || newValue < 1) {
+      newValue = 1;
+    } else if (newValue > maxLeverage) {
+      newValue = maxLeverage;
+    }
+    // Round to one decimal place for display
+    const roundedValue = parseFloat(newValue.toFixed(1));
+    setLeverage(roundedValue);
+    setInputLeverage(roundedValue.toString());
+  };
+
+  // Update input values when slider values change
+  useEffect(() => {
+    setInputValue(value.toString());
+  }, [value]);
+
+  useEffect(() => {
+    setInputLeverage(leverage.toString());
+  }, [leverage]);
 
   const handleTradeSizePlus = (amount: number) => {
     const currentValue = parseFloat(value.toString());
@@ -49,18 +99,25 @@ export default function MakeOrder() {
     setValue(newValue);
   };
 
-  const handleLeveragePlus = (percentage: number) => {
-    const increment = (maxLeverage * percentage) / 100;
-    const newValue = Math.min(leverage + increment, maxLeverage);
-    setLeverage(parseFloat(newValue.toFixed(1))); // Round to one decimal place
+  const handleLeveragePlus = (amount: number) => {
+    const newValue = Math.min(leverage + amount, maxLeverage);
+    const roundedValue = parseFloat(newValue.toFixed(1));
+    setLeverage(roundedValue);
   };
 
-  const leveragePercentage = ((leverage - 1) / (maxLeverage - 1)) * 100;
-  const tradeSizePercentage = (value / maxTradeSize) * 100;
+  // Calculate the correct percentage for the range input background
+  const calculateLeveragePercentage = () => {
+    if (!maxLeverage) return 0;
+    return ((leverage - 1) / (maxLeverage - 1)) * 100;
+  };
 
-  // Format the display value to always show 2 decimal places
-  const displayValue = value.toFixed(2);
-  const [wholePart, decimalPart] = displayValue.split(".");
+  const calculateTradeSizePercentage = () => {
+    if (!maxTradeSize) return 0;
+    return ((value - 10) / (maxTradeSize - 10)) * 100;
+  };
+
+  const leveragePercentage = calculateLeveragePercentage();
+  const tradeSizePercentage = calculateTradeSizePercentage();
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -68,8 +125,8 @@ export default function MakeOrder() {
     if (walletData[0]?.balance < value) {
       toast("You have insufficient balance", {
         style: {
-          background: '#333',
-          color: '#fff',
+          background: "#333",
+          color: "#fff",
         },
       });
       setIsOrderMade(false);
@@ -95,6 +152,7 @@ export default function MakeOrder() {
       await makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
     }
   };
+
   useEffect(() => {
     setIsLoading(true);
     if (!eventId || !outcomeId) return;
@@ -127,8 +185,16 @@ export default function MakeOrder() {
         <div className="mb-10">
           <h1 className="text-[23px] mb-5">Total Size</h1>
           <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2">
-            <div className="w-[60%] px-2 text-[19px]">
-              ${wholePart}.{decimalPart}
+            <div className="flex items-center px-2">
+              <span className="text-[19px]">$</span>
+              <input
+                type="text"
+                inputMode="decimal"
+                value={inputValue}
+                onChange={handleTradeSize}
+                onBlur={handleTradeSizeBlur}
+                className="w-[60%] text-[19px] bg-transparent border-none outline-none"
+              />
             </div>
             {[20, 50, 100].map((item, index) => {
               return (
@@ -143,66 +209,102 @@ export default function MakeOrder() {
             })}
           </div>
           <div className="pl-2 mt-3">
-            <input
-              type="range"
-              min="0"
-              max={maxTradeSize}
-              step="0.01"
-              value={value}
-              onChange={handleTradeSize}
-              style={{
-                background: `linear-gradient(to right, #00FFB8 ${tradeSizePercentage}%, #171717 ${tradeSizePercentage}%)`,
-              }}
-              className="w-full h-1 rounded-lg appearance-none cursor-pointer 
-                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
-                [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
-            />
+            <div className="slider-container w-full h-4 flex items-center">
+              <div className="relative w-full">
+                {/* Base track - full width */}
+                <div className="absolute h-1 w-full bg-[#171717] rounded-lg"></div>
+                {/* Colored track - variable width based on value */}
+                <div 
+                  className="absolute h-1 bg-[#00FFB8] rounded-lg"
+                  style={{ width: `${tradeSizePercentage}%` }}
+                ></div>
+                {/* Input range */}
+                <input
+                  type="range"
+                  min="10"
+                  max={maxTradeSize}
+                  step="0.01"
+                  value={value}
+                  onChange={(e) => setValue(parseFloat(e.target.value))}
+                  className="absolute w-full h-1 opacity-0 cursor-pointer z-10"
+                />
+                {/* Thumb - positioned based on value */}
+                <div 
+                  className="absolute w-4 h-4 bg-[#00FFB8] rounded-full top-1/2 transform -translate-y-1/2 pointer-events-none"
+                  style={{ left: `calc(${tradeSizePercentage}% - 8px)` }}
+                ></div>
+              </div>
+            </div>
             <div className="flex flex-row-reverse">
               <p className="text-[#00FFB8] text-xs mt-5">
-                Max trade size | ${maxTradeSize.toFixed(1)} MAX
+                Max trade size | ${maxTradeSize?.toFixed(1)} MAX
               </p>
             </div>
           </div>
         </div>
 
-        <div className="mb-10">
-          <h1 className="text-[23px] mb-5">Leverage</h1>
-          <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2">
-            <div className="w-[60%] text-[19px] px-2">x{leverage}</div>
-            {[20, 50, 100].map((item, index) => {
-              return (
-                <button
-                  key={index}
-                  onClick={() => handleLeveragePlus(item)}
-                  className="bg-[#1b1b1b] rounded-md py-1 px-2 font-semibold text text-[13px] hover:bg-[#2b2b2b]"
-                >
-                  +{item}
-                </button>
-              );
-            })}
-          </div>
-          <div className="pl-2 mt-3">
-            <input
-              type="range"
-              min="1"
-              max={maxLeverage}
-              step="0.1" // Allows increments of 0.1
-              value={leverage}
-              onChange={handleLeverage}
-              style={{
-                background: `linear-gradient(to right, #00FFB8 ${leveragePercentage}%, #171717 ${leveragePercentage}%)`,
-              }}
-              className="w-full h-1 rounded-lg appearance-none cursor-pointer 
-    [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-[#00FFB8] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
-    [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-[#00FFB8] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer"
-            />
-            <div className="flex flex-row-reverse">
-              <p className="text-[#FF4E00] text-xs mt-5">
-                Max Available leverage | {maxLeverage}MAX
-              </p>
+        {pathname.startsWith("/events") && (
+          <div className="mb-10">
+            <h1 className="text-[23px] mb-5">Leverage</h1>
+            <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2 justify-between">
+              <div className="flex items-center px-2">
+                <span className="text-[19px]">x</span>
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={inputLeverage}
+                  onChange={handleLeverage}
+                  onBlur={handleLeverageBlur}
+                  className="w-[60%] text-[19px] bg-transparent border-none outline-none"
+                />
+              </div>
+              {[2, 3, 5].map((item, index) => {
+                return (
+                  <button
+                    key={index}
+                    onClick={() => handleLeveragePlus(item)}
+                    className="bg-[#1b1b1b] rounded-md py-1 px-2 font-semibold text text-[13px] hover:bg-[#2b2b2b]"
+                  >
+                    +{item}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="pl-2 mt-3">
+              <div className="slider-container w-full h-4 flex items-center">
+                <div className="relative w-full">
+                  {/* Base track - full width */}
+                  <div className="absolute h-1 w-full bg-[#171717] rounded-lg"></div>
+                  {/* Colored track - variable width based on value */}
+                  <div 
+                    className="absolute h-1 bg-[#00FFB8] rounded-lg"
+                    style={{ width: `${leveragePercentage}%` }}
+                  ></div>
+                  {/* Input range */}
+                  <input
+                    type="range"
+                    min="1"
+                    max={maxLeverage}
+                    step="0.1"
+                    value={leverage}
+                    onChange={(e) => setLeverage(parseFloat(e.target.value))}
+                    className="absolute w-full h-1 opacity-0 cursor-pointer z-10"
+                  />
+                  {/* Thumb - positioned based on value */}
+                  <div 
+                    className="absolute w-4 h-4 bg-[#00FFB8] rounded-full top-1/2 transform -translate-y-1/2 pointer-events-none"
+                    style={{ left: `calc(${leveragePercentage}% - 8px)` }}
+                  ></div>
+                </div>
+              </div>
+              <div className="flex flex-row-reverse">
+                <p className="text-[#FF4E00] text-xs mt-5">
+                  Max Available leverage | {maxLeverage}MAX
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="h-[0.5px] w-[60%] mb-12 border-t border-dashed mx-auto"></div>
 
         <div className="flex flex-col gap-4">
