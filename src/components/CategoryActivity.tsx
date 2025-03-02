@@ -131,7 +131,7 @@ export default function CategoryActivity({ eventData }: CategoryInfoProps) {
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
 
   const getOutcomeNameAndColor = (outcomeId: string) => {
-    const outcome = eventData.outcomes.find(
+    const outcome = eventData?.outcomes?.find(
       (outcome) => outcome._id === outcomeId
     );
     const colorIndex = outcomeId.charCodeAt(0) % outcomeColors.length;

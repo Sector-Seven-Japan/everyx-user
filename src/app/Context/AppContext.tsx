@@ -1,6 +1,7 @@
 "use client";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 // Types and Interfaces
 interface Category {
@@ -449,6 +450,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const responseData = (await response.json()) as OrderResponse;
       setOrderDetails(responseData);
     } catch (error) {
+      toast.error("Something went wrong", {
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      setIsOrderMade(false)
       console.error("Error making order:", error);
     } finally {
       setIsLoading(false);

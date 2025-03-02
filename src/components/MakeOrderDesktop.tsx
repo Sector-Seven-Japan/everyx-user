@@ -8,8 +8,9 @@ export default function MakeOrder() {
     useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
+  const lev = orderDetails?.leverage;
   const tradeVal = orderDetails?.pledge;
-  const [leverage, setLeverage] = useState<number>(1.0);
+  const [leverage, setLeverage] = useState<number>(lev);
   const [value, setValue] = useState<number>(10);
   const [inputValue, setInputValue] = useState<string>("10");
   const [inputLeverage, setInputLeverage] = useState<string>("1.0");
@@ -23,7 +24,11 @@ export default function MakeOrder() {
       setValue(tradeVal);
       setInputValue(tradeVal.toString());
     }
-  }, [tradeVal]);
+    if (lev !== undefined) {
+      setLeverage(lev);
+      setInputLeverage(lev.toString());
+    }
+  }, [tradeVal, lev]);
 
   const handleTradeSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -209,7 +214,7 @@ export default function MakeOrder() {
                   onClick={() => handleLeveragePlus(item)}
                   className="bg-[#1b1b1b] rounded-sm px-2 font-semibold text text-[10px] hover:bg-[#2b2b2b]"
                 >
-                  +{item}
+                  {item}x
                 </button>
               );
             })}

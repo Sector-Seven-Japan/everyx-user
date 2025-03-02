@@ -81,18 +81,15 @@ export default function CategoryCard({
   const { API_BASE_URL, getCountdown } = useContext(AppContext);
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const router = useRouter();
-  const {
-    setIsLoading,
-    calculateMaxLeverage,
-    calculateMaxEstimatedPayout,
-  } = useContext(AppContext);
+  const { setIsLoading, calculateMaxLeverage, calculateMaxEstimatedPayout } =
+    useContext(AppContext);
 
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
   const [countdown, setCountdown] = useState("");
 
   const handleNavigation = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       router.push(`/events/${item?._id}`);
     } catch (error) {
       console.error("Navigation error:", error);
@@ -167,7 +164,10 @@ export default function CategoryCard({
     <div className="rounded-xl overflow-hidden cursor-pointer h-full relative flex flex-col justify-between">
       <div>
         {/* Card Header */}
-        <div className="relative flex gap-3 items-center h-52 md:h-32">
+        <div
+          onClick={handleNavigation}
+          className="relative flex gap-3 items-center h-52 md:h-32"
+        >
           <img
             className="h-full w-full object-cover"
             src={item?.event_images_url[0]}
@@ -177,7 +177,10 @@ export default function CategoryCard({
         </div>
 
         {/* Card Details */}
-        <div className="flex mt-3 gap-3 md:mt-2 items-center">
+        <div
+          onClick={handleNavigation}
+          className="flex mt-3 gap-3 md:mt-2 items-center"
+        >
           <button className="border border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[0.65vw] md:px-4 md:py-[1px]">
             {item?.category?.name?.split(" ")[0] || "Global"}
           </button>
@@ -248,6 +251,7 @@ export default function CategoryCard({
             >
               {item?.outcomes.map((outcome: Outcome, index: number) => (
                 <div
+                  onClick={handleNavigation}
                   key={outcome._id}
                   className={`flex flex-col gap-1 md:gap-2`}
                 >
