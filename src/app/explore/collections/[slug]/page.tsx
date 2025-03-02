@@ -44,6 +44,10 @@ export default function EventCategoryPage() {
   const [open, setOpen] = useState(false);
   const [filterC, setFilterC] = useState("Time");
 
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
+
   // Type guard to ensure slug is a string
   const safeSlug = Array.isArray(slug) ? slug[0] : slug;
 
@@ -84,7 +88,7 @@ export default function EventCategoryPage() {
         <HeadingSlider setFilter={setFilter} filter={filter} />
         <SearchBar search={search} setSearch={setSearch} />
         <div className="p-5 md:p-0">
-          <div className="flex justify-between md:mb-10 relative">
+          <div className="hidden md:flex justify-between md:mb-10 relative">
             <h1 className="text-xl mb-6 md:text-[25px] md:mt-20 inter font-[700] ">
               {heading || safeSlug}
             </h1>

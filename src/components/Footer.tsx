@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
         />
       </div>
 
-      <div className="text-[#fff] font-thin text-[14px] md:text-[16px] flex flex-row justify-between  items-center gap-10 sm:gap-8 mt-10 opacity-[80%] flex-wrap px-[5vw] mb-[7vw]">
+      <div className="text-[#fff] font-thin text-[14px] md:text-[16px] flex flex-row justify-between items-center gap-10 sm:gap-8 mt-10 opacity-[80%] md:px-[5vw] mb-[7vw]">
         <button
           type="button"
           onClick={() => {

@@ -242,7 +242,7 @@ export default function Order() {
               </p>
             )}
           </div>
-          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%]">
+          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%] pb-20">
             <div className="md:pb-10  md:bg-[#141414] md:rounded-xl sticky top-[70px]">
               <div className="p-5">
                 <h1 className="text-center mb-4 md:text-[1.1vw] md:mb-[1.2vw] text-[22px]">
@@ -338,8 +338,8 @@ export default function Order() {
                     <Image
                       src="/Images/line.png"
                       alt=""
-                      height={300}
-                      width={300}
+                      height={500}
+                      width={500}
                       className="my-5"
                     />
                   </div>

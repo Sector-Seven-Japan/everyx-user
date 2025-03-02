@@ -48,6 +48,10 @@ export default function EventCategoryPage() {
   const [open, setOpen] = useState(false);
   const [filterC, setFilterC] = useState("Time");
 
+  useEffect(()=>{
+    setIsLoading(false);
+  },[])
+
   // Type guard to ensure slug is a string
   const safeSlug = Array.isArray(slug) ? slug[0] : slug;
 
@@ -93,7 +97,7 @@ export default function EventCategoryPage() {
             <h1 className="text-xl mb-6 md:text-[25px] md:mt-20 inter font-[700] ">
               {heading || safeSlug}
             </h1>
-            <div className="flex flex-col gap-2 absolute top-20 right-0">
+            <div className="flex-col gap-2 absolute top-20 right-0 hidden md:flex">
               <div className="flex w-36 bg-[rgba(255,255,255,0.1)] rounded-md justify-between items-center px-2 py-1">
                 <div className="text-[14px]">{filterC}</div>
                 <div

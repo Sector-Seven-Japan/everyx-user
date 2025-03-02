@@ -84,22 +84,7 @@ export default function CategoryCard({
 
   const handleNavigation = async () => {
     try {
-      setIsLoading(true);
-      if (window.innerWidth >= 1024) {
-        const outcome = item?.outcomes[0];
-        setSelectedOrder(
-          String.fromCharCode(65 + 0) +
-            ". " +
-            outcome.name.charAt(0).toUpperCase() +
-            outcome.name.slice(1)
-        );
-        setSelectedOutcomeId(outcome._id);
-        (async () => {
-          await makeOrder(outcome._id, item._id, false, 1, 0, 10, 10);
-          setIsOrderMade(true);
-        })();
-      }
-
+      setIsLoading(true)
       router.push(`/events/${item?._id}`);
     } catch (error) {
       console.error("Navigation error:", error);

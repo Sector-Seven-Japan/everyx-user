@@ -40,7 +40,7 @@ interface CategoryProps {
 }
 
 export default function Category({ item }: CategoryProps) {
-  const { setFilter, API_BASE_URL } = useContext(AppContext);
+  const { setFilter, API_BASE_URL,setIsLoading } = useContext(AppContext);
   const router = useRouter();
   const [events, setEvents] = useState<Event[]>([]);
 
@@ -75,6 +75,7 @@ export default function Category({ item }: CategoryProps) {
         <h1 className="text-xl mb-6 md:text-[25px] md:mb-14 inter font-[700]">{item?.name}</h1>
         <button
           onClick={() => {
+            setIsLoading(true)
             setFilter(item?.name);
             router.push(`/explore/category/${item?.slug}`);
           }}

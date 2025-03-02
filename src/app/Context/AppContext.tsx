@@ -227,8 +227,8 @@ const initialState: AppContextProps = {
     indicative_return: 0,
     new_probability: 0,
     probability_change: 0,
-    wager: 0,
-    pledge: 0,
+    wager: 10,
+    pledge: 10,
     event_id: "",
     event_outcome_id: "",
     after_payout: 0,
@@ -302,8 +302,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     indicative_return: 0,
     new_probability: 0,
     probability_change: 0,
-    wager: 0,
-    pledge: 0,
+    wager: 10,
+    pledge: 10,
     event_id: "",
     event_outcome_id: "",
     after_payout: 0,
@@ -428,8 +428,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       wager: wager,
     };
 
-    console.log(orderPayload);
-
     try {
       const response = await fetch(`${API_BASE_URL}/quotes`, {
         method: "POST",
@@ -474,8 +472,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       pledge: pledge,
       wager: wager,
     };
-
-    console.log(orderPayload);
 
     try {
       const response = await fetch(`${API_BASE_URL}/quotes`, {
@@ -631,7 +627,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         },
       });
       const data = await res.json();
-      console.log(data);
       setDepositAddress(data.address);
     } catch (error) {
       console.log("failed to fetch deposit address", error);
