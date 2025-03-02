@@ -59,6 +59,18 @@ interface EventHistoryParams {
   eventId: string;
 }
 
+const fetchQueue: (() => Promise<void>)[] = [];
+let isFetching = false;
+
+const processQueue = async () => {
+  if (isFetching || fetchQueue.length === 0) return;
+  isFetching = true;
+  const fetchTask = fetchQueue.shift();
+  if (fetchTask) await fetchTask();
+  isFetching = false;
+  processQueue();
+};
+
 export default function CategoryCard({
   item,
   showChart,
@@ -73,10 +85,6 @@ export default function CategoryCard({
     setIsLoading,
     calculateMaxLeverage,
     calculateMaxEstimatedPayout,
-    makeOrder,
-    setIsOrderMade,
-    setSelectedOrder,
-    setSelectedOutcomeId,
   } = useContext(AppContext);
 
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
@@ -149,8 +157,11 @@ export default function CategoryCard({
       }
     };
 
-    fetchData();
-  }, [item?._id, API_BASE_URL]);
+    if (showChart) {
+      fetchQueue.push(fetchData);
+      processQueue();
+    }
+  }, [item?._id, API_BASE_URL, showChart]);
 
   return (
     <div className="rounded-xl overflow-hidden cursor-pointer h-full relative flex flex-col justify-between">

@@ -48,11 +48,13 @@ export default function Home() {
     setIsLoading,
     categories,
     fetchingData,
+    setSelectedOutcomeId
   } = useContext(AppContext);
   const [searchData, setSearchData] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
   useEffect(() => {
+    setSelectedOutcomeId("");
     setIsLoading(false);
     setIsOrderMade(false);
   }, [setIsOrderMade]);

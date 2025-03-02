@@ -1,7 +1,6 @@
 "use client";
 import { AppContext } from "@/app/Context/AppContext";
 import CategoryActivity from "@/components/CategoryActivity";
-import CategoryGraph from "@/components/CategoryGraph";
 import CategoryInfo from "@/components/CategoryInfo";
 import CategoryRule from "@/components/CategoryRule";
 import DrawGraph from "@/components/DrawGraph";
@@ -181,7 +180,6 @@ export default function OrderSuccess() {
                     <DrawGraph data={graphData} />
                   )}
                 </div>
-                <CategoryGraph eventData={eventData} />
                 <CategoryRule />
                 <CategoryActivity eventData={eventData}/>
               </>
