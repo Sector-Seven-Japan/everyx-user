@@ -59,6 +59,18 @@ interface EventHistoryParams {
   eventId: string;
 }
 
+const fetchQueue: (() => Promise<void>)[] = [];
+let isFetching = false;
+
+const processQueue = async () => {
+  if (isFetching || fetchQueue.length === 0) return;
+  isFetching = true;
+  const fetchTask = fetchQueue.shift();
+  if (fetchTask) await fetchTask();
+  isFetching = false;
+  processQueue();
+};
+
 export default function CategoryCard({
   item,
   showChart,
@@ -73,10 +85,6 @@ export default function CategoryCard({
     setIsLoading,
     calculateMaxLeverage,
     calculateMaxEstimatedPayout,
-    makeOrder,
-    setIsOrderMade,
-    setSelectedOrder,
-    setSelectedOutcomeId,
   } = useContext(AppContext);
 
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
@@ -84,22 +92,7 @@ export default function CategoryCard({
 
   const handleNavigation = async () => {
     try {
-      setIsLoading(true);
-      if (window.innerWidth >= 1024) {
-        const outcome = item?.outcomes[0];
-        setSelectedOrder(
-          String.fromCharCode(65 + 0) +
-            ". " +
-            outcome.name.charAt(0).toUpperCase() +
-            outcome.name.slice(1)
-        );
-        setSelectedOutcomeId(outcome._id);
-        (async () => {
-          await makeOrder(outcome._id, item._id, false, 1, 0, 10, 10);
-          setIsOrderMade(true);
-        })();
-      }
-
+      setIsLoading(true)
       router.push(`/events/${item?._id}`);
     } catch (error) {
       console.error("Navigation error:", error);
@@ -164,8 +157,11 @@ export default function CategoryCard({
       }
     };
 
-    fetchData();
-  }, [item?._id, API_BASE_URL]);
+    if (showChart) {
+      fetchQueue.push(fetchData);
+      processQueue();
+    }
+  }, [item?._id, API_BASE_URL, showChart]);
 
   return (
     <div className="rounded-xl overflow-hidden cursor-pointer h-full relative flex flex-col justify-between">

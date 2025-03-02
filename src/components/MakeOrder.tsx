@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 export default function MakeOrder() {
   const {
@@ -15,7 +16,8 @@ export default function MakeOrder() {
   const router = useRouter();
   const pathname = usePathname();
   const [leverage, setLeverage] = useState<number>(1.0);
-  const [value, setValue] = useState<number>(10);
+  const tradeVal = orderDetails?.pledge;
+  const [value, setValue] = useState<number>(tradeVal);
   const [inputValue, setInputValue] = useState<string>("10");
   const [inputLeverage, setInputLeverage] = useState<string>("1.0");
   const [startY, setStartY] = useState<number | null>(null);
@@ -23,6 +25,13 @@ export default function MakeOrder() {
   const maxLeverage = orderDetails?.max_leverage;
   const eventId = orderDetails?.event_id;
   const outcomeId = orderDetails?.event_outcome_id;
+
+  useEffect(() => {
+    if (tradeVal !== undefined) {
+      setValue(tradeVal);
+      setInputValue(tradeVal.toString());
+    }
+  }, [tradeVal]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setStartY(e.touches[0].clientY);
@@ -40,7 +49,7 @@ export default function MakeOrder() {
     // Allow any input to be entered first
     const val = e.target.value;
     setInputValue(val);
-    
+
     // Only update the actual value if it's a valid number
     const newValue = parseFloat(val);
     if (!isNaN(newValue)) {
@@ -53,7 +62,7 @@ export default function MakeOrder() {
     if (isNaN(newValue) || newValue < 10) {
       newValue = 10;
     } else if (newValue > maxTradeSize) {
-      newValue = maxTradeSize;
+      newValue = maxTradeSize; // Prevent going beyond max
     }
     setValue(newValue);
     setInputValue(newValue.toString());
@@ -63,7 +72,7 @@ export default function MakeOrder() {
     // Allow any input to be entered first
     const val = e.target.value;
     setInputLeverage(val);
-    
+
     // Only update the actual value if it's a valid number
     const newValue = parseFloat(val);
     if (!isNaN(newValue)) {
@@ -98,6 +107,7 @@ export default function MakeOrder() {
     const newValue = Math.min(currentValue + amount, maxTradeSize);
     setValue(newValue);
   };
+  
 
   const handleLeveragePlus = (amount: number) => {
     const newValue = Math.min(leverage + amount, maxLeverage);
@@ -201,7 +211,7 @@ export default function MakeOrder() {
                 <button
                   key={index}
                   onClick={() => handleTradeSizePlus(item)}
-                  className="bg-[#1b1b1b] rounded-md py-1 px-2 font-semibold text text-[13px] hover:bg-[#2b2b2b]"
+                  className="rounded-md py-1 px-2 font-semibold text text-[13px] bg-[#2b2b2b]"
                 >
                   +{item}
                 </button>
@@ -214,7 +224,7 @@ export default function MakeOrder() {
                 {/* Base track - full width */}
                 <div className="absolute h-1 w-full bg-[#171717] rounded-lg"></div>
                 {/* Colored track - variable width based on value */}
-                <div 
+                <div
                   className="absolute h-1 bg-[#00FFB8] rounded-lg"
                   style={{ width: `${tradeSizePercentage}%` }}
                 ></div>
@@ -229,8 +239,8 @@ export default function MakeOrder() {
                   className="absolute w-full h-1 opacity-0 cursor-pointer z-10"
                 />
                 {/* Thumb - positioned based on value */}
-                <div 
-                  className="absolute w-4 h-4 bg-[#00FFB8] rounded-full top-1/2 transform -translate-y-1/2 pointer-events-none"
+                <div
+                  className="absolute w-4 h-4 bg-[#00FFB8] rounded-full top-[1px] transform -translate-y-1/2 pointer-events-none"
                   style={{ left: `calc(${tradeSizePercentage}% - 8px)` }}
                 ></div>
               </div>
@@ -263,7 +273,7 @@ export default function MakeOrder() {
                   <button
                     key={index}
                     onClick={() => handleLeveragePlus(item)}
-                    className="bg-[#1b1b1b] rounded-md py-1 px-2 font-semibold text text-[13px] hover:bg-[#2b2b2b]"
+                    className="rounded-md py-1 px-3 font-semibold text text-[13px] bg-[#2b2b2b]"
                   >
                     +{item}
                   </button>
@@ -276,7 +286,7 @@ export default function MakeOrder() {
                   {/* Base track - full width */}
                   <div className="absolute h-1 w-full bg-[#171717] rounded-lg"></div>
                   {/* Colored track - variable width based on value */}
-                  <div 
+                  <div
                     className="absolute h-1 bg-[#00FFB8] rounded-lg"
                     style={{ width: `${leveragePercentage}%` }}
                   ></div>
@@ -291,8 +301,8 @@ export default function MakeOrder() {
                     className="absolute w-full h-1 opacity-0 cursor-pointer z-10"
                   />
                   {/* Thumb - positioned based on value */}
-                  <div 
-                    className="absolute w-4 h-4 bg-[#00FFB8] rounded-full top-1/2 transform -translate-y-1/2 pointer-events-none"
+                  <div
+                    className="absolute w-4 h-4 bg-[#00FFB8] rounded-full top-[1px] transform -translate-y-1/2 pointer-events-none"
                     style={{ left: `calc(${leveragePercentage}% - 8px)` }}
                   ></div>
                 </div>
@@ -305,7 +315,15 @@ export default function MakeOrder() {
             </div>
           </div>
         )}
-        <div className="h-[0.5px] w-[60%] mb-12 border-t border-dashed mx-auto"></div>
+        <div className="flex justify-center">
+          <Image
+            src="/Images/line.png"
+            alt=""
+            height={500}
+            width={500}
+            className="my-5"
+          />
+        </div>
 
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">

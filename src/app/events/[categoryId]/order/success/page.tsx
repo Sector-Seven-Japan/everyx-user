@@ -1,7 +1,6 @@
 "use client";
 import { AppContext } from "@/app/Context/AppContext";
 import CategoryActivity from "@/components/CategoryActivity";
-import CategoryGraph from "@/components/CategoryGraph";
 import CategoryInfo from "@/components/CategoryInfo";
 import CategoryRule from "@/components/CategoryRule";
 import DrawGraph from "@/components/DrawGraph";
@@ -181,7 +180,6 @@ export default function OrderSuccess() {
                     <DrawGraph data={graphData} />
                   )}
                 </div>
-                <CategoryGraph eventData={eventData} />
                 <CategoryRule />
                 <CategoryActivity eventData={eventData}/>
               </>
@@ -191,7 +189,7 @@ export default function OrderSuccess() {
               </p>
             )}
           </div>
-          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%]">
+          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%] pb-20 md:pb-0">
             <div className="px-8 py-5 md:bg-[#141414] md:rounded-xl md:px-5 sticky top-[70px]">
               <h1 className="text-center mb-4 md:text-[1.1vw] md:mb-[1.2vw] text-[22px]">
                 Your Order
@@ -237,12 +235,12 @@ export default function OrderSuccess() {
                   ID: {orderDetails?.event_id}
                 </p>
 
-                <div className="flex justify-center">
+                <div className="flex justify-center mt-2">
                   <Image
                     src="/Images/line.png"
                     alt=""
-                    height={300}
-                    width={300}
+                    height={500}
+                    width={500}
                     className="my-5"
                   />
                 </div>
@@ -283,8 +281,8 @@ export default function OrderSuccess() {
                   <Image
                     src="/Images/line.png"
                     alt=""
-                    height={300}
-                    width={300}
+                    height={500}
+                    width={500}
                     className="mb-5"
                   />
                 </div>

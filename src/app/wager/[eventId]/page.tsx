@@ -305,7 +305,7 @@ export default function WagerPage() {
               </p>
             )}
           </div>
-          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%]">
+          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%] pb-20 md:pb-0">
             {!marginClicked ? (
               <div className="pb-10 md:pb-5 md:bg-[#171717] rounded-2xl sticky top-[70px]">
                 <div className="p-5">
@@ -415,8 +415,8 @@ export default function WagerPage() {
                       <Image
                         src="/Images/line.png"
                         alt=""
-                        height={300}
-                        width={300}
+                        height={500}
+                        width={500}
                         className="my-5"
                       />
                     </div>

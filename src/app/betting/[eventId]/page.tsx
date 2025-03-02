@@ -279,7 +279,7 @@ export default function BettingPage() {
               </div>
 
               <div className="px-1 md:px-5">
-                <div className="border p-5 border-[#5151514e] rounded-xl md:p-4">
+                <div className="border p-5 border-[#515151d6] rounded-xl md:p-4">
                   <div className="flex flex-col gap-4 md:gap-2">
                     <div className="flex justify-between">
                       <div className="flex flex-col gap-[1px]">
@@ -345,7 +345,7 @@ export default function BettingPage() {
                   </div>
                   <Image src="/Images/down.png" alt="" height={10} width={10} />
                 </div>
-                <div className="border p-5 border-[#5151514e] rounded-xl md:p-4">
+                <div className="border p-5 border-[#515151d6] rounded-xl md:p-4">
                   <div className="flex flex-col gap-4 md:gap-2">
                     <div className="flex justify-between">
                       <div className="flex flex-col gap-[1px]">

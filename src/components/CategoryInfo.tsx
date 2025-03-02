@@ -3,7 +3,6 @@ import { AppContext } from "@/app/Context/AppContext";
 import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 
-
 // Define the structure of the eventData
 interface EventData {
   _id: string;
@@ -52,11 +51,13 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
   return (
     <div className="p-5">
       <div className="relative flex gap-3 items-center h-48 w-full rounded-t-2xl overflow-hidden">
-        <img
-          className="h-full w-full object-cover"
-          src={eventData?.event_images_url[0]}
-          alt={eventData?.name || "Event Image"}
-        />
+        {eventData.event_images_url && (
+          <img
+            className="h-full w-full object-cover"
+            src={eventData?.event_images_url[0]}
+            alt={eventData?.name || "Event Image"}
+          />
+        )}
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent"></div>
       </div>
       {/* Card Details */}
