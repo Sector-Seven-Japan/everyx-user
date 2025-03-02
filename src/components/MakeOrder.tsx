@@ -12,10 +12,12 @@ export default function MakeOrder() {
     makeOrder,
     setIsLoading,
     walletData,
+    selectedOrder,
   } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
-  const [leverage, setLeverage] = useState<number>(1.0);
+  const lev = orderDetails?.leverage;
+  const [leverage, setLeverage] = useState<number>(lev);
   const tradeVal = orderDetails?.pledge;
   const [value, setValue] = useState<number>(tradeVal);
   const [inputValue, setInputValue] = useState<string>("10");
@@ -31,7 +33,11 @@ export default function MakeOrder() {
       setValue(tradeVal);
       setInputValue(tradeVal.toString());
     }
-  }, [tradeVal]);
+    if (lev !== undefined) {
+      setLeverage(lev);
+      setInputLeverage(lev.toString());
+    }
+  }, [tradeVal, lev]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setStartY(e.touches[0].clientY);
@@ -107,7 +113,6 @@ export default function MakeOrder() {
     const newValue = Math.min(currentValue + amount, maxTradeSize);
     setValue(newValue);
   };
-  
 
   const handleLeveragePlus = (amount: number) => {
     const newValue = Math.min(leverage + amount, maxLeverage);
@@ -192,7 +197,7 @@ export default function MakeOrder() {
         className="pb-5 bg-[#1a1a1a] w-full px-5 absolute left-0 bottom-0 rounded-t-3xl"
       >
         <div className="w-[15%] h-[3px] bg-white mb-5 mt-4 mx-auto"></div>
-        <div className="mb-10">
+        <div className="mb-5">
           <h1 className="text-[23px] mb-5">Total Size</h1>
           <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2">
             <div className="flex items-center px-2">
@@ -275,7 +280,7 @@ export default function MakeOrder() {
                     onClick={() => handleLeveragePlus(item)}
                     className="rounded-md py-1 px-3 font-semibold text text-[13px] bg-[#2b2b2b]"
                   >
-                    +{item}
+                    {item}x
                   </button>
                 );
               })}
@@ -321,11 +326,15 @@ export default function MakeOrder() {
             alt=""
             height={500}
             width={500}
-            className="my-5"
+            className="mb-5"
           />
         </div>
 
         <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-[1px]">
+            <p className="text-[#5D5D5D] text-[13px]">Selected Outcome</p>
+            <p className="text-[20px] text-[#00FFB8]">{selectedOrder}</p>
+          </div>
           <div className="flex justify-between">
             <div className="flex flex-col gap-[1px]">
               <p className="text-[#5D5D5D] text-[13px]">Cash used</p>
@@ -373,7 +382,7 @@ export default function MakeOrder() {
 
         <button
           onClick={handleSubmit}
-          className="text-[#00FFB8] w-full border border-[#00FFB8] mt-10 py-4 rounded-2xl"
+          className="text-[#00FFB8] w-full border border-[#00FFB8] mt-5 py-4 rounded-2xl"
         >
           Next
         </button>

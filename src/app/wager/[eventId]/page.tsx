@@ -146,6 +146,8 @@ export default function WagerPage() {
       setSelectedOrder(
         `${data?.event_outcome_id}. ${data?.event_outcome.name}`
       );
+      console.log(data);
+      
     } catch (error) {
       console.log("Error fetching wager data", error);
     }
