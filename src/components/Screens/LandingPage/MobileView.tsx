@@ -5,9 +5,12 @@ import { CiCircleInfo } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import LoadingPage from "@/components/LoadingPage";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 const MobileLanding = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isDragged, setIsDragged] = useState(false);
   const questions = [
     {
       question: "Q. What is EveryX?",
@@ -128,29 +131,58 @@ const MobileLanding = () => {
         </div>
 
         {/* slide bar */}
-        <div className="mt-[10vw] px-[8vw]">
-          <div className="relative w-full h-[12vw] border-[0.25vw] border-white rounded-full border-opacity-[10%] flex items-center justify-start py-[0.5vw] px-[1.5vw]">
-            <div className="blur-[30%] relative flex items-center justify-center bg-[#fff] bg-opacity-10 rounded-full w-[9vw] h-[9vw] mr-[3vw] active:bg-gray-600 transition duration-150 cursor-pointer">
-              {/* <FaArrowRightLong className="text-white text-[3vw]" /> */}
-              <svg
-                width="5vw"
-                height="2vw"
-                viewBox="0 0 13 7"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M10.543 2.618C10.205 2.358 9.841 2.03733 9.451 1.656C9.06967 1.27467 8.73167 0.884667 8.437 0.486L9.217 0.0309995C9.51167 0.412333 9.841 0.789333 10.205 1.162C10.5777 1.526 10.9633 1.87267 11.362 2.202C11.7693 2.52267 12.1637 2.80867 12.545 3.06C12.1637 3.30267 11.7693 3.58867 11.362 3.918C10.9633 4.24733 10.5777 4.59833 10.205 4.971C9.841 5.335 9.51167 5.70767 9.217 6.089L8.437 5.634C8.73167 5.23533 9.06967 4.84533 9.451 4.464C9.841 4.074 10.205 3.75333 10.543 3.502H0.52V2.618H10.543Z"
-                  fill="white"
-                />
-              </svg>
-            </div>
-            <div className="text-white text-[3vw] text-opacity-20 font-normal">
-              The journey begins.
-            </div>
-          </div>
-        </div>
+        <div className="mt-6 px-4">
+        <motion.div
+        className="relative w-full h-12 border border-gray-500 rounded-full border-opacity-25 flex items-center justify-start py-1 px-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {/* Draggable Arrow */}
+        <motion.div
+          className="blur-[30%] relative flex items-center justify-center bg-white bg-opacity-10 rounded-full w-10 h-10 mr-2 active:bg-gray-600 transition duration-150 cursor-pointer"
+          drag="x"
+          dragConstraints={{ left: 0, right: 300 }} // Increased for smoother travel
+          dragElastic={0.4} // Increased for smoother feel
+          animate={isDragged ? { x: 300 } : { x: 0 }} // More space for natural sliding
+          transition={{
+            type: "spring",
+            stiffness: 120, // Higher = more responsive
+            damping: 14, // Lower = smoother, more fluid
+            duration: 0.5,
+          }}
+          onDragEnd={(event, info) => {
+            if (info.point.x > 200) {
+              setIsDragged(true);
+              setTimeout(() => {
+                router.push("/trade");
+              }, 500);
+            }
+          }}
+          onClick={() => {
+            setIsDragged(true);
+            setTimeout(() => {
+              router.push("/trade");
+            }, 500);
+          }}
+        >
+          <FaArrowRightLong className="text-white text-sm active:text-black transition duration-150" />
+        </motion.div>
 
+        {/* Clickable Text */}
+        <div
+          className="text-white text-xs text-opacity-75 font-thin cursor-pointer"
+          onClick={() => {
+            setIsDragged(true);
+            setTimeout(() => {
+              router.push("/trade");
+            }, 500);
+          }}
+        >
+          The journey begins.
+        </div>
+      </motion.div>
+    </div>
         {/* vertical line */}
         <div className="flex justify-center my-[5vw]">
           <svg
@@ -318,27 +350,57 @@ const MobileLanding = () => {
 
         {/* slide bar */}
         <div className="mt-[10vw] mx-[8vw]  ">
-          <div className="relative w-full h-[10vw] border-[0.25vw] border-white rounded-full border-opacity-[25%] flex items-center justify-start py-[0.5vw] px-[1vw]">
-            <div className="blur-[30%] relative flex items-center justify-center bg-[#fff] bg-opacity-10  rounded-full w-[8vw] h-[8vw] mr-[3vw] active:bg-gray-600 transition duration-150 cursor-pointer">
-              <svg
-                width="5vw"
-                height="2vw"
-                viewBox="0 0 13 7"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M10.543 2.618C10.205 2.358 9.841 2.03733 9.451 1.656C9.06967 1.27467 8.73167 0.884667 8.437 0.486L9.217 0.0309995C9.51167 0.412333 9.841 0.789333 10.205 1.162C10.5777 1.526 10.9633 1.87267 11.362 2.202C11.7693 2.52267 12.1637 2.80867 12.545 3.06C12.1637 3.30267 11.7693 3.58867 11.362 3.918C10.9633 4.24733 10.5777 4.59833 10.205 4.971C9.841 5.335 9.51167 5.70767 9.217 6.089L8.437 5.634C8.73167 5.23533 9.06967 4.84533 9.451 4.464C9.841 4.074 10.205 3.75333 10.543 3.502H0.52V2.618H10.543Z"
-                  fill="white"
-                />
-              </svg>
-            </div>
-            <div className="text-white text-[2.75vw]">
-              Change your life with just a flick of this button.
-            </div>
-          </div>
-        </div>
+        <motion.div
+        className="relative w-full h-12 border border-gray-500 rounded-full border-opacity-25 flex items-center justify-start py-1 px-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {/* Draggable Arrow */}
+        <motion.div
+          className="blur-[30%] relative flex items-center justify-center bg-white bg-opacity-10 rounded-full w-8 h-8 mr-2 active:bg-gray-600 transition duration-150 cursor-pointer"
+          drag="x"
+          dragConstraints={{ left: 0, right: 250 }} // Adjusted for mobile
+          dragElastic={0.05}
+          animate={isDragged ? { x: 250 } : { x: 0 }} // Shorter distance for mobile
+          transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            duration: 0.5,
+          }}
+          onDragEnd={(event, info) => {
+            if (info.point.x > 180) {
+              setIsDragged(true);
+              setTimeout(() => {
+                router.push("/trade");
+              }, 500);
+            }
+          }}
+          onClick={() => {
+            setIsDragged(true);
+            setTimeout(() => {
+              router.push("/trade");
+            }, 500);
+          }}
+        >
+          <FaArrowRightLong className="text-white text-xs active:text-black transition duration-150" />
+        </motion.div>
 
+        {/* Clickable Text */}
+        <div
+          className="text-white text-xs text-opacity-75 font-thin cursor-pointer"
+          onClick={() => {
+            setIsDragged(true);
+            setTimeout(() => {
+              router.push("/trade");
+            }, 500);
+          }}
+        >
+          Change your life with just a flick of this button.
+        </div>
+      </motion.div>
+    </div>
         {/* vertical lines */}
 
         <div className="flex justify-center my-[5vw]">

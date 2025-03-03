@@ -131,9 +131,8 @@ const Deposit: React.FC = () => {
 
                 return (
                   <div
-                    className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${
-                      !ready ? "opacity-50 pointer-events-none" : ""
-                    }`}
+                    className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${!ready ? "opacity-50 pointer-events-none" : ""
+                      }`}
                     onClick={handleClick}
                   >
                     <Image
@@ -180,6 +179,7 @@ const Deposit: React.FC = () => {
 
               <div className="px-[10vw] mt-5 w-full">
                 <p className="text-[14px]">
+                  <span className="font-bold">Note: </span>
                   Currently We accept only USDT on the Amoy Polygon Test Network
                 </p>
                 <div>
@@ -241,13 +241,12 @@ const Deposit: React.FC = () => {
 
                     return (
                       <div
-                        className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between text-black  ${
-                          !ready
-                            ? "pointer-events-none bg-opacity-10"
-                            : isConnected
+                        className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between text-black  ${!ready
+                          ? "pointer-events-none bg-opacity-10"
+                          : isConnected
                             ? "opacity-50"
                             : ""
-                        }`}
+                          }`}
                         onClick={handleClick}
                       >
                         <div className="relative">
