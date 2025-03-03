@@ -517,12 +517,14 @@ const Portfolio: React.FC = () => {
         </div>
       ) : (
         <div className="bg-[#0E0E0E] w-full min-h-screen text-white relative">
-          <div className=" md:px-[12%] 2xl:px-[19%]">
+          <div className="px-[20vw]">
             <HeadingSlider filter={filter} setFilter={setFilter} />
-            <div className="flex md:flex-row md:mt-10 justify-between gap-5">
-              <div className=" text-white px-5  pb-5 md:w-[60%] xl:w-[70%]">
-                <div className="flex justify-between items-start ">
-                  <div className="text-2xl">Results : </div>
+            <div className="flex justify-center gap-5 pt-[4.65%]">
+              <div className=" text-white px-5  pb-5 flex-1">
+                <div className="flex justify-between items-start">
+                  <div className="text-[1.6vw] font-regular tracking-[0.3vw]">
+                    Results:
+                  </div>
 
                   <div className="flex flex-col items-end  gap-2">
                     <div className="flex w-36 bg-[rgba(255,255,255,0.1)] rounded-md justify-between items-center px-2 py-1">
@@ -884,7 +886,7 @@ const Portfolio: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div className="md:w-[40%] xl:w-[30%]">
+              <div>
                 <div className="sticky top-20">
                   <CurrentCashBalanceCardWebview />
                 </div>

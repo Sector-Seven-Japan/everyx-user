@@ -33,9 +33,6 @@ const DepositProcessingContent: React.FC = () => {
             {/* Deposit and Withdrawal Section */}
             <div className="mt-10 flex items-center justify-center w-full px-5">
               <button className="text-white text-[16px]">Deposit :</button>
-              <button className="text-[#2DC198] text-[14px] absolute right-5">
-                Withdrawal
-              </button>
             </div>
 
             {/* Input Box with Processing loader */}
@@ -76,12 +73,8 @@ const DepositProcessingContent: React.FC = () => {
 
             {/* Deposit and Withdrawal Section */}
             <div className="mt-10 flex items-center justify-between w-full px-5">
-              <div></div>
               <button className="text-white text-[16px] pl-20">
                 Deposit :
-              </button>
-              <button className="text-[#2DC198] text-[14px] ">
-                Withdrawal
               </button>
             </div>
 

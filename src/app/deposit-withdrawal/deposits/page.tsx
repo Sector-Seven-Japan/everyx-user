@@ -68,7 +68,7 @@ const Deposit: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-[#0E0E0E] md:px-[12%] lg:px-[20vw]">
+        <div className="bg-[#0E0E0E] px-[20vw]">
           <HeadingSlider filter={filter} setFilter={setFilter} />
           <div className="pt-[4.65%] flex justify-center gap-5 h-screen">
             <div className="bg-[#262626] bg-opacity-[31%]  flex flex-col items-center rounded-t-3xl  py-2  h-full w-full">
