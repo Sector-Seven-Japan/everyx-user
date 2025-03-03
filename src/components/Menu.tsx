@@ -9,8 +9,14 @@ import { useDisconnect } from "wagmi";
 export default function Menu() {
   const router = useRouter();
   const { disconnect } = useDisconnect();
-  const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading, sidebar ,API_BASE_URL} =
-    useContext(AppContext);
+  const {
+    selectedMenu,
+    setSelectedMenu,
+    setSidebar,
+    setIsLoading,
+    sidebar,
+    API_BASE_URL,
+  } = useContext(AppContext);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
   const { authToken, setAuthToken } = useContext(AppContext);
 
@@ -19,7 +25,7 @@ export default function Menu() {
         { name: "Home", link: "/trade" },
         { name: "Portfolio", link: "/deposit-withdrawal/history" },
         { name: "Profile", link: "/profile" },
-        { name: "Message", link: "/notification"},
+        { name: "Message", link: "/notification" },
         { name: "Mission", link: "/trade", disabled: true },
         { name: "Settings", link: "/setting" },
         { name: "Help", link: "/help" },
@@ -66,7 +72,8 @@ export default function Menu() {
   };
 
   return (
-    <div className={`fixed top-0 right-0 w-full z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 md:w-[200px] ${
+    <div
+      className={`fixed top-0 right-0 w-full z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 md:w-[200px] ${
         sidebar ? "" : "translate-x-full"
       }`}
     >
@@ -76,7 +83,9 @@ export default function Menu() {
             <Link
               key={index}
               href={`${item.link}`}
-              className={`pl-8 py-3 ${item?.disabled ? "pointer-events-none" : ""} relative md:py-2 md:text-[14px] ${
+              className={`pl-8 py-3 ${
+                item?.disabled ? "pointer-events-none" : ""
+              } relative md:py-2 md:text-[14px] ${
                 selectedMenu === item.name
                   ? "bg-[#151515] text-white"
                   : "text-[#323232] hover:bg-white hover:bg-opacity-[10%] hover:text-white"

@@ -11,8 +11,13 @@ import { useDisconnect } from "wagmi";
 export default function Menu() {
   const router = useRouter();
   const { disconnect } = useDisconnect();
-  const { selectedMenu, setSelectedMenu, setSidebar, setIsLoading, API_BASE_URL } =
-    useContext(AppContext);
+  const {
+    selectedMenu,
+    setSelectedMenu,
+    setSidebar,
+    setIsLoading,
+    API_BASE_URL,
+  } = useContext(AppContext);
   const [languageState, setLanguageState] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
   const { authToken } = useContext(AppContext);
@@ -75,7 +80,9 @@ export default function Menu() {
             <Link
               key={index}
               href={`${item.link}`}
-              className={`pl-8 py-3 ${item?.disabled ? "pointer-events-none" : ""} relative ${
+              className={`pl-8 py-3 ${
+                item?.disabled ? "pointer-events-none" : ""
+              } relative ${
                 selectedMenu === item.name
                   ? "bg-[#151515] text-white"
                   : "text-[#323232] hover:bg-white hover:bg-opacity-[10%] hover:text-white"
