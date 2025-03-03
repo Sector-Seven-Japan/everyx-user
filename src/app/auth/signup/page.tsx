@@ -36,14 +36,28 @@ const Page = () => {
     setFormData((prev) => ({ ...prev, phone: value }));
   };
 
-  const handleCountryChange = (selectedOption: any) => {
-    setFormData((prev) => ({ ...prev, country: selectedOption.label }));
+  const handleCountryChange = (
+    newValue: { label: string; value: string } | null
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      country: newValue ? newValue.label : "",
+    }));
   };
 
   const countryOptions = countryList().getData();
 
   const isSignup = async () => {
-    const { username, phone, email, password, confirmPassword, referralCode, country, termsAccepted } = formData;
+    const {
+      username,
+      phone,
+      email,
+      password,
+      confirmPassword,
+      referralCode,
+      country,
+      termsAccepted,
+    } = formData;
 
     if (!username || !phone || !email || !password || !country) {
       alert("Please fill all the fields correctly.");
@@ -85,25 +99,45 @@ const Page = () => {
       window.location.href = "/auth/signup/email-verification";
     } catch (error) {
       console.error("Error during signup:", error);
-      alert(`Signup failed: ${error instanceof Error ? error.message : "An unknown error occurred."}`);
+      alert(
+        `Signup failed: ${
+          error instanceof Error ? error.message : "An unknown error occurred."
+        }`
+      );
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0E0E0E] px-6 md:px-12 lg:px-20 py-10">
       <div className="w-full max-w-lg bg-[#0E0E0E] p-6 rounded-xl shadow-lg">
-        <h2 className="text-white text-2xl font-bold text-center mb-6">Sign Up</h2>
-        
+        <h2 className="text-white text-2xl font-bold text-center mb-6">
+          Sign Up
+        </h2>
+
         <div className="space-y-6">
           {/* Username */}
           <div>
-            <label htmlFor="username" className="block text-gray-400 text-sm mb-1">Username</label>
-            <input type="text" id="username" placeholder="Enter your username" value={formData.username} onChange={handleChange} className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2" />
+            <label
+              htmlFor="username"
+              className="block text-gray-400 text-sm mb-1"
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              placeholder="Enter your username"
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2"
+            />
           </div>
 
           {/* Phone Number with Country Code */}
           <div>
-            <label className="block text-gray-400 text-sm mb-1">Phone Number</label>
+            <label className="block text-gray-400 text-sm mb-1">
+              Phone Number
+            </label>
             <PhoneInput
               country={"us"}
               value={formData.phone}
@@ -129,26 +163,71 @@ const Page = () => {
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-gray-400 text-sm mb-1">Email</label>
-            <input type="email" id="email" placeholder="Enter your email" value={formData.email} onChange={handleChange} className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2" />
+            <label htmlFor="email" className="block text-gray-400 text-sm mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2"
+            />
           </div>
 
           {/* Password & Confirm Password */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="password" className="block text-gray-400 text-sm mb-1">Password</label>
-              <input type="password" id="password" placeholder="Enter password" value={formData.password} onChange={handleChange} className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2" />
+              <label
+                htmlFor="password"
+                className="block text-gray-400 text-sm mb-1"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2"
+              />
             </div>
             <div>
-              <label htmlFor="confirmPassword" className="block text-gray-400 text-sm mb-1">Confirm Password</label>
-              <input type="password" id="confirmPassword" placeholder="Confirm password" value={formData.confirmPassword} onChange={handleChange} className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2" />
+              <label
+                htmlFor="confirmPassword"
+                className="block text-gray-400 text-sm mb-1"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2"
+              />
             </div>
           </div>
 
           {/* Referral Code */}
           <div>
-            <label htmlFor="referralCode" className="block text-gray-400 text-sm mb-1">Referral Code (Optional)</label>
-            <input type="text" id="referralCode" placeholder="Enter referral code" value={formData.referralCode} onChange={handleChange} className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2" />
+            <label
+              htmlFor="referralCode"
+              className="block text-gray-400 text-sm mb-1"
+            >
+              Referral Code (Optional)
+            </label>
+            <input
+              type="text"
+              id="referralCode"
+              placeholder="Enter referral code"
+              value={formData.referralCode}
+              onChange={handleChange}
+              className="w-full bg-transparent border-b border-gray-700 text-white text-sm outline-none py-2"
+            />
           </div>
 
           {/* Country Dropdown */}
@@ -166,7 +245,11 @@ const Page = () => {
                   fontSize: "14px",
                   paddingBottom: "8px",
                 }),
-                menu: (styles) => ({ ...styles, backgroundColor: "black", color: "black" }),
+                menu: (styles) => ({
+                  ...styles,
+                  backgroundColor: "black",
+                  color: "black",
+                }),
                 singleValue: (styles) => ({ ...styles, color: "black" }),
               }}
             />
@@ -174,12 +257,24 @@ const Page = () => {
 
           {/* Terms and Conditions */}
           <div className="flex items-center space-x-3">
-            <input type="checkbox" id="termsAccepted" checked={formData.termsAccepted} onChange={handleChange} className="w-4 h-4 border border-gray-700 rounded bg-transparent" />
-            <label htmlFor="termsAccepted" className="text-gray-400 text-sm">I accept the terms and conditions</label>
+            <input
+              type="checkbox"
+              id="termsAccepted"
+              checked={formData.termsAccepted}
+              onChange={handleChange}
+              className="w-4 h-4 border border-gray-700 rounded bg-transparent"
+            />
+            <label htmlFor="termsAccepted" className="text-gray-400 text-sm">
+              I accept the terms and conditions
+            </label>
           </div>
 
           {/* Signup Button */}
-          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-sm transition duration-200" onClick={isSignup}>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-sm transition duration-200"
+            onClick={isSignup}
+          >
             Sign Up
           </button>
         </div>
