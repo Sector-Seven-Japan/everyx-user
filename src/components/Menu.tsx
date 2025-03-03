@@ -23,7 +23,7 @@ export default function Menu() {
   const navbarItems = isLoggedIn
     ? [
         { name: "Home", link: "/trade" },
-        { name: "Portfolio", link: "/deposit-withdrawal/history" },
+        { name: "Portfolio", link: "/deposit-withdrawal/portfolio" },
         { name: "Profile", link: "/profile" },
         { name: "Message", link: "/notification" },
         { name: "Mission", link: "/trade", disabled: true },
