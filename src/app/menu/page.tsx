@@ -17,6 +17,8 @@ export default function Menu() {
     setSidebar,
     setIsLoading,
     API_BASE_URL,
+    setAuthToken,
+    setWalletData
   } = useContext(AppContext);
   const [languageState, setLanguageState] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);

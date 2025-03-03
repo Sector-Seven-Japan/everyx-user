@@ -16,7 +16,7 @@ import { useAccount } from "wagmi";
 
 const Deposit: React.FC = () => {
   const router = useRouter();
-  const { getDepositAddress, depositAddress, isMobile, filter, setFilter } =
+  const { getDepositAddress, depositAddress, isMobile, filter, setFilter ,setIsLoading} =
     useContext(AppContext);
 
 
@@ -32,9 +32,12 @@ const Deposit: React.FC = () => {
     }
   };
 
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
+
   useEffect(() => {
-    setIsLoading(false);
-  }, []);
+
   
     if (!wagmiConnected) {
       sessionStorage.setItem("hasRedirected", "false");
