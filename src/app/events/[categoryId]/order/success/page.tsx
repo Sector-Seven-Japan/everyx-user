@@ -333,7 +333,7 @@ export default function OrderSuccess() {
                   onClick={() => {
                     setIsLoading(true);
                     setIsOrderMade(false);
-                    router.push("/deposit-withdrawal/history");
+                    router.push("/deposit-withdrawal/portfolio");
                   }}
                   className="bg-[#222222] py-4 rounded-md text-[#00FFB8] text-[18px] md:text-[0.9vw] md:py-[0.65vw] md:mb-5"
                 >

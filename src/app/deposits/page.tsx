@@ -16,8 +16,14 @@ import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 const Deposit: React.FC = () => {
   const router = useRouter();
 
-  const { getDepositAddress, depositAddress, isMobile, filter, setFilter } =
-    useContext(AppContext);
+  const {
+    getDepositAddress,
+    depositAddress,
+    isMobile,
+    filter,
+    setFilter,
+    setIsLoading,
+  } = useContext(AppContext);
 
   const handleCopy = async () => {
     try {
@@ -27,6 +33,10 @@ const Deposit: React.FC = () => {
       console.error("Failed to copy:", err);
     }
   };
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     getDepositAddress();
@@ -162,8 +172,6 @@ const Deposit: React.FC = () => {
           <HeadingSlider filter={filter} setFilter={setFilter} />
           <div className="flex md:flex-row md:pt-[4.65%] justify-between gap-5">
             <div className="bg-[#262626] bg-opacity-[31%] md:w-[60%] xl:w-[70%] w-full pb-[4vw] rounded-2xl">
-             
-
               {/* Deposit and Withdrawal Section */}
               <div className="mt-[2vw] flex items-center justify-between w-full px-[2vw]">
                 <div></div>

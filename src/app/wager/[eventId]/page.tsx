@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState,useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import { useParams } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
@@ -157,7 +157,7 @@ export default function WagerPage() {
     if (authToken) {
       fetchWagerData();
     }
-  }, []);
+  }, [authToken]);
 
   const handleSubmit = async () => {
     try {
@@ -219,36 +219,36 @@ export default function WagerPage() {
     }
   }, [eventData?.ends_at, getCountdown]);
 
-  useEffect(() => {
-    const getGraphData = async ({
-      eventId,
-      precision = "hour",
-      from,
-      to,
-    }: EventHistoryParams) => {
-      try {
-        // Build URL with query parameters
-        const params = new URLSearchParams();
-        if (precision) params.append("precision", precision);
-        if (from) params.append("from", from);
-        if (to) params.append("to", to);
+  const getGraphData = useCallback(async ({
+    eventId,
+    precision = "hour",
+    from,
+    to,
+  }: EventHistoryParams) => {
+    try {
+      // Build URL with query parameters
+      const params = new URLSearchParams();
+      if (precision) params.append("precision", precision);
+      if (from) params.append("from", from);
+      if (to) params.append("to", to);
 
-        const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
+      const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
 
-        const response = await fetch(url);
+      const response = await fetch(url);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error("Error getting graph data:", error);
-        throw error; // Re-throw the error to handle it in the calling code
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
 
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error getting graph data:", error);
+      throw error; // Re-throw the error to handle it in the calling code
+    }
+  }, [API_BASE_URL]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         if (eventData) {
@@ -270,7 +270,7 @@ export default function WagerPage() {
     };
 
     fetchData();
-  }, [eventData?._id, API_BASE_URL]);
+  }, [eventData?._id, getGraphData]);
 
   return (
     <div>

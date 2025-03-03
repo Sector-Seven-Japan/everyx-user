@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
-import toast from "react-hot-toast";
 import Image from "next/image";
 
 export default function MakeOrder() {
@@ -11,8 +10,9 @@ export default function MakeOrder() {
     setIsOrderMade,
     makeOrder,
     setIsLoading,
-    walletData,
     selectedOrder,
+    authToken,
+    makeOrderWithoutAuth,
   } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
@@ -59,7 +59,13 @@ export default function MakeOrder() {
     // Only update the actual value if it's a valid number
     const newValue = parseFloat(val);
     if (!isNaN(newValue)) {
-      setValue(newValue);
+      if (newValue < 10) {
+        setValue(10);
+      } else if (newValue > maxTradeSize) {
+        setValue(maxTradeSize);
+      } else {
+        setValue(newValue);
+      }
     }
   };
 
@@ -82,7 +88,13 @@ export default function MakeOrder() {
     // Only update the actual value if it's a valid number
     const newValue = parseFloat(val);
     if (!isNaN(newValue)) {
-      setLeverage(newValue);
+      if (newValue < 1) {
+        setLeverage(1);
+      } else if (newValue > maxLeverage) {
+        setLeverage(maxLeverage);
+      } else {
+        setLeverage(newValue);
+      }
     }
   };
 
@@ -114,8 +126,8 @@ export default function MakeOrder() {
     setValue(newValue);
   };
 
-  const handleLeveragePlus = (amount: number) => {
-    const newValue = Math.min(leverage + amount, maxLeverage);
+  const handleLeveragePlus = (multiplier: number) => {
+    const newValue = Math.min(leverage * multiplier, maxLeverage);
     const roundedValue = parseFloat(newValue.toFixed(1));
     setLeverage(roundedValue);
   };
@@ -136,16 +148,8 @@ export default function MakeOrder() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-
-    if (walletData[0]?.balance < value) {
-      toast("You have insufficient balance", {
-        style: {
-          background: "#333",
-          color: "#fff",
-        },
-      });
-      setIsOrderMade(false);
-      setIsLoading(false);
+    if (!authToken) {
+      router.push("/login");
       return;
     }
 
@@ -169,7 +173,6 @@ export default function MakeOrder() {
   };
 
   useEffect(() => {
-    setIsLoading(true);
     if (!eventId || !outcomeId) return;
     const wager = value * leverage;
     const loan = wager - value;
@@ -178,11 +181,24 @@ export default function MakeOrder() {
       if (pathname.startsWith("/wager/")) {
         makeOrder(outcomeId, eventId, true, leverage, loan, value, wager);
       } else {
-        makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
+        if (authToken) {
+          makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
+        } else {
+          makeOrderWithoutAuth(
+            outcomeId,
+            eventId,
+            false,
+            leverage,
+            loan,
+            value,
+            wager
+          );
+        }
       }
-    }, 500);
+    }, 200);
+
     return () => clearTimeout(debounceTimer);
-  }, [value, leverage]);
+  }, [value, leverage, authToken]);
 
   return (
     <div
@@ -314,7 +330,7 @@ export default function MakeOrder() {
               </div>
               <div className="flex flex-row-reverse">
                 <p className="text-[#FF4E00] text-xs mt-5">
-                  Max Available leverage | {maxLeverage}MAX
+                  Max Available leverage | {maxLeverage?.toFixed(1)}MAX
                 </p>
               </div>
             </div>
@@ -384,7 +400,7 @@ export default function MakeOrder() {
           onClick={handleSubmit}
           className="text-[#00FFB8] w-full border border-[#00FFB8] mt-5 py-4 rounded-2xl"
         >
-          Next
+          {authToken ? "Next" : "Sign in to continue"}
         </button>
       </div>
     </div>
