@@ -41,10 +41,10 @@ const TransactionButton: React.FC<TransactionButtonProps> = ({
   className = "",
   ...props
 }) => {
-  const baseClasses = "p-2 rounded w-20 text-[11px]";
+  const baseClasses = "px-3 py-2 rounded-md w-[6.5vw] text-[0.9vw]";
   const variantClasses =
     type === "deposit"
-      ? "border border-[#5DFF00] text-[#5DFF00]"
+      ? " border-[#5DFF00] text-[#5DFF00] border-[1px]"
       : "bg-[#5DFF00] text-black";
 
   return (
@@ -120,21 +120,23 @@ const HistoryWeb: React.FC = () => {
 
   return (
     <div className="bg-[#0E0E0E] w-full min-h-screen text-white relative">
-      <div className="  md:px-[12%] 2xl:px-[19%]">
+      <div className="px-[20vw]">
         <HeadingSlider filter={filter} setFilter={setFilter} />
-        <div className="flex md:flex-row md:mt-7 justify-between gap-5">
-          <div className="md:w-[60%] xl:w-[70%]">
-            <p className="text-2xl font-regular">
-              Deposit ＆ Withdrawal History :
+        <div className="flex justify-center gap-5 pt-[4.65%] ">
+          <div className="flex-1">
+            <p className="text-[1.6vw] font-regular tracking-[0.3vw] mb-8">
+              Deposit & Withdrawal History:
             </p>
 
             {transactions.length === 0 ? (
-              <p className=" text-gray-400 mt-10">No transactions available.</p>
+              <p className="  mt-10 text-[1vw] font-regular tracking-[0.2vw]">
+                No transactions available.
+              </p>
             ) : (
               transactions.map((transaction, index) => (
-                <React.Fragment key={transaction.id + "" + index}>
-                  <div className="flex items-center justify-between text-white my-5">
-                    <p className="text-sm text-gray-400">
+                <div key={transaction.id + "" + index}>
+                  <div className="flex items-center justify-between text-white my-5 w-full">
+                    <p className="text-[1vw] text-white text-opacity-20">
                       {new Date(transaction.datetime).toLocaleString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -144,12 +146,11 @@ const HistoryWeb: React.FC = () => {
                         hour12: false,
                       })}
                     </p>
-                    <div className="w-52">
-                      <p className="text-lg font-medium text-left">
+
+                    <div>
+                      <p className="text-[1vw] font-medium text-left ">
                         $ {Math.abs(transaction.amount).toFixed(2)}
-                        <span className="text-sm text-gray-400 ml-1">
-                          (USDT)
-                        </span>
+                        <span className="text-[1vw] ml-1">(USDT)</span>
                       </p>
                     </div>
 
@@ -229,11 +230,11 @@ const HistoryWeb: React.FC = () => {
                       </defs>
                     </svg>
                   </div>
-                </React.Fragment>
+                </div>
               ))
             )}
           </div>
-          <div className="mt-5 md:w-[40%] xl:w-[30%]">
+          <div className="">
             <div className="sticky top-20">
               <CurrentCashBalanceCardWebview />
             </div>
