@@ -44,9 +44,11 @@ export default function Menu() {
         },
       });
       console.log(response);
-
+      
       await signOut({ redirect: false });
 
+      setAuthToken("");
+      setWalletData([]);
       // Clear all relevant cookies
       document.cookie =
         "next-auth.session-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
@@ -61,10 +63,8 @@ export default function Menu() {
 
       // Disconnect wallet
       disconnect();
-
       localStorage.removeItem("authToken");
-
-      router.push("/login");
+      router.push("/trade");
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);

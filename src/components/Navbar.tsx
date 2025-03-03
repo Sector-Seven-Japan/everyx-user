@@ -2,7 +2,7 @@
 import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 export default function Navbar() {
   const {
@@ -12,9 +12,16 @@ export default function Navbar() {
     authToken,
     sidebar,
     setSidebar,
+    setAuthToken,
   } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (!authToken) {
+      setAuthToken("");
+    }
+  }, []);
 
   // const getNewWalletBalance = async () => {
   //   try {
@@ -104,7 +111,7 @@ export default function Navbar() {
                 Current Cash Balance
               </p>
               <p className={`${!sidebar ? "text-[#585858]" : "text-white"}`}>
-                USDT {walletData[0]?.balance }
+                USDT {walletData[0]?.balance}
               </p>
             </div>
           ) : (

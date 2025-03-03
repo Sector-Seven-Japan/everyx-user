@@ -19,6 +19,7 @@ const Deposit: React.FC = () => {
   const { getDepositAddress, depositAddress, isMobile, filter, setFilter } =
     useContext(AppContext);
 
+
   const { isConnected: wagmiConnected } = useAccount();
   const [hasRedirected, setHasRedirected] = useState(false);
 
@@ -32,6 +33,9 @@ const Deposit: React.FC = () => {
   };
 
   useEffect(() => {
+    setIsLoading(false);
+  }, []);
+  
     if (!wagmiConnected) {
       sessionStorage.setItem("hasRedirected", "false");
       setHasRedirected(false);

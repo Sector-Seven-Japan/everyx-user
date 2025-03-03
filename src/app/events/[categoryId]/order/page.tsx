@@ -84,8 +84,12 @@ export default function Order() {
   const [option, setOption] = useState<string>("Order details");
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [countdown, setCountdown] = useState<string>("");
+  const [isBalance, setIsBalance] = useState<boolean>(true);
 
   useEffect(() => {
+    if (walletData[0].balance < orderDetails.pledge) {
+      setIsBalance(false);
+    }
     setIsLoading(false);
     fetchEvent();
   }, []);
@@ -172,8 +176,12 @@ export default function Order() {
   }, [eventData?._id, API_BASE_URL]);
 
   const handleSubmit = async () => {
+    setIsLoading(true);
+    if (!isBalance) {
+      router.push("/deposits");
+      return;
+    }
     try {
-      setIsLoading(true);
       const wagerPayload: WagerPayload = {
         event_id: orderDetails?.event_id,
         event_outcome_id: orderDetails?.event_outcome_id,
@@ -415,7 +423,9 @@ export default function Order() {
                           Your return
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          +{orderDetails?.after_return?.toFixed(0)} %
+                          {orderDetails?.after_return
+                            ? orderDetails?.after_return?.toFixed(0) + "%"
+                            : "--"}
                         </p>
                       </div>
                     </div>
@@ -482,7 +492,7 @@ export default function Order() {
                   onClick={handleSubmit}
                   className="text-[#00ffbb] text-[16px] py-4 rounded-xl w-full border border-[#00ffbb] md:py-[0.7vw] xl:rounded-lg 2xl:rounded-2xl md:text-[1vw] mt-3 mb-[1vw]"
                 >
-                  Proceed
+                  {isBalance ? "Proceed" : "Insufficient balance"}
                 </button>
               </div>
             </div>
