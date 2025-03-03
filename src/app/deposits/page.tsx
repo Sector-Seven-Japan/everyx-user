@@ -9,15 +9,18 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { QRCodeCanvas } from "qrcode.react";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { useAccount } from "wagmi";
 
 const Deposit: React.FC = () => {
   const router = useRouter();
-
   const { getDepositAddress, depositAddress, isMobile, filter, setFilter } =
     useContext(AppContext);
+
+  const { isConnected: wagmiConnected } = useAccount();
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   const handleCopy = async () => {
     try {
@@ -29,8 +32,25 @@ const Deposit: React.FC = () => {
   };
 
   useEffect(() => {
+    if (!wagmiConnected) {
+      sessionStorage.setItem("hasRedirected", "false");
+      setHasRedirected(false);
+    }
+  }, [wagmiConnected]);
+
+  useEffect(() => {
+    const sessionHasRedirected =
+      sessionStorage.getItem("hasRedirected") === "true";
+    if (wagmiConnected && !sessionHasRedirected && !hasRedirected) {
+      router.push("/deposit-withdrawal/deposits");
+      sessionStorage.setItem("hasRedirected", "true");
+      setHasRedirected(true);
+    }
+  }, [wagmiConnected, hasRedirected, router]);
+
+  useEffect(() => {
     getDepositAddress();
-  }, [depositAddress]);
+  }, [getDepositAddress]);
 
   return (
     <>
@@ -39,7 +59,7 @@ const Deposit: React.FC = () => {
         <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-5 flex flex-col">
           <CurrentCashBalanceCard />
           <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-5">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-center items-center">
               <div>
                 <MdOutlineKeyboardArrowLeft
                   className="text-[30px]"
@@ -49,7 +69,7 @@ const Deposit: React.FC = () => {
                 />
               </div>
               <p className="text-[16px]">Deposit:</p>
-              <p className="text-[#00ffbb] text-[13px]">Withdrawal</p>
+              <div></div>
             </div>
 
             <div>
@@ -89,14 +109,12 @@ const Deposit: React.FC = () => {
               {({
                 account,
                 chain,
-                // openAccountModal,
-                // openChainModal,
                 openConnectModal,
                 authenticationStatus,
                 mounted,
               }) => {
                 const ready = mounted && authenticationStatus !== "loading";
-                const connected =
+                const isConnected =
                   ready &&
                   account &&
                   chain &&
@@ -104,7 +122,7 @@ const Deposit: React.FC = () => {
                     authenticationStatus === "authenticated");
 
                 const handleClick = () => {
-                  if (connected) {
+                  if (isConnected) {
                     router.push("/deposit-withdrawal/deposits"); // Redirect if connected
                   } else {
                     openConnectModal(); // Open wallet connect modal if not connected
@@ -125,20 +143,12 @@ const Deposit: React.FC = () => {
                       width={20}
                     />
                     <div>
-                      {connected ? (
+                      {isConnected ? (
                         <div className="flex flex-col">
-                          <button
-                            // onClick={openChainModal}
-                            type="button"
-                            className="text-black"
-                          >
+                          <button type="button" className="text-black">
                             {chain.name}
                           </button>
-                          <button
-                            // onClick={openAccountModal}
-                            type="button"
-                            className="text-black"
-                          >
+                          <button type="button" className="text-black">
                             {account.displayName}{" "}
                             {account.displayBalance
                               ? `(${account.displayBalance})`
@@ -158,28 +168,20 @@ const Deposit: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-[#0E0E0E] md:px-[12%] 2xl:px-[19%]">
+        <div className="bg-[#0E0E0E] md:px-[12%] lg:px-[20vw]">
           <HeadingSlider filter={filter} setFilter={setFilter} />
           <div className="flex md:flex-row md:pt-[4.65%] justify-between gap-5">
             <div className="bg-[#262626] bg-opacity-[31%] md:w-[60%] xl:w-[70%] w-full pb-[4vw] rounded-2xl">
-             
-
               {/* Deposit and Withdrawal Section */}
-              <div className="mt-[2vw] flex items-center justify-between w-full px-[2vw]">
-                <div></div>
-                <button className="text-white text-[1vw] pl-[5vw]">
-                  Deposit :
-                </button>
-                <button
-                  className="text-[#2DC198] text-[1vw]"
-                  type="button"
-                  onClick={() => router.push("/deposit-withdrawal/withdrawal")}
-                >
-                  Withdrawal
-                </button>
+
+              <div className="mt-[2vw] flex items-center justify-center w-full px-[2vw]">
+                <button className="text-white text-[1vw] ">Deposit :</button>
               </div>
 
-              <div className="px-[10vw] mt-20 w-full">
+              <div className="px-[10vw] mt-5 w-full">
+                <p className="text-[14px]">
+                  Currently We accept only USDT on the Amoy Polygon Test Network
+                </p>
                 <div>
                   <h1 className="text-[#5b5b5b] mb-1 mt-5 text-[12px]">
                     YOUR DEPOSIT ADDRESS
@@ -222,7 +224,7 @@ const Deposit: React.FC = () => {
                     mounted,
                   }) => {
                     const ready = mounted && authenticationStatus !== "loading";
-                    const connected =
+                    const isConnected =
                       ready &&
                       account &&
                       chain &&
@@ -230,7 +232,7 @@ const Deposit: React.FC = () => {
                         authenticationStatus === "authenticated");
 
                     const handleClick = () => {
-                      if (connected) {
+                      if (isConnected) {
                         router.push("/deposit-withdrawal/deposits"); // Redirect if connected
                       } else {
                         openConnectModal(); // Open wallet connect modal if not connected
@@ -242,7 +244,7 @@ const Deposit: React.FC = () => {
                         className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between text-black  ${
                           !ready
                             ? "pointer-events-none bg-opacity-10"
-                            : connected
+                            : isConnected
                             ? "opacity-50"
                             : ""
                         }`}
@@ -258,7 +260,7 @@ const Deposit: React.FC = () => {
                         </div>
 
                         <div>
-                          {connected ? (
+                          {isConnected ? (
                             <div className="flex flex-col">
                               <button type="button" className="text-black">
                                 Connect Wallet
