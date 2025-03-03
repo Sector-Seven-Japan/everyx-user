@@ -5,12 +5,10 @@ import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
-import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 
 const Withdrawal: React.FC = () => {
   const { filter, setFilter } = useContext(AppContext);
-  const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
