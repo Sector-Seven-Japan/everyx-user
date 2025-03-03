@@ -16,8 +16,9 @@ import { useAccount } from "wagmi";
 
 const Deposit: React.FC = () => {
   const router = useRouter();
-  const { getDepositAddress, depositAddress, isMobile, filter, setFilter } =
+  const { getDepositAddress, depositAddress, isMobile, filter, setFilter ,setIsLoading} =
     useContext(AppContext);
+
 
   const { isConnected: wagmiConnected } = useAccount();
   const [hasRedirected, setHasRedirected] = useState(false);
@@ -31,7 +32,13 @@ const Deposit: React.FC = () => {
     }
   };
 
+  useEffect(()=>{
+    setIsLoading(false)
+  },[])
+
   useEffect(() => {
+
+  
     if (!wagmiConnected) {
       sessionStorage.setItem("hasRedirected", "false");
       setHasRedirected(false);
@@ -131,9 +138,8 @@ const Deposit: React.FC = () => {
 
                 return (
                   <div
-                    className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${
-                      !ready ? "opacity-50 pointer-events-none" : ""
-                    }`}
+                    className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${!ready ? "opacity-50 pointer-events-none" : ""
+                      }`}
                     onClick={handleClick}
                   >
                     <Image
@@ -173,8 +179,10 @@ const Deposit: React.FC = () => {
                 <button className="text-white text-[16px] ">Deposit :</button>
               </div>
 
+
               <div className="px-[10vw] mt-[3vw] w-full flex flex-col items-center">
                 <p className="text-[0.8vw]">
+                  <span className="font-bold">Note: </span>
                   Currently We accept only USDT on the Amoy Polygon Test Network
                 </p>
                 <div className="w-full">
@@ -233,13 +241,15 @@ const Deposit: React.FC = () => {
 
                     return (
                       <div
+
                         className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full  text-black  ${
                           !ready
                             ? "pointer-events-none bg-opacity-10"
                             : isConnected
+
                             ? "opacity-50"
                             : ""
-                        }`}
+                          }`}
                         onClick={handleClick}
                       >
                         <div className="relative">
