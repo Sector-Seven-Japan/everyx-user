@@ -44,6 +44,8 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
     setIsLoading,
     setSelectedOutcomeId,
     selectedOutcomeId,
+    authToken,
+    makeOrderWithoutAuth,
   } = useContext(AppContext);
 
   const pathname = usePathname();
@@ -71,7 +73,19 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
         setSelectedOutcomeId(outcome._id);
 
         (async () => {
-          await makeOrder(outcome._id, eventData._id, false, 1, 0, 10, 10);
+          if (authToken) {
+            await makeOrder(outcome._id, eventData._id, false, 1, 0, 10, 10);
+          } else {
+            await makeOrderWithoutAuth(
+              outcome._id,
+              eventData._id,
+              false,
+              1,
+              0,
+              10,
+              10
+            );
+          }
           setIsOrderMade(true);
         })();
       }
@@ -94,7 +108,27 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                   outcome.name.slice(1)
               );
               setIsLoading(true);
-              await makeOrder(outcome._id, eventData._id, false, 1, 0, 10, 10);
+              if (authToken) {
+                await makeOrder(
+                  outcome._id,
+                  eventData._id,
+                  false,
+                  1,
+                  0,
+                  10,
+                  10
+                );
+              } else {
+                await makeOrderWithoutAuth(
+                  outcome._id,
+                  eventData._id,
+                  false,
+                  1,
+                  0,
+                  10,
+                  10
+                );
+              }
               setIsOrderMade(true);
               setSelectedOutcomeId(outcome._id);
             }}

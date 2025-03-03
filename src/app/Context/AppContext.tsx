@@ -1,7 +1,5 @@
 "use client";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 
 // Types and Interfaces
 interface Category {
@@ -152,7 +150,7 @@ interface AppContextProps {
     pledge: number,
     wager: number
   ) => Promise<void>;
-  makeOrderWithAuth: (
+  makeOrderWithoutAuth: (
     outcomeId: string,
     eventId: string,
     force_leverage: boolean,
@@ -186,12 +184,8 @@ interface AppContextProps {
   setSelectedOutcomeId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-
 const API_BASE_URL = "https://test-api.everyx.io";
 // const API_BASE_URL = "https://dev-api.everyx.io";
-
-
-
 
 // Initial context state
 const initialState: AppContextProps = {
@@ -219,7 +213,7 @@ const initialState: AppContextProps = {
   authToken: null,
   setAuthToken: () => {},
   makeOrder: async () => {},
-  makeOrderWithAuth: async () => {},
+  makeOrderWithoutAuth: async () => {},
   isOrderMade: false,
   orderDetails: {
     max_wager: 0,
@@ -281,7 +275,6 @@ export const AppContext = createContext<AppContextProps>(initialState);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   // State management
-  const router = useRouter();
   const [filter, setFilter] = useState<string>("");
   const [slugHeading, setSlugHeading] = useState<string>("");
   const [selectedMenu, setSelectedMenu] = useState<string>("Home");
@@ -403,6 +396,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           Authorization: `Bearer ${authToken}`,
         },
       });
+      if (response.status === 401) {
+        handleUnauthorized();
+        return;
+      }
       if (!response.ok) throw new Error("Failed to fetch wallet data");
       const data = await response.json();
       setWalletData(data);
@@ -420,9 +417,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     pledge: number,
     wager: number
   ) => {
-    if (!authToken) {
-      return router.push("/login");
-    }
     const orderPayload: OrderPayload = {
       event_id: eventId,
       event_outcome_id: outcomeId,
@@ -443,6 +437,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         body: JSON.stringify(orderPayload),
       });
 
+      if (response.status === 401) {
+        handleUnauthorized();
+        return;
+      }
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText || "Order placement failed");
@@ -450,20 +449,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const responseData = (await response.json()) as OrderResponse;
       setOrderDetails(responseData);
     } catch (error) {
-      toast.error("Something went wrong", {
-        style: {
-          background: "#333",
-          color: "#fff",
-        },
-      });
-      setIsOrderMade(false)
       console.error("Error making order:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const makeOrderWithAuth = async (
+  const makeOrderWithoutAuth = async (
     outcomeId: string,
     eventId: string,
     force_leverage: boolean,
@@ -472,9 +464,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     pledge: number,
     wager: number
   ) => {
-    if (!authToken) {
-      return router.push("/login");
-    }
     const orderPayload: OrderPayload = {
       event_id: eventId,
       event_outcome_id: outcomeId,
@@ -485,12 +474,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       wager: wager,
     };
 
+    console.log(orderPayload);
+
     try {
       const response = await fetch(`${API_BASE_URL}/quotes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(orderPayload),
       });
@@ -506,6 +496,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleUnauthorized = () => {
+    console.log("Unauthorized access detected. Logging out...");
+    localStorage.removeItem("authToken");
+    setAuthToken(null);
+    setIsLoggedIn(false);
+    setWalletData([]);
   };
 
   // Utility Functions
@@ -610,23 +608,20 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const now = new Date();
     const endDate = new Date(ends_at);
     let diff = Math.floor((endDate.getTime() - now.getTime()) / 1000);
-
+  
     if (diff <= 0) return "Ended";
-
+  
     const days = Math.floor(diff / (24 * 60 * 60));
     diff %= 24 * 60 * 60;
     const hours = Math.floor(diff / (60 * 60));
     diff %= 60 * 60;
     const minutes = Math.floor(diff / 60);
     const seconds = diff % 60;
-
-    const daysStr = days > 0 ? `${days}D:` : "";
-    const hoursStr = hours > 0 ? `${hours}H:` : "";
-    const minutesStr =
-      minutes > 0 ? `${String(minutes).padStart(2, "0")}M:` : "";
-    const secondsStr = `${String(seconds).padStart(2, "0")}S`;
-
-    return `${daysStr}${hoursStr}${minutesStr}${secondsStr}`.trim();
+  
+    if (days > 0) return `${days}days ${hours}hours`;
+    if (hours > 0) return `${hours}hours ${minutes}minutes`;
+    if (minutes > 0) return `${minutes}minutes ${seconds}seconds`;
+    return `${seconds}seconds`;
   };
 
   const getDepositAddress = async () => {
@@ -662,24 +657,24 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      console.log("Auth token retrieved from local storage:", token); // Log token
+      console.log("Auth token retrieved from local storage:", token);
       setAuthToken(token);
     } else {
-      console.log("No authToken found in local storage."); // Log if no token found
+      console.log("No authToken found in local storage.");
     }
-  }, []); // Only run on mount
+  }, []);
 
-  // This useEffect will run when authToken changes
   useEffect(() => {
-    console.log("authToken changed:", authToken); // Log whenever authToken is updated
+    console.log("authToken changed:", authToken);
     if (authToken) {
-      setIsLoggedIn(true); // Set isLoggedIn to true if token exists
+      setIsLoggedIn(true);
       console.log("User is logged in.");
     } else {
-      setIsLoggedIn(false); // Set isLoggedIn to false if no token is found
+      setWalletData([]);
+      setIsLoggedIn(false);
       console.log("User is not logged in.");
     }
-  }, [authToken]); // Runs when authToken is updated
+  }, [authToken]);
 
   const contextValue: AppContextProps = {
     fetchingData,
@@ -729,7 +724,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     depositAddress,
     setDepositAddress,
     getDepositAddress,
-    makeOrderWithAuth,
+    makeOrderWithoutAuth,
     selectedOutcomeId,
     setSelectedOutcomeId,
   };

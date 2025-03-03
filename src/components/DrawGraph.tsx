@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo, useCallback } from "react";
 import Chart from "chart.js/auto";
 
 interface GraphData {
@@ -20,14 +20,51 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
 
+  const processDataForChart = useCallback((data: GraphData[], outcomeIds?: string[]) => {
+    // Extract unique sorted hourly timestamps
+    const timestamps = [...new Set(data.map((item) => item.datetime))].sort(
+      (a, b) => new Date(a).getTime() - new Date(b).getTime()
+    ); // Sort ascending by time
+
+    const outcomes = outcomeIds || [
+      ...new Set(data.map((item) => item.event_outcome_id)),
+    ];
+    const colors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
+
+    const datasets = outcomes.map((outcome, index) => {
+      const outcomeData = timestamps.map((timestamp) => {
+        const dataPoint = data.find(
+          (item) =>
+            item.datetime === timestamp && item.event_outcome_id === outcome
+        );
+        return dataPoint ? dataPoint.probability * 100 : null; // Convert to percentage
+      });
+
+      return {
+        label: `${outcome}`, // e.g., "A", "B", "C", "D"
+        data: outcomeData,
+        borderColor: colors[index % colors.length],
+        backgroundColor: colors[index % colors.length],
+        tension: 0.4,
+        fill: false,
+      };
+    });
+
+    return {
+      labels: timestamps, // Full hourly timestamps
+      datasets,
+    };
+  }, []);
+
+  const processedData = useMemo(() => processDataForChart(data, outcomeIds), [data, outcomeIds, processDataForChart]);
+
   useEffect(() => {
-    if (!data || !chartRef.current) return;
+    if (!chartRef.current) return;
 
     if (chartInstance.current) {
       chartInstance.current.destroy();
     }
 
-    const processedData = processDataForChart(data, outcomeIds);
     const ctx = chartRef.current.getContext("2d");
     if (!ctx) return;
 
@@ -104,48 +141,11 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
         chartInstance.current.destroy();
       }
     };
-  }, [data, outcomeIds]);
-
-  const processDataForChart = (data: GraphData[], outcomeIds?: string[]) => {
-    // Extract unique sorted hourly timestamps
-    const timestamps = [...new Set(data.map((item) => item.datetime))].sort(
-      (a, b) => new Date(a).getTime() - new Date(b).getTime()
-    ); // Sort ascending by time
-
-    const outcomes = outcomeIds || [
-      ...new Set(data.map((item) => item.event_outcome_id)),
-    ];
-    const colors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
-
-    const datasets = outcomes.map((outcome, index) => {
-      const outcomeData = timestamps.map((timestamp) => {
-        const dataPoint = data.find(
-          (item) =>
-            item.datetime === timestamp && item.event_outcome_id === outcome
-        );
-        return dataPoint ? dataPoint.probability * 100 : null; // Convert to percentage
-      });
-
-      return {
-        label: `${outcome}`, // e.g., "A", "B", "C", "D"
-        data: outcomeData,
-        borderColor: colors[index % colors.length],
-        backgroundColor: colors[index % colors.length],
-        tension: 0.4,
-        fill: false,
-      };
-    });
-
-    return {
-      labels: timestamps, // Full hourly timestamps
-      datasets,
-    };
-  };
+  }, [processedData]);
 
   return (
     <div className="w-full rounded-lg">
       <div className="lg:h-[12vw] md:h-[15vw] sm:h-[40vw] mt-8 w-full">
-
         <canvas
           ref={chartRef}
           className="w-full h-full"

@@ -236,7 +236,7 @@ export default function BettingPage() {
               </p>
             )}
           </div>
-          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%]">
+          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%] pb-20 md:pb-0">
             <div className="md:bg-[#171717] rounded-2xl md:pb-5 sticky top-[70px]">
               <div className="p-5 md:pb-0">
                 <h1 className="text-[22px] mt-4 text-center md:text-[18px]">
@@ -317,7 +317,7 @@ export default function BettingPage() {
                           Your return
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          +{orderDetails?.before_return.toFixed(0)} %
+                          {orderDetails?.before_return ? "+"+orderDetails?.before_return.toFixed(0)+"%":"--"}
                         </p>
                       </div>
                     </div>
@@ -383,7 +383,7 @@ export default function BettingPage() {
                           Your return
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          +{orderDetails?.after_return?.toFixed(0)} %
+                        {orderDetails?.after_return ? "+"+orderDetails?.after_return.toFixed(0)+"%":"--"}
                         </p>
                       </div>
                     </div>

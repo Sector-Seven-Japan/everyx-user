@@ -1,11 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
-import toast from "react-hot-toast";
 
 export default function MakeOrder() {
-  const { orderDetails, makeOrder, setIsLoading, walletData, setIsOrderMade } =
-    useContext(AppContext);
+  const {
+    orderDetails,
+    makeOrder,
+    setIsLoading,
+    selectedOrder,
+    makeOrderWithoutAuth,
+    authToken,
+  } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
   const lev = orderDetails?.leverage;
@@ -34,7 +39,7 @@ export default function MakeOrder() {
     setInputValue(e.target.value);
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
-      setValue(Math.min(newValue, maxTradeSize)); // Ensure it doesn't exceed max
+      setValue(Math.min(Math.max(newValue, 10), maxTradeSize)); // Ensure it stays within range
     }
   };
 
@@ -53,7 +58,7 @@ export default function MakeOrder() {
     setInputLeverage(e.target.value);
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
-      setLeverage(Math.min(newValue, maxLeverage)); // Ensure it doesn't exceed max
+      setLeverage(Math.min(Math.max(newValue, 1), maxLeverage)); // Ensure it stays within range
     }
   };
 
@@ -76,8 +81,10 @@ export default function MakeOrder() {
     setValue((prev) => Math.min(prev + amount, maxTradeSize));
   };
 
-  const handleLeveragePlus = (amount: number) => {
-    setLeverage((prev) => Math.min(prev + amount, maxLeverage));
+  const handleLeveragePlus = (multiplier: number) => {
+    const newValue = Math.min(leverage * multiplier, maxLeverage);
+    const roundedValue = parseFloat(newValue.toFixed(1));
+    setLeverage(roundedValue);
   };
 
   const calculatePercentage = (current: number, min: number, max: number) => {
@@ -88,16 +95,11 @@ export default function MakeOrder() {
   const leveragePercentage = calculatePercentage(leverage, 1, maxLeverage);
 
   const handleSubmit = async () => {
-    if (walletData[0]?.balance < value) {
-      toast("You have insufficient balance", {
-        style: { background: "#333", color: "#fff" },
-      });
-      setIsOrderMade(false);
-      setIsLoading(false);
+    setIsLoading(true);
+    if (!authToken) {
+      router.push("/login");
       return;
     }
-
-    setIsLoading(true);
     const wager = value * leverage;
     const loan = wager - value;
 
@@ -120,9 +122,21 @@ export default function MakeOrder() {
       if (pathname.startsWith("/wager/")) {
         makeOrder(outcomeId, eventId, true, leverage, loan, value, wager);
       } else {
-        makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
+        if (authToken) {
+          makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
+        } else {
+          makeOrderWithoutAuth(
+            outcomeId,
+            eventId,
+            false,
+            leverage,
+            loan,
+            value,
+            wager
+          );
+        }
       }
-    }, 500);
+    }, 200);
     return () => clearTimeout(debounceTimer);
   }, [value, leverage]);
 
@@ -248,12 +262,20 @@ export default function MakeOrder() {
             </div>
             <div className="flex flex-row-reverse">
               <p className="text-[#FF4E00] text-[0.6vw] mt-4">
-                Max Available leverage | {maxLeverage}MAX
+                Max Available leverage | {maxLeverage?.toFixed(1)}MAX
               </p>
             </div>
           </div>
         </div>
       )}
+
+      {pathname.startsWith("/events") &&
+        !pathname.startsWith("events/order") && (
+          <div className="flex flex-col gap-[1px]">
+            <p className="text-[#5D5D5D] md:text-[0.75vw]">Selected Outcome</p>
+            <p className="text-[#00FFB8] md:text-[1.2vw]">{selectedOrder}</p>
+          </div>
+        )}
 
       {pathname.startsWith("/wager") && (
         <>
@@ -315,7 +337,7 @@ export default function MakeOrder() {
         onClick={handleSubmit}
         className="text-[#2DC198] w-full border border-[#2DC198] py-[0.7vw] xl:rounded-lg 2xl:rounded-2xl text-[1vw] mt-3 mb-[1vw]"
       >
-        Proceed
+        {authToken ? "Next" : "Sign in to continue"}
       </button>
     </div>
   );
