@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
@@ -22,11 +22,25 @@ export default function MakeOrder() {
   const [value, setValue] = useState<number>(tradeVal);
   const [inputValue, setInputValue] = useState<string>("10");
   const [inputLeverage, setInputLeverage] = useState<string>("1.0");
-  const [startY, setStartY] = useState<number | null>(null);
+  const [modalPosition, setModalPosition] = useState(1000); // Modal starts at 0 (fully open)
+  const [isDragging, setIsDragging] = useState(false);
+  const [startY, setStartY] = useState(1000);
+  const initialPositionRef = useRef(1000); // Store initial modal position
+
+  const modalRef = useRef<HTMLDivElement>(null);
   const maxTradeSize = orderDetails?.max_wager;
   const maxLeverage = orderDetails?.max_leverage;
   const eventId = orderDetails?.event_id;
   const outcomeId = orderDetails?.event_outcome_id;
+
+  // Update modal position when isOrderMade changes
+  useEffect(() => {
+    if (isOrderMade) {
+      setModalPosition(0); // Show modal when order is made
+    } else {
+      setModalPosition(1000); // Hide modal when order is not made
+    }
+  }, [isOrderMade]);
 
   useEffect(() => {
     if (tradeVal !== undefined) {
@@ -40,16 +54,33 @@ export default function MakeOrder() {
   }, [tradeVal, lev]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
     setStartY(e.touches[0].clientY);
+    initialPositionRef.current = modalPosition; // Store the current modal position
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!startY) return;
-    const diffY = e.touches[0].clientY - startY;
-    if (diffY > 50) {
-      setIsOrderMade(false);
+    if (!isDragging) return;
+
+    const deltaY = e.touches[0].clientY - startY;
+    const newPosition = Math.max(0, initialPositionRef.current + deltaY); // Prevent going above 0
+
+    setModalPosition(newPosition);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    
+    const closeThreshold = 500; // Adjust based on your needs
+    const screenHeight = window.innerHeight;
+
+    if (modalPosition > closeThreshold) {
+      // If dragged beyond threshold, close modal
+      setModalPosition(screenHeight);
+      setTimeout(() => setIsOrderMade(false), 300);
     }
   };
+
 
   const handleTradeSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Allow any input to be entered first
@@ -148,10 +179,6 @@ export default function MakeOrder() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    if (!authToken) {
-      router.push("/login");
-      return;
-    }
 
     console.log(
       "submitting with this data",
@@ -168,7 +195,27 @@ export default function MakeOrder() {
       await makeOrder(outcomeId, eventId, true, leverage, loan, value, wager);
     } else {
       router.push(`/events/${eventId}/order`);
-      await makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
+      if (authToken) {
+        await makeOrder(
+          outcomeId,
+          eventId,
+          false,
+          leverage,
+          loan,
+          value,
+          wager
+        );
+      } else {
+        await makeOrderWithoutAuth(
+          outcomeId,
+          eventId,
+          false,
+          leverage,
+          loan,
+          value,
+          wager
+        );
+      }
     }
   };
 
@@ -195,22 +242,30 @@ export default function MakeOrder() {
           );
         }
       }
-    }, 200);
+    }, 500);
 
     return () => clearTimeout(debounceTimer);
   }, [value, leverage, authToken]);
 
   return (
     <div
-      className={`fixed bg-transparent w-full left-0 h-full transition-transform duration-200 ease-in-out z-10 ${
-        isOrderMade ? "translate-y-0" : "translate-y-[1000px]"
-      }`}
-      style={{ bottom: 0 }}
+      className={`fixed bg-transparent w-full left-0 h-full z-10`}
+      style={{
+        bottom: 0,
+        pointerEvents: isOrderMade ? "auto" : "none", // Disable interactions when hidden
+      }}
     >
       <div
+        ref={modalRef}
         onTouchMove={handleTouchMove}
         onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         className="pb-5 bg-[#1a1a1a] w-full px-5 absolute left-0 bottom-0 rounded-t-3xl"
+        style={{
+          transform: `translateY(${modalPosition}px)`,
+          transition: isDragging ? "none" : "transform 0.3s ease-out",
+          touchAction: "none", // Prevents page scrolling when dragging
+        }}
       >
         <div className="w-[15%] h-[3px] bg-white mb-5 mt-4 mx-auto"></div>
         <div className="mb-5">
@@ -400,7 +455,7 @@ export default function MakeOrder() {
           onClick={handleSubmit}
           className="text-[#00FFB8] w-full border border-[#00FFB8] mt-5 py-4 rounded-2xl"
         >
-          {authToken ? "Next" : "Sign in to continue"}
+          Next
         </button>
       </div>
     </div>

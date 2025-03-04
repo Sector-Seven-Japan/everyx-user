@@ -65,3 +65,23 @@ body {
 .inter {
   font-family: "Inter";
 }
+
+/* Selected country in the dropdown */
+.react-tel-input .selected-flag {
+  background-color: black !important; /* Change background to blue */
+  color: white !important; /* Ensure text remains white */
+  border-radius: 4px; /* Optional: Add rounded corners */
+  transition: background 0.3s ease-in-out;
+}
+
+/* On hover effect */
+.react-tel-input .country-list .country:hover {
+  background-color: blue !important; /* Hover effect */
+  color: white !important;
+}
+
+/* Ensure selected country remains blue */
+.react-tel-input .country.highlight {
+  background-color: blue !important;
+  color: white !important;
+}

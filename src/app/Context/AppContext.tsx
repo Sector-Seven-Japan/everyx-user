@@ -1,12 +1,6 @@
 "use client";
-import React, {
-  createContext,
-  useState,
-  ReactNode,
-  useEffect,
-  useCallback,
-} from "react";
-import { useRouter } from "next/navigation"; // For App Router
+import React, { createContext, useState, ReactNode, useEffect } from "react";
+// import { useRouter } from "next/navigation"; // For App Router
 
 // Types and Interfaces
 interface Category {
@@ -191,8 +185,7 @@ interface AppContextProps {
   setSelectedOutcomeId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const API_BASE_URL = "https://test-api.everyx.io";
-// const API_BASE_URL = "https://dev-api.everyx.io";
+const API_BASE_URL = "https://dev-api.everyx.io";
 
 // Initial context state
 const initialState: AppContextProps = {
@@ -683,66 +676,66 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [authToken]);
 
-  const router = useRouter(); // Initialize the router
+  // const router = useRouter(); // Initialize the router
 
-  const checkTokenValidity = useCallback(async (): Promise<boolean> => {
-    if (!authToken) return false;
+  // const checkTokenValidity = useCallback(async (): Promise<boolean> => {
+  //   if (!authToken) return false;
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/me`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/me`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${authToken}`,
+  //       },
+  //     });
 
-      if (!response.ok) {
-        handleSessionExpired();
-        return false;
-      }
-      return true;
-    } catch (error) {
-      console.error("Error validating token:", error);
-      handleSessionExpired();
-      return false;
-    }
-  }, [authToken]);
+  //     if (!response.ok) {
+  //       handleSessionExpired();
+  //       return false;
+  //     }
+  //     return true;
+  //   } catch (error) {
+  //     console.error("Error validating token:", error);
+  //     handleSessionExpired();
+  //     return false;
+  //   }
+  // }, [authToken]);
 
-  // Helper function to handle session expiration
-  const handleSessionExpired = () => {
-    console.log("Session has expired. Logging out...");
-    localStorage.removeItem("authToken");
-    setAuthToken(null);
-    setIsLoggedIn(false);
-    alert("Your session has expired. Please log in again."); // Replace with your preferred notification system
-    router.push("/login"); // Redirect to the login page
-  };
+  // // Helper function to handle session expiration
+  // const handleSessionExpired = () => {
+  //   console.log("Session has expired. Logging out...");
+  //   localStorage.removeItem("authToken");
+  //   setAuthToken(null);
+  //   setIsLoggedIn(false);
+  //   alert("Your session has expired. Please log in again."); // Replace with your preferred notification system
+  //   router.push("/login"); // Redirect to the login page
+  // };
 
-  // UseEffect for continuous checking
-  useEffect(() => {
-    const validateToken = async () => {
-      if (authToken) {
-        const isValid = await checkTokenValidity();
-        if (!isValid && isLoggedIn) {
-          // Additional handling if needed when token becomes invalid
-          console.log("Token validation failed");
-        }
-      }
-    };
+  // // UseEffect for continuous checking
+  // useEffect(() => {
+  //   const validateToken = async () => {
+  //     if (authToken) {
+  //       const isValid = await checkTokenValidity();
+  //       if (!isValid && isLoggedIn) {
+  //         // Additional handling if needed when token becomes invalid
+  //         console.log("Token validation failed");
+  //       }
+  //     }
+  //   };
 
-    // Run immediately on mount
-    validateToken();
+  //   // Run immediately on mount
+  //   validateToken();
 
-    // Set up interval for continuous checking (e.g., every 5 minutes)
-    const intervalId = setInterval(validateToken, 5 * 60 * 1000); // 5 minutes
+  //   // Set up interval for continuous checking (e.g., every 5 minutes)
+  //   const intervalId = setInterval(validateToken, 5 * 60 * 1000); // 5 minutes
 
-    // Cleanup interval on unmount or when authToken changes
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [authToken, isLoggedIn, checkTokenValidity]);
+  //   // Cleanup interval on unmount or when authToken changes
+  //   return () => {
+  //     if (intervalId) {
+  //       clearInterval(intervalId);
+  //     }
+  //   };
+  // }, [authToken, isLoggedIn, checkTokenValidity]);
 
   const contextValue: AppContextProps = {
     fetchingData,

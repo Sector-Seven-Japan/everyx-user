@@ -100,8 +100,7 @@ const Page = () => {
     } catch (error) {
       console.error("Error during signup:", error);
       alert(
-        `Signup failed: ${
-          error instanceof Error ? error.message : "An unknown error occurred."
+        `Signup failed: ${error instanceof Error ? error.message : "An unknown error occurred."
         }`
       );
     }
@@ -144,20 +143,23 @@ const Page = () => {
               onChange={handlePhoneChange}
               inputStyle={{
                 backgroundColor: "transparent",
-                borderBottom: "1px solid #4A4A4A",
-                color: "white",
                 width: "100%",
                 fontSize: "14px",
-                paddingBottom: "8px",
+                border: "none",
+                outline: "none",
+                boxShadow: "none",
+                color: "white",
               }}
               buttonStyle={{
                 backgroundColor: "transparent",
-                borderRight: "1px solid #4A4A4A",
+                border: "none",
               }}
               dropdownStyle={{
-                backgroundColor: "#1E1E1E",
-                color: "white",
+                backgroundColor: "black",
+                border: "1px solid gray",
               }}
+              containerClass="w-full"
+              dropdownClass="bg-black text-white border-gray-600"
             />
           </div>
 
@@ -232,27 +234,42 @@ const Page = () => {
 
           {/* Country Dropdown */}
           <div>
-            <label className="block text-gray-400 text-sm mb-1">Country</label>
+            <label className="block text-grey-400 text-sm mb-1">Country</label>
             <Select
               options={countryOptions}
               onChange={handleCountryChange}
-              className="text-white"
+              className="text-blue"
               styles={{
                 control: (styles) => ({
                   ...styles,
                   backgroundColor: "transparent",
-                  color: "black",
+                  color: "white",
                   fontSize: "14px",
                   paddingBottom: "8px",
+                  border: "none",
+                  boxShadow: "none",
+                  cursor: "pointer",
                 }),
                 menu: (styles) => ({
                   ...styles,
                   backgroundColor: "black",
-                  color: "black",
+                  color: "white",
+                  border: "none",
                 }),
-                singleValue: (styles) => ({ ...styles, color: "black" }),
+                option: (styles, { isFocused, isSelected }) => ({
+                  ...styles,
+                  backgroundColor: isSelected ? "blue" : isFocused ? "blue" : "black",
+                  color: isSelected ? "white" : isFocused ? "white" : "white",
+                  cursor: "pointer",
+                  transition: "background 0.3s ease-in-out",
+                }),
+                singleValue: (styles) => ({
+                  ...styles,
+                  color: "white", // Selected country text in white
+                }),
               }}
             />
+
           </div>
 
           {/* Terms and Conditions */}
