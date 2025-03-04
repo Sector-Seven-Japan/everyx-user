@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import settingIcon from "../../public/Icons/settingIcon.png";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
@@ -7,38 +7,12 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 
 const CurrentCashBalanceCard: React.FC = () => {
   const router = useRouter();
-  const { userStats, userProfile, authToken, API_BASE_URL } =
+  const { userStats, userProfile, walletData } =
     useContext(AppContext);
   const pathname = usePathname();
   const handleSettingsClick = () => {
     router.push("/profile");
-  };
-
-  const [newWalletBalance, setNewWalletBalance] = useState<number>(0);
-
-  const getNewWalletBalance = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/wallets/balance`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setNewWalletBalance(data?.balance || 0);
-      }
-    } catch (error) {
-      console.log("Error fetching the new Wallet balance", error);
-    }
-  };
-
-  useEffect(() => {
-    if (authToken) {
-      getNewWalletBalance();
-    }
-  }, [authToken]);
+  }
 
   return (
     <>
@@ -70,7 +44,7 @@ const CurrentCashBalanceCard: React.FC = () => {
         <span className="text-[34px]">
           $
           {
-            (newWalletBalance || userStats?.fund_available || "0")
+            (walletData?.length > 0 ? walletData[0]?.balance : 0)
               .toString()
               .split(".")[0]
           }
@@ -78,14 +52,14 @@ const CurrentCashBalanceCard: React.FC = () => {
         <span className="text-[30px]">
           .
           {
-            (newWalletBalance || userStats?.fund_available || 0.0)
+            (walletData?.length > 0 ? walletData[0]?.balance : 0.00)
               .toFixed(2)
               .split(".")[1]
           }
         </span>
       </div>
       {pathname === "/deposit-withdrawal/portfolio" ||
-      pathname === "/deposit-withdrawal/history" ? (
+        pathname === "/deposit-withdrawal/history" ? (
         <div className="mt-5">
           {/* Top Dashed Border */}
           <div>

@@ -4,14 +4,14 @@ import settingIcon from "../../public/Icons/settingIcon.png";
 import { usePathname, useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import CashWithdrawalCategories from "./CashWithdrawalCategories";
-
 import { IoPersonCircleOutline } from "react-icons/io5";
 import Loader from "./Loader/Loader";
+
 const CurrentCashBalanceCardWebview: React.FC = () => {
   const router = useRouter();
-  const { userStats, userProfile } = useContext(AppContext);
+  const { userStats, userProfile, walletData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
-  const currentPath = usePathname(); // Get the current page path
+  const currentPath = usePathname();
 
   const handleSettingsClick = () => {
     if (currentPath !== "/profile") {
@@ -19,6 +19,22 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
       router.push("/profile");
     }
   };
+
+  // Helper function to format numbers safely
+  const formatNumber = (value: number | undefined | null, decimals: number = 2) => {
+    if (value === undefined || value === null) {
+      return { whole: "0", decimal: "00" };
+    }
+    const num = Number(value);
+    const formatted = num.toFixed(decimals);
+    const [whole, decimal] = formatted.split(".");
+    return { whole: whole || "0", decimal: decimal || "00" };
+  };
+
+  // Format all monetary values
+  const balance = formatNumber(walletData?.length > 0 ? walletData[0]?.balance : 0);
+  const bestCase = formatNumber(userStats?.best_case_fund_available);
+  const winnings = formatNumber(userStats?.best_case_cumulative_profit);
 
   return (
     <>
@@ -56,12 +72,8 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
             Current Cash Balance
           </p>
           <div className="flex justify-center mt-4 items-baseline font-bold">
-            <span className="text-[2.3vw] ">
-              ${(userStats?.fund_available || "0").toString().split(".")[0]}
-            </span>
-            <span className="text-[1.5vw]">
-              .{(userStats?.fund_available || 0.0).toFixed(2).split(".")[1]}
-            </span>
+            <span className="text-[2.3vw]">${balance.whole}</span>
+            <span className="text-[1.5vw]">.{balance.decimal}</span>
           </div>
 
           <div className="mt-4">
@@ -162,22 +174,8 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   </span>
                 </span>
                 <span className="font-bold">
-                  <span className="text-[0.8vw] ">
-                    $
-                    {
-                      (userStats?.best_case_fund_available || "0")
-                        .toLocaleString()
-                        .split(".")[0]
-                    }
-                  </span>
-                  <span className="text-[0.6vw]">
-                    .
-                    {
-                      (userStats?.best_case_fund_available || 0.0)
-                        .toFixed(2)
-                        .split(".")[1]
-                    }
-                  </span>
+                  <span className="text-[0.8vw]">${bestCase.whole}</span>
+                  <span className="text-[0.6vw]">.{bestCase.decimal}</span>
                 </span>
               </div>
               {/* Cumulative Winnings */}
@@ -206,22 +204,8 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   </span>
                 </span>
                 <span className="font-bold">
-                  <span className="text-[0.8vw] ">
-                    $
-                    {
-                      (userStats?.best_case_cumulative_profit || "0")
-                        .toLocaleString()
-                        .split(".")[0]
-                    }
-                  </span>
-                  <span className="text-[0.6vw] ">
-                    .
-                    {
-                      (userStats?.best_case_cumulative_profit || 0.0)
-                        .toFixed(2)
-                        .split(".")[1]
-                    }
-                  </span>
+                  <span className="text-[0.8vw]">${winnings.whole}</span>
+                  <span className="text-[0.6vw]">.{winnings.decimal}</span>
                 </span>
               </div>
             </div>
