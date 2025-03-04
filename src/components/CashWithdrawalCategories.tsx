@@ -22,20 +22,20 @@ export default function CashWithdrawalCategories() {
         </div>
       )}
       <nav className="mx-auto">
-        <ul className="grid grid-cols-4 gap-2">
+        <ul className="grid grid-cols-4 gap-[0.5vw]">
           <li>
             <button
               onClick={() => handleNavigation("/deposits")}
               type="button"
-              className={`w-full flex flex-col items-center justify-center py-1.5 px-4 rounded-lg  border border-white opacity-10 hover:opacity-100 transition-colors gap-1 ${
+              className={`w-full flex flex-col items-center justify-center py-1.5 px-5 rounded-lg  border border-white opacity-10 hover:opacity-100 transition-colors gap-1 ${
                 currentPath === "/deposits"
                   ? "opacity-100"
                   : "opacity-10 hover:opacity-100"
               }`}
             >
               <svg
-                width="3.5vw"
-                height="1.5vw"
+                width="0.8vw"
+                height="0.8vw"
                 viewBox="0 0 17 17"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@ export default function CashWithdrawalCategories() {
                 />
               </svg>
 
-              <span className="text-[0.6vw] font-thin text-white  ">
+              <span className="text-[0.5vw] font-thin text-white  ">
                 Deposit
               </span>
               {/* <BsWallet2 className="w-5 h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" /> */}
@@ -54,7 +54,7 @@ export default function CashWithdrawalCategories() {
           </li>
           <li>
             <button
-              className={`w-full flex flex-col items-center justify-center py-1.5 px-4 rounded-lg border border-white opacity-10 hover:opacity-10 transition-colors gap-1 ${
+              className={`w-full flex flex-col items-center justify-center py-1.5 px-5 rounded-lg border border-white opacity-10 hover:opacity-10 transition-colors gap-1 ${
                 currentPath === "/deposit-withdrawal/withdrawal"
                   ? "opacity-100"
                   : "opacity-10 hover:opacity-100"
@@ -63,8 +63,8 @@ export default function CashWithdrawalCategories() {
               onClick={() => handleNavigation("/deposit-withdrawal/withdrawal")}
             >
               <svg
-                width="3.5vw"
-                height="1.5vw"
+                width="0.8vw"
+                height="0.8vw"
                 viewBox="0 0 24 17"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +75,7 @@ export default function CashWithdrawalCategories() {
                 />
               </svg>
 
-              <span className="text-[0.6vw] font-thin text-white ">
+              <span className="text-[0.5vw] font-thin text-white ">
                 Withdrawal
               </span>
               {/* <BiTransfer className="w-5 h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" /> */}
@@ -84,7 +84,7 @@ export default function CashWithdrawalCategories() {
           <li>
             <button
               type="button"
-              className={`w-full flex flex-col items-center justify-center py-1.5 px-4 rounded-lg  opacity-10 border border-white hover:opacity-100 transition-colors gap-1 
+              className={`w-full flex flex-col items-center justify-center py-1.5 px-5 rounded-lg  opacity-10 border border-white hover:opacity-100 transition-colors gap-1 
                 ${
                   currentPath === "/deposit-withdrawal/portfolio"
                     ? "opacity-100"
@@ -93,8 +93,8 @@ export default function CashWithdrawalCategories() {
               onClick={() => handleNavigation("/deposit-withdrawal/portfolio")}
             >
               <svg
-                width="3.5vw"
-                height="1.5vw"
+                width="0.8vw"
+                height="0.8vw"
                 viewBox="0 0 23 20"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +109,7 @@ export default function CashWithdrawalCategories() {
                 />
               </svg>
 
-              <span className="text-[0.6vw] font-thin text-white ">
+              <span className="text-[0.5vw] font-thin text-white ">
                 Results
               </span>
               {/* <AiOutlineTrophy className="w-5 h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" /> */}
@@ -118,7 +118,7 @@ export default function CashWithdrawalCategories() {
           <li>
             <button
               type="button"
-              className={`w-full flex flex-col items-center justify-center px-4 py-1.5 rounded-lg  opacity-10 border border-white hover:opacity-100 transition-colors gap-1 
+              className={`w-full flex flex-col items-center justify-center px-5 py-1.5 rounded-lg  opacity-10 border border-white hover:opacity-100 transition-colors gap-1 
                 ${
                   currentPath === "/deposit-withdrawal/history"
                     ? "opacity-100"
@@ -127,8 +127,8 @@ export default function CashWithdrawalCategories() {
               onClick={() => handleNavigation("/deposit-withdrawal/history")}
             >
               <svg
-                width="3.5vw"
-                height="1.5vw"
+                width="0.8vw"
+                height="0.8vw"
                 viewBox="0 0 12 17"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +186,7 @@ export default function CashWithdrawalCategories() {
                 />
               </svg>
 
-              <span className="text-[0.6vw] font-thin text-white ">
+              <span className="text-[0.5vw] font-thin text-white ">
                 History
               </span>
               {/* <VscHistory className="w-5 h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" /> */}

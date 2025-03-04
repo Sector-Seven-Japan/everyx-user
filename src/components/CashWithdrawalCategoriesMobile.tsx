@@ -22,7 +22,7 @@ export default function CashWithdrawalCategoriesMobile() {
         </div>
       )}
       <nav className="">
-        <ul className="grid grid-cols-4 gap-5">
+        <ul className="grid grid-cols-4 gap-2">
           <li>
             <button
               onClick={() => handleNavigation("/deposits")}
@@ -60,7 +60,7 @@ export default function CashWithdrawalCategoriesMobile() {
                     : "opacity-10 hover:opacity-100"
                 }`}
               type="button"
-               onClick={() => handleNavigation("/deposit-withdrawal/withdrawal")}
+              onClick={() => handleNavigation("/deposit-withdrawal/withdrawal")}
             >
               <svg
                 width="5vw"

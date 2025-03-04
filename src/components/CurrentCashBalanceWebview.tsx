@@ -4,13 +4,13 @@ import settingIcon from "../../public/Icons/settingIcon.png";
 import { usePathname, useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import CashWithdrawalCategories from "./CashWithdrawalCategories";
-import Loader from "./Loader/Loader";
 
 import { IoPersonCircleOutline } from "react-icons/io5";
+import Loader from "./Loader/Loader";
 const CurrentCashBalanceCardWebview: React.FC = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
   const { userStats, userProfile } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
   const currentPath = usePathname(); // Get the current page path
 
   const handleSettingsClick = () => {
@@ -22,17 +22,16 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
 
   return (
     <>
-      <div className="sticky top-20 lg:w-[20vw]">
+      <div className="sticky top-20 w-[18vw] ">
         {isLoading && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ">
             <Loader />
           </div>
         )}
-
-        <div className="flex flex-col bg-[white] bg-opacity-[3%] rounded-3xl px-[1vw] py-10">
+        <div className="flex flex-col bg-[white] bg-opacity-[3%] rounded-3xl px-[2vw] py-[4vw]">
           <div className="flex justify-center items-center mt-5 relative">
             {userProfile?.avatar ? (
-              <div className="h-14 w-14 relative rounded-full overflow-hidden">
+              <div className="h-[3vw] w-[3vw] relative rounded-full overflow-hidden">
                 <Image
                   src={userProfile.avatar}
                   alt="User Profile Pic"
@@ -41,26 +40,26 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                 />
               </div>
             ) : (
-              <div className="w-14 h-14 rounded-full bg-transparent flex items-center justify-center">
-                <IoPersonCircleOutline className="w-14 h-14 text-gray-400" />
+              <div className="w-[3vw] h-[3vw] rounded-full bg-transparent flex items-center justify-center">
+                <IoPersonCircleOutline className="w-[3vw] h-[3vw] text-gray-400" />
               </div>
             )}
 
             <Image
               src={settingIcon}
               alt="Setting icon"
-              className="absolute top-1 left-[63%] cursor-pointer"
+              className="absolute -top-3 left-[60%] cursor-pointer w-[0.8vw] h-[0.8vw]"
               onClick={handleSettingsClick}
             />
           </div>
-          <p className="text-[10px] sm:text-[9px] md:text-[0.7vw] text-center mt-7">
+          <p className="text-[0.8vw] text-center mt-7 font-normal gothic">
             Current Cash Balance
           </p>
           <div className="flex justify-center mt-4 items-baseline font-bold">
-            <span className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[20px]">
+            <span className="text-[2.3vw] ">
               ${(userStats?.fund_available || "0").toString().split(".")[0]}
             </span>
-            <span className="text-[14px] sm:text-[16px] md:text-[18px] lg:text-[18px]">
+            <span className="text-[1.5vw]">
               .{(userStats?.fund_available || 0.0).toFixed(2).split(".")[1]}
             </span>
           </div>
@@ -136,16 +135,15 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
               </defs>
             </svg>
 
-            <div className="my-4 space-y-3">
+            <div className="">
               {/* Best Case Cash Balance */}
-              <div className="flex justify-between items-end">
-                <span className="text-[9px] sm:text-[10px] md:text-[10px] lg:text-[10px] flex items-center gap-2">
+              <div className="flex justify-between items-center">
+                <span className="text-[0.5vw] flex items-end font-thin gap-1">
                   Best case cash balance{" "}
                   <span>
-                    {" "}
                     <svg
-                      width="14"
-                      height="13"
+                      width="0.5vw"
+                      height="0.6vw"
                       viewBox="0 0 14 13"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -164,7 +162,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   </span>
                 </span>
                 <span className="font-bold">
-                  <span className="text-[14px] sm:text-[10px] md:text-[14px] lg:text-[14px]">
+                  <span className="text-[0.8vw] ">
                     $
                     {
                       (userStats?.best_case_fund_available || "0")
@@ -172,7 +170,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                         .split(".")[0]
                     }
                   </span>
-                  <span className="text-[10px] sm:text-[9px] md:text-[11px] lg:text-[12px]">
+                  <span className="text-[0.6vw]">
                     .
                     {
                       (userStats?.best_case_fund_available || 0.0)
@@ -183,14 +181,13 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                 </span>
               </div>
               {/* Cumulative Winnings */}
-              <div className="flex justify-between items-end">
-                <span className="text-[9px] sm:text-[10px] md:text-[10px] lg:text-[10px] flex gap-2">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[0.5vw] font-thin flex gap-1">
                   Cumulative winnings
                   <span>
-                    {" "}
                     <svg
-                      width="14"
-                      height="13"
+                      width="0.5vw"
+                      height="0.6vw"
                       viewBox="0 0 14 13"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -209,7 +206,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                   </span>
                 </span>
                 <span className="font-bold">
-                  <span className="text-[14px] sm:text-[10px] md:text-[14px] lg:text-[14px]">
+                  <span className="text-[0.8vw] ">
                     $
                     {
                       (userStats?.best_case_cumulative_profit || "0")
@@ -217,7 +214,7 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                         .split(".")[0]
                     }
                   </span>
-                  <span className="text-[10px] sm:text-[9px] md:text-[11px] lg:text-[12px]">
+                  <span className="text-[0.6vw] ">
                     .
                     {
                       (userStats?.best_case_cumulative_profit || 0.0)
