@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState,useCallback } from "react";
+import { useContext, useEffect, useState, useCallback, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import { useParams } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
@@ -14,6 +14,7 @@ import Footer from "@/components/Footer";
 import HeadingSlider from "@/components/HeadingSlider";
 import CategoryActivity from "@/components/CategoryActivity";
 
+// Interfaces remain unchanged
 interface WagerData {
   id: string;
   event_id: string;
@@ -47,7 +48,6 @@ interface WagerData {
   is_leveraged: boolean;
 }
 
-// EventData interface
 interface EventData {
   _id: string;
   name: string;
@@ -102,7 +102,7 @@ export default function WagerPage() {
   const router = useRouter();
   const [option, setOption] = useState<string>("Order details");
   const params = useParams();
-  const eventId = params.eventId;
+  const eventId = params.eventId as string;
   const [wagerData, setWagerData] = useState<WagerData | null>(null);
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
@@ -127,27 +127,23 @@ export default function WagerPage() {
           },
         }
       );
-      const data: WagerData = await response.json(); // Explicitly typing the response
+      const data: WagerData = await response.json();
 
-      // Ensure TypeScript recognizes the type of `outcome`
       const matchedOutcome = data.event.outcomes.find(
         (outcome) => outcome._id === data.event_outcome_id
       );
 
-      // Update wagerData state with only the matched outcome
       setWagerData({
         ...data,
         event: {
           ...data.event,
-          outcomes: matchedOutcome ? [matchedOutcome] : [], // Ensure outcomes remains an array
+          outcomes: matchedOutcome ? [matchedOutcome] : [],
         },
       });
 
       setSelectedOrder(
         `${data?.event_outcome_id}. ${data?.event_outcome.name}`
       );
-      console.log(data);
-      
     } catch (error) {
       console.log("Error fetching wager data", error);
     }
@@ -157,7 +153,7 @@ export default function WagerPage() {
     if (authToken) {
       fetchWagerData();
     }
-  }, [authToken]);
+  }, [authToken, eventId]);
 
   const handleSubmit = async () => {
     try {
@@ -175,15 +171,12 @@ export default function WagerPage() {
         );
       }
       if (window.innerWidth >= 768) {
-        // Check if the view is desktop (768px and above)
         setMarginClicked(true);
       }
     } catch (error) {
       console.log("Error adding margin", error);
     }
   };
-
-  console.log("margin button", marginClicked);
 
   const fetchEvent = async () => {
     if (!wagerData?.event_id) return;
@@ -213,64 +206,81 @@ export default function WagerPage() {
       setCountdown(getCountdown(eventData.ends_at));
       const interval = setInterval(() => {
         setCountdown(getCountdown(eventData.ends_at));
-      }, 60000); // Update every minute
+      }, 60000);
 
       return () => clearInterval(interval);
     }
   }, [eventData?.ends_at, getCountdown]);
 
-  const getGraphData = useCallback(async ({
-    eventId,
-    precision = "hour",
-    from,
-    to,
-  }: EventHistoryParams) => {
-    try {
-      // Build URL with query parameters
-      const params = new URLSearchParams();
-      if (precision) params.append("precision", precision);
-      if (from) params.append("from", from);
-      if (to) params.append("to", to);
+  const getGraphData = useCallback(
+    async ({ eventId, precision = "hour", from, to }: EventHistoryParams) => {
+      try {
+        const params = new URLSearchParams();
+        if (precision) params.append("precision", precision);
+        if (from) params.append("from", from);
+        if (to) params.append("to", to);
 
-      const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
+        const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
 
-      const response = await fetch(url);
+        const response = await fetch(url);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Error getting graph data:", error);
+        throw error;
       }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error getting graph data:", error);
-      throw error; // Re-throw the error to handle it in the calling code
-    }
-  }, [API_BASE_URL]);
+    },
+    [API_BASE_URL]
+  );
 
   useEffect(() => {
-    const fetchData = async () => {
+    let isMounted = true;
+    const fetchGraphData = async () => {
+      if (!eventData?._id) return;
+
       try {
-        if (eventData) {
-          const currentDate = new Date().toISOString();
-          const data = await getGraphData({
-            eventId: eventData?._id,
-            precision: "hour",
-            from: "2025-02-01T18:30:00.000Z",
-            to: currentDate,
-          });
-          setGraphData(data);
+        setIsLoadingGraph(true);
+        const currentDate = new Date().toISOString();
+        const data = await getGraphData({
+          eventId: eventData._id,
+          precision: "hour",
+          from: "2025-02-01T18:30:00.000Z",
+          to: currentDate,
+        });
+
+        if (isMounted) {
+          setGraphData(data || []);
         }
       } catch (error) {
-        // Handle error appropriately
         console.error("Failed to fetch graph data:", error);
+        if (isMounted) {
+          setGraphData([]);
+        }
       } finally {
-        setIsLoadingGraph(false); // Stop loading
+        if (isMounted) {
+          setIsLoadingGraph(false);
+        }
       }
     };
 
-    fetchData();
+    fetchGraphData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [eventData?._id, getGraphData]);
+
+  // Memoize the DrawGraph component for the "Charts" tab
+  const chartGraph = useMemo(() => {
+    return wagerData ? (
+      <DrawGraph data={graphData} outcomeIds={[wagerData.event_outcome_id]} />
+    ) : null;
+  }, [graphData, wagerData?.event_outcome_id]);
 
   return (
     <div>
@@ -299,7 +309,7 @@ export default function WagerPage() {
                   )}
                 </div>
                 <CategoryRule />
-                <CategoryActivity eventData={eventData}/>
+                <CategoryActivity eventData={eventData} />
               </>
             ) : (
               <p className="text-center text-gray-500">
@@ -318,7 +328,6 @@ export default function WagerPage() {
                     <div className="flex mt-7 gap-3">
                       <button className="border border-[#00FFB8] px-4 py-2 text-xs text-[#2DC198] rounded-md md:rounded-sm md:py-[2px] md:text-[0.6vw]">
                         {(eventData && eventData?.category?.name) || "Global"}
-
                       </button>
                       <div className="text-[#2DC198] flex gap-1 items-center font-light">
                         <span className="md:w-3 inline-block">
@@ -358,7 +367,6 @@ export default function WagerPage() {
                       <div className="absolute w-5 h-[4px] bg-[#00FFBB] -bottom-[6px] left-1/2 transform -translate-x-1/2"></div>
                     )}
                   </h1>
-
                   <h1
                     className={`text-[17px] relative cursor-pointer md:text-[0.8vw] ${
                       option === "Charts" ? "text-[#00FFBB]" : "text-[#323232]"
@@ -525,12 +533,7 @@ export default function WagerPage() {
                             </div>
                           </div>
                         </div>
-                        {wagerData && (
-                          <DrawGraph
-                            data={graphData}
-                            outcomeIds={[wagerData?.event_outcome_id]}
-                          />
-                        )}
+                        {chartGraph} {/* Use memoized graph here */}
                       </div>
                     </div>
                   </div>

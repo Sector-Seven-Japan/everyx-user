@@ -16,6 +16,7 @@ export default function Menu() {
     setIsLoading,
     sidebar,
     API_BASE_URL,
+    setWalletData
   } = useContext(AppContext);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
   const { authToken, setAuthToken } = useContext(AppContext);
@@ -47,6 +48,7 @@ export default function Menu() {
       await signOut({ redirect: false }); // Sign out without redirecting
 
       setAuthToken("");
+      setWalletData([]);
 
       // Clear all relevant cookies
       document.cookie =
@@ -64,7 +66,7 @@ export default function Menu() {
       disconnect();
 
       localStorage.removeItem("authToken"); // Clear auth token from local storage
-      router.push("/"); // Redirect to login page after sign out
+      router.push("/trade"); // Redirect to login page after sign out
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);

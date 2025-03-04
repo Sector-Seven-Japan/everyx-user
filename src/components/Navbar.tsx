@@ -13,6 +13,7 @@ export default function Navbar() {
     sidebar,
     setSidebar,
     setAuthToken,
+    setWalletData,
   } = useContext(AppContext);
   const router = useRouter();
   const pathname = usePathname();
@@ -20,32 +21,10 @@ export default function Navbar() {
   useEffect(() => {
     if (!authToken) {
       setAuthToken("");
+      setWalletData([]);
     }
   }, []);
 
-  // const getNewWalletBalance = async () => {
-  //   try {
-  //     const response = await fetch(`${API_BASE_URL}/wallets/balance`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${authToken}`,
-  //       },
-  //     });
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       setNewWalletBalance(data?.balance || 0);
-  //     }
-  //   } catch (error) {
-  //     console.log("Error fetching the new Wallet balance", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (authToken) {
-  //     getNewWalletBalance();
-  //   }
-  // }, [authToken]);
 
   return (
     <div className="flex justify-between items-center p-5 bg-[#0e0e0e] fixed top-0 w-full z-20">
@@ -105,7 +84,7 @@ export default function Navbar() {
         )
       ) : (
         <div className="flex gap-3">
-          {authToken !== null ? (
+          {authToken ? (
             <div className="text-xs flex flex-col items-end">
               <p className={`${!sidebar ? "text-[#585858]" : "text-white"}`}>
                 Current Cash Balance

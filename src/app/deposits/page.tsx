@@ -16,9 +16,14 @@ import { useAccount } from "wagmi";
 
 const Deposit: React.FC = () => {
   const router = useRouter();
-  const { getDepositAddress, depositAddress, isMobile, filter, setFilter ,setIsLoading} =
-    useContext(AppContext);
-
+  const {
+    getDepositAddress,
+    depositAddress,
+    isMobile,
+    filter,
+    setFilter,
+    setIsLoading,
+  } = useContext(AppContext);
 
   const { isConnected: wagmiConnected } = useAccount();
   const [hasRedirected, setHasRedirected] = useState(false);
@@ -32,13 +37,11 @@ const Deposit: React.FC = () => {
     }
   };
 
-  useEffect(()=>{
-    setIsLoading(false)
-  },[])
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
-
-  
     if (!wagmiConnected) {
       sessionStorage.setItem("hasRedirected", "false");
       setHasRedirected(false);
@@ -65,8 +68,11 @@ const Deposit: React.FC = () => {
       {isMobile ? (
         <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-5 flex flex-col">
           <CurrentCashBalanceCard />
-          <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-5">
-            <div className="flex justify-between items-center">
+          <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-2">
+            <div className="flex justify-center ">
+              <div className="w-16 h-[3px] bg-[rgb(112,112,112)] rounded-xl"></div>
+            </div>
+            <div className="flex justify-between items-center mt-5">
               <div>
                 <MdOutlineKeyboardArrowLeft
                   className="text-[30px]"
@@ -75,7 +81,7 @@ const Deposit: React.FC = () => {
                   }}
                 />
               </div>
-              <p className="text-[16px]">Deposit:</p>
+              <p className="text-[16px] pr-[8vw]">Deposit:</p>
               <div></div>
             </div>
 
@@ -138,8 +144,9 @@ const Deposit: React.FC = () => {
 
                 return (
                   <div
-                    className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${!ready ? "opacity-50 pointer-events-none" : ""
-                      }`}
+                    className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${
+                      !ready ? "opacity-50 pointer-events-none" : ""
+                    }`}
                     onClick={handleClick}
                   >
                     <Image
@@ -178,7 +185,6 @@ const Deposit: React.FC = () => {
               <div className="mt-5 flex items-center justify-center w-full px-5 ">
                 <button className="text-white text-[16px] ">Deposit :</button>
               </div>
-
 
               <div className="px-[10vw] mt-[3vw] w-full flex flex-col items-center">
                 <p className="text-[0.8vw]">
@@ -241,15 +247,13 @@ const Deposit: React.FC = () => {
 
                     return (
                       <div
-
                         className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full  text-black  ${
                           !ready
                             ? "pointer-events-none bg-opacity-10"
                             : isConnected
-
                             ? "opacity-50"
                             : ""
-                          }`}
+                        }`}
                         onClick={handleClick}
                       >
                         <div className="relative">

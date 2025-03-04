@@ -20,43 +20,57 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
 
-  const processDataForChart = useCallback((data: GraphData[], outcomeIds?: string[]) => {
-    // Extract unique sorted hourly timestamps
-    const timestamps = [...new Set(data.map((item) => item.datetime))].sort(
-      (a, b) => new Date(a).getTime() - new Date(b).getTime()
-    ); // Sort ascending by time
+  const processDataForChart = useCallback(
+    (data: GraphData[], outcomeIds?: string[]) => {
+      const now = new Date();
+      const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000); // 6 hours ago
 
-    const outcomes = outcomeIds || [
-      ...new Set(data.map((item) => item.event_outcome_id)),
-    ];
-    const colors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
+      // Filter data to include only the last 6 hours
+      const filteredData = data.filter(
+        (item) => new Date(item.datetime) >= sixHoursAgo
+      );
 
-    const datasets = outcomes.map((outcome, index) => {
-      const outcomeData = timestamps.map((timestamp) => {
-        const dataPoint = data.find(
-          (item) =>
-            item.datetime === timestamp && item.event_outcome_id === outcome
-        );
-        return dataPoint ? dataPoint.probability * 100 : null; // Convert to percentage
+      // Extract unique sorted hourly timestamps within last 6 hours
+      const timestamps = [
+        ...new Set(filteredData.map((item) => item.datetime)),
+      ].sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
+      const outcomes = outcomeIds || [
+        ...new Set(filteredData.map((item) => item.event_outcome_id)),
+      ];
+      const colors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
+
+      const datasets = outcomes.map((outcome, index) => {
+        const outcomeData = timestamps.map((timestamp) => {
+          const dataPoint = filteredData.find(
+            (item) =>
+              item.datetime === timestamp && item.event_outcome_id === outcome
+          );
+          return dataPoint ? dataPoint.probability * 100 : null; // Convert to percentage
+        });
+
+        return {
+          label: `${outcome}`,
+          data: outcomeData,
+          borderColor: colors[index % colors.length],
+          backgroundColor: colors[index % colors.length],
+          tension: 0.4,
+          fill: false,
+        };
       });
 
       return {
-        label: `${outcome}`, // e.g., "A", "B", "C", "D"
-        data: outcomeData,
-        borderColor: colors[index % colors.length],
-        backgroundColor: colors[index % colors.length],
-        tension: 0.4,
-        fill: false,
+        labels: timestamps,
+        datasets,
       };
-    });
+    },
+    []
+  );
 
-    return {
-      labels: timestamps, // Full hourly timestamps
-      datasets,
-    };
-  }, []);
-
-  const processedData = useMemo(() => processDataForChart(data, outcomeIds), [data, outcomeIds, processDataForChart]);
+  const processedData = useMemo(
+    () => processDataForChart(data, outcomeIds),
+    [data, outcomeIds, processDataForChart]
+  );
 
   useEffect(() => {
     if (!chartRef.current) return;
@@ -144,7 +158,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
   }, [processedData]);
 
   return (
-    <div className="w-full rounded-lg">
+    <div className="w-full rounded-lg h-full">
       <div className="lg:h-[12vw] md:h-[15vw] sm:h-[40vw] mt-8 w-full">
         <canvas
           ref={chartRef}
