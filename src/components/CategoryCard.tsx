@@ -291,7 +291,7 @@ export default function CategoryCard({
                     }
                     setIsOrderMade(true);
                     setSelectedOutcomeId(outcome._id);
-                    router.push(`/events/${item._id}`)
+                    router.push(`/events/${item._id}?selected=true`)
                   }}
                   key={outcome._id}
                   className={`flex flex-col gap-1 md:gap-2`}

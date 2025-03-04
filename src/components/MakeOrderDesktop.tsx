@@ -19,6 +19,7 @@ export default function MakeOrder() {
   const [value, setValue] = useState<number>(10);
   const [inputValue, setInputValue] = useState<string>("10");
   const [inputLeverage, setInputLeverage] = useState<string>("1.0");
+  const [tradeSizeWarning, setTradeSizeWarning] = useState<string>("");
   const maxTradeSize = orderDetails?.max_wager;
   const maxLeverage = orderDetails?.max_leverage;
   const eventId = orderDetails?.event_id;
@@ -40,6 +41,11 @@ export default function MakeOrder() {
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
       setValue(Math.min(Math.max(newValue, 10), maxTradeSize)); // Ensure it stays within range
+      if (newValue < 10) {
+        setTradeSizeWarning("Minimum trade size is 10");
+      } else {
+        setTradeSizeWarning("");
+      }
     }
   };
 
@@ -47,8 +53,11 @@ export default function MakeOrder() {
     let newValue = parseFloat(inputValue);
     if (isNaN(newValue) || newValue < 10) {
       newValue = 10;
+      setTradeSizeWarning("Minimum trade size is 10");
     } else if (newValue > maxTradeSize) {
       newValue = maxTradeSize;
+    } else {
+      setTradeSizeWarning("");
     }
     setValue(newValue);
     setInputValue(newValue.toString());
@@ -153,7 +162,7 @@ export default function MakeOrder() {
           );
         }
       }
-    }, 200);
+    }, 500);
     return () => clearTimeout(debounceTimer);
   }, [value, leverage]);
 
@@ -188,6 +197,9 @@ export default function MakeOrder() {
             );
           })}
         </div>
+        {tradeSizeWarning && (
+          <p className="text-red-500 text-xs mt-1">{tradeSizeWarning}</p>
+        )}
         <div className="pl-2 mt-2">
           <div className="slider-container w-full h-4 flex items-center">
             <div className="relative w-full">
