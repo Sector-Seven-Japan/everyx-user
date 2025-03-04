@@ -2,7 +2,8 @@
 import { AppContext } from "@/app/Context/AppContext";
 import { useContext, useEffect } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname,useSearchParams } from "next/navigation";
+
 
 interface TraderInfo {
   max_leverage: number;
@@ -49,15 +50,18 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
   } = useContext(AppContext);
 
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const selected = searchParams.get('selected');
 
   useEffect(() => {
-    const isDesktop = window.innerWidth >= 1024;
+    if (selected) return;
 
+    const isDesktop = window.innerWidth >= 1024;
 
     if (
       isDesktop &&
       pathname.startsWith("/events/") &&
-      !pathname.match(/^\/events\/[^/]+\/order$/) && 
+      !pathname.match(/^\/events\/[^/]+\/order$/) &&
       !pathname.match(/^\/events\/[^/]+\/order\/success$/)
     ) {
       setIsLoading(true);
@@ -91,7 +95,6 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
       }
     }
   }, [pathname]); // Include pathname in the dependency array
-
 
   return (
     <div className="mt-3 md:mt-20">

@@ -151,7 +151,9 @@ export default function WagerPage() {
 
   useEffect(() => {
     if (authToken) {
+      setIsLoading(true);
       fetchWagerData();
+      setIsLoading(false);
     }
   }, [authToken, eventId]);
 
