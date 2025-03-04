@@ -23,7 +23,6 @@ interface WagerPayload {
   wallet_id: number;
 }
 
-// EventData interface
 interface EventData {
   _id: string;
   name: string;
@@ -79,11 +78,17 @@ export default function BettingPage() {
   const router = useRouter();
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
-  const [isLoaingGraph, setIsLoadingGraph] = useState(true);
-  console.log(isLoaingGraph);
+  const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [countdown, setCountdown] = useState<string>("");
   const categoryId = orderDetails?.event_id;
-  console.log(countdown);
+
+  // Redirect if orderDetails.event_id is missing
+  useEffect(() => {
+    if (!categoryId) {
+      console.log("No event ID found in orderDetails, redirecting back...");
+      router.back(); // Go back to the previous page
+    }
+  }, [categoryId, router]);
 
   const handleSubmit = async () => {
     try {
@@ -117,21 +122,23 @@ export default function BettingPage() {
       }
     } catch (error) {
       console.error("Navigation error:", error);
+    } finally {
+      setIsLoading(false); // Ensure loading is reset even on error
     }
   };
 
   useEffect(() => {
     setIsLoading(false);
     fetchEvent();
-  }, []);
+  }, [categoryId]); // Add categoryId as a dependency
 
   useEffect(() => {
     if (eventData?.ends_at) {
+      console.log(countdown);
       setCountdown(getCountdown(eventData.ends_at));
       const interval = setInterval(() => {
         setCountdown(getCountdown(eventData.ends_at));
       }, 60000); // Update every minute
-
       return () => clearInterval(interval);
     }
   }, [eventData?.ends_at, getCountdown]);
@@ -159,26 +166,20 @@ export default function BettingPage() {
       to,
     }: EventHistoryParams) => {
       try {
-        // Build URL with query parameters
         const params = new URLSearchParams();
         if (precision) params.append("precision", precision);
         if (from) params.append("from", from);
         if (to) params.append("to", to);
-
         const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
-
         const response = await fetch(url);
-
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         const data = await response.json();
-        // console.log("data at getGraphData", data);
         return data;
       } catch (error) {
         console.error("Error getting graph data:", error);
-        throw error; // Re-throw the error to handle it in the calling code
+        throw error;
       }
     };
 
@@ -195,10 +196,9 @@ export default function BettingPage() {
           setGraphData(data);
         }
       } catch (error) {
-        // Handle error appropriately
         console.error("Failed to fetch graph data:", error);
       } finally {
-        setIsLoadingGraph(false); // Stop loading
+        setIsLoadingGraph(false);
       }
     };
 
@@ -219,7 +219,7 @@ export default function BettingPage() {
                 <CategoryInfo eventData={eventData} />
                 <div className="px-5">
                   <h1 className="text-[23px] mb-8 mt-5">Live Chart</h1>
-                  {isLoaingGraph ? (
+                  {isLoadingGraph ? (
                     <div className="flex justify-center items-center h-40">
                       <p className="text-[#00FFBB] text-lg">Loading graph...</p>
                     </div>
@@ -287,7 +287,7 @@ export default function BettingPage() {
                           Cash used
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          ${Math.round(orderDetails?.before_pledge)}
+                          ${Math.round(orderDetails?.before_pledge || 0)}
                         </p>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
@@ -295,9 +295,9 @@ export default function BettingPage() {
                           Leverage cash value
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          ${Math.round(orderDetails?.before_wager)}{" "}
+                          ${Math.round(orderDetails?.before_wager || 0)}{" "}
                           <span className="text-sm text-[#E49C29]">
-                            x {orderDetails?.before_leverage}
+                            x {orderDetails?.before_leverage || 1}
                           </span>
                         </p>
                       </div>
@@ -309,7 +309,7 @@ export default function BettingPage() {
                           Projected payout
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          ${Math.round(orderDetails?.before_payout)}
+                          ${Math.round(orderDetails?.before_payout || 0)}
                         </p>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
@@ -317,7 +317,9 @@ export default function BettingPage() {
                           Your return
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          {orderDetails?.before_return ? "+"+orderDetails?.before_return.toFixed(0)+"%":"--"}
+                          {orderDetails?.before_return
+                            ? `+${orderDetails.before_return.toFixed(0)}%`
+                            : "--"}
                         </p>
                       </div>
                     </div>
@@ -328,7 +330,9 @@ export default function BettingPage() {
                       Stop level
                     </p>
                     <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2.5px] md:text-[0.75vw]">
-                      {(orderDetails?.before_stop_probability * 100).toFixed(0)}
+                      {(
+                        orderDetails?.before_stop_probability * 100 || 0
+                      ).toFixed(0)}
                       %
                     </button>
                   </div>
@@ -340,7 +344,7 @@ export default function BettingPage() {
                       Cash used
                     </p>
                     <p className="text-[22px] text-[#00FFB8] md:text-[1.5vw]">
-                      ${Math.round(orderDetails?.wager)}
+                      ${Math.round(orderDetails?.wager || 0)}
                     </p>
                   </div>
                   <Image src="/Images/down.png" alt="" height={10} width={10} />
@@ -353,7 +357,7 @@ export default function BettingPage() {
                           Cash used
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          ${Math.round(orderDetails?.after_pledge)}
+                          ${Math.round(orderDetails?.after_pledge || 0)}
                         </p>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
@@ -361,9 +365,9 @@ export default function BettingPage() {
                           Leverage cash value
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          ${Math.round(orderDetails?.after_wager)}{" "}
+                          ${Math.round(orderDetails?.after_wager || 0)}{" "}
                           <span className="text-sm text-[#E49C29]">
-                            x {orderDetails?.after_leverage}
+                            x {orderDetails?.after_leverage || 1}
                           </span>
                         </p>
                       </div>
@@ -375,7 +379,7 @@ export default function BettingPage() {
                           Projected payout
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          ${Math.round(orderDetails?.after_payout)}
+                          ${Math.round(orderDetails?.after_payout || 0)}
                         </p>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
@@ -383,7 +387,9 @@ export default function BettingPage() {
                           Your return
                         </p>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                        {orderDetails?.after_return ? "+"+orderDetails?.after_return.toFixed(0)+"%":"--"}
+                          {orderDetails?.after_return
+                            ? `+${orderDetails.after_return.toFixed(0)}%`
+                            : "--"}
                         </p>
                       </div>
                     </div>
@@ -394,7 +400,10 @@ export default function BettingPage() {
                       Stop level
                     </p>
                     <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2.5px] md:text-[0.75vw]">
-                      {(orderDetails?.after_stop_probability * 100).toFixed(0)}%
+                      {(
+                        orderDetails?.after_stop_probability * 100 || 0
+                      ).toFixed(0)}
+                      %
                     </button>
                   </div>
                 </div>

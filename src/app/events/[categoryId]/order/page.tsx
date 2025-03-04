@@ -93,7 +93,6 @@ export default function Order() {
     [orderDetails?.event_outcome_id]
   );
 
-
   useEffect(() => {
     if (walletData[0]?.balance < orderDetails.pledge) {
       setIsBalance(false);
