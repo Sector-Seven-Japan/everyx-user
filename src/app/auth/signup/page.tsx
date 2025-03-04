@@ -100,8 +100,7 @@ const Page = () => {
     } catch (error) {
       console.error("Error during signup:", error);
       alert(
-        `Signup failed: ${
-          error instanceof Error ? error.message : "An unknown error occurred."
+        `Signup failed: ${error instanceof Error ? error.message : "An unknown error occurred."
         }`
       );
     }
@@ -144,19 +143,19 @@ const Page = () => {
               onChange={handlePhoneChange}
               inputStyle={{
                 backgroundColor: "transparent",
-                borderBottom: "1px solid #4A4A4A",
-                color: "white",
                 width: "100%",
                 fontSize: "14px",
-                paddingBottom: "8px",
+                border: "none",
+                outline: "none",
+                boxShadow: "none"
               }}
               buttonStyle={{
                 backgroundColor: "transparent",
-                borderRight: "1px solid #4A4A4A",
+                border: "none",
               }}
               dropdownStyle={{
-                backgroundColor: "#1E1E1E",
-                color: "white",
+                backgroundColor: "black",
+                color: "white"
               }}
             />
           </div>
@@ -232,11 +231,11 @@ const Page = () => {
 
           {/* Country Dropdown */}
           <div>
-            <label className="block text-gray-400 text-sm mb-1">Country</label>
+            <label className="block text-grey-400 text-sm mb-1">Country</label>
             <Select
               options={countryOptions}
               onChange={handleCountryChange}
-              className="text-white"
+              className="text-blue"
               styles={{
                 control: (styles) => ({
                   ...styles,
@@ -244,11 +243,15 @@ const Page = () => {
                   color: "black",
                   fontSize: "14px",
                   paddingBottom: "8px",
+                  border: "none",
+                  boxShadow: "none",
+                  cursor: "pointer"
                 }),
                 menu: (styles) => ({
                   ...styles,
                   backgroundColor: "black",
                   color: "black",
+                  border: "none",
                 }),
                 singleValue: (styles) => ({ ...styles, color: "black" }),
               }}
