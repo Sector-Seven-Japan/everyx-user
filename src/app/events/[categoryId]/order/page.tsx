@@ -93,6 +93,7 @@ export default function Order() {
     [orderDetails?.event_outcome_id]
   );
 
+
   useEffect(() => {
     if (walletData[0]?.balance < orderDetails.pledge) {
       setIsBalance(false);
@@ -180,9 +181,9 @@ export default function Order() {
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    if(!authToken){
+    if (!authToken) {
       router.push("/login");
-      return
+      return;
     }
     if (!isBalance) {
       router.push("/deposits");
@@ -378,9 +379,8 @@ export default function Order() {
                         <div className="text-[19px] font-light md:text-[0.7vw]">
                           {Math.round(orderDetails?.new_probability * 100)}%
                         </div>
-                       
-                        <div>
 
+                        <div>
                           <Image
                             src="/Images/checkbox.png"
                             alt="checkbox"
@@ -401,7 +401,10 @@ export default function Order() {
                           Cash used
                         </div>
                         <div className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          ${!authToken ? Math.round(orderDetails?.pledge) : Math.round(orderDetails?.after_pledge)}
+                          $
+                          {!authToken
+                            ? Math.round(orderDetails?.pledge)
+                            : Math.round(orderDetails?.after_pledge)}
                         </div>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
@@ -409,7 +412,10 @@ export default function Order() {
                           Leverage cash value
                         </div>
                         <div className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                        ${!authToken ? Math.round(orderDetails?.wager) : Math.round(orderDetails?.after_wager)}{" "}
+                          $
+                          {!authToken
+                            ? Math.round(orderDetails?.wager)
+                            : Math.round(orderDetails?.after_wager)}{" "}
                           <span className="text-sm text-[#E49C29] md:text-[0.85vw]">
                             x {orderDetails?.leverage}
                           </span>
@@ -422,7 +428,10 @@ export default function Order() {
                           Projected payout
                         </div>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                        ${!authToken ? Math.round(orderDetails?.indicative_payout) : Math.round(orderDetails?.after_pledge)}
+                          $
+                          {!authToken
+                            ? Math.round(orderDetails?.indicative_payout)
+                            : Math.round(orderDetails?.after_pledge)}
                         </p>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
@@ -443,7 +452,11 @@ export default function Order() {
                       Stop level
                     </div>
                     <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2.5px] md:text-[0.75vw]">
-                      {!authToken? (orderDetails?.stop_probability * 100)?.toFixed(0)  :(orderDetails?.after_stop_probability * 100)?.toFixed(0)}
+                      {!authToken
+                        ? (orderDetails?.stop_probability * 100)?.toFixed(0)
+                        : (orderDetails?.after_stop_probability * 100)?.toFixed(
+                            0
+                          )}
                       %
                     </button>
                   </div>
@@ -500,7 +513,7 @@ export default function Order() {
                   {authToken
                     ? isBalance
                       ? "Proceed"
-                      : "Insufficient balance"
+                      : "Add Funds"
                     : "Login to proceed"}
                 </button>
               </div>
