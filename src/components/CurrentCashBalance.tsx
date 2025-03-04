@@ -7,12 +7,28 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 
 const CurrentCashBalanceCard: React.FC = () => {
   const router = useRouter();
-  const { userStats, userProfile, walletData } =
-    useContext(AppContext);
+  const { userStats, userProfile, walletData } = useContext(AppContext);
   const pathname = usePathname();
+
   const handleSettingsClick = () => {
     router.push("/profile");
-  }
+  };
+
+  // Helper function to format numbers safely
+  const formatNumber = (value: number | undefined | null | string, decimals: number = 2) => {
+    if (value === undefined || value === null) {
+      return { whole: "0", decimal: "00" };
+    }
+    const num = Number(value);
+    const formatted = num.toFixed(decimals);
+    const [whole, decimal] = formatted.split(".");
+    return { whole: whole || "0", decimal: decimal || "00" };
+  };
+
+  // Format all monetary values
+  const balance = formatNumber(walletData?.length > 0 ? walletData[0]?.balance : 0);
+  const bestCase = formatNumber(userStats?.best_case_fund_available);
+  const winnings = formatNumber(userStats?.best_case_cumulative_profit);
 
   return (
     <>
@@ -41,22 +57,8 @@ const CurrentCashBalanceCard: React.FC = () => {
       </div>
       <p className="text-[15px] text-center mt-5">Current Cash Balance</p>
       <div className="flex justify-center mt-5 items-baseline font-bold">
-        <span className="text-[34px]">
-          $
-          {
-            (walletData?.length > 0 ? walletData[0]?.balance : 0)
-              .toString()
-              .split(".")[0]
-          }
-        </span>
-        <span className="text-[30px]">
-          .
-          {
-            (walletData?.length > 0 ? walletData[0]?.balance : 0.00)
-              .toFixed(2)
-              .split(".")[1]
-          }
-        </span>
+        <span className="text-[34px]">${balance.whole}</span>
+        <span className="text-[30px]">.{balance.decimal}</span>
       </div>
       {pathname === "/deposit-withdrawal/portfolio" ||
         pathname === "/deposit-withdrawal/history" ? (
@@ -139,22 +141,8 @@ const CurrentCashBalanceCard: React.FC = () => {
             <div className="flex justify-between items-end">
               <span>Best case cash balance</span>
               <span className="font-bold">
-                <span className="text-[22px]">
-                  $
-                  {
-                    (userStats?.best_case_fund_available || "0")
-                      .toLocaleString()
-                      .split(".")[0]
-                  }
-                </span>
-                <span className="text-[14px]">
-                  .
-                  {
-                    (userStats?.best_case_fund_available || 0.0)
-                      .toFixed(2)
-                      .split(".")[1]
-                  }
-                </span>
+                <span className="text-[22px]">${bestCase.whole}</span>
+                <span className="text-[14px]">.{bestCase.decimal}</span>
               </span>
             </div>
 
@@ -162,22 +150,8 @@ const CurrentCashBalanceCard: React.FC = () => {
             <div className="flex justify-between items-end">
               <span>Cumulative winnings</span>
               <span className="font-bold">
-                <span className="text-[22px]">
-                  $
-                  {
-                    (userStats?.best_case_cumulative_profit || "0")
-                      .toLocaleString()
-                      .split(".")[0]
-                  }
-                </span>
-                <span className="text-[14px]">
-                  .
-                  {
-                    (userStats?.best_case_cumulative_profit || 0.0)
-                      .toFixed(2)
-                      .split(".")[1]
-                  }
-                </span>
+                <span className="text-[22px]">${winnings.whole}</span>
+                <span className="text-[14px]">.{winnings.decimal}</span>
               </span>
             </div>
           </div>
