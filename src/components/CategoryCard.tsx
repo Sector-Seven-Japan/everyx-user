@@ -81,8 +81,17 @@ export default function CategoryCard({
   const { API_BASE_URL, getCountdown } = useContext(AppContext);
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const router = useRouter();
-  const { setIsLoading, calculateMaxLeverage, calculateMaxEstimatedPayout } =
-    useContext(AppContext);
+  const {
+    setIsLoading,
+    calculateMaxLeverage,
+    calculateMaxEstimatedPayout,
+    setSelectedOrder,
+    makeOrderWithoutAuth,
+    makeOrder,
+    authToken,
+    setIsOrderMade,
+    setSelectedOutcomeId,
+  } = useContext(AppContext);
 
   const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
   const [countdown, setCountdown] = useState("");
@@ -251,7 +260,39 @@ export default function CategoryCard({
             >
               {item?.outcomes.map((outcome: Outcome, index: number) => (
                 <div
-                  onClick={handleNavigation}
+                  onClick={async () => {
+                    setSelectedOrder(
+                      String.fromCharCode(65 + index) +
+                        ". " +
+                        outcome.name.charAt(0).toUpperCase() +
+                        outcome.name.slice(1)
+                    );
+                    setIsLoading(true);
+                    if (authToken) {
+                      await makeOrder(
+                        outcome._id,
+                        item._id,
+                        false,
+                        1,
+                        0,
+                        10,
+                        10
+                      );
+                    } else {
+                      await makeOrderWithoutAuth(
+                        outcome._id,
+                        item._id,
+                        false,
+                        1,
+                        0,
+                        10,
+                        10
+                      );
+                    }
+                    setIsOrderMade(true);
+                    setSelectedOutcomeId(outcome._id);
+                    router.push(`/events/${item._id}`)
+                  }}
                   key={outcome._id}
                   className={`flex flex-col gap-1 md:gap-2`}
                 >

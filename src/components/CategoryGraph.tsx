@@ -53,12 +53,12 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
   useEffect(() => {
     const isDesktop = window.innerWidth >= 1024;
 
-    // Ensure we are on /events/{eventId} but NOT on /events/order/*
+
     if (
       isDesktop &&
       pathname.startsWith("/events/") &&
-      !pathname.startsWith("/events/order") &&
-      !pathname.startsWith("/events/order/success")
+      !pathname.match(/^\/events\/[^/]+\/order$/) && 
+      !pathname.match(/^\/events\/[^/]+\/order\/success$/)
     ) {
       setIsLoading(true);
       const outcome = eventData?.outcomes[0];
@@ -90,7 +90,8 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
         })();
       }
     }
-  }, []); // Dependency on pathname
+  }, [pathname]); // Include pathname in the dependency array
+
 
   return (
     <div className="mt-3 md:mt-20">

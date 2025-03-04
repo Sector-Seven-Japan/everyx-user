@@ -96,10 +96,7 @@ export default function MakeOrder() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    if (!authToken) {
-      router.push("/login");
-      return;
-    }
+
     const wager = value * leverage;
     const loan = wager - value;
 
@@ -108,7 +105,27 @@ export default function MakeOrder() {
       makeOrder(outcomeId, eventId, true, leverage, loan, value, wager);
     } else {
       router.push(`/events/${eventId}/order`);
-      makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
+      if (authToken) {
+        await makeOrder(
+          outcomeId,
+          eventId,
+          false,
+          leverage,
+          loan,
+          value,
+          wager
+        );
+      } else {
+        await makeOrderWithoutAuth(
+          outcomeId,
+          eventId,
+          false,
+          leverage,
+          loan,
+          value,
+          wager
+        );
+      }
     }
   };
 
@@ -337,7 +354,7 @@ export default function MakeOrder() {
         onClick={handleSubmit}
         className="text-[#2DC198] w-full border border-[#2DC198] py-[0.7vw] xl:rounded-lg 2xl:rounded-2xl text-[1vw] mt-3 mb-[1vw]"
       >
-        {authToken ? "Next" : "Sign in to continue"}
+        Next
       </button>
     </div>
   );
