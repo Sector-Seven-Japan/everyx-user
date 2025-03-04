@@ -22,7 +22,7 @@ export default function CashWithdrawalCategoriesMobile() {
         </div>
       )}
       <nav className="">
-        <ul className="grid grid-cols-4 gap-5">
+        <ul className="grid grid-cols-4 gap-2">
           <li>
             <button
               onClick={() => handleNavigation("/deposits")}
