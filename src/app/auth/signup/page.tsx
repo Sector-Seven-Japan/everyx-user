@@ -254,7 +254,7 @@ const Page = () => {
                   color: "black",
                   border: "none",
                 }),
-                singleValue: (styles) => ({ ...styles, color: "black" }),
+                singleValue: (styles) => ({ ...styles, color: "white" }),
               }}
             />
           </div>
