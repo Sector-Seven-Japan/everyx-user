@@ -205,7 +205,7 @@ export default function CategoryCard({
             <p className="text-[#2DC198] md:text-[0.68vw]">{countdown}</p>
           </p>
         </div>
-        <div className="pt-4">
+        <div className="pt-4 lg:h-[3vw] sm:h-[10vw]">
           <p
             className={`font-light md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] inter tracking-[1.2px] ${
               !hide && "md:text-[0.7vw]"

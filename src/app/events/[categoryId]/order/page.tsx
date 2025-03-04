@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react"; // Add useMemo
 import Navbar from "@/components/Navbar";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import CategoryGraph from "@/components/CategoryGraph";
 import CategoryActivity from "@/components/CategoryActivity";
 
+// ... (interface definitions remain unchanged)
 interface WagerPayload {
   event_id: string;
   event_outcome_id: string;
@@ -86,13 +87,19 @@ export default function Order() {
   const [countdown, setCountdown] = useState<string>("");
   const [isBalance, setIsBalance] = useState<boolean>(true);
 
+  // Stabilize outcomeIds with useMemo
+  const outcomeIds = useMemo(
+    () => [orderDetails?.event_outcome_id],
+    [orderDetails?.event_outcome_id]
+  );
+
   useEffect(() => {
     if (walletData[0]?.balance < orderDetails.pledge) {
       setIsBalance(false);
     }
     setIsLoading(false);
     fetchEvent();
-  }, []);
+  }, [walletData, orderDetails, setIsLoading]); // Add dependencies
 
   useEffect(() => {
     if (eventData?.ends_at) {
@@ -100,7 +107,6 @@ export default function Order() {
       const interval = setInterval(() => {
         setCountdown(getCountdown(eventData.ends_at));
       }, 60000); // Update every minute
-
       return () => clearInterval(interval);
     }
   }, [eventData?.ends_at, getCountdown]);
@@ -128,14 +134,12 @@ export default function Order() {
       to,
     }: EventHistoryParams) => {
       try {
-        // Build URL with query parameters
         const params = new URLSearchParams();
         if (precision) params.append("precision", precision);
         if (from) params.append("from", from);
         if (to) params.append("to", to);
 
         const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
-
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -143,11 +147,10 @@ export default function Order() {
         }
 
         const data = await response.json();
-        // console.log("data at getGraphData", data);
         return data;
       } catch (error) {
         console.error("Error getting graph data:", error);
-        throw error; // Re-throw the error to handle it in the calling code
+        throw error;
       }
     };
 
@@ -165,10 +168,9 @@ export default function Order() {
           setGraphData(data);
         }
       } catch (error) {
-        // Handle error appropriately
         console.error("Failed to fetch graph data:", error);
       } finally {
-        setIsLoadingGraph(false); // Stop loading
+        setIsLoadingGraph(false);
       }
     };
 
@@ -256,7 +258,7 @@ export default function Order() {
             )}
           </div>
           <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%] pb-20">
-            <div className="md:pb-10  md:bg-[#141414] md:rounded-xl sticky top-[70px]">
+            <div className="md:pb-10 md:bg-[#141414] md:rounded-xl sticky top-[70px]">
               <div className="p-5">
                 <h1 className="text-center mb-4 md:text-[1.1vw] md:mb-[1.2vw] text-[22px]">
                   Your Order
@@ -304,7 +306,6 @@ export default function Order() {
                     <div className="absolute w-5 h-[4px] bg-[#00FFBB] -bottom-[6px] left-1/2 transform -translate-x-1/2"></div>
                   )}
                 </h1>
-
                 <h1
                   className={`text-[17px] relative cursor-pointer md:text-[0.8vw] ${
                     option === "Charts" ? "text-[#00FFBB]" : "text-[#323232]"
@@ -377,7 +378,9 @@ export default function Order() {
                         <div className="text-[19px] font-light md:text-[0.7vw]">
                           {Math.round(orderDetails?.new_probability * 100)}%
                         </div>
-                        <div className="">
+                       
+                        <div>
+
                           <Image
                             src="/Images/checkbox.png"
                             alt="checkbox"
@@ -413,7 +416,6 @@ export default function Order() {
                         </div>
                       </div>
                     </div>
-
                     <div className="flex justify-between">
                       <div className="flex flex-col gap-[1px]">
                         <div className="text-[#5D5D5D] text-[13px] md:text-[0.75vw]">
@@ -483,10 +485,8 @@ export default function Order() {
                           </div>
                         </div>
                       </div>
-                      <DrawGraph
-                        data={graphData}
-                        outcomeIds={[orderDetails?.event_outcome_id]}
-                      />
+                      <DrawGraph data={graphData} outcomeIds={outcomeIds} />{" "}
+                      {/* Use stabilized outcomeIds */}
                     </div>
                   </div>
                 </div>
