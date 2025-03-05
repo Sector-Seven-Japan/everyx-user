@@ -35,7 +35,7 @@ const Deposit: React.FC = () => {
   const [translateY, setTranslateY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const startYRef = useRef<number | null>(null);
-  const isNavigatingRef = useRef(false);
+  const isPullingRef = useRef(false);
 
   const handleCopy = async () => {
     try {
@@ -47,15 +47,19 @@ const Deposit: React.FC = () => {
   };
 
   const handleTouchStart = (e: ReactTouchEvent<HTMLDivElement>) => {
-    // Only track touch if at the top of the container
-    if (containerRef.current && containerRef.current.scrollTop === 0) {
+    if (!containerRef.current) return;
+
+    // Only start pulling if at the very top of the container
+    if (containerRef.current.scrollTop === 0) {
       startYRef.current = e.touches[0].clientY;
-      isNavigatingRef.current = false;
+      isPullingRef.current = true;
+    } else {
+      isPullingRef.current = false;
     }
   };
 
   const handleTouchMove = (e: ReactTouchEvent<HTMLDivElement>) => {
-    if (startYRef.current === null) return;
+    if (!containerRef.current || !isPullingRef.current || startYRef.current === null) return;
 
     const currentY = e.touches[0].clientY;
     const deltaY = currentY - startYRef.current;
@@ -63,15 +67,14 @@ const Deposit: React.FC = () => {
     // Only pull down
     if (deltaY > 0) {
       e.preventDefault(); // Prevent default scrolling
-      window.scrollTo(0, 0); // Stop default browser scroll
-
+      
       // Gradually increase translation with a dampening effect
       const translationAmount = Math.min(deltaY * 0.5, 200);
       setTranslateY(translationAmount);
 
       // Check if pull is significant
-      if (translationAmount > 150 && !isNavigatingRef.current) {
-        isNavigatingRef.current = true;
+      if (translationAmount > 150) {
+        isPullingRef.current = false;
         router.push("/deposit-withdrawal/history");
       }
     }
@@ -81,6 +84,7 @@ const Deposit: React.FC = () => {
     // Smoothly reset translation
     setTranslateY(0);
     startYRef.current = null;
+    isPullingRef.current = false;
   };
 
   useEffect(() => {
@@ -135,14 +139,18 @@ const Deposit: React.FC = () => {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            className="relative bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-6 touch-pan-y transition-transform duration-300 ease-out"
+            className="relative bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-6 touch-pan-y overflow-y-auto transition-transform duration-300 ease-out"
             style={{
               transform: `translateY(${translateY}px)`,
               willChange: "transform",
+              height: 'calc(100vh - 200px)', 
             }}
           >
             {/* Puller indicator */}
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-[3px] bg-[rgb(112,112,112)] rounded-xl"></div>
+            <div 
+              className="sticky top-0 z-10 left-1/2 transform -translate-x-1/2 w-16 h-[3px] bg-[rgb(112,112,112)] rounded-xl mb-4"
+              style={{ touchAction: 'none' }}
+            ></div>
 
             <div className="mt-8">
               <p className="text-[16px] pr-[8vw] text-center">Deposit:</p>
