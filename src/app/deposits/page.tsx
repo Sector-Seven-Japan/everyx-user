@@ -9,7 +9,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { QRCodeCanvas } from "qrcode.react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { IoCopyOutline } from "react-icons/io5";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useAccount } from "wagmi";
@@ -27,6 +27,10 @@ const Deposit: React.FC = () => {
 
   const { isConnected: wagmiConnected } = useAccount();
   const [hasRedirected, setHasRedirected] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchMove, setTouchMove] = useState<number | null>(null);
+  const [translateY, setTranslateY] = useState(0); // For gradual movement
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleCopy = async () => {
     try {
@@ -62,14 +66,72 @@ const Deposit: React.FC = () => {
     getDepositAddress();
   }, [getDepositAddress]);
 
+  // Handle touch events for pull-down gesture
+  useEffect(() => {
+    if (!isMobile || !containerRef.current) return;
+
+    const container = containerRef.current;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      setTouchStart(e.touches[0].clientY);
+      setTouchMove(null);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (touchStart === null) return;
+
+      const currentY = e.touches[0].clientY;
+      setTouchMove(currentY);
+
+      const distance = currentY - touchStart;
+      if (distance > 0) {
+        // Only move downward
+        setTranslateY(distance); // Gradually move the container
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (touchStart === null || touchMove === null) return;
+
+      const distance = touchMove - touchStart;
+      const threshold = 150; // Threshold for triggering navigation
+
+      console.log({ touchStart, touchMove, distance, translateY });
+
+      if (distance > threshold) {
+        console.log("Pull down detected, navigating to portfolio...");
+        router.push("/deposit-withdrawal/history");
+      }
+
+      // Reset values with animation
+      setTranslateY(0);
+      setTouchStart(null);
+      setTouchMove(null);
+    };
+
+    container.addEventListener("touchstart", handleTouchStart);
+    container.addEventListener("touchmove", handleTouchMove);
+    container.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isMobile, touchStart, touchMove, router]);
+
   return (
     <>
       <Navbar />
       {isMobile ? (
         <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-5 flex flex-col">
           <CurrentCashBalanceCard />
-          <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-2">
-            <div className="flex justify-center ">
+          <div
+            ref={containerRef}
+            className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-2 touch-pan-y transition-transform duration-200 ease-out"
+            style={{ transform: `translateY(${translateY}px)` }}
+          >
+            <div className="flex justify-center">
               <div className="w-16 h-[3px] bg-[rgb(112,112,112)] rounded-xl"></div>
             </div>
             <div className="flex justify-between items-center mt-5">
@@ -179,12 +241,15 @@ const Deposit: React.FC = () => {
       ) : (
         <div className="bg-[#0E0E0E] px-[20vw]">
           <HeadingSlider filter={filter} setFilter={setFilter} />
-          <div className="flex justify-center pt-[4.65%] gap-5 ">
-            <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl pb-10 pt-2 min-h-screen w-full flex-1">
-              <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
 
-              <div className="mt-5 flex items-center justify-center w-full px-5 ">
-                <button className="text-white text-[16px] ">Deposit :</button>
+          <div className="flex justify-center pt-[4.65%] gap-5">
+            <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl pb-10 pt-2 min-h-screen w-full flex-1">
+<!--               <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div> -->
+
+              {/* Deposit and Withdrawal Section */}
+              <div className="mt-3 flex items-center justify-center w-full px-5">
+                <button className="text-white text-[16px]">Deposit :</button>
+
               </div>
 
               <div className="px-[10vw] mt-[3vw] w-full flex flex-col items-center">
