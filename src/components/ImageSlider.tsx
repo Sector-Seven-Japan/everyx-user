@@ -8,7 +8,7 @@ export default function ImageSlider() {
   const { bannerData, setIsLoading } = useContext(AppContext);
 
   return (
-    <div className="w-full bg-[#0E0E0E] relative px-4 md:px-0 md:mt-10">
+    <div className="w-full bg-[#0E0E0E] relative px-5 md:px-0 md:mt-10">
       {/* Ensure cursor-pointer applies to the entire scrolling area */}
       <div className="flex overflow-x-scroll no-scrollbar snap-x snap-mandatory cursor-pointer">
         {bannerData.map((item, index) => (

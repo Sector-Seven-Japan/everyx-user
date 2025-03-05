@@ -93,7 +93,7 @@ export default function Home() {
   return fetchingData == false ? (
     <div>
       <Navbar />
-      <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-5 md:px-10 lg:px-16 xl:px-20">
+      <div className="w-full max-w-screen-2xl mx-auto md:px-10 lg:px-16 xl:px-20">
         <HeadingSlider setFilter={setFilter} filter={filter} />
         <ImageSlider />
         <SearchBar search={search} setSearch={setSearch} />
@@ -108,7 +108,7 @@ export default function Home() {
             return null;
           })}
 
-        <div className="p-3 sm:p-5">
+        <div className="p-3">
           {isSearching ? (
             <div className="text-center text-gray-500 h-52 flex items-center justify-center">
               Searching...
