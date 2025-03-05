@@ -60,6 +60,11 @@ const Page = () => {
     } = formData;
 
     if (!username || !phone || !email || !password || !country) {
+      console.log(username);
+      console.log(phone);
+      console.log(email);
+      console.log(password);
+      console.log(country);
       alert("Please fill all the fields correctly.");
       return;
     }
