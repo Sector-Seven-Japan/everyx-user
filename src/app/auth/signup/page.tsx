@@ -113,7 +113,7 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0E0E0E] px-6 md:px-12 lg:px-20 ">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0E0E0E] px-6 md:px-12 lg:px-20 pt-5 pb-10 ">
       <div className="w-full max-w-lg  px-6 rounded-xl shadow-lg">
         <h2 className="text-white text-2xl font-bold text-center mb-6">
           Sign Up
