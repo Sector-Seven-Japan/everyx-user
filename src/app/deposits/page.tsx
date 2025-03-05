@@ -156,8 +156,11 @@ const Deposit: React.FC = () => {
                   {depositAddress}
                 </p>
                 <div
-                  className="w-10 h-10 bg-[#2b2b2b] rounded-lg flex items-center justify-center cursor-pointer"
+                  className="w-10 h-10 bg-[#2b2b2b] rounded-lg flex items-center justify-center cursor-pointer
+                    hover:bg-[#3b3b3b] active:bg-[#1b1b1b] transition-colors duration-200
+                    hover:scale-105 active:scale-95"
                   onClick={handleCopy}
+                  title="Copy address"
                 >
                   <IoCopyOutline className="text-[20px]" />
                 </div>
@@ -179,7 +182,6 @@ const Deposit: React.FC = () => {
             </div>
 
             <p className="text-center mb-5 text-[18px]">or</p>
-            {/* Connect Exchange - Using RainbowKit ConnectButton */}
             <ConnectButton.Custom>
               {({
                 account,
@@ -198,9 +200,9 @@ const Deposit: React.FC = () => {
 
                 const handleClick = () => {
                   if (isConnected) {
-                    router.push("/deposit-withdrawal/deposits"); // Redirect if connected
+                    router.push("/deposit-withdrawal/deposits");
                   } else {
-                    openConnectModal(); // Open wallet connect modal if not connected
+                    openConnectModal();
                   }
                 };
 
@@ -239,13 +241,15 @@ const Deposit: React.FC = () => {
       ) : (
         <div className="bg-[#0E0E0E] px-[20vw]">
           <HeadingSlider filter={filter} setFilter={setFilter} />
+
           <div className="flex justify-center pt-[4.65%] gap-5">
             <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl pb-10 pt-2 min-h-screen w-full flex-1">
-              <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
+<!--               <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div> -->
 
               {/* Deposit and Withdrawal Section */}
-              <div className="mt-5 flex items-center justify-center w-full px-5">
+              <div className="mt-3 flex items-center justify-center w-full px-5">
                 <button className="text-white text-[16px]">Deposit :</button>
+
               </div>
 
               <div className="px-[10vw] mt-[3vw] w-full flex flex-col items-center">
@@ -261,7 +265,13 @@ const Deposit: React.FC = () => {
                     <p className="w-full overflow-hidden text-[0.6vw] text-white text-opacity-60 truncate px-3">
                       {depositAddress}
                     </p>
-                    <div className="pr-2">
+                    <div
+                      className="pr-2 flex items-center justify-center cursor-pointer
+                        hover:bg-[#2b2b2b] active:bg-[#1b1b1b] rounded-r-lg h-full w-10
+                        transition-colors duration-200 hover:scale-105 active:scale-95"
+                      onClick={handleCopy}
+                      title="Copy address"
+                    >
                       <IoCopyOutline className="text-[1vw]" />
                     </div>
                   </div>
@@ -282,7 +292,6 @@ const Deposit: React.FC = () => {
                 </div>
 
                 <p className="text-center mb-5 text-[18px]">or</p>
-                {/* Connect Exchange - Using RainbowKit ConnectButton */}
                 <ConnectButton.Custom>
                   {({
                     account,
@@ -301,9 +310,9 @@ const Deposit: React.FC = () => {
 
                     const handleClick = () => {
                       if (isConnected) {
-                        router.push("/deposit-withdrawal/deposits"); // Redirect if connected
+                        router.push("/deposit-withdrawal/deposits");
                       } else {
-                        openConnectModal(); // Open wallet connect modal if not connected
+                        openConnectModal();
                       }
                     };
 
@@ -326,7 +335,6 @@ const Deposit: React.FC = () => {
                             width={18}
                           />
                         </div>
-
                         <div>
                           {isConnected ? (
                             <div className="flex flex-col">
