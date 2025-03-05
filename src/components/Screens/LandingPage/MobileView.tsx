@@ -132,72 +132,47 @@ const MobileLanding = () => {
 
         {/* slide bar */}
         <div className="mt-6 px-4">
-          <motion.div
-            className="relative w-full h-12 border border-gray-500 rounded-full border-opacity-25 flex items-center justify-start py-1 px-2 overflow-hidden"
+        <motion.div
+            className="relative w-full h-14 border-[1px] border-gray-500 rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[5px] overflow-hidden md:w-full md:h-14 sm:h-12 sm:px-[3px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Background Color Animation */}
+            {/* Background Color Change on Drag and Drag End */}
             <motion.div
               className="absolute inset-0 w-full h-full rounded-full pointer-events-none"
-              initial={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
-              animate={
-                isDragged
-                  ? {
-                    backgroundColor: [
-                      "rgba(255, 255, 255, 0)", // Transparent start
-                      "grey"
-                    ],
-                  }
-                  : {}
-              }
+              animate={isDragged ? { backgroundColor: "rgba(255, 255, 255, 0.3=2)" } : { backgroundColor: "rgba(255, 255, 255, 0)" }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             />
 
             {/* Draggable Arrow */}
             <motion.div
-              className="relative z-10 flex items-center justify-center bg-white bg-opacity-10 rounded-full w-10 h-10 mr-2 active:bg-gray-600 transition duration-150 cursor-pointer"
+              className="relative z-10 flex items-center justify-center bg-[#fff] bg-opacity-10 rounded-full w-10 h-10 mr-3 active:bg-gray-600 transition duration-150 cursor-pointer sm:w-8 sm:h-8 sm:mr-2"
               drag="x"
-              dragConstraints={{ left: 0, right: 300 }} // Mobile-friendly drag distance
-              dragElastic={0.4} // Smooth dragging feel
-              animate={isDragged ? { x: 300 } : { x: 0 }}
-              transition={{
-                type: "spring",
-                stiffness: 120,
-                damping: 14,
-                duration: 0.5,
-              }}
+              dragConstraints={{ left: 0, right: 300 }}
+              dragElastic={0.2}
+              animate={{ backgroundColor: "gray" }}
+              onDragStart={() => setIsDragged(true)}
               onDragEnd={(event, info) => {
-                if (info.point.x > 200) {
+                if (info.point.x > 100) {
                   setIsDragged(true);
                   setTimeout(() => {
                     router.push("/trade");
                   }, 1000);
+                } else {
+                  setIsDragged(false);
                 }
               }}
-              onClick={() => {
-                setIsDragged(true);
-                setTimeout(() => {
-                  router.push("/trade");
-                }, 1000);
-              }}
             >
-              <FaArrowRightLong className="text-white text-sm active:text-black transition duration-150" />
+              <FaArrowRightLong className="text-white text-sm active:text-black transition duration-150 sm:text-xs" />
             </motion.div>
 
             {/* Clickable Text with Fade Out Effect */}
             <motion.div
-              className="text-white text-xs text-opacity-75 font-thin cursor-pointer relative z-10"
+              className="text-white text-sm text-opacity-75 font-thin cursor-pointer relative z-10 sm:text-xs"
               initial={{ opacity: 1 }}
-              animate={isDragged ? { opacity: 0 } : { opacity: 1 }} // Text disappears after interaction
+              animate={isDragged ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: 0.5 }}
-              onClick={() => {
-                setIsDragged(true);
-                setTimeout(() => {
-                  router.push("/trade");
-                }, 1000);
-              }}
             >
               The journey begins.
             </motion.div>
@@ -257,8 +232,8 @@ const MobileLanding = () => {
             <span
               key={cat}
               className={`text-[3.5vw] bg-[#B5B5B5] Zenfont ${category === cat
-                  ? "text-black"
-                  : "text-[#B5B5B5] bg-opacity-[13%] "
+                ? "text-black"
+                : "text-[#B5B5B5] bg-opacity-[13%] "
                 } px-[3vw] py-[1vw] rounded-full cursor-pointer`}
               onClick={() => setCategory(cat)}
             >
@@ -271,8 +246,8 @@ const MobileLanding = () => {
             <span
               key={cat}
               className={`text-[3.5vw] bg-[#B5B5B5] Zenfont ${category === cat
-                  ? "text-black"
-                  : "text-[#B5B5B5] bg-opacity-[13%]"
+                ? "text-black"
+                : "text-[#B5B5B5] bg-opacity-[13%]"
                 } px-[3vw] py-[1vw] rounded-full cursor-pointer`}
               onClick={() => setCategory(cat)}
             >
@@ -369,76 +344,52 @@ const MobileLanding = () => {
 
         {/* slide bar */}
         <div className="mt-[10vw] mx-[8vw]  ">
-        <motion.div
-            className="relative w-full h-12 border border-gray-500 rounded-full border-opacity-25 flex items-center justify-start py-1 px-2 overflow-hidden"
+          <motion.div
+            className="relative w-full h-14 border-[1px] border-gray-500 rounded-full border-opacity-[25%] flex items-center justify-start py-[2px] px-[5px] overflow-hidden md:w-full md:h-14 sm:h-12 sm:px-[3px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Background Color Animation */}
+            {/* Background Color Change on Drag and Drag End */}
             <motion.div
               className="absolute inset-0 w-full h-full rounded-full pointer-events-none"
-              initial={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
-              animate={
-                isDragged
-                  ? {
-                    backgroundColor: [
-                      "rgba(255, 255, 255, 0)", // Transparent start
-                      "grey"
-                    ],
-                  }
-                  : {}
-              }
+              animate={isDragged ? { backgroundColor: "rgba(255, 255, 255, 0.3=2)" } : { backgroundColor: "rgba(255, 255, 255, 0)" }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             />
 
             {/* Draggable Arrow */}
             <motion.div
-              className="relative z-10 flex items-center justify-center bg-white bg-opacity-10 rounded-full w-10 h-10 mr-2 active:bg-gray-600 transition duration-150 cursor-pointer"
+              className="relative z-10 flex items-center justify-center bg-[#fff] bg-opacity-10 rounded-full w-10 h-10 mr-3 active:bg-gray-600 transition duration-150 cursor-pointer sm:w-8 sm:h-8 sm:mr-2"
               drag="x"
-              dragConstraints={{ left: 0, right: 300 }} // Mobile-friendly drag distance
-              dragElastic={0.4} // Smooth dragging feel
-              animate={isDragged ? { x: 300 } : { x: 0 }}
-              transition={{
-                type: "spring",
-                stiffness: 120,
-                damping: 14,
-                duration: 0.5,
-              }}
+              dragConstraints={{ left: 0, right: 300 }}
+              dragElastic={0.2}
+              animate={{ backgroundColor: "gray" }}
+              onDragStart={() => setIsDragged(true)}
               onDragEnd={(event, info) => {
-                if (info.point.x > 200) {
+                if (info.point.x > 100) {
                   setIsDragged(true);
                   setTimeout(() => {
                     router.push("/trade");
                   }, 1000);
+                } else {
+                  setIsDragged(false);
                 }
               }}
-              onClick={() => {
-                setIsDragged(true);
-                setTimeout(() => {
-                  router.push("/trade");
-                }, 1000);
-              }}
             >
-              <FaArrowRightLong className="text-white text-sm active:text-black transition duration-150" />
+              <FaArrowRightLong className="text-white text-sm active:text-black transition duration-150 sm:text-xs" />
             </motion.div>
 
             {/* Clickable Text with Fade Out Effect */}
             <motion.div
-              className="text-white text-xs text-opacity-75 font-thin cursor-pointer relative z-10"
+              className="text-white text-sm text-opacity-75 font-thin cursor-pointer relative z-10 sm:text-xs"
               initial={{ opacity: 1 }}
-              animate={isDragged ? { opacity: 0 } : { opacity: 1 }} // Text disappears after interaction
+              animate={isDragged ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: 0.5 }}
-              onClick={() => {
-                setIsDragged(true);
-                setTimeout(() => {
-                  router.push("/trade");
-                }, 1000);
-              }}
             >
               Change your life with just a flick of this button.
             </motion.div>
           </motion.div>
+
         </div>
         {/* vertical lines */}
 
