@@ -35,6 +35,7 @@ const Deposit: React.FC = () => {
   const [translateY, setTranslateY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const startYRef = useRef<number | null>(null);
+  const startScrollRef = useRef<number | null>(null);
   const isPullingRef = useRef(false);
 
   const handleCopy = async () => {
@@ -49,34 +50,40 @@ const Deposit: React.FC = () => {
   const handleTouchStart = (e: ReactTouchEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
 
+    const touch = e.touches[0];
+    startYRef.current = touch.clientY;
+    startScrollRef.current = containerRef.current.scrollTop;
+
     // Only start pulling if at the very top of the container
-    if (containerRef.current.scrollTop === 0) {
-      startYRef.current = e.touches[0].clientY;
-      isPullingRef.current = true;
-    } else {
-      isPullingRef.current = false;
-    }
+    isPullingRef.current = startScrollRef.current === 0;
   };
 
   const handleTouchMove = (e: ReactTouchEvent<HTMLDivElement>) => {
-    if (!containerRef.current || !isPullingRef.current || startYRef.current === null) return;
+    if (!containerRef.current || !startYRef.current) return;
 
-    const currentY = e.touches[0].clientY;
+    const touch = e.touches[0];
+    const currentY = touch.clientY;
     const deltaY = currentY - startYRef.current;
 
-    // Only pull down
-    if (deltaY > 0) {
-      e.preventDefault(); // Prevent default scrolling
-      
-      // Gradually increase translation with a dampening effect
-      const translationAmount = Math.min(deltaY * 0.5, 200);
-      setTranslateY(translationAmount);
+    if (isPullingRef.current) {
+      // Pull to navigate logic
+      if (deltaY > 0) {
+        e.preventDefault(); // Prevent default scrolling
+        
+        // Gradually increase translation with a dampening effect
+        const translationAmount = Math.min(deltaY * 0.5, 200);
+        setTranslateY(translationAmount);
 
-      // Check if pull is significant
-      if (translationAmount > 150) {
-        isPullingRef.current = false;
-        router.push("/deposit-withdrawal/history");
+        // Check if pull is significant
+        if (translationAmount > 150) {
+          isPullingRef.current = false;
+          router.push("/deposit-withdrawal/history");
+        }
       }
+    } else {
+      // Normal scrolling when not pulling
+      // Allow default scrolling behavior
+      return;
     }
   };
 
@@ -84,6 +91,7 @@ const Deposit: React.FC = () => {
     // Smoothly reset translation
     setTranslateY(0);
     startYRef.current = null;
+    startScrollRef.current = null;
     isPullingRef.current = false;
   };
 
@@ -94,12 +102,12 @@ const Deposit: React.FC = () => {
       }
     };
 
-    document.addEventListener("touchmove", preventPullToRefresh, {
-      passive: false,
+    document.addEventListener('touchmove', preventPullToRefresh, { 
+      passive: false 
     });
 
     return () => {
-      document.removeEventListener("touchmove", preventPullToRefresh);
+      document.removeEventListener('touchmove', preventPullToRefresh);
     };
   }, []);
 
@@ -139,11 +147,12 @@ const Deposit: React.FC = () => {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            className="relative bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-6 touch-pan-y overflow-y-auto transition-transform duration-300 ease-out"
+            className="relative bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-6 touch-pan-y overflow-y-scroll overscroll-contain"
             style={{
               transform: `translateY(${translateY}px)`,
               willChange: "transform",
               height: 'calc(100vh - 200px)', 
+              WebkitOverflowScrolling: 'touch' // Important for smooth scrolling on iOS
             }}
           >
             {/* Puller indicator */}
