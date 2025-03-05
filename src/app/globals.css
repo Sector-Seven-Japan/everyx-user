@@ -66,22 +66,42 @@ body {
   font-family: "Inter";
 }
 
-/* Selected country in the dropdown */
 .react-tel-input .selected-flag {
-  background-color: black !important; /* Change background to blue */
-  color: white !important; /* Ensure text remains white */
-  border-radius: 4px; /* Optional: Add rounded corners */
+  background-color: transparent !important; /* Remove background color */
   transition: background 0.3s ease-in-out;
 }
 
-/* On hover effect */
-.react-tel-input .country-list .country:hover {
-  background-color: blue !important; /* Hover effect */
+/* Ensure the dropdown container has the correct base styles */
+.custom-phone-dropdown {
+  background-color: "transparent" !important;
+  /* color: white !important; */
+}
+
+.custom-phone-dropdown .country {
+  background-color: #1a1a1a !important;
+  color: white !important;
+  transition: background-color 0.3s ease-in-out !important;
+  cursor: pointer !important;
+}
+
+.custom-phone-dropdown .country:hover,
+.custom-phone-dropdown .country:focus {
+  background-color: rgba(0, 255, 184, 0.2) !important;
   color: white !important;
 }
 
-/* Ensure selected country remains blue */
-.react-tel-input .country.highlight {
-  background-color: blue !important;
+.custom-phone-dropdown .country.selected {
+  background-color: #00ffb8 !important;
+  color: black !important;
+}
+
+.custom-phone-dropdown .search {
+  background-color: #1a1a1a !important;
+  color: white !important;
+  border-bottom: 1px solid #374151 !important;
+}
+
+.custom-phone-dropdown .search-emoji,
+.custom-phone-dropdown .dial-code {
   color: white !important;
 }
