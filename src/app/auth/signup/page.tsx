@@ -113,8 +113,8 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0E0E0E] px-6 md:px-12 lg:px-20 py-10">
-      <div className="w-full max-w-lg bg-[#0E0E0E] p-6 rounded-xl shadow-lg">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0E0E0E] px-6 md:px-12 lg:px-20 ">
+      <div className="w-full max-w-lg  px-6 rounded-xl shadow-lg">
         <h2 className="text-white text-2xl font-bold text-center mb-6">
           Sign Up
         </h2>
