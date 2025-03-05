@@ -539,7 +539,7 @@ export default function Order() {
                   {authToken
                     ? isBalance
                       ? "Proceed"
-                      : "Add Funds"
+                      : "Add Funds to continue"
                     : "Login to proceed"}
                 </button>
               </div>

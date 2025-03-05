@@ -302,11 +302,13 @@ export default function MakeOrder() {
         !pathname.startsWith("events/order") && (
           <div className="flex flex-col gap-[1px]">
             <p className="text-[#5D5D5D] md:text-[0.75vw]">Selected Outcome</p>
-            <p className="text-[#00FFB8] md:text-[1.2vw]">{selectedOrder}</p>
+            <p className="text-[#00FFB8] md:text-[1vw] md:mb-3">
+              {selectedOrder}
+            </p>
           </div>
         )}
 
-      {pathname.startsWith("/wager") && (
+      {
         <>
           <div className="flex flex-col gap-4">
             <div className="flex justify-between">
@@ -360,7 +362,7 @@ export default function MakeOrder() {
             </button>
           </div>
         </>
-      )}
+      }
 
       <button
         onClick={handleSubmit}
