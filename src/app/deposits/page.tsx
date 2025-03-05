@@ -9,14 +9,9 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { QRCodeCanvas } from "qrcode.react";
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  useRef,
-  TouchEvent as ReactTouchEvent,
-} from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { IoCopyOutline } from "react-icons/io5";
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useAccount } from "wagmi";
 
 const Deposit: React.FC = () => {
@@ -32,11 +27,10 @@ const Deposit: React.FC = () => {
 
   const { isConnected: wagmiConnected } = useAccount();
   const [hasRedirected, setHasRedirected] = useState(false);
-  const [translateY, setTranslateY] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchMove, setTouchMove] = useState<number | null>(null);
+  const [translateY, setTranslateY] = useState(0); // For gradual movement
   const containerRef = useRef<HTMLDivElement>(null);
-  const startYRef = useRef<number | null>(null);
-  const startScrollRef = useRef<number | null>(null);
-  const isPullingRef = useRef(false);
 
   const handleCopy = async () => {
     try {
@@ -46,70 +40,6 @@ const Deposit: React.FC = () => {
       console.error("Failed to copy:", err);
     }
   };
-
-  const handleTouchStart = (e: ReactTouchEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-
-    const touch = e.touches[0];
-    startYRef.current = touch.clientY;
-    startScrollRef.current = containerRef.current.scrollTop;
-
-    // Only start pulling if at the very top of the container
-    isPullingRef.current = startScrollRef.current === 0;
-  };
-
-  const handleTouchMove = (e: ReactTouchEvent<HTMLDivElement>) => {
-    if (!containerRef.current || !startYRef.current) return;
-
-    const touch = e.touches[0];
-    const currentY = touch.clientY;
-    const deltaY = currentY - startYRef.current;
-
-    if (isPullingRef.current) {
-      // Pull to navigate logic
-      if (deltaY > 0) {
-        e.preventDefault(); // Prevent default scrolling
-        
-        // Gradually increase translation with a dampening effect
-        const translationAmount = Math.min(deltaY * 0.5, 200);
-        setTranslateY(translationAmount);
-
-        // Check if pull is significant
-        if (translationAmount > 150) {
-          isPullingRef.current = false;
-          router.push("/deposit-withdrawal/history");
-        }
-      }
-    } else {
-      // Normal scrolling when not pulling
-      // Allow default scrolling behavior
-      return;
-    }
-  };
-
-  const handleTouchEnd = () => {
-    // Smoothly reset translation
-    setTranslateY(0);
-    startYRef.current = null;
-    startScrollRef.current = null;
-    isPullingRef.current = false;
-  };
-
-  useEffect(() => {
-    const preventPullToRefresh = (e: TouchEvent) => {
-      if (window.scrollY === 0) {
-        e.preventDefault();
-      }
-    };
-
-    document.addEventListener('touchmove', preventPullToRefresh, { 
-      passive: false 
-    });
-
-    return () => {
-      document.removeEventListener('touchmove', preventPullToRefresh);
-    };
-  }, []);
 
   useEffect(() => {
     setIsLoading(false);
@@ -136,6 +66,60 @@ const Deposit: React.FC = () => {
     getDepositAddress();
   }, [getDepositAddress]);
 
+  // Handle touch events for pull-down gesture
+  useEffect(() => {
+    if (!isMobile || !containerRef.current) return;
+
+    const container = containerRef.current;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      setTouchStart(e.touches[0].clientY);
+      setTouchMove(null);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (touchStart === null) return;
+
+      const currentY = e.touches[0].clientY;
+      setTouchMove(currentY);
+
+      const distance = currentY - touchStart;
+      if (distance > 0) {
+        // Only move downward
+        setTranslateY(distance); // Gradually move the container
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (touchStart === null || touchMove === null) return;
+
+      const distance = touchMove - touchStart;
+      const threshold = 150; // Threshold for triggering navigation
+
+      console.log({ touchStart, touchMove, distance, translateY });
+
+      if (distance > threshold) {
+        console.log("Pull down detected, navigating to portfolio...");
+        router.push("/deposit-withdrawal/history");
+      }
+
+      // Reset values with animation
+      setTranslateY(0);
+      setTouchStart(null);
+      setTouchMove(null);
+    };
+
+    container.addEventListener("touchstart", handleTouchStart);
+    container.addEventListener("touchmove", handleTouchMove);
+    container.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isMobile, touchStart, touchMove, router]);
+
   return (
     <>
       <Navbar />
@@ -144,25 +128,23 @@ const Deposit: React.FC = () => {
           <CurrentCashBalanceCard />
           <div
             ref={containerRef}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            className="relative bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-6 touch-pan-y overflow-y-scroll overscroll-contain"
-            style={{
-              transform: `translateY(${translateY}px)`,
-              willChange: "transform",
-              height: 'calc(100vh - 200px)', 
-              WebkitOverflowScrolling: 'touch' // Important for smooth scrolling on iOS
-            }}
+            className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-2 touch-pan-y transition-transform duration-200 ease-out"
+            style={{ transform: `translateY(${translateY}px)` }}
           >
-            {/* Puller indicator */}
-            <div 
-              className="sticky top-0 z-10 left-1/2 transform -translate-x-1/2 w-16 h-[3px] bg-[rgb(112,112,112)] rounded-xl mb-4"
-              style={{ touchAction: 'none' }}
-            ></div>
-
-            <div className="mt-8">
-              <p className="text-[16px] pr-[8vw] text-center">Deposit:</p>
+            <div className="flex justify-center">
+              <div className="w-16 h-[3px] bg-[rgb(112,112,112)] rounded-xl"></div>
+            </div>
+            <div className="flex justify-between items-center mt-5">
+              <div>
+                <MdOutlineKeyboardArrowLeft
+                  className="text-[30px]"
+                  onClick={() => {
+                    router.back();
+                  }}
+                />
+              </div>
+              <p className="text-[16px] pr-[8vw]">Deposit:</p>
+              <div></div>
             </div>
 
             <div>
@@ -262,6 +244,9 @@ const Deposit: React.FC = () => {
 
           <div className="flex justify-center pt-[4.65%] gap-5">
             <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl pb-10 pt-2 min-h-screen w-full flex-1">
+              {/* <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>  */}
+
+              {/* Deposit and Withdrawal Section */}
               <div className="mt-3 flex items-center justify-center w-full px-5">
                 <button className="text-white text-[16px]">Deposit :</button>
               </div>
