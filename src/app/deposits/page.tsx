@@ -244,12 +244,11 @@ const Deposit: React.FC = () => {
 
           <div className="flex justify-center pt-[4.65%] gap-5">
             <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl pb-10 pt-2 min-h-screen w-full flex-1">
-<!--               <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div> -->
+              {/* <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>  */}
 
               {/* Deposit and Withdrawal Section */}
               <div className="mt-3 flex items-center justify-center w-full px-5">
                 <button className="text-white text-[16px]">Deposit :</button>
-
               </div>
 
               <div className="px-[10vw] mt-[3vw] w-full flex flex-col items-center">
