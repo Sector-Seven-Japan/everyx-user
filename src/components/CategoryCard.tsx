@@ -175,7 +175,7 @@ export default function CategoryCard({
         {/* Card Header */}
         <div
           onClick={handleNavigation}
-          className="relative flex gap-3 items-center h-52 md:h-32"
+          className="relative flex gap-3 items-center h-52 md:h-32 cursor-pointer"
         >
           <img
             className="h-full w-full object-cover"
@@ -187,7 +187,6 @@ export default function CategoryCard({
 
         {/* Card Details */}
         <div
-          onClick={handleNavigation}
           className="flex mt-3 gap-3 md:mt-2 items-center"
         >
           <button className="border border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[0.65vw] md:px-4 md:py-[1px]">
@@ -205,7 +204,9 @@ export default function CategoryCard({
             <p className="text-[#2DC198] md:text-[0.68vw]">{countdown}</p>
           </p>
         </div>
-        <div className="pt-4 lg:h-[3vw] sm:h-[10vw]">
+        <div
+        onClick={handleNavigation} 
+        className="pt-4 lg:h-[3vw] sm:h-[10vw] cursor-pointer">
           <p
             className={`font-light md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] inter tracking-[1.2px] ${
               !hide && "md:text-[0.7vw]"
@@ -294,7 +295,7 @@ export default function CategoryCard({
                     router.push(`/events/${item._id}?selected=true`)
                   }}
                   key={outcome._id}
-                  className={`flex flex-col gap-1 md:gap-2`}
+                  className={`flex flex-col gap-1 md:gap-2 cursor-pointer`}
                 >
                   <p className="text-[19px] font-light md:text-[0.85vw]">
                     {String.fromCharCode(65 + index)}.{" "}

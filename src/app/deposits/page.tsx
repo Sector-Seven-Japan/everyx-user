@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { QRCodeCanvas } from "qrcode.react";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { IoCopyOutline } from "react-icons/io5";
-import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useAccount } from "wagmi";
 
 const Deposit: React.FC = () => {
@@ -134,17 +133,8 @@ const Deposit: React.FC = () => {
             <div className="flex justify-center">
               <div className="w-16 h-[3px] bg-[rgb(112,112,112)] rounded-xl"></div>
             </div>
-            <div className="flex justify-between items-center mt-5">
-              <div>
-                <MdOutlineKeyboardArrowLeft
-                  className="text-[30px]"
-                  onClick={() => {
-                    router.back();
-                  }}
-                />
-              </div>
-              <p className="text-[16px] pr-[8vw]">Deposit:</p>
-              <div></div>
+            <div className="mt-5">
+              <p className="text-[16px] pr-[8vw] text-center">Deposit:</p>
             </div>
 
             <div>
