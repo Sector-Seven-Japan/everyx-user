@@ -135,7 +135,7 @@ const Deposit: React.FC = () => {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            className="relative bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-2 touch-pan-y transition-transform duration-300 ease-out overflow-y-auto"
+            className="relative bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-6 touch-pan-y transition-transform duration-300 ease-out"
             style={{
               transform: `translateY(${translateY}px)`,
               willChange: "transform",
