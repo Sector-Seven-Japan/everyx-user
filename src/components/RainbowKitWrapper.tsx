@@ -7,14 +7,14 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
+import { polygonAmoy, bscTestnet } from "wagmi/chains";
 
 const queryClient = new QueryClient();
 
 const config = getDefaultConfig({
   appName: "My RainbowKit App",
   projectId: "ecd3b47bbfb460ff7694adef865be002",
-  chains: [mainnet, polygon, optimism, arbitrum, base],
+  chains: [polygonAmoy, bscTestnet],
 });
 
 // Custom dark theme (optional)
