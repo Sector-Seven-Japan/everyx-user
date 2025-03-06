@@ -71,7 +71,7 @@ export default function MakeOrder() {
 
   const handleTouchEnd = () => {
     setIsDragging(false);
-    
+
     const closeThreshold = 500; // Adjust based on your needs
     const screenHeight = window.innerHeight;
 

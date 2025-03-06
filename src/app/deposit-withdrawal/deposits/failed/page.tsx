@@ -7,12 +7,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 import { AppContext } from "@/app/Context/AppContext";
+// import { DepositContext } from "@/app/Context/DepositContext";
 
 const Failed: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const amount = searchParams.get("amount");
   const { isMobile } = useContext(AppContext);
+  // const { setAmount } = useContext(DepositContext);
 
   return (
     <>
