@@ -1,25 +1,16 @@
 "use client";
-import React, { Suspense, useContext, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense, useContext } from "react";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import Navbar from "@/components/Navbar";
 import styles from "../../../components/ProcessingIcon.module.css";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 import { AppContext } from "@/app/Context/AppContext";
+import { DepositContext } from "@/app/Context/DepositContext";
 
 const DepositProcessingContent: React.FC = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const amount = searchParams.get("amount");
   const { isMobile } = useContext(AppContext);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push(`/deposit-withdrawal/deposits/success?amount=${amount}`);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [router, amount]);
+  const { amount } = useContext(DepositContext);
 
   return (
     <>
