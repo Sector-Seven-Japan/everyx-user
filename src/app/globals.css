@@ -22,6 +22,13 @@
 }
 
 @font-face {
+  font-family: "Europa";
+  src: url("../../public/assets/europa-grotesk-medium.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: "gothic";
   src: url("../../public/assets//Franklin_Gothic_Book_Regular.ttf")
     format("opentype");
@@ -35,6 +42,10 @@
 
 .kaisotia {
   font-family: "CustomFont";
+}
+
+.Europa {
+  font-family: "Europa";
 }
 
 * {

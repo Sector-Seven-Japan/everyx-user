@@ -2,8 +2,7 @@
 import { AppContext } from "@/app/Context/AppContext";
 import { useContext, useEffect } from "react";
 import Image from "next/image";
-import { usePathname,useSearchParams } from "next/navigation";
-
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface TraderInfo {
   max_leverage: number;
@@ -51,7 +50,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const selected = searchParams.get('selected');
+  const selected = searchParams.get("selected");
 
   useEffect(() => {
     if (selected) return;
@@ -98,7 +97,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
 
   return (
     <div className="mt-3 md:mt-20">
-      <h1 className="px-5 text-[23px] md:text-[1.2vw] md:tracking-[1.1px] md:mb-9">
+      <h1 className="px-5 text-[23px] md:text-[1.2vw] md:tracking-[1.1px] md:mb-9 Europa">
         What do you predict ?
       </h1>
       <div className="pl-5 pr-5 py-8 flex flex-col gap-5">
@@ -139,7 +138,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
             key={outcome._id}
             className="flex flex-col gap-1"
           >
-            <div className="text-[19px] font-light md:text-[1.2vw]">
+            <div className="text-[19px] font-light md:text-[1.2vw] Europa">
               {String.fromCharCode(65 + index)}.{" "}
               {outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1)}
             </div>
@@ -147,7 +146,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
             <div className="flex justify-between items-center gap-2">
               <div className={`w-[80%] h-[19px] md:h-[1.5vw] rounded-lg`}>
                 <div
-                  className="h-[19px] rounded-lg cursor-pointer hover:opacity-80 transition-opacity md:h-[1.5vw] md:rounded-xl"
+                  className="h-[19px] rounded-lg cursor-pointer hover:opacity-80 transition-opacity md:h-[1.5vw] md:rounded-xl Europa"
                   style={{
                     backgroundColor: outcomeColors[index],
                     width: `${Math.round(
@@ -157,7 +156,7 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                 ></div>
               </div>
               <div className="flex gap-5 items-center">
-                <div className="text-[19px] font-light md:text-[1.3vw]">
+                <div className="text-[19px] font-light md:text-[1.3vw] Europa">
                   {Math.round(outcome.trader_info.estimated_probability * 100)}%
                 </div>
                 <div className="">
