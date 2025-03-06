@@ -158,7 +158,7 @@ const Page = () => {
                 outline: "none",
                 boxShadow: "none",
                 color: "white",
-                paddingBottom: "8px",
+                paddingBottom: "0px",
                 transition: "border-color 0.2s ease-in-out",
               }}
               buttonStyle={{
@@ -270,7 +270,7 @@ const Page = () => {
                   backgroundColor: "transparent",
                   color: "white",
                   fontSize: "14px",
-                  paddingBottom: "8px",
+                  paddingBottom: "0px",
                   border: "none",
                   boxShadow: "none",
                   cursor: "pointer",
