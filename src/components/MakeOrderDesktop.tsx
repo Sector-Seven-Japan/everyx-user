@@ -162,7 +162,7 @@ export default function MakeOrder() {
           );
         }
       }
-    }, 500);
+    }, 1000);
     return () => clearTimeout(debounceTimer);
   }, [value, leverage]);
 
