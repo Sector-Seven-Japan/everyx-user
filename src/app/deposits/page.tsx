@@ -72,8 +72,9 @@ const Deposit: React.FC = () => {
   }, [wagmiConnected, router]);
 
   useEffect(() => {
-    getDepositAddress();
-  }, [getDepositAddress]);
+    if (!depositAddress && getDepositAddress)
+      getDepositAddress();
+  }, [depositAddress]);
 
   // Handle wallet connection button click
   const handleConnectClick = () => {
@@ -215,9 +216,8 @@ const Deposit: React.FC = () => {
 
                 return (
                   <div
-                    className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${
-                      !ready ? "opacity-50 pointer-events-none" : ""
-                    }`}
+                    className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${!ready ? "opacity-50 pointer-events-none" : ""
+                      }`}
                     onClick={() => {
                       handleConnectClick();
                       openConnectModal();
@@ -319,13 +319,12 @@ const Deposit: React.FC = () => {
 
                     return (
                       <div
-                        className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full text-black ${
-                          !ready
+                        className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full text-black ${!ready
                             ? "pointer-events-none bg-opacity-10"
                             : isConnected
-                            ? "opacity-50"
-                            : ""
-                        }`}
+                              ? "opacity-50"
+                              : ""
+                          }`}
                         onClick={() => {
                           handleConnectClick();
                           openConnectModal();
