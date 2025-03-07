@@ -55,12 +55,12 @@ export default function CashWithdrawalCategories() {
           <li>
             <button
               className={`w-full flex flex-col items-center justify-center py-1.5 px-5 rounded-lg border border-white opacity-10 hover:opacity-10 transition-colors gap-1 ${
-                currentPath === "/deposit-withdrawal/withdrawal"
+                currentPath === "/dashboard/withdrawal"
                   ? "opacity-100"
                   : "opacity-10 hover:opacity-100"
               }`}
               type="button"
-              onClick={() => handleNavigation("/deposit-withdrawal/withdrawal")}
+              onClick={() => handleNavigation("/dashboard/withdrawal")}
             >
               <svg
                 width="0.8vw"
@@ -86,11 +86,11 @@ export default function CashWithdrawalCategories() {
               type="button"
               className={`w-full flex flex-col items-center justify-center py-1.5 px-5 rounded-lg  opacity-10 border border-white hover:opacity-100 transition-colors gap-1 
                 ${
-                  currentPath === "/deposit-withdrawal/portfolio"
+                  currentPath === "/dashboard/portfolio"
                     ? "opacity-100"
                     : "opacity-10 hover:opacity-100"
                 }`}
-              onClick={() => handleNavigation("/deposit-withdrawal/portfolio")}
+              onClick={() => handleNavigation("/dashboard/portfolio")}
             >
               <svg
                 width="0.8vw"
@@ -120,11 +120,11 @@ export default function CashWithdrawalCategories() {
               type="button"
               className={`w-full flex flex-col items-center justify-center px-5 py-1.5 rounded-lg  opacity-10 border border-white hover:opacity-100 transition-colors gap-1 
                 ${
-                  currentPath === "/deposit-withdrawal/history"
+                  currentPath === "/dashboard/history"
                     ? "opacity-100"
                     : "opacity-10 hover:opacity-100"
                 }`}
-              onClick={() => handleNavigation("/deposit-withdrawal/history")}
+              onClick={() => handleNavigation("/dashboard/history")}
             >
               <svg
                 width="0.8vw"

@@ -18,7 +18,7 @@ export default function Menu() {
     setIsLoading,
     API_BASE_URL,
     setAuthToken,
-    setWalletData
+    setWalletData,
   } = useContext(AppContext);
   const [languageState, setLanguageState] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
@@ -27,7 +27,7 @@ export default function Menu() {
   const navbarItems = isLoggedIn
     ? [
         { name: "Home", link: "/trade" },
-        { name: "Portfolio", link: "/deposit-withdrawal/portfolio" },
+        { name: "Portfolio", link: "/dashboard/portfolio" },
         { name: "Profile", link: "/profile" },
         { name: "Message", link: "/notification" },
         { name: "Mission", link: "/trade", disabled: true },
@@ -46,7 +46,7 @@ export default function Menu() {
         },
       });
       console.log(response);
-      
+
       await signOut({ redirect: false });
 
       setAuthToken("");

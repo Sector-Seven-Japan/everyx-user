@@ -154,12 +154,12 @@ export default function EventCategoryPageDetails() {
               <>
                 <CategoryInfo eventData={eventData} />
                 <div className="px-5">
-                  <h1 className="text-[23px] mb-8 mt-5 xl:text-[1.4vw] font-semibold Europa">
+                  <h1 className="text-[23px] mb-8 mt-5 xl:text-[1.4vw] font-semibold ">
                     Live Chart
                   </h1>
                   {isLoadingGraph ? (
                     <div className="flex justify-center items-center h-40">
-                      <p className="text-[#00FFBB] text-lg md:text-xs Europa">
+                      <p className="text-[#00FFBB] text-lg md:text-xs ">
                         Loading graph...
                       </p>
                     </div>
@@ -174,7 +174,7 @@ export default function EventCategoryPageDetails() {
                 <CategoryActivity eventData={eventData} />
               </>
             ) : (
-              <p className="text-center text-gray-500 Europa">
+              <p className="text-center text-gray-500 ">
                 Loading event details...
               </p>
             )}

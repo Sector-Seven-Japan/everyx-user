@@ -246,7 +246,7 @@ const Profile: React.FC = () => {
               <button
                 className="w-full flex items-center justify-center transition-colors gap-2 underline text-white text-[12px]"
                 type="button"
-                onClick={() => router.push("/deposit-withdrawal/history")}
+                onClick={() => router.push("/dashboard/history")}
               >
                 Back
               </button>
@@ -360,7 +360,7 @@ const Profile: React.FC = () => {
                   <button
                     className=" w-56  border-[#fff]  rounded-lg py-3 px-4 border-[0.25px]  text-white text-[14px]"
                     type="button"
-                    onClick={() => router.push("/deposit-withdrawal/history")}
+                    onClick={() => router.push("/dashboard/history")}
                   >
                     Back
                   </button>

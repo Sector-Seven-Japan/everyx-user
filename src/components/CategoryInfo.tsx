@@ -73,31 +73,29 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
             width={18}
           />
 
-          <p className="md:text-[0.8vw] text-[#2DC198] Europa">{countdown}</p>
+          <p className="md:text-[0.8vw] text-[#2DC198] ">{countdown}</p>
         </p>
       </div>
       <div className="pt-4">
-        <p className="font-light text-[20px] md:text-[1.6vw] md:tracking-[3px] md:mb-10 Europa">
+        <p className="font-light text-[20px] md:text-[1.6vw] md:tracking-[3px] md:mb-10 ">
           {eventData?.description}
         </p>
       </div>
       {
         <div className="flex gap-3 mt-5 leading-6 mb-5 md:leading-[1.9vw]">
           <div className="w-1/2 px-4 py-3 bg-[#131313] rounded-md md:px-[2vw] md:py-[1vw]">
-            <p className="text-[#2DC198] text-[24px] font-light md:text-[1.5vw] Europa">
+            <p className="text-[#2DC198] text-[24px] font-light md:text-[1.5vw] ">
               {eventData?.outcomes?.length
                 ? `${calculateMaxLeverage(eventData?.outcomes)}x`
                 : "N/A"}
             </p>
-            <p className="text-[13px] md:text-[1vw] Europa">
-              Maximum leverage:
-            </p>
+            <p className="text-[13px] md:text-[1vw] ">Maximum leverage:</p>
           </div>
           <div className="w-1/2 px-4 py-3 bg-[#131313] rounded-md md:px-[2vw] md:py-[1vw]">
-            <p className="text-[#2DC198] text-[24px] font-light md:text-[1.5vw] Europa">
+            <p className="text-[#2DC198] text-[24px] font-light md:text-[1.5vw] ">
               {calculateMaxEstimatedPayout(eventData?.outcomes).toFixed(0)}%
             </p>
-            <p className="text-[13px] md:text-[1vw] Europa">Maximum return:</p>
+            <p className="text-[13px] md:text-[1vw] ">Maximum return:</p>
           </div>
         </div>
       }

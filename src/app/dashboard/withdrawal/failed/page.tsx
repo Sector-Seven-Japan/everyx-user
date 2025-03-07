@@ -44,7 +44,7 @@ const FailedContent: React.FC = () => {
             <button
               className="w-full py-3 px-4 border-[#fff] border-[0.25px] rounded-lg transition-colors text-[14px] text-[#fff] mt-10"
               type="button"
-              onClick={() => router.push("/deposit-withdrawal/history")}
+              onClick={() => router.push("/dashboard/history")}
             >
               Back to Portfolio
             </button>
@@ -75,7 +75,7 @@ const FailedContent: React.FC = () => {
             <button
               className="w-72 py-3 px-4 border-[#fff] border-[0.25px] rounded-lg transition-colors text-[14px] text-[#fff] mt-10"
               type="button"
-              onClick={() => router.push("/deposit-withdrawal/history")}
+              onClick={() => router.push("/dashboard/history")}
             >
               Back to Portfolio
             </button>

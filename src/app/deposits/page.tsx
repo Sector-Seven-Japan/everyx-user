@@ -56,7 +56,7 @@ const Deposit: React.FC = () => {
     const sessionHasRedirected =
       sessionStorage.getItem("hasRedirected") === "true";
     if (wagmiConnected && !sessionHasRedirected && !hasRedirected) {
-      router.push("/deposit-withdrawal/deposits");
+      router.push("/dashboard/deposits");
       sessionStorage.setItem("hasRedirected", "true");
       setHasRedirected(true);
     }
@@ -100,7 +100,7 @@ const Deposit: React.FC = () => {
 
       if (distance > threshold) {
         console.log("Pull down detected, navigating to portfolio...");
-        router.push("/deposit-withdrawal/history");
+        router.push("/dashboard/history");
       }
 
       // Reset values with animation
@@ -200,7 +200,7 @@ const Deposit: React.FC = () => {
 
                 const handleClick = () => {
                   if (isConnected) {
-                    router.push("/deposit-withdrawal/deposits");
+                    router.push("/dashboard/deposits");
                   } else {
                     openConnectModal();
                   }
@@ -309,7 +309,7 @@ const Deposit: React.FC = () => {
 
                     const handleClick = () => {
                       if (isConnected) {
-                        router.push("/deposit-withdrawal/deposits");
+                        router.push("/dashboard/deposits");
                       } else {
                         openConnectModal();
                       }
