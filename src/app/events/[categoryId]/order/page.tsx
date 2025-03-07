@@ -458,7 +458,7 @@ export default function Order() {
                           $
                           {!authToken
                             ? Math.round(orderDetails?.indicative_payout || 0)
-                            : Math.round(orderDetails?.after_pledge || 0)}
+                            : Math.round(orderDetails?.after_payout || 0)}
                         </p>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
@@ -466,7 +466,7 @@ export default function Order() {
                           Your return
                         </div>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          {(orderDetails?.after_return || 0).toFixed(0)}%
+                          {(orderDetails?.after_return || orderDetails.indicative_return).toFixed(0)}%
                         </p>
                       </div>
                     </div>
