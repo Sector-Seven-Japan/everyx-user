@@ -466,7 +466,7 @@ export default function Order() {
                           Your return
                         </div>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          {(orderDetails?.after_return || 0).toFixed(0)}%
+                          {(orderDetails?.after_return || orderDetails.indicative_return).toFixed(0)}%
                         </p>
                       </div>
                     </div>

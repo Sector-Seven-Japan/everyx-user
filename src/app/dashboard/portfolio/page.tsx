@@ -248,7 +248,13 @@ const Portfolio: React.FC = () => {
                       </div>
 
                       {/* Event Question */}
-                      <h2 className="text-white text-lg font-medium">
+                      <h2
+                        onClick={() => {
+                          setIsLoading(true);
+                          router.push(`/events/${bet.id}`);
+                        }}
+                        className="text-white text-lg font-medium cursor-pointer"
+                      >
                         {bet.question}
                       </h2>
 
@@ -359,7 +365,13 @@ const Portfolio: React.FC = () => {
                     </div>
 
                     {/* Event Question */}
-                    <h2 className="text-white text-lg font-medium">
+                    <h2
+                      onClick={() => {
+                        setIsLoading(true);
+                        router.push(`/events/${bet.id}`);
+                      }}
+                      className="text-white text-lg font-medium cursor-pointer"
+                    >
                       {bet.question}
                     </h2>
 
@@ -608,7 +620,13 @@ const Portfolio: React.FC = () => {
                             </div>
 
                             {/* Event Question */}
-                            <h2 className="text-white text-lg font-medium">
+                            <h2
+                              onClick={() => {
+                                setIsLoading(true);
+                                router.push(`/events/${bet.id}`);
+                              }}
+                              className="text-white text-lg font-medium cursor-pointer"
+                            >
                               {bet.question}
                             </h2>
 
@@ -761,7 +779,13 @@ const Portfolio: React.FC = () => {
                           </div>
 
                           {/* Event Question */}
-                          <h2 className="text-white text-lg font-medium">
+                          <h2
+                            onClick={() => {
+                              setIsLoading(true);
+                              router.push(`/events/${bet.id}`);
+                            }}
+                            className="text-white text-lg font-medium cursor-pointer"
+                          >
                             {bet.question}
                           </h2>
 
