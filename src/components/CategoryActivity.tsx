@@ -155,7 +155,7 @@ export default function CategoryActivity({ eventData }: CategoryInfoProps) {
                     <div>
                       at{" "}
                       <span className="text-[#FFAE2A] text-[19px] 2xl:text-[1vw] md:text-[1.1vw]">
-                        ${wager.wager}
+                        ${wager.wager.toFixed(1)}
                       </span>
                     </div>
                   </div>
