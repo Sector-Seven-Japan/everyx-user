@@ -37,15 +37,16 @@ const Deposit: React.FC = () => {
     const sessionHasRedirected =
       sessionStorage.getItem("hasRedirected") === "true";
     if (wagmiConnected && !sessionHasRedirected && !hasRedirected) {
-      router.push("/deposit-withdrawal/deposits");
+      router.push("/dashboard/deposits");
       sessionStorage.setItem("hasRedirected", "true");
       setHasRedirected(true);
     }
   }, [wagmiConnected, hasRedirected, router]);
 
   useEffect(() => {
-    getDepositAddress();
-  }, [getDepositAddress]);
+    if (depositAddress === "" && getDepositAddress)
+      getDepositAddress();
+  }, [depositAddress]);
 
   return (
     <div>
@@ -118,7 +119,7 @@ const Deposit: React.FC = () => {
 
             const handleClick = () => {
               if (isConnected) {
-                router.push("/deposit-withdrawal/deposits"); // Redirect if connected
+                router.push("/dashboard/deposits"); // Redirect if connected
               } else {
                 openConnectModal(); // Open wallet connect modal if not connected
               }
@@ -126,9 +127,8 @@ const Deposit: React.FC = () => {
 
             return (
               <div
-                className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-between ${
-                  !ready ? "opacity-50 pointer-events-none" : ""
-                }`}
+                className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-between ${!ready ? "opacity-50 pointer-events-none" : ""
+                  }`}
                 onClick={handleClick}
               >
                 <Image

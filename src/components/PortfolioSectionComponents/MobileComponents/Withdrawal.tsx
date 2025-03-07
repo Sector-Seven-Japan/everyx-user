@@ -20,10 +20,7 @@ const Withdrawal: React.FC = () => {
         inputValue
       );
       router.push(
-        `/deposit-withdrawal/processing-withdrawal?amount=${inputValue.replace(
-          "$",
-          ""
-        )}`
+        `/dashboard/processing-withdrawal?amount=${inputValue.replace("$", "")}`
       );
     }
   };

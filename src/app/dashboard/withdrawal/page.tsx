@@ -62,7 +62,7 @@ const Withdrawal: React.FC = () => {
 
       if (distance > threshold) {
         console.log("Pull down detected, navigating to portfolio...");
-        router.push("/deposit-withdrawal/history");
+        router.push("/dashboard/history");
       }
 
       // Reset values with animation

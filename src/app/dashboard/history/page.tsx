@@ -3,9 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import HistoryMobile from "@/components/Screens/deposit-withdrawal/history/MobileView";
-import HistoryWeb from "@/components/Screens/deposit-withdrawal/history/WebView";
-
+import HistoryMobile from "@/components/Screens/dashboard/history/MobileView";
+import HistoryWeb from "@/components/Screens/dashboard/history/WebView";
 
 const History = () => {
   const [isMobile, setIsMobile] = useState(false);

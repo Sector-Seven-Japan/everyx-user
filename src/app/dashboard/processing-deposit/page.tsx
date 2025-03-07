@@ -1,27 +1,16 @@
 "use client";
+import React, { Suspense, useContext } from "react";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
-import type React from "react";
-// import { useState } from "react";
-import styles from "../../../components/ProcessingIcon.module.css";
 import Navbar from "@/components/Navbar";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useContext, useEffect } from "react";
-import { AppContext } from "@/app/Context/AppContext";
+import styles from "../../../components/ProcessingIcon.module.css";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
+import { AppContext } from "@/app/Context/AppContext";
+import { DepositContext } from "@/app/Context/DepositContext";
 
-const WithdrawalProcessingContent: React.FC = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const amount = searchParams.get("amount");
+const DepositProcessingContent: React.FC = () => {
   const { isMobile } = useContext(AppContext);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push(`/deposit-withdrawal/withdrawal/failed?amount=${amount}`);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [router, amount]);
+  const { amount } = useContext(DepositContext);
 
   return (
     <>
@@ -34,7 +23,7 @@ const WithdrawalProcessingContent: React.FC = () => {
 
             {/* Deposit and Withdrawal Section */}
             <div className="mt-10 flex items-center justify-center w-full px-5">
-              <button className="text-white text-[16px]">Withdrawal:</button>
+              <button className="text-white text-[16px]">Deposit :</button>
             </div>
 
             {/* Input Box with Processing loader */}
@@ -70,14 +59,12 @@ const WithdrawalProcessingContent: React.FC = () => {
         </div>
       ) : (
         <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-5 flex justify-center gap-5 lg:px-[20vw] md:px-10 sm:px-10">
-          <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col items-center rounded-t-3xl  py-2  ">
+          <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col items-center rounded-t-3xl py-2 w-full ">
             <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
 
             {/* Deposit and Withdrawal Section */}
-            <div className="mt-10 flex items-center justify-between w-full px-5">
-              <button className="text-white text-[16px] pl-14">
-                Withdrawal:
-              </button>
+            <div className="mt-10 flex items-center justify-center w-full px-5">
+              <button className="text-white text-[16px]">Deposit :</button>
             </div>
 
             {/* Input Box with Processing loader */}
@@ -103,6 +90,7 @@ const WithdrawalProcessingContent: React.FC = () => {
                 </div>
               </div>
             </div>
+
             {/* Currency Box */}
             <div className="bg-[#707070] bg-opacity-[20%] px-5 py-1 rounded-3xl mt-5">
               USD
@@ -117,12 +105,12 @@ const WithdrawalProcessingContent: React.FC = () => {
   );
 };
 
-const WithdrawalProcessing = () => {
+const DepositProcessing: React.FC = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <WithdrawalProcessingContent />
+      <DepositProcessingContent />
     </Suspense>
   );
 };
 
-export default WithdrawalProcessing;
+export default DepositProcessing;
