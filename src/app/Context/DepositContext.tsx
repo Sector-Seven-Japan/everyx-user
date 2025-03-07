@@ -94,11 +94,11 @@ export const DepositProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (isSuccess) {
-        router.push(`/deposit-withdrawal/deposits/success?amount=${amount}`);
+        router.push(`/dashboard/deposits/success?amount=${amount}`);
       } else if (isError) {
-        router.push(`/deposit-withdrawal/deposits/failed?amount=${amount}`);
+        router.push(`/dashboard/deposits/failed?amount=${amount}`);
       } else if (isPending) {
-        router.push(`/deposit-withdrawal/processing-deposit?amount=${amount}`);
+        router.push(`/dashboard/processing-deposit?amount=${amount}`);
       }
     }
   }, [isSuccess, isError, isPending, amount, router, data]);

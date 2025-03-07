@@ -5,7 +5,7 @@ export default function CategoryRule() {
 
   return (
     <div className="px-5 mt-10">
-      <h1 className="text-[23px] mb-8 md:text-[1.5vw] Europa">Rules</h1>
+      <h1 className="text-[23px] mb-8 md:text-[1.5vw] ">Rules</h1>
       <p
         className={`text-[15px] font-light text-[#adadad] md:text-[0.77vw] ${
           expanded ? "" : "line-clamp-6 overflow-hidden md:line-clamp-none"

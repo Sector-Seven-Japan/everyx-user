@@ -17,7 +17,7 @@ const WithdrawalProcessingContent: React.FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push(`/deposit-withdrawal/withdrawal/failed?amount=${amount}`);
+      router.push(`/dashboard/withdrawal/failed?amount=${amount}`);
     }, 2000);
 
     return () => clearTimeout(timer);

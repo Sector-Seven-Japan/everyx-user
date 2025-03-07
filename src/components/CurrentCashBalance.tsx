@@ -15,7 +15,10 @@ const CurrentCashBalanceCard: React.FC = () => {
   };
 
   // Helper function to format numbers safely
-  const formatNumber = (value: number | undefined | null | string, decimals: number = 2) => {
+  const formatNumber = (
+    value: number | undefined | null | string,
+    decimals: number = 2
+  ) => {
     if (value === undefined || value === null) {
       return { whole: "0", decimal: "00" };
     }
@@ -26,7 +29,9 @@ const CurrentCashBalanceCard: React.FC = () => {
   };
 
   // Format all monetary values
-  const balance = formatNumber(walletData?.length > 0 ? walletData[0]?.balance : 0);
+  const balance = formatNumber(
+    walletData?.length > 0 ? walletData[0]?.balance : 0
+  );
   const bestCase = formatNumber(userStats?.best_case_fund_available);
   const winnings = formatNumber(userStats?.best_case_cumulative_profit);
 
@@ -60,8 +65,8 @@ const CurrentCashBalanceCard: React.FC = () => {
         <span className="text-[34px]">${balance.whole}</span>
         <span className="text-[30px]">.{balance.decimal}</span>
       </div>
-      {pathname === "/deposit-withdrawal/portfolio" ||
-        pathname === "/deposit-withdrawal/history" ? (
+      {pathname === "/dashboard/portfolio" ||
+      pathname === "/dashboard/history" ? (
         <div className="mt-5">
           {/* Top Dashed Border */}
           <div>

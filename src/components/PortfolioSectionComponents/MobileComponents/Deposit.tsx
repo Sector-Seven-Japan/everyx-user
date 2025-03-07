@@ -37,7 +37,7 @@ const Deposit: React.FC = () => {
     const sessionHasRedirected =
       sessionStorage.getItem("hasRedirected") === "true";
     if (wagmiConnected && !sessionHasRedirected && !hasRedirected) {
-      router.push("/deposit-withdrawal/deposits");
+      router.push("/dashboard/deposits");
       sessionStorage.setItem("hasRedirected", "true");
       setHasRedirected(true);
     }
@@ -119,7 +119,7 @@ const Deposit: React.FC = () => {
 
             const handleClick = () => {
               if (isConnected) {
-                router.push("/deposit-withdrawal/deposits"); // Redirect if connected
+                router.push("/dashboard/deposits"); // Redirect if connected
               } else {
                 openConnectModal(); // Open wallet connect modal if not connected
               }
