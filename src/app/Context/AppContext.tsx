@@ -115,6 +115,7 @@ interface UserStats {
 }
 
 interface AppContextProps {
+  requestDeposit: (txnHash: string, amount: string) => Promise<void>;
   filter: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
   sidebar: boolean;
@@ -190,30 +191,30 @@ const API_BASE_URL = "https://dev-api.everyx.io";
 // Initial context state
 const initialState: AppContextProps = {
   filter: "",
-  setFilter: () => {},
+  setFilter: () => { },
   slugHeading: "",
-  setSlugHeading: () => {},
+  setSlugHeading: () => { },
   selectedMenu: "Home",
-  setSelectedMenu: () => {},
+  setSelectedMenu: () => { },
   isLoggedIn: false,
-  setIsLoggedIn: () => {},
+  setIsLoggedIn: () => { },
   search: "",
-  setSearch: () => {},
+  setSearch: () => { },
   isLoading: false,
-  setIsLoading: () => {},
+  setIsLoading: () => { },
   categories: [],
-  setCategories: () => {},
+  setCategories: () => { },
   bannerData: [],
-  setBannerData: () => {},
+  setBannerData: () => { },
   findHeadingWithSlug: () => undefined,
   getTimeRemaining: () => "",
   calculateMaxLeverage: () => 0,
   calculateMaxEstimatedPayout: () => 0,
   formatDate: () => "",
   authToken: null,
-  setAuthToken: () => {},
-  makeOrder: async () => {},
-  makeOrderWithoutAuth: async () => {},
+  setAuthToken: () => { },
+  makeOrder: async () => { },
+  makeOrderWithoutAuth: async () => { },
   isOrderMade: false,
   orderDetails: {
     max_wager: 0,
@@ -246,29 +247,30 @@ const initialState: AppContextProps = {
     after_pledge: 0,
     stop_probability: 0,
   },
-  setIsOrderMade: () => {},
-  setOrderDetails: () => {},
+  setIsOrderMade: () => { },
+  setOrderDetails: () => { },
   API_BASE_URL,
   selectedOrder: "",
-  setSelectedOrder: () => {},
+  setSelectedOrder: () => { },
   walletData: [],
-  setWalletData: () => {},
+  setWalletData: () => { },
   sidebar: false,
-  setSidebar: () => {},
-  fetchWalletData: async () => {},
+  setSidebar: () => { },
+  fetchWalletData: async () => { },
+  requestDeposit: async () => { },
   userProfile: null,
   userStats: null,
   getCountdown: () => "Ended",
   isMobile: false,
   time: "0",
   isOpen: false,
-  setIsOpen: () => {},
+  setIsOpen: () => { },
   depositAddress: "",
-  setDepositAddress: () => {},
-  getDepositAddress: async () => {},
+  setDepositAddress: () => { },
+  getDepositAddress: async () => { },
   fetchingData: false,
   selectedOutcomeId: "",
-  setSelectedOutcomeId: () => {},
+  setSelectedOutcomeId: () => { },
 };
 
 export const AppContext = createContext<AppContextProps>(initialState);
@@ -403,6 +405,28 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       if (!response.ok) throw new Error("Failed to fetch wallet data");
       const data = await response.json();
       setWalletData(data);
+    } catch (error) {
+      console.log("failed to fetch Wallet data", error);
+    }
+  };
+
+  const requestDeposit = async (txnHash: string, amount: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/deposit/create/transaction`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ txnHash, amount }),
+      });
+      if (response.status === 401) {
+        handleUnauthorized();
+        return;
+      }
+      if (!response.ok) throw new Error("Failed to fetch wallet data");
+      const data = await response.json();
+      console.log(data)
     } catch (error) {
       console.log("failed to fetch Wallet data", error);
     }
@@ -738,6 +762,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   // }, [authToken, isLoggedIn, checkTokenValidity]);
 
   const contextValue: AppContextProps = {
+    requestDeposit,
     fetchingData,
     filter,
     setFilter,

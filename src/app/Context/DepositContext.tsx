@@ -1,10 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { createContext, ReactNode, useEffect, useState } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useAccount, useWriteContract } from "wagmi";
 import { abi } from "../../utils/ABI";
 import type { Address } from "viem";
+import { AppContext } from "./AppContext";
 
 interface DepositContextType {
   writeContract: ReturnType<typeof useWriteContract>["writeContract"];
@@ -33,7 +34,7 @@ const initialState: DepositContextType = {
     abi,
   },
   amount: null,
-  setAmount: () => {},
+  setAmount: () => { },
 };
 
 export const DepositContext = createContext<DepositContextType>(initialState);
@@ -42,8 +43,10 @@ export const DepositProvider = ({ children }: { children: ReactNode }) => {
   const { writeContract, isError, isSuccess, data, isPending } =
     useWriteContract();
   const { address } = useAccount();
-  const [amount, setAmount] = useState<string | null>(null);
+  const [amount, setAmount] = useState<string | "">("");
   const router = useRouter();
+
+  const { requestDeposit } = useContext(AppContext);
 
   const contractData = {
     address: `0x953E8a78Ac9fe3d1c0746a9EcB1B30687f87EE13` as Address,
@@ -99,6 +102,14 @@ export const DepositProvider = ({ children }: { children: ReactNode }) => {
       }
     }
   }, [isSuccess, isError, isPending, amount, router, data]);
+
+  useEffect(() => {
+    if (data) {
+      (async () => {
+        await requestDeposit(data, amount)
+      })()
+    }
+  }, [data])
 
   return (
     <DepositContext.Provider value={contextValue}>

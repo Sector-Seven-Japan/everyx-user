@@ -44,8 +44,9 @@ const Deposit: React.FC = () => {
   }, [wagmiConnected, hasRedirected, router]);
 
   useEffect(() => {
-    getDepositAddress();
-  }, [getDepositAddress]);
+    if (depositAddress === "" && getDepositAddress)
+      getDepositAddress();
+  }, [depositAddress]);
 
   return (
     <div>
@@ -126,9 +127,8 @@ const Deposit: React.FC = () => {
 
             return (
               <div
-                className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-between ${
-                  !ready ? "opacity-50 pointer-events-none" : ""
-                }`}
+                className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-between ${!ready ? "opacity-50 pointer-events-none" : ""
+                  }`}
                 onClick={handleClick}
               >
                 <Image
