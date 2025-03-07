@@ -43,7 +43,7 @@ export const DepositProvider = ({ children }: { children: ReactNode }) => {
   const { writeContract, isError, isSuccess, data, isPending } =
     useWriteContract();
   const { address } = useAccount();
-  const [amount, setAmount] = useState<string | null>(null);
+  const [amount, setAmount] = useState<string | "">("");
   const router = useRouter();
 
   const { requestDeposit } = useContext(AppContext);

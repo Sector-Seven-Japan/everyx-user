@@ -115,7 +115,7 @@ interface UserStats {
 }
 
 interface AppContextProps {
-  requestDeposit: (txnHash: any, amount: any) => Promise<void>;
+  requestDeposit: (txnHash: string, amount: string) => Promise<void>;
   filter: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
   sidebar: boolean;
@@ -410,7 +410,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const requestDeposit = async (txnHash: any, amount: any) => {
+  const requestDeposit = async (txnHash: string, amount: string) => {
     try {
       const response = await fetch(`${API_BASE_URL}/deposit/create/transaction`, {
         headers: {
