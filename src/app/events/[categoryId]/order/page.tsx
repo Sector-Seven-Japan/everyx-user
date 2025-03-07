@@ -458,7 +458,7 @@ export default function Order() {
                           $
                           {!authToken
                             ? Math.round(orderDetails?.indicative_payout || 0)
-                            : Math.round(orderDetails?.after_pledge || 0)}
+                            : Math.round(orderDetails?.after_payout || 0)}
                         </p>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
