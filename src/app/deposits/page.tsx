@@ -62,7 +62,7 @@ const Deposit: React.FC = () => {
       // Add a small delay to ensure state is stable
       const redirectTimer = setTimeout(() => {
         sessionStorage.setItem("redirectFromDeposit", "true");
-        router.push("/deposit-withdrawal/deposits");
+        router.push("/dashboard/deposits");
         // Reset flag after successful redirect
         sessionStorage.removeItem("manualConnect");
       }, 100);
