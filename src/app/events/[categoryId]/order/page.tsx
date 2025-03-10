@@ -346,7 +346,7 @@ export default function Order() {
               {option === "Order details" ? (
                 <div className="p-5">
                   <div className="flex md:flex-col justify-between mt-5 md:mt-2 md:gap-3">
-                    <div>
+                    {/* <div>
                       <div className="text-[#5D5D5D] text-[17px] md:text-[0.75vw] mb-1 md:mb-0">
                         Potential payout
                       </div>
@@ -356,7 +356,7 @@ export default function Order() {
                           +{(orderDetails?.indicative_return || 0).toFixed(0)}%
                         </span>
                       </div>
-                    </div>
+                    </div> */}
                     <div>
                       <div className="text-[#5D5D5D] text-[17px] md:text-[0.75vw] mb-1 md:mb-0">
                         Your Traded Probability
