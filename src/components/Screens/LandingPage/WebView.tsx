@@ -107,7 +107,7 @@ const WebLanding = () => {
             Global Events
           </p>
           <p className="text-[1.1vw] mt-[5vw] text-white text-opacity-[80%] text-left font-normal leading-[2.5rem] ">
-            Use leverage to bet on real-world events and shape your
+            Use leverage to trade on real-world events and shape your
           </p>
           <p className="text-[1.1vw]  text-white text-opacity-[80%] text-left font-normal">
             portfolio in a new way.
