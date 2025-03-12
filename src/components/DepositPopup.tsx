@@ -96,7 +96,7 @@ export default function DepositPopup() {
 
               const handleClick = () => {
                 if (connected) {
-                  router.push("/deposit-withdrawal/deposits"); // Redirect if connected
+                  router.push("/dashboard/deposits"); // Redirect if connected
                 } else {
                   openConnectModal(); // Open wallet connect modal if not connected
                 }
@@ -220,7 +220,7 @@ export default function DepositPopup() {
 
                   const handleClick = () => {
                     if (connected) {
-                      router.push("/deposit-withdrawal/deposits"); // Redirect if connected
+                      router.push("/dashboard/deposits"); // Redirect if connected
                     } else {
                       openConnectModal(); // Open wallet connect modal if not connected
                     }

@@ -1,6 +1,6 @@
 import { AppContext } from "@/app/Context/AppContext";
 import React, { useState, useEffect, useContext } from "react";
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 
 interface TraderInfo {
   max_leverage: number;
@@ -44,17 +44,15 @@ interface RecentWager {
 }
 
 const generateRandomUsername = () => {
-  let username = faker.internet.userName().replace(/[^a-zA-Z]/g, ''); 
-  username = username.slice(0, 10); 
+  let username = faker.internet.userName().replace(/[^a-zA-Z]/g, "");
+  username = username.slice(0, 10);
 
-  
   while (username.length < 10) {
     username += faker.string.alpha(1);
   }
 
   return username;
 };
-
 
 export default function CategoryActivity({ eventData }: CategoryInfoProps) {
   const [recentWagers, setRecentWagers] = useState<RecentWager[]>([]);
@@ -129,7 +127,7 @@ export default function CategoryActivity({ eventData }: CategoryInfoProps) {
 
   return (
     <div className="px-5 mt-10">
-      <h1 className="text-[23px] mb-8 md:text-[1.5vw] md:mb-14">Activities</h1>
+      <h1 className="text-[23px] mb-8 md:text-[1.5vw] md:mb-14 ">Activities</h1>
 
       {recentWagers.length === 0 ? (
         <p>No recent activities.</p>
@@ -140,7 +138,10 @@ export default function CategoryActivity({ eventData }: CategoryInfoProps) {
               wager.event_outcome_id
             );
             return (
-              <div className="flex gap-5 items-center md:gap-10 2xl:gap-14 " key={i}>
+              <div
+                className="flex gap-5 items-center md:gap-10 2xl:gap-14 "
+                key={i}
+              >
                 <div>
                   <div
                     className={`w-14 h-14 rounded-full md:w-[3vw] md:h-[3vw] ${
@@ -154,15 +155,27 @@ export default function CategoryActivity({ eventData }: CategoryInfoProps) {
                     <div>
                       at{" "}
                       <span className="text-[#FFAE2A] text-[19px] 2xl:text-[1vw] md:text-[1.1vw]">
-                        ${wager.wager}
+                        ${wager.wager.toFixed(1)}
                       </span>
                     </div>
                   </div>
                   <div className="text-[19px] flex flex-col gap-1 w-[45%] md:w-[40%] md:flex-row md:justify-between">
-                    <p className="text-end gothic_font 2xl:text-[1vw] md:text-[1.1vw] md:flex md:gap-1" style={{ color }}>
+                    <p
+                      className="text-end gothic_font 2xl:text-[1vw] md:text-[1.1vw] md:flex md:gap-1"
+                      style={{ color }}
+                    >
                       {wager?.event_outcome_id}.{" "}
-                      <span style={{ color }} className="gothic_font md:hidden"> {truncateText(name, 7)}</span>
-                      <span style={{ color }} className="gothic_font hidden md:block"> {truncateText(name, 20)}</span>
+                      <span style={{ color }} className="gothic_font md:hidden">
+                        {" "}
+                        {truncateText(name, 7)}
+                      </span>
+                      <span
+                        style={{ color }}
+                        className="gothic_font hidden md:block"
+                      >
+                        {" "}
+                        {truncateText(name, 20)}
+                      </span>
                     </p>
                     <p className="opacity-[17%] text-end gothic_font 2xl:text-[1vw] md:text-[1.1vw]">
                       {formatTime(wager.datetime)}

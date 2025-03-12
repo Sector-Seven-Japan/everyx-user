@@ -10,6 +10,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "./Context/AppContext";
+import { DepositProvider } from "./Context/DepositContext";
 import LayoutContent from "./LayoutContent";
 
 import SessionWrapper from "@/components/SessionWrapper";
@@ -68,7 +69,9 @@ export default function RootLayout({
         <RainbowKitWrapper>
           <SessionWrapper>
             <AppProvider>
-              <LayoutContent>{children}</LayoutContent>
+              <DepositProvider>
+                <LayoutContent>{children}</LayoutContent>
+              </DepositProvider>
             </AppProvider>
           </SessionWrapper>
         </RainbowKitWrapper>

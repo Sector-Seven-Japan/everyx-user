@@ -65,7 +65,7 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
         <button className="border-[1px] border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[1.2vw] md:py-[0.65vw] md:px-[1.4vw] md:rounded-md">
           {eventData?.category?.name?.split(" ")[0] || "Global"}
         </button>
-        <p className="text-[#2DC198] flex gap-2 items-center font-light">
+        <p className="text-[#2DC198] flex gap-2 items-center font-light ">
           <Image
             src={"/Images/FreeClock i.png"}
             alt="clock"
@@ -73,29 +73,29 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
             width={18}
           />
 
-          <p className="md:text-[0.8vw] text-[#2DC198]">{countdown}</p>
+          <p className="md:text-[0.8vw] text-[#2DC198] ">{countdown}</p>
         </p>
       </div>
       <div className="pt-4">
-        <p className="font-light text-[20px] md:text-[1.6vw] md:tracking-[3px] md:mb-10">
+        <p className="font-light text-[20px] md:text-[1.6vw] md:tracking-[3px] md:mb-10 ">
           {eventData?.description}
         </p>
       </div>
       {
         <div className="flex gap-3 mt-5 leading-6 mb-5 md:leading-[1.9vw]">
           <div className="w-1/2 px-4 py-3 bg-[#131313] rounded-md md:px-[2vw] md:py-[1vw]">
-            <p className="text-[#2DC198] text-[24px] font-light md:text-[1.5vw]">
+            <p className="text-[#2DC198] text-[24px] font-light md:text-[1.5vw] ">
               {eventData?.outcomes?.length
                 ? `${calculateMaxLeverage(eventData?.outcomes)}x`
                 : "N/A"}
             </p>
-            <p className="text-[13px] md:text-[1vw]">Maximum leverage:</p>
+            <p className="text-[13px] md:text-[1vw] ">Maximum leverage:</p>
           </div>
           <div className="w-1/2 px-4 py-3 bg-[#131313] rounded-md md:px-[2vw] md:py-[1vw]">
-            <p className="text-[#2DC198] text-[24px] font-light md:text-[1.5vw]">
+            <p className="text-[#2DC198] text-[24px] font-light md:text-[1.5vw] ">
               {calculateMaxEstimatedPayout(eventData?.outcomes).toFixed(0)}%
             </p>
-            <p className="text-[13px] md:text-[1vw]">Maximum return:</p>
+            <p className="text-[13px] md:text-[1vw] ">Maximum return:</p>
           </div>
         </div>
       }

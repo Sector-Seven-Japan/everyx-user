@@ -9,13 +9,14 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { QRCodeCanvas } from "qrcode.react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { IoCopyOutline } from "react-icons/io5";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 
 const Deposit: React.FC = () => {
   const router = useRouter();
+  const { disconnect } = useDisconnect();
   const {
     getDepositAddress,
     depositAddress,
@@ -26,7 +27,17 @@ const Deposit: React.FC = () => {
   } = useContext(AppContext);
 
   const { isConnected: wagmiConnected } = useAccount();
-  const [hasRedirected, setHasRedirected] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchMove, setTouchMove] = useState<number | null>(null);
+  const [translateY, setTranslateY] = useState(0); // For gradual movement
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Disable autoConnect by disconnecting on mount if connected
+  useEffect(() => {
+    if (wagmiConnected) {
+      disconnect();
+    }
+  }, []);
 
   const handleCopy = async () => {
     try {
@@ -39,28 +50,90 @@ const Deposit: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(false);
-  }, []);
+  }, [setIsLoading]);
 
+  // Handle manual wallet connection and redirect
   useEffect(() => {
-    if (!wagmiConnected) {
-      sessionStorage.setItem("hasRedirected", "false");
-      setHasRedirected(false);
+    // We'll use a flag to ensure we're responding to manual connections, not auto-connections
+    const isManualConnection =
+      sessionStorage.getItem("manualConnect") === "true";
+
+    if (wagmiConnected && isManualConnection) {
+      // Add a small delay to ensure state is stable
+      const redirectTimer = setTimeout(() => {
+        sessionStorage.setItem("redirectFromDeposit", "true");
+        router.push("/dashboard/deposits");
+        // Reset flag after successful redirect
+        sessionStorage.removeItem("manualConnect");
+      }, 100);
+
+      return () => clearTimeout(redirectTimer); // Clean up timer
     }
-  }, [wagmiConnected]);
+  }, [wagmiConnected, router]);
 
   useEffect(() => {
-    const sessionHasRedirected =
-      sessionStorage.getItem("hasRedirected") === "true";
-    if (wagmiConnected && !sessionHasRedirected && !hasRedirected) {
-      router.push("/deposit-withdrawal/deposits");
-      sessionStorage.setItem("hasRedirected", "true");
-      setHasRedirected(true);
-    }
-  }, [wagmiConnected, hasRedirected, router]);
+    if (!depositAddress && getDepositAddress) getDepositAddress();
+  }, [depositAddress]);
 
+  // Handle wallet connection button click
+  const handleConnectClick = () => {
+    // Set flag for manual connection
+    sessionStorage.setItem("manualConnect", "true");
+  };
+
+  // Handle touch events for pull-down gesture
   useEffect(() => {
-    getDepositAddress();
-  }, [getDepositAddress]);
+    if (!isMobile || !containerRef.current) return;
+
+    const container = containerRef.current;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      setTouchStart(e.touches[0].clientY);
+      setTouchMove(null);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (touchStart === null) return;
+
+      const currentY = e.touches[0].clientY;
+      setTouchMove(currentY);
+
+      const distance = currentY - touchStart;
+      if (distance > 0) {
+        // Only move downward
+        setTranslateY(distance); // Gradually move the container
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (touchStart === null || touchMove === null) return;
+
+      const distance = touchMove - touchStart;
+      const threshold = 150; // Threshold for triggering navigation
+
+      console.log({ touchStart, touchMove, distance, translateY });
+
+      if (distance > threshold) {
+        console.log("Pull down detected, navigating to portfolio...");
+        router.push("/dashboard/history");
+      }
+
+      // Reset values with animation
+      setTranslateY(0);
+      setTouchStart(null);
+      setTouchMove(null);
+    };
+
+    container.addEventListener("touchstart", handleTouchStart);
+    container.addEventListener("touchmove", handleTouchMove);
+    container.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isMobile, touchStart, touchMove, router]);
 
   return (
     <>
@@ -68,8 +141,12 @@ const Deposit: React.FC = () => {
       {isMobile ? (
         <div className="bg-[#0E0E0E] w-full min-h-screen text-white pt-5 flex flex-col">
           <CurrentCashBalanceCard />
-          <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-2">
-            <div className="flex justify-center ">
+          <div
+            ref={containerRef}
+            className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col px-5 rounded-t-3xl mt-10 py-2 touch-pan-y transition-transform duration-200 ease-out"
+            style={{ transform: `translateY(${translateY}px)` }}
+          >
+            <div className="flex justify-center">
               <div className="w-16 h-[3px] bg-[rgb(112,112,112)] rounded-xl"></div>
             </div>
             <div className="flex justify-between items-center mt-5">
@@ -94,8 +171,11 @@ const Deposit: React.FC = () => {
                   {depositAddress}
                 </p>
                 <div
-                  className="w-10 h-10 bg-[#2b2b2b] rounded-lg flex items-center justify-center cursor-pointer"
+                  className="w-10 h-10 bg-[#2b2b2b] rounded-lg flex items-center justify-center cursor-pointer
+                    hover:bg-[#3b3b3b] active:bg-[#1b1b1b] transition-colors duration-200
+                    hover:scale-105 active:scale-95"
                   onClick={handleCopy}
+                  title="Copy address"
                 >
                   <IoCopyOutline className="text-[20px]" />
                 </div>
@@ -117,7 +197,6 @@ const Deposit: React.FC = () => {
             </div>
 
             <p className="text-center mb-5 text-[18px]">or</p>
-            {/* Connect Exchange - Using RainbowKit ConnectButton */}
             <ConnectButton.Custom>
               {({
                 account,
@@ -134,20 +213,15 @@ const Deposit: React.FC = () => {
                   (!authenticationStatus ||
                     authenticationStatus === "authenticated");
 
-                const handleClick = () => {
-                  if (isConnected) {
-                    router.push("/deposit-withdrawal/deposits"); // Redirect if connected
-                  } else {
-                    openConnectModal(); // Open wallet connect modal if not connected
-                  }
-                };
-
                 return (
                   <div
                     className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${
                       !ready ? "opacity-50 pointer-events-none" : ""
                     }`}
-                    onClick={handleClick}
+                    onClick={() => {
+                      handleConnectClick();
+                      openConnectModal();
+                    }}
                   >
                     <Image
                       src="/Images/connect.png"
@@ -177,13 +251,14 @@ const Deposit: React.FC = () => {
       ) : (
         <div className="bg-[#0E0E0E] px-[20vw]">
           <HeadingSlider filter={filter} setFilter={setFilter} />
-          <div className="flex justify-center pt-[4.65%] gap-5 ">
-            <div className="bg-[#262626] bg-opacity-[31%]  flex flex-col items-center rounded-t-3xl  pb-10 pt-2  min-h-screen w-full flex-1">
-              <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
+
+          <div className="flex justify-center pt-[4.65%] gap-5">
+            <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl pb-10 pt-2 min-h-screen w-full flex-1">
+              {/* <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>  */}
 
               {/* Deposit and Withdrawal Section */}
-              <div className="mt-5 flex items-center justify-center w-full px-5 ">
-                <button className="text-white text-[16px] ">Deposit :</button>
+              <div className="mt-3 flex items-center justify-center w-full px-5">
+                <button className="text-white text-[16px]">Deposit :</button>
               </div>
 
               <div className="px-[10vw] mt-[3vw] w-full flex flex-col items-center">
@@ -192,14 +267,20 @@ const Deposit: React.FC = () => {
                   Currently We accept only USDT on the Amoy Polygon Test Network
                 </p>
                 <div className="w-full">
-                  <h1 className="text-white text-opacity-20 mt-[2vw]  text-[0.8vw] font-">
+                  <h1 className="text-white text-opacity-20 mt-[2vw] text-[0.8vw] font-">
                     Your Deposit Address
                   </h1>
-                  <div className="flex border h-10 items-center  rounded-lg border-[#434343] gap-2 justify-between mt-1 w-full">
+                  <div className="flex border h-10 items-center rounded-lg border-[#434343] gap-2 justify-between mt-1 w-full">
                     <p className="w-full overflow-hidden text-[0.6vw] text-white text-opacity-60 truncate px-3">
                       {depositAddress}
                     </p>
-                    <div className="pr-2">
+                    <div
+                      className="pr-2 flex items-center justify-center cursor-pointer
+                        hover:bg-[#2b2b2b] active:bg-[#1b1b1b] rounded-r-lg h-full w-10
+                        transition-colors duration-200 hover:scale-105 active:scale-95"
+                      onClick={handleCopy}
+                      title="Copy address"
+                    >
                       <IoCopyOutline className="text-[1vw]" />
                     </div>
                   </div>
@@ -220,7 +301,6 @@ const Deposit: React.FC = () => {
                 </div>
 
                 <p className="text-center mb-5 text-[18px]">or</p>
-                {/* Connect Exchange - Using RainbowKit ConnectButton */}
                 <ConnectButton.Custom>
                   {({
                     account,
@@ -237,24 +317,19 @@ const Deposit: React.FC = () => {
                       (!authenticationStatus ||
                         authenticationStatus === "authenticated");
 
-                    const handleClick = () => {
-                      if (isConnected) {
-                        router.push("/deposit-withdrawal/deposits"); // Redirect if connected
-                      } else {
-                        openConnectModal(); // Open wallet connect modal if not connected
-                      }
-                    };
-
                     return (
                       <div
-                        className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full  text-black  ${
+                        className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full text-black ${
                           !ready
                             ? "pointer-events-none bg-opacity-10"
                             : isConnected
                             ? "opacity-50"
                             : ""
                         }`}
-                        onClick={handleClick}
+                        onClick={() => {
+                          handleConnectClick();
+                          openConnectModal();
+                        }}
                       >
                         <div className="relative">
                           <Image
@@ -264,7 +339,6 @@ const Deposit: React.FC = () => {
                             width={18}
                           />
                         </div>
-
                         <div>
                           {isConnected ? (
                             <div className="flex flex-col">

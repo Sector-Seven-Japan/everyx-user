@@ -8,9 +8,8 @@ import ImageSlider from "@/components/ImageSlider";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 import TopCategories from "@/components/TopCategoies";
-import CategoryCard from "@/components/CategoryCard"; // Add this import
+import CategoryCard from "@/components/CategoryCard";
 import Category from "@/components/Category";
-
 import LoadingPage from "@/components/LoadingPage";
 
 interface TraderInfo {
@@ -60,7 +59,6 @@ export default function Home() {
   }, [setIsOrderMade]);
 
   useEffect(() => {
-    // Only search if search term is not empty
     if (search.trim()) {
       const fetchSearchResults = async () => {
         try {
@@ -85,13 +83,9 @@ export default function Home() {
         }
       };
 
-      // Debounce the search to prevent too many API calls
       const debounceTimer = setTimeout(fetchSearchResults, 500);
-
-      // Cleanup function
       return () => clearTimeout(debounceTimer);
     } else {
-      // Clear search results if search is empty
       setSearchData([]);
     }
   }, [search, API_BASE_URL]);
@@ -99,7 +93,7 @@ export default function Home() {
   return fetchingData == false ? (
     <div>
       <Navbar />
-      <div className="w-full md:px-[10%] 2xl:px-[13%]">
+      <div className="w-full max-w-screen-2xl mx-auto md:px-10 lg:px-16 xl:px-20">
         <HeadingSlider setFilter={setFilter} filter={filter} />
         <ImageSlider />
         <SearchBar search={search} setSearch={setSearch} />
@@ -114,13 +108,13 @@ export default function Home() {
             return null;
           })}
 
-        <div className="p-5">
+        <div className="p-3">
           {isSearching ? (
             <div className="text-center text-gray-500 h-52 flex items-center justify-center">
               Searching...
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:mt-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:mt-10">
               {searchData.length > 0 ? (
                 searchData.map((item) => (
                   <CategoryCard
@@ -133,7 +127,7 @@ export default function Home() {
                   />
                 ))
               ) : search.trim() ? (
-                <div className="text-white h-[100px] justify-center">
+                <div className="text-white h-[100px] flex items-center justify-center">
                   No Result found
                 </div>
               ) : null}

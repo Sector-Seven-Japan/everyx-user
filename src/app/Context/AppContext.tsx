@@ -1,5 +1,6 @@
 "use client";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
+// import { useRouter } from "next/navigation"; // For App Router
 
 // Types and Interfaces
 interface Category {
@@ -114,6 +115,7 @@ interface UserStats {
 }
 
 interface AppContextProps {
+  requestDeposit: (txnHash: string, amount: string) => Promise<void>;
   filter: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
   sidebar: boolean;
@@ -189,30 +191,30 @@ const API_BASE_URL = "https://dev-api.everyx.io";
 // Initial context state
 const initialState: AppContextProps = {
   filter: "",
-  setFilter: () => {},
+  setFilter: () => { },
   slugHeading: "",
-  setSlugHeading: () => {},
+  setSlugHeading: () => { },
   selectedMenu: "Home",
-  setSelectedMenu: () => {},
+  setSelectedMenu: () => { },
   isLoggedIn: false,
-  setIsLoggedIn: () => {},
+  setIsLoggedIn: () => { },
   search: "",
-  setSearch: () => {},
+  setSearch: () => { },
   isLoading: false,
-  setIsLoading: () => {},
+  setIsLoading: () => { },
   categories: [],
-  setCategories: () => {},
+  setCategories: () => { },
   bannerData: [],
-  setBannerData: () => {},
+  setBannerData: () => { },
   findHeadingWithSlug: () => undefined,
   getTimeRemaining: () => "",
   calculateMaxLeverage: () => 0,
   calculateMaxEstimatedPayout: () => 0,
   formatDate: () => "",
   authToken: null,
-  setAuthToken: () => {},
-  makeOrder: async () => {},
-  makeOrderWithoutAuth: async () => {},
+  setAuthToken: () => { },
+  makeOrder: async () => { },
+  makeOrderWithoutAuth: async () => { },
   isOrderMade: false,
   orderDetails: {
     max_wager: 0,
@@ -245,29 +247,30 @@ const initialState: AppContextProps = {
     after_pledge: 0,
     stop_probability: 0,
   },
-  setIsOrderMade: () => {},
-  setOrderDetails: () => {},
+  setIsOrderMade: () => { },
+  setOrderDetails: () => { },
   API_BASE_URL,
   selectedOrder: "",
-  setSelectedOrder: () => {},
+  setSelectedOrder: () => { },
   walletData: [],
-  setWalletData: () => {},
+  setWalletData: () => { },
   sidebar: false,
-  setSidebar: () => {},
-  fetchWalletData: async () => {},
+  setSidebar: () => { },
+  fetchWalletData: async () => { },
+  requestDeposit: async () => { },
   userProfile: null,
   userStats: null,
   getCountdown: () => "Ended",
   isMobile: false,
   time: "0",
   isOpen: false,
-  setIsOpen: () => {},
+  setIsOpen: () => { },
   depositAddress: "",
-  setDepositAddress: () => {},
-  getDepositAddress: async () => {},
+  setDepositAddress: () => { },
+  getDepositAddress: async () => { },
   fetchingData: false,
   selectedOutcomeId: "",
-  setSelectedOutcomeId: () => {},
+  setSelectedOutcomeId: () => { },
 };
 
 export const AppContext = createContext<AppContextProps>(initialState);
@@ -402,6 +405,28 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       if (!response.ok) throw new Error("Failed to fetch wallet data");
       const data = await response.json();
       setWalletData(data);
+    } catch (error) {
+      console.log("failed to fetch Wallet data", error);
+    }
+  };
+
+  const requestDeposit = async (txnHash: string, amount: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/deposit/create/transaction`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ txnHash, amount }),
+      });
+      if (response.status === 401) {
+        handleUnauthorized();
+        return;
+      }
+      if (!response.ok) throw new Error("Failed to fetch wallet data");
+      const data = await response.json();
+      console.log(data)
     } catch (error) {
       console.log("failed to fetch Wallet data", error);
     }
@@ -607,16 +632,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const now = new Date();
     const endDate = new Date(ends_at);
     let diff = Math.floor((endDate.getTime() - now.getTime()) / 1000);
-  
+
     if (diff <= 0) return "Ended";
-  
+
     const days = Math.floor(diff / (24 * 60 * 60));
     diff %= 24 * 60 * 60;
     const hours = Math.floor(diff / (60 * 60));
     diff %= 60 * 60;
     const minutes = Math.floor(diff / 60);
     const seconds = diff % 60;
-  
+
     if (days > 0) return `${days}days ${hours}hours`;
     if (hours > 0) return `${hours}hours ${minutes}minutes`;
     if (minutes > 0) return `${minutes}minutes ${seconds}seconds`;
@@ -675,7 +700,69 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [authToken]);
 
+  // const router = useRouter(); // Initialize the router
+
+  // const checkTokenValidity = useCallback(async (): Promise<boolean> => {
+  //   if (!authToken) return false;
+
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/me`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${authToken}`,
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       handleSessionExpired();
+  //       return false;
+  //     }
+  //     return true;
+  //   } catch (error) {
+  //     console.error("Error validating token:", error);
+  //     handleSessionExpired();
+  //     return false;
+  //   }
+  // }, [authToken]);
+
+  // // Helper function to handle session expiration
+  // const handleSessionExpired = () => {
+  //   console.log("Session has expired. Logging out...");
+  //   localStorage.removeItem("authToken");
+  //   setAuthToken(null);
+  //   setIsLoggedIn(false);
+  //   alert("Your session has expired. Please log in again."); // Replace with your preferred notification system
+  //   router.push("/login"); // Redirect to the login page
+  // };
+
+  // // UseEffect for continuous checking
+  // useEffect(() => {
+  //   const validateToken = async () => {
+  //     if (authToken) {
+  //       const isValid = await checkTokenValidity();
+  //       if (!isValid && isLoggedIn) {
+  //         // Additional handling if needed when token becomes invalid
+  //         console.log("Token validation failed");
+  //       }
+  //     }
+  //   };
+
+  //   // Run immediately on mount
+  //   validateToken();
+
+  //   // Set up interval for continuous checking (e.g., every 5 minutes)
+  //   const intervalId = setInterval(validateToken, 5 * 60 * 1000); // 5 minutes
+
+  //   // Cleanup interval on unmount or when authToken changes
+  //   return () => {
+  //     if (intervalId) {
+  //       clearInterval(intervalId);
+  //     }
+  //   };
+  // }, [authToken, isLoggedIn, checkTokenValidity]);
+
   const contextValue: AppContextProps = {
+    requestDeposit,
     fetchingData,
     filter,
     setFilter,

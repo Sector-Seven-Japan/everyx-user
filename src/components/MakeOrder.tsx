@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
+import { debounce } from "lodash";
 
 export default function MakeOrder() {
   const {
@@ -70,7 +71,7 @@ export default function MakeOrder() {
 
   const handleTouchEnd = () => {
     setIsDragging(false);
-    
+
     const closeThreshold = 500; // Adjust based on your needs
     const screenHeight = window.innerHeight;
 
@@ -80,7 +81,6 @@ export default function MakeOrder() {
       setTimeout(() => setIsOrderMade(false), 300);
     }
   };
-
 
   const handleTradeSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Allow any input to be entered first
@@ -151,11 +151,11 @@ export default function MakeOrder() {
     setInputLeverage(leverage.toString());
   }, [leverage]);
 
-  const handleTradeSizePlus = (amount: number) => {
+  const handleTradeSizePlus = debounce((amount: number) => {
     const currentValue = parseFloat(value.toString());
     const newValue = Math.min(currentValue + amount, maxTradeSize);
     setValue(newValue);
-  };
+  }, 200);
 
   const handleLeveragePlus = (multiplier: number) => {
     const newValue = Math.min(leverage * multiplier, maxLeverage);
@@ -242,7 +242,7 @@ export default function MakeOrder() {
           );
         }
       }
-    }, 500);
+    }, 1000);
 
     return () => clearTimeout(debounceTimer);
   }, [value, leverage, authToken]);

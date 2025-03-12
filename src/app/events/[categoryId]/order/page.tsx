@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState, useMemo } from "react"; // Add useMemo
+import { useContext, useEffect, useState, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
@@ -12,7 +12,6 @@ import Footer from "@/components/Footer";
 import CategoryGraph from "@/components/CategoryGraph";
 import CategoryActivity from "@/components/CategoryActivity";
 
-// ... (interface definitions remain unchanged)
 interface WagerPayload {
   event_id: string;
   event_outcome_id: string;
@@ -25,7 +24,6 @@ interface WagerPayload {
   wallet_id: number;
 }
 
-// EventData interface
 interface EventData {
   _id: string;
   name: string;
@@ -87,12 +85,28 @@ export default function Order() {
   const [countdown, setCountdown] = useState<string>("");
   const [isBalance, setIsBalance] = useState<boolean>(true);
 
-  // Stabilize outcomeIds with useMemo
   const outcomeIds = useMemo(
     () => [orderDetails?.event_outcome_id],
     [orderDetails?.event_outcome_id]
   );
 
+  // Redirect on refresh if categoryId is missing
+  useEffect(() => {
+    if (!categoryId) {
+      console.log(
+        "No event ID found in orderDetails, redirecting to event page..."
+      );
+      const storedOrderDetails = JSON.parse(
+        localStorage.getItem("orderDetails") || "{}"
+      );
+      const storedEventId = storedOrderDetails?.event_id;
+      if (storedEventId) {
+        router.push(`/events/${storedEventId}`); // Redirect to specific event page
+      } else {
+        router.push("/trade"); // Fallback to events list
+      }
+    }
+  }, [categoryId, router]);
 
   useEffect(() => {
     if (walletData[0]?.balance < orderDetails.pledge) {
@@ -100,7 +114,7 @@ export default function Order() {
     }
     setIsLoading(false);
     fetchEvent();
-  }, [walletData, orderDetails, setIsLoading]); // Add dependencies
+  }, [walletData, orderDetails, setIsLoading, categoryId]); // Added categoryId as dependency
 
   useEffect(() => {
     if (eventData?.ends_at) {
@@ -215,10 +229,18 @@ export default function Order() {
       }
       if (response.ok) {
         await fetchWalletData();
+        localStorage.removeItem("orderDetails"); // Clear after successful submission
         await router.push(`/events/${orderDetails?.event_id}/order/success`);
       }
     } catch (error) {
       console.error("Navigation error:", error);
+      if (categoryId) {
+        router.push(`/events/${categoryId}`); // Redirect to specific event page on error
+      } else {
+        router.push("/events"); // Fallback to events list
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -324,26 +346,29 @@ export default function Order() {
               {option === "Order details" ? (
                 <div className="p-5">
                   <div className="flex md:flex-col justify-between mt-5 md:mt-2 md:gap-3">
-                    <div>
+                    {/* <div>
                       <div className="text-[#5D5D5D] text-[17px] md:text-[0.75vw] mb-1 md:mb-0">
                         Potential payout
                       </div>
                       <div className="flex justify-between text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                        ${Math.round(orderDetails?.indicative_payout)}
+                        ${Math.round(orderDetails?.indicative_payout || 0)}
                         <span className="text-[14px] text-[#E49C29] flex items-end md:text-[0.85vw]">
-                          +{orderDetails?.indicative_return?.toFixed(0)}%
+                          +{(orderDetails?.indicative_return || 0).toFixed(0)}%
                         </span>
                       </div>
-                    </div>
+                    </div> */}
                     <div>
                       <div className="text-[#5D5D5D] text-[17px] md:text-[0.75vw] mb-1 md:mb-0">
                         Your Traded Probability
                       </div>
                       <div className="flex justify-between text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                        {Math.round(orderDetails?.new_probability * 100)}%
+                        {Math.round((orderDetails?.new_probability || 0) * 100)}
+                        %
                         <span className="text-[14px] text-[#E49C29] flex items-end md:text-[0.85vw]">
                           +
-                          {(orderDetails?.probability_change * 100)?.toFixed(1)}
+                          {(
+                            (orderDetails?.probability_change || 0) * 100
+                          ).toFixed(1)}
                           %
                         </span>
                       </div>
@@ -371,15 +396,17 @@ export default function Order() {
                             className="h-[19px] rounded-lg bg-[#00FFBB] md:h-[14px]"
                             style={{
                               width: `${Math.round(
-                                orderDetails?.new_probability * 100
+                                (orderDetails?.new_probability || 0) * 100
                               )}%`,
                             }}
                           ></div>
                         </div>
                         <div className="text-[19px] font-light md:text-[0.7vw]">
-                          {Math.round(orderDetails?.new_probability * 100)}%
+                          {Math.round(
+                            (orderDetails?.new_probability || 0) * 100
+                          )}
+                          %
                         </div>
-
                         <div>
                           <Image
                             src="/Images/checkbox.png"
@@ -403,8 +430,8 @@ export default function Order() {
                         <div className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
                           $
                           {!authToken
-                            ? Math.round(orderDetails?.pledge)
-                            : Math.round(orderDetails?.after_pledge)}
+                            ? Math.round(orderDetails?.pledge || 0)
+                            : Math.round(orderDetails?.after_pledge || 0)}
                         </div>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
@@ -414,10 +441,10 @@ export default function Order() {
                         <div className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
                           $
                           {!authToken
-                            ? Math.round(orderDetails?.wager)
-                            : Math.round(orderDetails?.after_wager)}{" "}
+                            ? Math.round(orderDetails?.wager || 0)
+                            : Math.round(orderDetails?.after_wager || 0)}{" "}
                           <span className="text-sm text-[#E49C29] md:text-[0.85vw]">
-                            x {orderDetails?.leverage}
+                            x {orderDetails?.leverage || 1}
                           </span>
                         </div>
                       </div>
@@ -430,8 +457,8 @@ export default function Order() {
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
                           $
                           {!authToken
-                            ? Math.round(orderDetails?.indicative_payout)
-                            : Math.round(orderDetails?.after_pledge)}
+                            ? Math.round(orderDetails?.indicative_payout || 0)
+                            : Math.round(orderDetails?.after_payout || 0)}
                         </p>
                       </div>
                       <div className="flex flex-col gap-[1px] items-end">
@@ -439,9 +466,7 @@ export default function Order() {
                           Your return
                         </div>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          {orderDetails?.after_return
-                            ? orderDetails?.after_return?.toFixed(0) + "%"
-                            : "--"}
+                          {(orderDetails?.after_return || orderDetails.indicative_return).toFixed(0)}%
                         </p>
                       </div>
                     </div>
@@ -453,10 +478,12 @@ export default function Order() {
                     </div>
                     <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2.5px] md:text-[0.75vw]">
                       {!authToken
-                        ? (orderDetails?.stop_probability * 100)?.toFixed(0)
-                        : (orderDetails?.after_stop_probability * 100)?.toFixed(
+                        ? ((orderDetails?.stop_probability || 0) * 100).toFixed(
                             0
-                          )}
+                          )
+                        : (
+                            (orderDetails?.after_stop_probability || 0) * 100
+                          ).toFixed(0)}
                       %
                     </button>
                   </div>
@@ -477,14 +504,14 @@ export default function Order() {
                               className="h-[19px] rounded-lg bg-[#00FFBB] md:h-[14px]"
                               style={{
                                 width: `${Math.round(
-                                  orderDetails?.current_probability * 100
+                                  (orderDetails?.current_probability || 0) * 100
                                 )}%`,
                               }}
                             ></div>
                           </div>
                           <p className="text-[19px] font-light md:text-[0.7vw]">
                             {Math.round(
-                              orderDetails?.current_probability * 100
+                              (orderDetails?.current_probability || 0) * 100
                             )}
                             %
                           </p>
@@ -498,8 +525,7 @@ export default function Order() {
                           </div>
                         </div>
                       </div>
-                      <DrawGraph data={graphData} outcomeIds={outcomeIds} />{" "}
-                      {/* Use stabilized outcomeIds */}
+                      <DrawGraph data={graphData} outcomeIds={outcomeIds} />
                     </div>
                   </div>
                 </div>
@@ -513,7 +539,7 @@ export default function Order() {
                   {authToken
                     ? isBalance
                       ? "Proceed"
-                      : "Add Funds"
+                      : "Add Funds to continue"
                     : "Login to proceed"}
                 </button>
               </div>

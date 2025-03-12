@@ -386,7 +386,7 @@ export default function WagerPage() {
                 {option === "Order details" ? (
                   <div className="p-5">
                     <div className="flex md:flex-col justify-between mt-5 md:mt-2 md:gap-3">
-                      <div>
+                      {/* <div>
                         <p className="text-[#5D5D5D] text-[17px] md:text-[0.75vw] mb-1 md:mb-0">
                           Potential payout
                         </p>
@@ -398,7 +398,7 @@ export default function WagerPage() {
                             +{wagerData?.indicative_return.toFixed(0)}%
                           </span>
                         </p>
-                      </div>
+                      </div> */}
                       <div>
                         <p className="text-[#5D5D5D] text-[17px] md:text-[0.75vw] mb-1 md:mb-0">
                           Your Traded Probability

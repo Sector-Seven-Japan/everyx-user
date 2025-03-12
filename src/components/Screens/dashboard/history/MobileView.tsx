@@ -11,6 +11,7 @@ import CashWithdrawalCategoriesMobile from "@/components/CashWithdrawalCategorie
 interface TransactionButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
   type: "deposit" | "withdrawal";
+  note: string;
   variant?: "outline" | "default";
 }
 
@@ -42,6 +43,7 @@ interface TransactionsResponse {
 
 const TransactionButton: React.FC<TransactionButtonProps> = ({
   type,
+  note,
   className = "",
   ...props
 }) => {
@@ -56,7 +58,7 @@ const TransactionButton: React.FC<TransactionButtonProps> = ({
       className={`${baseClasses} ${variantClasses} ${className}`}
       {...props}
     >
-      {type === "deposit" ? "Deposit" : "Withdrawal"}
+      {type === "deposit" ? "Deposit" : type.includes("order") ? "Order" : note.includes("COMPLETED!") ? "Deposit" : "Processing"}
     </button>
   );
 };
@@ -158,7 +160,7 @@ const HistoryMobile: React.FC = () => {
                     <span className="text-sm text-gray-400 ml-1">(USDT)</span>
                   </p>
                 </div>
-                <TransactionButton type={transaction.transaction_type} />
+                <TransactionButton type={transaction.transaction_type} note={transaction.note} />
               </div>
               <div>
                 <svg

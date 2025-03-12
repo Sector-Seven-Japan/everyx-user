@@ -162,7 +162,7 @@ export default function MakeOrder() {
           );
         }
       }
-    }, 500);
+    }, 1000);
     return () => clearTimeout(debounceTimer);
   }, [value, leverage]);
 
@@ -302,11 +302,13 @@ export default function MakeOrder() {
         !pathname.startsWith("events/order") && (
           <div className="flex flex-col gap-[1px]">
             <p className="text-[#5D5D5D] md:text-[0.75vw]">Selected Outcome</p>
-            <p className="text-[#00FFB8] md:text-[1.2vw]">{selectedOrder}</p>
+            <p className="text-[#00FFB8] md:text-[1vw] md:mb-3">
+              {selectedOrder}
+            </p>
           </div>
         )}
 
-      {pathname.startsWith("/wager") && (
+      {
         <>
           <div className="flex flex-col gap-4">
             <div className="flex justify-between">
@@ -315,7 +317,7 @@ export default function MakeOrder() {
                   Cash used
                 </p>
                 <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                  ${Math.round(orderDetails?.after_pledge)}
+                ${Math.round(orderDetails?.pledge)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
@@ -323,7 +325,7 @@ export default function MakeOrder() {
                   Leverage cash value
                 </p>
                 <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                  ${Math.round(orderDetails?.after_wager)}{" "}
+                ${Math.round(orderDetails?.wager)}{" "}
                   <span className="text-[12px] text-[#E49C29] md:text-[0.85vw]">
                     x {orderDetails?.leverage}
                   </span>
@@ -337,7 +339,7 @@ export default function MakeOrder() {
                   Projected payout
                 </p>
                 <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                  ${Math.round(orderDetails?.after_payout)}
+                ${Math.round(orderDetails?.indicative_payout)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
@@ -345,7 +347,7 @@ export default function MakeOrder() {
                   Your return
                 </p>
                 <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                  +{orderDetails?.after_return?.toFixed(0)} %
+                +{orderDetails?.indicative_return?.toFixed(0)} %
                 </p>
               </div>
             </div>
@@ -360,7 +362,7 @@ export default function MakeOrder() {
             </button>
           </div>
         </>
-      )}
+      }
 
       <button
         onClick={handleSubmit}
