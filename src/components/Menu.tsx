@@ -5,6 +5,7 @@ import { AppContext } from "../app/Context/AppContext";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useDisconnect } from "wagmi";
+import { FaDiscord, FaXTwitter } from "react-icons/fa6";
 
 export default function Menu() {
   const router = useRouter();
@@ -45,12 +46,11 @@ export default function Menu() {
       });
       console.log(response);
 
-      await signOut({ redirect: false }); // Sign out without redirecting
+      await signOut({ redirect: false });
 
       setAuthToken("");
       setWalletData([]);
 
-      // Clear all relevant cookies
       document.cookie =
         "next-auth.session-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       document.cookie =
@@ -62,11 +62,9 @@ export default function Menu() {
       document.cookie =
         "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
-      // Disconnect wallet
       disconnect();
-
-      localStorage.removeItem("authToken"); // Clear auth token from local storage
-      router.push("/trade"); // Redirect to login page after sign out
+      localStorage.removeItem("authToken");
+      router.push("/trade");
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
@@ -107,10 +105,30 @@ export default function Menu() {
         </ul>
       </div>
 
-      <div className="p-5 mt-36 md:mt-20">
+      {/* Social Media Icons */}
+      <div className="flex justify-center gap-6 mt-10">
+          <a
+            href="https://discord.gg/Febu4RRJ"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#fff] hover:text-[#5865F2] transition-colors duration-200"
+          >
+            <FaDiscord className="text-2xl" />
+          </a>
+          <a
+            href="https://x.com/everyx_io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#fff] hover:text-[#1DA1F2] transition-colors duration-200"
+          >
+            <FaXTwitter className="text-2xl" />
+          </a>
+        </div>
+
+      <div className="mt-10">
         {/* Login/Logout Button */}
         <button
-          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-2"
+          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-2 mb-6"
           onClick={() => {
             if (isLoggedIn) {
               handleLogoutUser();
@@ -122,6 +140,7 @@ export default function Menu() {
         >
           {isLoggedIn ? "Logout" : "Login / Signup"}
         </button>
+
       </div>
     </div>
   );
