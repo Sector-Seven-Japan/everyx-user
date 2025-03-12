@@ -21,7 +21,7 @@ export default function DragSlider({
   const [isDragged, setIsDragged] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  // console.log(isDragged);
+  console.log(isDragged);
 
   // Motion values for interactive animations
   const x = useMotionValue(0);
