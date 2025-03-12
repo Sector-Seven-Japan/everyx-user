@@ -81,37 +81,6 @@ export default function CategoryCard({ item }: CategoryCardProps) {
             src={item?.event_images_url[0]}
             alt={item?.name || "Event Image"}
           />
-          <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent"></div>
-        </div>
-
-        {/* Card Details */}
-        <div className="flex mt-3 gap-3 md:mt-2 items-center">
-          <button className="border border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[0.65vw] md:px-4 md:py-[1px]">
-            {item?.category?.name?.split(" ")[0] || "Global"}
-          </button>
-          <p className="text-[#2DC198] flex gap-1 items-center font-light">
-            <div className="md:w-3">
-              <Image
-                src={"/Images/FreeClock i.png"}
-                alt="clock"
-                height={18}
-                width={18}
-              />
-            </div>
-            <p className="text-[#2DC198] md:text-[0.68vw]">{countdown}</p>
-          </p>
-        </div>
-        <div
-          onClick={handleNavigation}
-          className="pt-4 lg:h-[3vw] sm:h-[10vw] cursor-pointer"
-        >
-          <p
-            className={` md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] europa  tracking-[1.2px]  ${
-              !hide && "md:text-[0.7vw]"
-            }`}
-          >
-            {item?.name}
-          </p>
         </div>
         <div className="flex-1 flex flex-col justify-between">
           <div>
@@ -150,82 +119,10 @@ export default function CategoryCard({ item }: CategoryCardProps) {
                     {String.fromCharCode(65 + index)}. {displayName}
                   </p>
                 </div>
-
                 <div className="flex items-center gap-6 flex-shrink-0">
                   <div className="font-semibold text-[12px] md:text-[14px] whitespace-nowrap">
                     {Math.round(outcome.trader_info.estimated_probability * 100)}%
-
-              ) : (
-                <div className="flex justify-center items-center h-full ">
-                  <DrawGraph data={graphData} />
-                </div>
-              )}
-            </div>
-            <div
-              className={`${
-                !showPrediction && "hidden"
-              } md:mt-1 flex flex-col gap-4`}
-            >
-              {item?.outcomes.map((outcome: Outcome, index: number) => (
-                <div
-                  onClick={async () => {
-                    setSelectedOrder(
-                      String.fromCharCode(65 + index) +
-                        ". " +
-                        outcome.name.charAt(0).toUpperCase() +
-                        outcome.name.slice(1)
-                    );
-                    setIsLoading(true);
-                    if (authToken) {
-                      await makeOrder(
-                        outcome._id,
-                        item._id,
-                        false,
-                        1,
-                        0,
-                        10,
-                        10
-                      );
-                    } else {
-                      await makeOrderWithoutAuth(
-                        outcome._id,
-                        item._id,
-                        false,
-                        1,
-                        0,
-                        10,
-                        10
-                      );
-                    }
-                    setIsOrderMade(true);
-                    setSelectedOutcomeId(outcome._id);
-                    router.push(`/events/${item._id}?selected=true`);
-                  }}
-                  key={outcome._id}
-                  className={`flex flex-col gap-1 md:gap-2 cursor-pointer`}
-                >
-                  <p className="text-[19px] font-light md:text-[0.85vw]">
-                    {String.fromCharCode(65 + index)}.{" "}
-                    {outcome.name.charAt(0).toUpperCase() +
-                      outcome.name.slice(1)}
-                  </p>
-                  <div className="flex justify-between items-center md:flex-col md:items-start gap-2 md:gap-1 md:mb-0">
-                    <div
-                      className="h-[19px] md:h-[15px] rounded-lg"
-                      style={{
-                        backgroundColor: outcomeColors[index],
-                        width: `${Math.round(
-                          outcome.trader_info.estimated_probability * 100
-                        )}%`,
-                      }}
-                    ></div>
-                    <p className="text-[19px] font-light md:text-[13px] md:hidden">
-                      {Math.round(
-                        outcome.trader_info.estimated_probability * 100
-                      )}
-                      %
-                    </p>
-                </div>
+                  </div>
                   <button
                     onClick={async () => {
                       setSelectedOrder(
