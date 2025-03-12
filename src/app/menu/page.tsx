@@ -51,7 +51,6 @@ export default function Menu() {
 
       setAuthToken("");
       setWalletData([]);
-      // Clear all relevant cookies
       document.cookie =
         "next-auth.session-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       document.cookie =
@@ -63,7 +62,6 @@ export default function Menu() {
       document.cookie =
         "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
-      // Disconnect wallet
       disconnect();
       localStorage.removeItem("authToken");
       router.push("/trade");
@@ -92,8 +90,6 @@ export default function Menu() {
               onClick={() => {
                 setIsLoading(true);
                 setSelectedMenu(item.name);
-
-                // Open sidebar only when "Message" is clicked
                 if (item.name === "Message") {
                   setSidebar(true);
                 } else {
@@ -110,8 +106,8 @@ export default function Menu() {
         </ul>
       </div>
 
-      {/* Language Toggle */}
       <div className="p-5 mt-36">
+        {/* Language Toggle */}
         <div className="flex justify-center gap-6 items-center mb-8 pl-[100px]">
           <p
             className={`${
@@ -137,9 +133,37 @@ export default function Menu() {
           </p>
         </div>
 
+        {/* Social Media Icons */}
+        <div className="flex justify-center gap-6 mt-10">
+          <a
+            href="https://discord.gg/Febu4RRJ"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#fff] hover:text-[#5865F2] transition-colors duration-200"
+          >
+            <img
+              src="https://discord.com/favicon.ico"
+              alt="Discord"
+              className="w-6 h-6"
+            />
+          </a>
+          <a
+            href="https://x.com/everyx_io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#fff] hover:text-[#1DA1F2] transition-colors duration-200"
+          >
+            <img
+              src="https://x.com/favicon.ico"
+              alt="X"
+              className="w-6 h-6"
+            />
+          </a>
+        </div>
+
         {/* Login/Logout Button */}
         <button
-          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200"
+          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 mb-6"
           onClick={() => {
             if (isLoggedIn) {
               handleLogoutUser();
@@ -150,6 +174,7 @@ export default function Menu() {
         >
           {isLoggedIn ? "Logout" : "Login / Signup"}
         </button>
+
       </div>
     </div>
   );
