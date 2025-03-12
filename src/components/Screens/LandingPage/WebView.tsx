@@ -106,12 +106,13 @@ const WebLanding = () => {
           <p className=" text-[4.5vw]   text-white text-opacity-[78%] text-left Zenfont font-extralight leading-tight">
             Global Events
           </p>
-          <p className="text-[1.1vw] mt-[5vw] text-white text-opacity-[80%] text-left font-normal leading-[2.5rem] ">
-            Use leverage to trade on real-world events and shape your
+          <p className="text-[1vw] mt-[5vw] text-white text-opacity-[80%] text-left font-normal leading-[2.5rem] ">
+            Use leverage to trade on real-world events and maximize your
+            potential gains.
           </p>
-          <p className="text-[1.1vw]  text-white text-opacity-[80%] text-left font-normal">
+          {/* <p className="text-[1.1vw]  text-white text-opacity-[80%] text-left font-normal">
             portfolio in a new way.
-          </p>
+          </p> */}
         </div>
 
         <div className="mt-5">
@@ -307,7 +308,7 @@ const WebLanding = () => {
       </div>
 
       <div className="mt-32 ">
-        <DragSlider text="Change your life with just a flick of this button." />
+        <DragSlider text="Predict now on EveryX" />
       </div>
 
       <div className="flex justify-center mt-[5vw] ">
