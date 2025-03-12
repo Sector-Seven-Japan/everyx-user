@@ -42,6 +42,7 @@ const Deposit: React.FC = () => {
 
   const { isConnected: wagmiConnected } = useAccount();
   const [hasRedirected, setHasRedirected] = useState(false);
+  const [hasRedirected, setHasRedirected] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchMove, setTouchMove] = useState<number | null>(null);
   const [translateY, setTranslateY] = useState(0);
@@ -59,7 +60,7 @@ const Deposit: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(false);
-  }, [setIsLoading]);
+  }, []);
 
   useEffect(() => {
     if (!wagmiConnected) {
@@ -234,11 +235,20 @@ const Deposit: React.FC = () => {
                   }
                 };
 
+                const handleClick = () => {
+                  if (isConnected) {
+                    router.push("/dashboard/deposits");
+                  } else {
+                    openConnectModal();
+                  }
+                };
+
                 return (
                   <div
                     className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${
                       !ready ? "opacity-50 pointer-events-none" : ""
                     }`}
+                    onClick={handleClick}
                     onClick={handleClick}
                   >
                     <Image
@@ -251,6 +261,7 @@ const Deposit: React.FC = () => {
                       {isConnected ? (
                         <div className="flex flex-col">
                           <button type="button" className="text-black">
+                            Add Funds
                             Add Funds
                           </button>
                         </div>
@@ -349,7 +360,9 @@ const Deposit: React.FC = () => {
                       <div
                         className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full text-black ${
                           !ready ? "pointer-events-none bg-opacity-10" : ""
+                          !ready ? "pointer-events-none bg-opacity-10" : ""
                         }`}
+                        onClick={handleClick}
                         onClick={handleClick}
                       >
                         <div className="relative">
@@ -364,6 +377,7 @@ const Deposit: React.FC = () => {
                           {isConnected ? (
                             <div className="flex flex-col">
                               <button type="button" className="text-black">
+                                Add Funds
                                 Add Funds
                               </button>
                             </div>
