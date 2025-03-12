@@ -123,8 +123,8 @@ const MobileLanding = () => {
             Global Events
           </p>
           <p className="text-[3.25vw] text-white text-opacity-[78%] text-left font-medium mt-[5vw]">
-            Use leverage to bet on real-world events and shape your portfolio in
-            a new way.
+            Use leverage to trade on real-world events and maximize your
+            potential gains.
           </p>
         </div>
 
@@ -299,7 +299,7 @@ const MobileLanding = () => {
 
         {/* slide bar */}
         <div className="mt-[10vw] mx-[8vw]  ">
-          <DragSlider text="Change your life with just a flick of this button." />
+          <DragSlider text="Predict now on EveryX" />
         </div>
         {/* vertical lines */}
 

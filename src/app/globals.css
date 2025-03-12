@@ -30,7 +30,7 @@
 
 @font-face {
   font-family: "gothic";
-  src: url("../../public/assets//Franklin_Gothic_Book_Regular.ttf")
+  src: url("../../public/assets/Franklin_Gothic_Book_Regular.ttf")
     format("opentype");
   font-weight: normal;
   font-style: normal;
@@ -42,10 +42,6 @@
 
 .kaisotia {
   font-family: "CustomFont";
-}
-
-.Europa {
-  font-family: "Europa";
 }
 
 * {
@@ -64,6 +60,10 @@ body {
 
 .Zenfont {
   font-family: "Zen Antique";
+}
+
+.europa {
+  font-family: "Europa";
 }
 
 .cambria {

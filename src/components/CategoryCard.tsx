@@ -186,9 +186,7 @@ export default function CategoryCard({
         </div>
 
         {/* Card Details */}
-        <div
-          className="flex mt-3 gap-3 md:mt-2 items-center"
-        >
+        <div className="flex mt-3 gap-3 md:mt-2 items-center">
           <button className="border border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[0.65vw] md:px-4 md:py-[1px]">
             {item?.category?.name?.split(" ")[0] || "Global"}
           </button>
@@ -205,10 +203,11 @@ export default function CategoryCard({
           </p>
         </div>
         <div
-        onClick={handleNavigation} 
-        className="pt-4 lg:h-[3vw] sm:h-[10vw] cursor-pointer">
+          onClick={handleNavigation}
+          className="pt-4 lg:h-[3vw] sm:h-[10vw] cursor-pointer"
+        >
           <p
-            className={`font-light md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] inter tracking-[1.2px] ${
+            className={` md:text-[0.65vw] md:line-clamp-2 md:min-h-[20px] europa  tracking-[1.2px]  ${
               !hide && "md:text-[0.7vw]"
             }`}
           >
@@ -249,7 +248,7 @@ export default function CategoryCard({
                   </p>
                 </div>
               ) : (
-                <div className="flex justify-center items-center w-full h-full ">
+                <div className="flex justify-center items-center h-full ">
                   <DrawGraph data={graphData} />
                 </div>
               )}
@@ -257,7 +256,7 @@ export default function CategoryCard({
             <div
               className={`${
                 !showPrediction && "hidden"
-              } md:mt-5 flex flex-col gap-4`}
+              } md:mt-1 flex flex-col gap-4`}
             >
               {item?.outcomes.map((outcome: Outcome, index: number) => (
                 <div
@@ -292,7 +291,7 @@ export default function CategoryCard({
                     }
                     setIsOrderMade(true);
                     setSelectedOutcomeId(outcome._id);
-                    router.push(`/events/${item._id}?selected=true`)
+                    router.push(`/events/${item._id}?selected=true`);
                   }}
                   key={outcome._id}
                   className={`flex flex-col gap-1 md:gap-2 cursor-pointer`}

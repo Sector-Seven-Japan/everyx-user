@@ -12,11 +12,25 @@ import { QRCodeCanvas } from "qrcode.react";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { IoCopyOutline } from "react-icons/io5";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount } from "wagmi";
+
+// Preloader component
+const Preloader: React.FC = () => {
+  return (
+    <div className="flex items-center justify-center h-40 w-full">
+      <div className="relative">
+        <div className="w-10 h-10 border-4 border-[#00FFB8] border-t-transparent rounded-full animate-spin"></div>
+        <div
+          className="absolute top-0 left-0 w-10 h-10 border-4 border-[#00FFB8] border-t-transparent rounded-full animate-spin opacity-50"
+          style={{ animationDuration: "1.5s" }}
+        ></div>
+      </div>
+    </div>
+  );
+};
 
 const Deposit: React.FC = () => {
   const router = useRouter();
-  const { disconnect } = useDisconnect();
   const {
     getDepositAddress,
     depositAddress,
@@ -27,17 +41,12 @@ const Deposit: React.FC = () => {
   } = useContext(AppContext);
 
   const { isConnected: wagmiConnected } = useAccount();
+  const [hasRedirected, setHasRedirected] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchMove, setTouchMove] = useState<number | null>(null);
-  const [translateY, setTranslateY] = useState(0); // For gradual movement
+  const [translateY, setTranslateY] = useState(0);
+  const [isQrLoading, setIsQrLoading] = useState(true); // Start with loading true
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Disable autoConnect by disconnecting on mount if connected
-  useEffect(() => {
-    if (wagmiConnected) {
-      disconnect();
-    }
-  }, []);
 
   const handleCopy = async () => {
     try {
@@ -52,34 +61,39 @@ const Deposit: React.FC = () => {
     setIsLoading(false);
   }, [setIsLoading]);
 
-  // Handle manual wallet connection and redirect
   useEffect(() => {
-    // We'll use a flag to ensure we're responding to manual connections, not auto-connections
-    const isManualConnection =
-      sessionStorage.getItem("manualConnect") === "true";
-
-    if (wagmiConnected && isManualConnection) {
-      // Add a small delay to ensure state is stable
-      const redirectTimer = setTimeout(() => {
-        sessionStorage.setItem("redirectFromDeposit", "true");
-        router.push("/deposit-withdrawal/deposits");
-        // Reset flag after successful redirect
-        sessionStorage.removeItem("manualConnect");
-      }, 100);
-
-      return () => clearTimeout(redirectTimer); // Clean up timer
+    if (!wagmiConnected) {
+      sessionStorage.setItem("hasRedirected", "false");
+      setHasRedirected(false);
     }
-  }, [wagmiConnected, router]);
+  }, [wagmiConnected]);
 
   useEffect(() => {
-    if (!depositAddress && getDepositAddress) getDepositAddress();
-  }, [depositAddress]);
+    const sessionHasRedirected =
+      sessionStorage.getItem("hasRedirected") === "true";
+    if (wagmiConnected && !sessionHasRedirected && !hasRedirected) {
+      router.push("/dashboard/deposits");
+      sessionStorage.setItem("hasRedirected", "true");
+      setHasRedirected(true);
+    }
+  }, [wagmiConnected, hasRedirected, router]);
 
-  // Handle wallet connection button click
-  const handleConnectClick = () => {
-    // Set flag for manual connection
-    sessionStorage.setItem("manualConnect", "true");
-  };
+  // Handle deposit address fetching and QR loading state
+  useEffect(() => {
+    if (!depositAddress) {
+      setIsQrLoading(true);
+      getDepositAddress()
+        .then(() => {
+          setIsQrLoading(false);
+        })
+        .catch((err) => {
+          console.error("Failed to get deposit address:", err);
+          setIsQrLoading(false);
+        });
+    } else {
+      setIsQrLoading(false);
+    }
+  }, [depositAddress, getDepositAddress]);
 
   // Handle touch events for pull-down gesture
   useEffect(() => {
@@ -100,8 +114,7 @@ const Deposit: React.FC = () => {
 
       const distance = currentY - touchStart;
       if (distance > 0) {
-        // Only move downward
-        setTranslateY(distance); // Gradually move the container
+        setTranslateY(distance);
       }
     };
 
@@ -109,16 +122,12 @@ const Deposit: React.FC = () => {
       if (touchStart === null || touchMove === null) return;
 
       const distance = touchMove - touchStart;
-      const threshold = 150; // Threshold for triggering navigation
-
-      console.log({ touchStart, touchMove, distance, translateY });
+      const threshold = 150;
 
       if (distance > threshold) {
-        console.log("Pull down detected, navigating to portfolio...");
-        router.push("/dashboard/history");
+        router.push("/dashboard/portfolio");
       }
 
-      // Reset values with animation
       setTranslateY(0);
       setTouchStart(null);
       setTouchMove(null);
@@ -153,9 +162,7 @@ const Deposit: React.FC = () => {
               <div>
                 <MdOutlineKeyboardArrowLeft
                   className="text-[30px]"
-                  onClick={() => {
-                    router.back();
-                  }}
+                  onClick={() => router.back()}
                 />
               </div>
               <p className="text-[16px] pr-[8vw]">Deposit:</p>
@@ -168,7 +175,7 @@ const Deposit: React.FC = () => {
               </h1>
               <div className="flex border h-14 items-center px-2 rounded-xl border-[#434343] gap-2 justify-between">
                 <p className="w-full overflow-hidden text-[14px] truncate">
-                  {depositAddress}
+                  {depositAddress || "Loading address..."}
                 </p>
                 <div
                   className="w-10 h-10 bg-[#2b2b2b] rounded-lg flex items-center justify-center cursor-pointer
@@ -183,7 +190,9 @@ const Deposit: React.FC = () => {
             </div>
 
             <div className="flex h-56 w-full items-center justify-center mt-10">
-              {depositAddress && (
+              {isQrLoading ? (
+                <Preloader />
+              ) : depositAddress ? (
                 <div className="p-1 border border-[#434343] rounded-lg bg-white">
                   <QRCodeCanvas
                     value={depositAddress}
@@ -193,6 +202,10 @@ const Deposit: React.FC = () => {
                     level="Q"
                   />
                 </div>
+              ) : (
+                <p className="text-[#5b5b5b] text-[14px]">
+                  No deposit address available
+                </p>
               )}
             </div>
 
@@ -213,15 +226,20 @@ const Deposit: React.FC = () => {
                   (!authenticationStatus ||
                     authenticationStatus === "authenticated");
 
+                const handleClick = () => {
+                  if (isConnected) {
+                    router.push("/dashboard/deposits");
+                  } else {
+                    openConnectModal();
+                  }
+                };
+
                 return (
                   <div
                     className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${
                       !ready ? "opacity-50 pointer-events-none" : ""
                     }`}
-                    onClick={() => {
-                      handleConnectClick();
-                      openConnectModal();
-                    }}
+                    onClick={handleClick}
                   >
                     <Image
                       src="/Images/connect.png"
@@ -233,7 +251,7 @@ const Deposit: React.FC = () => {
                       {isConnected ? (
                         <div className="flex flex-col">
                           <button type="button" className="text-black">
-                            Connect Wallet
+                            Add Funds
                           </button>
                         </div>
                       ) : (
@@ -251,12 +269,8 @@ const Deposit: React.FC = () => {
       ) : (
         <div className="bg-[#0E0E0E] px-[20vw]">
           <HeadingSlider filter={filter} setFilter={setFilter} />
-
           <div className="flex justify-center pt-[4.65%] gap-5">
             <div className="bg-[#262626] bg-opacity-[31%] flex flex-col items-center rounded-t-3xl pb-10 pt-2 min-h-screen w-full flex-1">
-              {/* <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>  */}
-
-              {/* Deposit and Withdrawal Section */}
               <div className="mt-3 flex items-center justify-center w-full px-5">
                 <button className="text-white text-[16px]">Deposit :</button>
               </div>
@@ -272,7 +286,7 @@ const Deposit: React.FC = () => {
                   </h1>
                   <div className="flex border h-10 items-center rounded-lg border-[#434343] gap-2 justify-between mt-1 w-full">
                     <p className="w-full overflow-hidden text-[0.6vw] text-white text-opacity-60 truncate px-3">
-                      {depositAddress}
+                      {depositAddress || "Loading address..."}
                     </p>
                     <div
                       className="pr-2 flex items-center justify-center cursor-pointer
@@ -287,7 +301,9 @@ const Deposit: React.FC = () => {
                 </div>
 
                 <div className="flex h-40 w-full items-center justify-center my-[3vw]">
-                  {depositAddress && (
+                  {isQrLoading ? (
+                    <Preloader />
+                  ) : depositAddress ? (
                     <div className="p-1 border border-[#434343] rounded-lg bg-white">
                       <QRCodeCanvas
                         value={depositAddress}
@@ -297,6 +313,10 @@ const Deposit: React.FC = () => {
                         level="Q"
                       />
                     </div>
+                  ) : (
+                    <p className="text-white text-opacity-60 text-[0.8vw]">
+                      No deposit address available
+                    </p>
                   )}
                 </div>
 
@@ -317,19 +337,20 @@ const Deposit: React.FC = () => {
                       (!authenticationStatus ||
                         authenticationStatus === "authenticated");
 
+                    const handleClick = () => {
+                      if (isConnected) {
+                        router.push("/dashboard/deposits");
+                      } else {
+                        openConnectModal();
+                      }
+                    };
+
                     return (
                       <div
                         className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full text-black ${
-                          !ready
-                            ? "pointer-events-none bg-opacity-10"
-                            : isConnected
-                            ? "opacity-50"
-                            : ""
+                          !ready ? "pointer-events-none bg-opacity-10" : ""
                         }`}
-                        onClick={() => {
-                          handleConnectClick();
-                          openConnectModal();
-                        }}
+                        onClick={handleClick}
                       >
                         <div className="relative">
                           <Image
@@ -343,7 +364,7 @@ const Deposit: React.FC = () => {
                           {isConnected ? (
                             <div className="flex flex-col">
                               <button type="button" className="text-black">
-                                Connect Wallet
+                                Add Funds
                               </button>
                             </div>
                           ) : (

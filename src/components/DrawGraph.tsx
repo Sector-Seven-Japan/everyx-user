@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useMemo, useCallback } from "react";
 import Chart from "chart.js/auto";
+import { usePathname } from "next/navigation";
 
 interface GraphData {
   datetime: string;
@@ -13,24 +14,23 @@ interface GraphData {
 
 interface DrawGraphProps {
   data: GraphData[];
-  outcomeIds?: string[]; // Optional prop to filter outcomes
+  outcomeIds?: string[];
 }
 
 const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
+  const path = usePathname();
 
   const processDataForChart = useCallback(
     (data: GraphData[], outcomeIds?: string[]) => {
       const now = new Date();
-      const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000); // 6 hours ago
+      const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000);
 
-      // Filter data to include only the last 6 hours
       const filteredData = data.filter(
         (item) => new Date(item.datetime) >= sixHoursAgo
       );
 
-      // Extract unique sorted hourly timestamps within last 6 hours
       const timestamps = [
         ...new Set(filteredData.map((item) => item.datetime)),
       ].sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
@@ -46,7 +46,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
             (item) =>
               item.datetime === timestamp && item.event_outcome_id === outcome
           );
-          return dataPoint ? dataPoint.probability * 100 : null; // Convert to percentage
+          return dataPoint ? dataPoint.probability * 100 : null;
         });
 
         return {
@@ -91,13 +91,21 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 0, // Reduce left padding
+            right: 0,
+            top: 0,
+            bottom: 0,
+          },
+        },
         interaction: {
           mode: "index",
           intersect: false,
         },
         plugins: {
           legend: {
-            display: true,
+            display: false,
             labels: {
               color: "#fff",
             },
@@ -126,25 +134,28 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
               maxRotation: 0,
               minRotation: 0,
               callback: function (value) {
+                if (path === "/trade") return "";
                 const label = this.getLabelForValue(value as number);
                 const date = new Date(label);
                 return date.toLocaleTimeString("en-US", {
                   hour: "numeric",
                   minute: "2-digit",
-                }); // Display hour and minute
+                });
               },
             },
           },
           y: {
+            display: false,
             grid: {
               display: false,
             },
             ticks: {
+              display: false, // Hide ticks completely
               color: "#fff",
-              callback: function () {
-                return ""; // Hide percentage labels
-              },
+              padding: 0, // Reduce padding between ticks and chart
             },
+            // Optional: Set a very small offset to minimize space
+            offset: false,
           },
         },
       },
@@ -155,11 +166,11 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
         chartInstance.current.destroy();
       }
     };
-  }, [processedData]);
+  }, [processedData, path]);
 
   return (
-    <div className="w-full rounded-lg h-full">
-      <div className="lg:h-[12vw] md:h-[15vw] sm:h-[40vw] mt-8 w-full">
+    <div className="w-full h-full ">
+      <div className="lg:h-[12vw] md:h-[15vw] sm:h-[40vw] mt-5 w-full  pr-1">
         <canvas
           ref={chartRef}
           className="w-full h-full"
