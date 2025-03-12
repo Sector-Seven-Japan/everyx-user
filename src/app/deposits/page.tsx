@@ -12,11 +12,10 @@ import { QRCodeCanvas } from "qrcode.react";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { IoCopyOutline } from "react-icons/io5";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount } from "wagmi";
 
 const Deposit: React.FC = () => {
   const router = useRouter();
-  const { disconnect } = useDisconnect();
   const {
     getDepositAddress,
     depositAddress,
@@ -27,17 +26,11 @@ const Deposit: React.FC = () => {
   } = useContext(AppContext);
 
   const { isConnected: wagmiConnected } = useAccount();
+  const [hasRedirected, setHasRedirected] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchMove, setTouchMove] = useState<number | null>(null);
   const [translateY, setTranslateY] = useState(0); // For gradual movement
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Disable autoConnect by disconnecting on mount if connected
-  useEffect(() => {
-    if (wagmiConnected) {
-      disconnect();
-    }
-  }, []);
 
   const handleCopy = async () => {
     try {
@@ -50,36 +43,28 @@ const Deposit: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(false);
-  }, [setIsLoading]);
+  }, []);
 
-  // Handle manual wallet connection and redirect
   useEffect(() => {
-    // We'll use a flag to ensure we're responding to manual connections, not auto-connections
-    const isManualConnection =
-      sessionStorage.getItem("manualConnect") === "true";
-
-    if (wagmiConnected && isManualConnection) {
-      // Add a small delay to ensure state is stable
-      const redirectTimer = setTimeout(() => {
-        sessionStorage.setItem("redirectFromDeposit", "true");
-        router.push("/dashboard/deposits");
-        // Reset flag after successful redirect
-        sessionStorage.removeItem("manualConnect");
-      }, 100);
-
-      return () => clearTimeout(redirectTimer); // Clean up timer
+    if (!wagmiConnected) {
+      sessionStorage.setItem("hasRedirected", "false");
+      setHasRedirected(false);
     }
-  }, [wagmiConnected, router]);
+  }, [wagmiConnected]);
 
   useEffect(() => {
-    if (!depositAddress && getDepositAddress) getDepositAddress();
-  }, [depositAddress]);
+    const sessionHasRedirected =
+      sessionStorage.getItem("hasRedirected") === "true";
+    if (wagmiConnected && !sessionHasRedirected && !hasRedirected) {
+      router.push("/dashboard/deposits");
+      sessionStorage.setItem("hasRedirected", "true");
+      setHasRedirected(true);
+    }
+  }, [wagmiConnected, hasRedirected, router]);
 
-  // Handle wallet connection button click
-  const handleConnectClick = () => {
-    // Set flag for manual connection
-    sessionStorage.setItem("manualConnect", "true");
-  };
+  useEffect(() => {
+    getDepositAddress();
+  }, [getDepositAddress]);
 
   // Handle touch events for pull-down gesture
   useEffect(() => {
@@ -115,7 +100,7 @@ const Deposit: React.FC = () => {
 
       if (distance > threshold) {
         console.log("Pull down detected, navigating to portfolio...");
-        router.push("/dashboard/history");
+        router.push("/dashboard/portfolio");
       }
 
       // Reset values with animation
@@ -213,15 +198,20 @@ const Deposit: React.FC = () => {
                   (!authenticationStatus ||
                     authenticationStatus === "authenticated");
 
+                const handleClick = () => {
+                  if (isConnected) {
+                    router.push("/dashboard/deposits");
+                  } else {
+                    openConnectModal();
+                  }
+                };
+
                 return (
                   <div
                     className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${
                       !ready ? "opacity-50 pointer-events-none" : ""
                     }`}
-                    onClick={() => {
-                      handleConnectClick();
-                      openConnectModal();
-                    }}
+                    onClick={handleClick}
                   >
                     <Image
                       src="/Images/connect.png"
@@ -233,7 +223,7 @@ const Deposit: React.FC = () => {
                       {isConnected ? (
                         <div className="flex flex-col">
                           <button type="button" className="text-black">
-                            Connect Wallet
+                            Add Funds
                           </button>
                         </div>
                       ) : (
@@ -317,19 +307,20 @@ const Deposit: React.FC = () => {
                       (!authenticationStatus ||
                         authenticationStatus === "authenticated");
 
+                    const handleClick = () => {
+                      if (isConnected) {
+                        router.push("/deposit-withdrawal/deposits");
+                      } else {
+                        openConnectModal();
+                      }
+                    };
+
                     return (
                       <div
                         className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full text-black ${
-                          !ready
-                            ? "pointer-events-none bg-opacity-10"
-                            : isConnected
-                            ? "opacity-50"
-                            : ""
+                          !ready ? "pointer-events-none bg-opacity-10" : ""
                         }`}
-                        onClick={() => {
-                          handleConnectClick();
-                          openConnectModal();
-                        }}
+                        onClick={handleClick}
                       >
                         <div className="relative">
                           <Image
@@ -343,7 +334,7 @@ const Deposit: React.FC = () => {
                           {isConnected ? (
                             <div className="flex flex-col">
                               <button type="button" className="text-black">
-                                Connect Wallet
+                                Add Funds
                               </button>
                             </div>
                           ) : (
