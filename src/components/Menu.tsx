@@ -73,12 +73,12 @@ export default function Menu() {
 
   return (
     <div
-      className={`fixed top-0 right-0 w-full z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 md:w-[200px] ${
+      className={`fixed top-0 right-0 z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 ${
         sidebar ? "" : "translate-x-full"
-      }`}
+      } md:w-[200px] w-full`} // Full width on mobile, 200px on md and up
     >
-      <div className="mt-5 flex flex-row-reverse">
-        <ul className="flex flex-col w-[42%] md:w-[90%]">
+      <div className="mt-5">
+        <ul className="flex flex-col">
           {navbarItems.map((item, index) => (
             <Link
               key={index}
@@ -102,30 +102,29 @@ export default function Menu() {
               {item.name}
             </Link>
           ))}
+          {/* Single li with centered flex for icons */}
+          <li className="pl-8 py-3 relative md:py-2 md:text-[14px] text-[#323232] hover:bg-white hover:bg-opacity-[10%] hover:text-white flex justify-center gap-4">
+            <a
+              href="https://discord.gg/Febu4RRJ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#fff] hover:text-[#5865F2] transition-colors duration-200"
+            >
+              <FaDiscord className="text-2xl" />
+            </a>
+            <a
+              href="https://x.com/everyx_io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#fff] hover:text-[#1DA1F2] transition-colors duration-200"
+            >
+              <FaXTwitter className="text-2xl" />
+            </a>
+          </li>
         </ul>
       </div>
 
-      {/* Social Media Icons */}
-      <div className="flex justify-center gap-6 mt-10">
-          <a
-            href="https://discord.gg/Febu4RRJ"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#fff] hover:text-[#5865F2] transition-colors duration-200"
-          >
-            <FaDiscord className="text-2xl" />
-          </a>
-          <a
-            href="https://x.com/everyx_io"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#fff] hover:text-[#1DA1F2] transition-colors duration-200"
-          >
-            <FaXTwitter className="text-2xl" />
-          </a>
-        </div>
-
-      <div className="mt-10">
+      <div className="mt-10 px-8">
         {/* Login/Logout Button */}
         <button
           className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-2 mb-6"
@@ -140,7 +139,6 @@ export default function Menu() {
         >
           {isLoggedIn ? "Logout" : "Login / Signup"}
         </button>
-
       </div>
     </div>
   );
