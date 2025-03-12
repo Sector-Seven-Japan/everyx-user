@@ -7,6 +7,7 @@ import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 
 const Withdrawal: React.FC = () => {
   const { filter, setFilter } = useContext(AppContext);
@@ -96,8 +97,17 @@ const Withdrawal: React.FC = () => {
             <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
 
             {/* Deposit and Withdrawal Section */}
-            <div className="mt-10 flex items-center justify-center w-full px-5">
-              <button className="text-white text-[16px]">Withdrawal :</button>
+            <div className="flex justify-between items-center mt-5 w-full px-5">
+              <div>
+                <MdOutlineKeyboardArrowLeft
+                  className="text-[30px]"
+                  onClick={() => {
+                    router.back();
+                  }}
+                />
+              </div>
+              <p className="text-[16px] pr-[8vw]">Withdrawal:</p>
+              <div></div>
             </div>
 
             {/* Disabled Input Box */}

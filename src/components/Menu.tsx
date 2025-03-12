@@ -46,11 +46,12 @@ export default function Menu() {
       });
       console.log(response);
 
-      await signOut({ redirect: false });
+      await signOut({ redirect: false }); // Sign out without redirecting
 
       setAuthToken("");
       setWalletData([]);
 
+      // Clear all relevant cookies
       document.cookie =
         "next-auth.session-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       document.cookie =
@@ -62,9 +63,11 @@ export default function Menu() {
       document.cookie =
         "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
+      // Disconnect wallet
       disconnect();
-      localStorage.removeItem("authToken");
-      router.push("/trade");
+
+      localStorage.removeItem("authToken"); // Clear auth token from local storage
+      router.push("/trade"); // Redirect to login page after sign out
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
@@ -73,12 +76,12 @@ export default function Menu() {
 
   return (
     <div
-      className={`fixed top-0 right-0 z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 ${
+      className={`fixed top-0 right-0 w-full z-10 bg-[#0E0E0E] pt-16 h-[100vh] transition-all duration-300 md:w-[200px] ${
         sidebar ? "" : "translate-x-full"
-      } md:w-[200px] w-full`} // Full width on mobile, 200px on md and up
+      }`}
     >
-      <div className="mt-5">
-        <ul className="flex flex-col">
+      <div className="mt-5 flex flex-row-reverse">
+        <ul className="flex flex-col w-[42%] md:w-[90%]">
           {navbarItems.map((item, index) => (
             <Link
               key={index}
@@ -102,32 +105,32 @@ export default function Menu() {
               {item.name}
             </Link>
           ))}
-          {/* Single li with centered flex for icons */}
-          <li className="pl-8 py-3 relative md:py-2 md:text-[14px] text-[#323232] hover:bg-white hover:bg-opacity-[10%] hover:text-white flex justify-center gap-4">
-            <a
-              href="https://discord.gg/Febu4RRJ"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#fff] hover:text-[#5865F2] transition-colors duration-200"
-            >
-              <FaDiscord className="text-2xl" />
-            </a>
-            <a
-              href="https://x.com/everyx_io"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#fff] hover:text-[#1DA1F2] transition-colors duration-200"
-            >
-              <FaXTwitter className="text-2xl" />
-            </a>
-          </li>
         </ul>
       </div>
 
-      <div className="mt-10 px-8">
+      <div className="px-5 mt-36 mb-4 md:mb-0 md:mt-16 flex gap-10 justify-center">
+        <Link
+          href="https://discord.gg/Febu4RRJ"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#fff] hover:text-[#5865F2] transition-colors duration-200"
+        >
+          <FaDiscord className="text-[28px] md:text-[20px]" />
+        </Link>
+        <Link
+          href="https://x.com/everyx_io"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#fff] hover:text-[#1DA1F2] transition-colors duration-200"
+        >
+          <FaXTwitter className="text-[28px] md:text-[20px]" />
+        </Link>
+      </div>
+
+      <div className="p-5">
         {/* Login/Logout Button */}
         <button
-          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-2 mb-6"
+          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-2 md:rounded-md"
           onClick={() => {
             if (isLoggedIn) {
               handleLogoutUser();
