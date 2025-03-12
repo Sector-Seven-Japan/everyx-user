@@ -1,21 +1,7 @@
 import { AppContext } from "@/app/Context/AppContext";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import DrawGraph from "./DrawGraph";
 import Image from "next/image";
-
-// Define the GraphData type
-interface GraphData {
-  datetime: string;
-  event_id: string;
-  event_outcome_id: string;
-  probability: number;
-  timestamp: string;
-  value: number;
-  estimated_payout: number;
-  num_wagers: number;
-  sum_wagers: number;
-}
 
 // Define types for the properties
 interface TraderInfo {
@@ -46,55 +32,25 @@ interface Item {
 
 interface CategoryCardProps {
   item: Item;
-  showTime: boolean;
-  showChart: boolean;
-  showPrediction: boolean;
-  hide: boolean;
 }
 
-interface EventHistoryParams {
-  precision?: "hour" | "day" | "month";
-  from?: string;
-  to?: string;
-  eventId: string;
-}
-
-const fetchQueue: (() => Promise<void>)[] = [];
-let isFetching = false;
-
-const processQueue = async () => {
-  if (isFetching || fetchQueue.length === 0) return;
-  isFetching = true;
-  const fetchTask = fetchQueue.shift();
-  if (fetchTask) await fetchTask();
-  isFetching = false;
-  processQueue();
-};
-
-export default function CategoryCard({
-  item,
-  showChart,
-  showPrediction,
-  hide,
-}: CategoryCardProps) {
-  const [graphData, setGraphData] = useState<GraphData[]>([]);
-  const { API_BASE_URL, getCountdown } = useContext(AppContext);
-  const [isLoadingGraph, setIsLoadingGraph] = useState(true);
+export default function CategoryCard({ item }: CategoryCardProps) {
+  const { getCountdown } = useContext(AppContext);
   const router = useRouter();
-  const {
-    setIsLoading,
-    calculateMaxLeverage,
-    calculateMaxEstimatedPayout,
-    setSelectedOrder,
-    makeOrderWithoutAuth,
-    makeOrder,
-    authToken,
-    setIsOrderMade,
-    setSelectedOutcomeId,
-  } = useContext(AppContext);
+  const { setIsLoading, setSelectedOrder, makeOrderWithoutAuth, makeOrder, authToken, setIsOrderMade, setSelectedOutcomeId } = useContext(AppContext);
 
-  const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
   const [countdown, setCountdown] = useState("");
+
+  useEffect(() => {
+    if (item?.ends_at) {
+      setCountdown(getCountdown(item.ends_at));
+      const interval = setInterval(() => {
+        setCountdown(getCountdown(item.ends_at));
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [item?.ends_at, getCountdown]);
 
   const handleNavigation = async () => {
     try {
@@ -105,80 +61,23 @@ export default function CategoryCard({
     }
   };
 
-  useEffect(() => {
-    if (item?.ends_at) {
-      setCountdown(getCountdown(item.ends_at));
-      const interval = setInterval(() => {
-        setCountdown(getCountdown(item.ends_at));
-      }, 1000); // Update every minute
-
-      return () => clearInterval(interval);
+  // Function to truncate text if it's longer than the specified length
+  const truncateText = (text: string, maxLength: number): string => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
     }
-  }, [item?.ends_at, getCountdown]);
+    return text;
+  };
 
-  useEffect(() => {
-    const getGraphData = async ({
-      eventId,
-      precision = "hour",
-      from,
-      to,
-    }: EventHistoryParams) => {
-      try {
-        const params = new URLSearchParams();
-        if (precision) params.append("precision", precision);
-        if (from) params.append("from", from);
-        if (to) params.append("to", to);
-
-        const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
-
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error("Error getting graph data:", error);
-        throw error; // Re-throw the error to handle it in the calling code
-      }
-    };
-
-    const fetchData = async () => {
-      try {
-        const currentDate = new Date().toISOString();
-        const data = await getGraphData({
-          eventId: item?._id,
-          precision: "hour",
-          from: "2025-02-01T18:30:00.000Z",
-          to: currentDate,
-        });
-        setGraphData(data);
-      } catch (error) {
-        // Handle error appropriately
-        console.error("Failed to fetch graph data:", error);
-      } finally {
-        setIsLoadingGraph(false); // Stop loading
-      }
-    };
-
-    if (showChart) {
-      fetchQueue.push(fetchData);
-      processQueue();
-    }
-  }, [item?._id, API_BASE_URL, showChart]);
+  // Determine if we need to show a scrollbar
+  const showScrollbar = item?.outcomes.length > 4;
 
   return (
-    <div className="rounded-xl overflow-hidden cursor-pointer h-full relative flex flex-col justify-between">
-      <div>
-        {/* Card Header */}
-        <div
-          onClick={handleNavigation}
-          className="relative flex gap-3 items-center h-52 md:h-32 cursor-pointer"
-        >
+    <div className="cursor-pointer h-full relative flex flex-col justify-between border border-transparent rounded-lg">
+      <div className="flex gap-3">
+        <div onClick={handleNavigation} className="h-[70px] min-w-[70px] w-[70px] cursor-pointer flex-shrink-0">
           <img
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover rounded"
             src={item?.event_images_url[0]}
             alt={item?.name || "Event Image"}
           />
@@ -214,39 +113,48 @@ export default function CategoryCard({
             {item?.name}
           </p>
         </div>
-        <div
-          className={`flex gap-3 mt-5 leading-0 md:mb-0 mb-5 ${
-            hide && "hidden"
-          }`}
-        >
-          <div className={`w-1/2 px-4 py-3 bg-[#131313] rounded-md md:py-2`}>
-            <p className="text-[#2DC198] text-[24px] font-light md:text-[14px]">
-              {item?.outcomes?.length
-                ? `${calculateMaxLeverage(item.outcomes)}x`
-                : "N/A"}
+        <div className="flex-1 flex flex-col justify-between">
+          <div>
+            <p className="text-[#2DC198] flex gap-1 items-center font-light">
+              <div className="flex-shrink-0">
+                <Image
+                  src={"/Images/FreeClock i.png"}
+                  alt="clock"
+                  height={18}
+                  width={18}
+                />
+              </div>
+              <p className="text-[#2DC198] text-[12px] md:text-[14px] whitespace-nowrap">
+                {countdown}
+              </p>
             </p>
-            <p className="text-[13px] md:text-[0.5vw]">Maximum leverage:</p>
           </div>
-          <div className={`w-1/2 px-4 py-3 bg-[#131313] rounded-md md:py-2`}>
-            <p className="text-[#2DC198] text-[24px] font-light md:text-[14px]">
-              {calculateMaxEstimatedPayout(item?.outcomes).toFixed(0)}%
+          <div className="cursor-pointer" onClick={handleNavigation}>
+            <p className="font-light text-[13px] md:text-[15px] line-clamp-2 inter tracking-[0.9px] leading-5">
+              {item?.name}
             </p>
-            <p className="text-[13px] md:text-[0.5vw]">Maximum return:</p>
           </div>
         </div>
-        {
-          <div>
-            <div
-              className={`flex flex-col gap-5 mb-7 md:gap-1 md:mb-0 ${
-                !showChart && "hidden"
-              } `}
-            >
-              {isLoadingGraph ? (
-                <div className="flex justify-center items-center h-40">
-                  <p className="text-[#00FFBB] text-lg md:text-xs">
-                    Loading graph...
+      </div>
+
+      <div className={`mt-6 ${showScrollbar ? 'max-h-[180px] overflow-y-auto pr-1' : ''}`}>
+        <div className="flex flex-col gap-1">
+          {item?.outcomes.map((outcome: Outcome, index: number) => {
+            const formattedName = outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1);
+            const displayName = truncateText(formattedName, 20);
+            
+            return (
+              <div key={index} className="flex w-full items-center justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[12px] md:text-[14px] truncate">
+                    {String.fromCharCode(65 + index)}. {displayName}
                   </p>
                 </div>
+
+                <div className="flex items-center gap-6 flex-shrink-0">
+                  <div className="font-semibold text-[12px] md:text-[14px] whitespace-nowrap">
+                    {Math.round(outcome.trader_info.estimated_probability * 100)}%
+
               ) : (
                 <div className="flex justify-center items-center h-full ">
                   <DrawGraph data={graphData} />
@@ -317,16 +225,55 @@ export default function CategoryCard({
                       )}
                       %
                     </p>
-                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        }
+                  <button
+                    onClick={async () => {
+                      setSelectedOrder(
+                        String.fromCharCode(65 + index) +
+                          ". " +
+                          outcome.name.charAt(0).toUpperCase() +
+                          outcome.name.slice(1)
+                      );
+                      setIsLoading(true);
+                      if (authToken) {
+                        await makeOrder(
+                          outcome._id,
+                          item._id,
+                          false,
+                          1,
+                          0,
+                          10,
+                          10
+                        );
+                      } else {
+                        await makeOrderWithoutAuth(
+                          outcome._id,
+                          item._id,
+                          false,
+                          1,
+                          0,
+                          10,
+                          10
+                        );
+                      }
+                      setIsOrderMade(true);
+                      setSelectedOutcomeId(outcome._id);
+                      router.push(`/events/${item._id}?selected=true`)
+                    }}
+                    className="cursor-pointer bg-[#2C4B51] text-[#00FFB8] text-[11px] md:text-[14px] px-6 py-1 rounded-md whitespace-nowrap"
+                  >
+                    Buy
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
+
       <button
         onClick={handleNavigation}
-        className="text-[#2DC198] text-sm border border-[#2DC198] w-full rounded-md mb-2 py-[10px] md:py-[.5vw] md:font-light md:text-[0.68vw] mt-5"
+        className="text-[#00ffbb] text-sm border border-[#00ffbb] w-full rounded-md py-2 md:py-3 md:text-[14px] mt-5"
       >
         View More
       </button>

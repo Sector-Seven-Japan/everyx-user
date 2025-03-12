@@ -7,7 +7,6 @@ import HeadingSlider from "@/components/HeadingSlider";
 import ImageSlider from "@/components/ImageSlider";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
-import TopCategories from "@/components/TopCategoies";
 import CategoryCard from "@/components/CategoryCard";
 import Category from "@/components/Category";
 import LoadingPage from "@/components/LoadingPage";
@@ -98,7 +97,7 @@ export default function Home() {
         <ImageSlider />
         <SearchBar search={search} setSearch={setSearch} />
 
-        {!search && <TopCategories />}
+        {/* {!search && <TopCategories />} */}
 
         {!search &&
           categories.map((item, index) => {
@@ -114,16 +113,12 @@ export default function Home() {
               Searching...
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:mt-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-8 md:mt-10">
               {searchData.length > 0 ? (
                 searchData.map((item) => (
                   <CategoryCard
                     key={item._id}
                     item={item}
-                    showChart={false}
-                    showPrediction={false}
-                    showTime={true}
-                    hide={false}
                   />
                 ))
               ) : search.trim() ? (
