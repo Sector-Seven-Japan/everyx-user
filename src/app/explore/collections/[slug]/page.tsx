@@ -142,16 +142,12 @@ export default function EventCategoryPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-8 ">
             {events.length !== 0 ? (
               events.map((item) => (
                 <div className="" key={item._id}>
                   <CategoryCard
                     item={item}
-                    showTime={filterC === "Time"}
-                    showChart={filterC === "Chart"}
-                    showPrediction={filterC === "Prediction view"}
-                    hide={false}
                   />
                 </div>
               ))
