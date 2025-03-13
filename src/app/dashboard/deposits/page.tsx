@@ -122,16 +122,16 @@ const Deposit: React.FC = () => {
 
             <div className="pt-10 pb-10 w-full px-10">
               <p className="mb-2">Select Network:</p>
-              <select
-                name="network"
-                id="network"
-                value={selectedNetwork}
-                onChange={handleNetworkChange}
-                className="bg-transparent border border-[#ffffff33] p-2 rounded-md outline-none w-full"
-              >
-                <option value="Polygon">Polygon Amoy Testnet</option>
-                <option value="BSC">BSC Testnet</option>
-              </select>
+            <select
+  name="network"
+  id="network"
+  value={selectedNetwork}
+  onChange={handleNetworkChange}
+  className="bg-[#1A1A1A] text-white border border-[#707070] p-2 rounded-md outline-none w-full appearance-none"
+>
+  <option className="bg-[#1A1A1A] text-white" value="Polygon">Polygon Amoy Testnet</option>
+  <option className="bg-[#1A1A1A] text-white" value="BSC">BSC Testnet</option>
+</select>
             </div>
 
             <div className="mt-5 flex items-center bg-transparent justify-center px-10">
@@ -170,16 +170,16 @@ const Deposit: React.FC = () => {
 
               <div className="pt-10 pb-10">
                 <p className="mb-2">Select Network:</p>
-                <select
-                  name="network"
-                  id="network"
-                  value={selectedNetwork}
-                  onChange={handleNetworkChange}
-                  className="bg-transparent border border-[#ffffff33] p-2 pr-5 rounded-md outline-none w-[24vw]"
-                >
-                  <option value="Polygon">Polygon Amoy Testnet</option>
-                  <option value="BSC">BSC Testnet</option>
-                </select>
+              <select
+  name="network"
+  id="network"
+  value={selectedNetwork}
+  onChange={handleNetworkChange}
+  className="bg-[#1A1A1A] text-white border border-[#707070] p-2 pr-5 rounded-md outline-none w-[24vw] appearance-none"
+>
+  <option className="bg-[#1A1A1A] text-white" value="Polygon">Polygon Amoy Testnet</option>
+  <option className="bg-[#1A1A1A] text-white" value="BSC">BSC Testnet</option>
+</select>
               </div>
 
               <div className="mt-10 flex items-center bg-transparent justify-center px-10 ">
