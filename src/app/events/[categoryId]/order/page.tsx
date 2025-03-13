@@ -623,7 +623,7 @@ export default function Order() {
                           </p>
                         </div>
                       ) : (
-                        <div className="flex justify-center items-center w-full sm:h-full lg:h-[15vw] ">
+                        <div className="flex justify-center items-center w-full h-full ">
                           <DrawGraph
                             data={
                               filterGraph === "1h" ? minuteGraphData : graphData
