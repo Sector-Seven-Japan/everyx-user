@@ -133,7 +133,7 @@ const MobileLanding = () => {
           <DragSlider text="The journey begins." />
         </div>
         {/* vertical line */}
-        <div className="flex justify-center my-[5vw]">
+        <div className="flex justify-center my-[8vw]">
           <svg
             width="2"
             height="70"
@@ -164,23 +164,27 @@ const MobileLanding = () => {
         </div>
         {/* vertical line */}
 
-        <div className="px-[4vw] sm:px-[10vw] mt-[2vw] justify-center flex items-center">
-          <Image
-            src="/Images/LpImage2.png"
-            alt="Landing Page Image 2"
-            width={200}
-            height={200}
-          />
-        </div>
-        <div className="px-[8vw]">
-          <p className="text-[5vw]  text-[#CACACA] text-center font-light Zenfont">
-            Predict real-world outcomes and
+        <div>
+          <p className="text-[11vw]  text-[#cacaca] text-center font-light Zenfont leading-none">
+            with leverage.
           </p>
-          <p className="text-[5vw]  text-[#CACACA] text-center font-light Zenfont mt-2">
-            profit when you’re right.
-          </p>
+          <div className="mt-10 mb-7 flex justify-center items-center gap-3">
+            <Image
+              src="/Images/tooltip.png"
+              alt="tooltip"
+              width={10}
+              height={10}
+              style={{
+                width: "5vw",
+                height: "5vw",
+              }}
+            />
+            <p className="text-[4vw]  text-[#cacaca] text-opacity-80 text-center font-thin Zenfont leading-none  ">
+              Limitations and risks apply
+            </p>
+          </div>
         </div>
-        <div className="pt-[10vw]  flex justify-center items-center gap-[2vw] flex-wrap px-[8vw]">
+        <div className="pt-[8vw]  flex justify-center items-center gap-[2vw] flex-wrap px-[8vw]">
           {["Sports", "Crypto", "Politics", "Weather"].map((cat) => (
             <span
               key={cat}
@@ -195,7 +199,7 @@ const MobileLanding = () => {
             </span>
           ))}
         </div>
-        <div className="pt-[2vw] flex justify-center items-center gap-[2vw] flex-wrap px-[8vw]">
+        <div className="pt-[3vw] flex justify-center items-center gap-[2vw] flex-wrap px-[8vw]">
           {["Science", "Culture", "Tech"].map((cat) => (
             <span
               key={cat}
@@ -210,7 +214,7 @@ const MobileLanding = () => {
             </span>
           ))}
         </div>
-        <div className="mt-[1vw] relative h-[150vw] ml-[3vw] w-full">
+        <div className="mt-[5vw] relative h-[150vw] ml-[3vw] w-full">
           <Image
             src="/Images/LpImage3(gif).gif"
             alt="Landing Page Image 3"
