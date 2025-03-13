@@ -177,7 +177,7 @@ export default function OrderSuccess() {
                       </p>
                     </div>
                   ) : (
-                    <DrawGraph data={graphData} />
+                    <DrawGraph data={graphData} graphFilter={"6h"} />
                   )}
                 </div>
                 <CategoryRule />

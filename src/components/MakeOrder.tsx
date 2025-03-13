@@ -34,6 +34,9 @@ export default function MakeOrder() {
   const eventId = orderDetails?.event_id;
   const outcomeId = orderDetails?.event_outcome_id;
 
+  // State for tooltip visibility
+  const [showTooltip, setShowTooltip] = useState(false);
+
   // Update modal position when isOrderMade changes
   useEffect(() => {
     if (isOrderMade) {
@@ -331,7 +334,33 @@ export default function MakeOrder() {
 
         {pathname.startsWith("/events") && (
           <div className="mb-10">
-            <h1 className="text-[23px] mb-5">Leverage</h1>
+            <div className="flex items-center mb-5">
+              <h1 className="text-[23px]">Leverage</h1>
+              {/* Info Icon with Tooltip */}
+              <div
+                className="relative ml-2"
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+              >
+                <span className="text-[16px] text-gray-400 cursor-pointer">
+                  ⓘ
+                </span>
+                {showTooltip && (
+                  <div className="absolute left-0 top-6 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                    <p>
+                      The value of your trade in this outcome after utilizing
+                      leverage.
+                    </p>
+                    <p className="mt-1">
+                      For more information see our{" "}
+                      <span className="text-[#00FFB8] cursor-pointer">
+                        Help Desk
+                      </span>.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
             <div className="border-[#454545] flex rounded-md border-[0.4px] gap-2 p-2 justify-between">
               <div className="flex items-center px-2">
                 <span className="text-[19px]">x</span>

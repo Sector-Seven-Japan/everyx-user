@@ -280,7 +280,11 @@ export default function WagerPage() {
   // Memoize the DrawGraph component for the "Charts" tab
   const chartGraph = useMemo(() => {
     return wagerData ? (
-      <DrawGraph data={graphData} outcomeIds={[wagerData.event_outcome_id]} />
+      <DrawGraph
+        data={graphData}
+        outcomeIds={[wagerData.event_outcome_id]}
+        graphFilter={"6h"}
+      />
     ) : null;
   }, [graphData, wagerData?.event_outcome_id]);
 
@@ -307,7 +311,7 @@ export default function WagerPage() {
                       </p>
                     </div>
                   ) : (
-                    <DrawGraph data={graphData} />
+                    <DrawGraph data={graphData} graphFilter={"6h"} />
                   )}
                 </div>
                 <CategoryRule />
