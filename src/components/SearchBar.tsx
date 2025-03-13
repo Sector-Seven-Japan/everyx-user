@@ -1,6 +1,8 @@
 import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
 import { useEffect, useState, useRef, useContext } from "react";
+import LiveIcon from "./LiveIcon";
+
 
 interface searchProps {
   search: string;
@@ -60,11 +62,12 @@ export default function SearchBar({
     <div className="flex md:items-center mt-5 md:mt-10 gap-2 flex-col md:flex-row items-start px-5 md:px-0">
       <div className="flex items-center gap-5 md:w-[60%] w-full">
         <div className="flex items-center gap-4">
-          <div
+          {/* <div
             className={`h-3 w-3 bg-[#ff4400] rounded-full ${
               isShadowBlinking ? "shadow-[0_0_15px_5px_#ff4400]" : ""
             }`}
-          ></div>
+          ></div> */}
+          <LiveIcon size="md" color="#ff4400" />
           <p className="text-[#FF4400] font-bold md:text-[1.1vw] md:tracking-[3px]">
             LIVE
           </p>

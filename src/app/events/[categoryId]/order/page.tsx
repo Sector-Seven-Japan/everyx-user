@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
@@ -57,7 +57,7 @@ interface GraphData {
 }
 
 interface EventHistoryParams {
-  precision?: "hour" | "day" | "month";
+  precision?: "hour" | "minute"; // Only hour and minute precision
   from?: string;
   to?: string;
   eventId: string;
@@ -80,17 +80,18 @@ export default function Order() {
   const categoryId = orderDetails?.event_id;
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
+  const [minuteGraphData, setMinuteGraphData] = useState<GraphData[]>([]);
   const [option, setOption] = useState<string>("Order details");
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [countdown, setCountdown] = useState<string>("");
   const [isBalance, setIsBalance] = useState<boolean>(true);
+  const [filterGraph, setFilterGraph] = useState("ALL");
 
   const outcomeIds = useMemo(
     () => [orderDetails?.event_outcome_id],
     [orderDetails?.event_outcome_id]
   );
 
-  // Redirect on refresh if categoryId is missing
   useEffect(() => {
     if (!categoryId) {
       console.log(
@@ -101,9 +102,9 @@ export default function Order() {
       );
       const storedEventId = storedOrderDetails?.event_id;
       if (storedEventId) {
-        router.push(`/events/${storedEventId}`); // Redirect to specific event page
+        router.push(`/events/${storedEventId}`);
       } else {
-        router.push("/trade"); // Fallback to events list
+        router.push("/trade");
       }
     }
   }, [categoryId, router]);
@@ -114,14 +115,14 @@ export default function Order() {
     }
     setIsLoading(false);
     fetchEvent();
-  }, [walletData, orderDetails, setIsLoading, categoryId]); // Added categoryId as dependency
+  }, [walletData, orderDetails, setIsLoading, categoryId]);
 
   useEffect(() => {
     if (eventData?.ends_at) {
       setCountdown(getCountdown(eventData.ends_at));
       const interval = setInterval(() => {
         setCountdown(getCountdown(eventData.ends_at));
-      }, 60000); // Update every minute
+      }, 60000);
       return () => clearInterval(interval);
     }
   }, [eventData?.ends_at, getCountdown]);
@@ -141,13 +142,8 @@ export default function Order() {
     }
   };
 
-  useEffect(() => {
-    const getGraphData = async ({
-      eventId,
-      precision = "hour",
-      from,
-      to,
-    }: EventHistoryParams) => {
+  const getGraphData = useCallback(
+    async ({ eventId, precision = "hour", from, to }: EventHistoryParams) => {
       try {
         const params = new URLSearchParams();
         if (precision) params.append("precision", precision);
@@ -167,30 +163,67 @@ export default function Order() {
         console.error("Error getting graph data:", error);
         throw error;
       }
-    };
+    },
+    [API_BASE_URL]
+  );
 
-    setIsLoadingGraph(true);
-    const fetchData = async () => {
+  // Fetch hourly data only initially
+  useEffect(() => {
+    if (!eventData?._id) return;
+
+    const fetchHourlyGraphData = async () => {
       try {
-        if (eventData) {
-          const currentDate = new Date().toISOString();
-          const data = await getGraphData({
-            eventId: eventData?._id,
-            precision: "hour",
-            from: "2025-02-01T18:30:00.000Z",
-            to: currentDate,
-          });
-          setGraphData(data);
-        }
+        setIsLoadingGraph(true);
+        const currentDate = new Date().toISOString();
+
+        // Fetch hourly data only
+        const hourlyData = await getGraphData({
+          eventId: eventData._id,
+          precision: "hour",
+          from: "2025-02-01T18:30:00.000Z",
+          to: currentDate,
+        });
+        setGraphData(hourlyData);
       } catch (error) {
-        console.error("Failed to fetch graph data:", error);
+        console.error("Failed to fetch hourly graph data:", error);
+        setGraphData([]);
       } finally {
         setIsLoadingGraph(false);
       }
     };
 
-    fetchData();
-  }, [eventData?._id, API_BASE_URL]);
+    fetchHourlyGraphData();
+  }, [eventData?._id, getGraphData]);
+
+  // Function to fetch minute data when 1h is selected
+  const fetchMinuteGraphData = useCallback(async () => {
+    if (!eventData?._id || minuteGraphData.length > 0) return; // Don't refetch if already loaded
+
+    try {
+      setIsLoadingGraph(true);
+      const currentDate = new Date().toISOString();
+      const minuteData = await getGraphData({
+        eventId: eventData._id,
+        precision: "minute",
+        from: new Date(Date.now() - 60 * 60 * 1000).toISOString(), // Last hour
+        to: currentDate,
+      });
+      setMinuteGraphData(minuteData);
+    } catch (error) {
+      console.error("Failed to fetch minute graph data:", error);
+      setMinuteGraphData([]);
+    } finally {
+      setIsLoadingGraph(false);
+    }
+  }, [eventData?._id, getGraphData]);
+
+  // Handle filter change
+  const handleFilterChange = (newFilter: string) => {
+    setFilterGraph(newFilter);
+    if (newFilter === "1h") {
+      fetchMinuteGraphData();
+    }
+  };
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -229,15 +262,15 @@ export default function Order() {
       }
       if (response.ok) {
         await fetchWalletData();
-        localStorage.removeItem("orderDetails"); // Clear after successful submission
+        localStorage.removeItem("orderDetails");
         await router.push(`/events/${orderDetails?.event_id}/order/success`);
       }
     } catch (error) {
       console.error("Navigation error:", error);
       if (categoryId) {
-        router.push(`/events/${categoryId}`); // Redirect to specific event page on error
+        router.push(`/events/${categoryId}`);
       } else {
-        router.push("/events"); // Fallback to events list
+        router.push("/events");
       }
     } finally {
       setIsLoading(false);
@@ -260,6 +293,68 @@ export default function Order() {
                   <h1 className="text-[23px] mb-8 mt-5 xl:text-[1.4vw] font-semibold">
                     Live Chart
                   </h1>
+                  <div className="flex justify-end gap-5 items-center mb-4">
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1h"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("1h")}
+                    >
+                      1h
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "6h"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("6h")}
+                    >
+                      6h
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1d"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("1d")}
+                    >
+                      1d
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1w"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("1w")}
+                    >
+                      1w
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1m"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("1m")}
+                    >
+                      1m
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "ALL"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("ALL")}
+                    >
+                      ALL
+                    </div>
+                  </div>
                   {isLoadingGraph ? (
                     <div className="flex justify-center items-center h-40">
                       <p className="text-[#00FFBB] text-lg md:text-xs">
@@ -267,13 +362,15 @@ export default function Order() {
                       </p>
                     </div>
                   ) : (
-                <div className="flex justify-center items-center w-full sm:h-full lg:h-[15vw] "> 
-                  <DrawGraph
-                      data={graphData}
-                      outcomeIds={outcomeIds}
-                      graphFilter={"6h"}
-                    />
-                </div>
+                    <div className="flex justify-center items-center w-full sm:h-full lg:h-[15vw] ">
+                      <DrawGraph
+                        data={
+                          filterGraph === "1h" ? minuteGraphData : graphData
+                        }
+                        outcomeIds={outcomeIds}
+                        graphFilter={filterGraph}
+                      />
+                    </div>
                   )}
                 </div>
                 <CategoryGraph eventData={eventData} />
@@ -320,7 +417,6 @@ export default function Order() {
                 </div>
               </div>
 
-              {/* Tabs */}
               <div className="flex border-b border-[#363636] pb-[6px] px-5 gap-8 mt-3 md:mt-0">
                 <h1
                   className={`text-[17px] relative cursor-pointer md:text-[0.8vw] ${
@@ -348,21 +444,9 @@ export default function Order() {
                 </h1>
               </div>
 
-              {/* Conditional Rendering for Order Details */}
               {option === "Order details" ? (
                 <div className="p-5">
                   <div className="flex md:flex-col justify-between mt-5 md:mt-2 md:gap-3">
-                    {/* <div>
-                      <div className="text-[#5D5D5D] text-[17px] md:text-[0.75vw] mb-1 md:mb-0">
-                        Potential payout
-                      </div>
-                      <div className="flex justify-between text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                        ${Math.round(orderDetails?.indicative_payout || 0)}
-                        <span className="text-[14px] text-[#E49C29] flex items-end md:text-[0.85vw]">
-                          +{(orderDetails?.indicative_return || 0).toFixed(0)}%
-                        </span>
-                      </div>
-                    </div> */}
                     <div>
                       <div className="text-[#5D5D5D] text-[17px] md:text-[0.75vw] mb-1 md:mb-0">
                         Your Traded Probability
@@ -390,7 +474,6 @@ export default function Order() {
                     />
                   </div>
 
-                  {/* Order Data */}
                   <div className="mb-6">
                     <div className="flex flex-col gap-2">
                       <div className="text-[19px] font-light md:text-[0.7vw]">
@@ -426,7 +509,6 @@ export default function Order() {
                     </div>
                   </div>
 
-                  {/* Financial Information */}
                   <div className="flex flex-col gap-4">
                     <div className="flex justify-between">
                       <div className="flex flex-col gap-[1px]">
@@ -499,10 +581,8 @@ export default function Order() {
                   </div>
                 </div>
               ) : (
-                // Chart Section
                 <div className="p-5">
                   <div className="mt-5">
-                    {/* Order Data */}
                     <div className="mb-6">
                       <div className="flex flex-col gap-2 mb-5">
                         <div className="text-[19px] font-light md:text-[0.7vw]">
@@ -535,11 +615,24 @@ export default function Order() {
                           </div>
                         </div>
                       </div>
-                      <DrawGraph
-                        data={graphData}
-                        outcomeIds={outcomeIds}
-                        graphFilter={"6h"}
-                      />
+
+                      {isLoadingGraph ? (
+                        <div className="flex justify-center items-center h-40">
+                          <p className="text-[#00FFBB] text-lg md:text-xs">
+                            Loading graph...
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex justify-center items-center w-full h-full ">
+                          <DrawGraph
+                            data={
+                              filterGraph === "1h" ? minuteGraphData : graphData
+                            }
+                            outcomeIds={outcomeIds}
+                            graphFilter={filterGraph}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
