@@ -128,7 +128,7 @@ const Deposit: React.FC = () => {
             </div>
 
             <div className="pt-10 pb-10 w-full px-10">
-              <p className="mb-2 text-[#00FFB8] font-medium">Select Network:</p>
+              <p className="mb-2 text-white font-medium">Select Network:</p>
               <div className="relative">
                 <button
                   onClick={() => setIsOpen(!isOpen)}
@@ -209,7 +209,7 @@ const Deposit: React.FC = () => {
               </div>
 
               <div className="pt-10 pb-10">
-                <p className="mb-2 text-[#00FFB8] font-medium">
+                <p className="mb-2 text-white font-medium">
                   Select Network:
                 </p>
                 <div className="relative w-[24vw]">
