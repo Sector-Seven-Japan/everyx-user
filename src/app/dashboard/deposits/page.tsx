@@ -6,10 +6,13 @@ import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
 import CurrentCashBalanceCardWebview from "@/components/CurrentCashBalanceWebview";
 import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
+import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 
 const Deposit: React.FC = () => {
   const { isMobile, filter, setFilter } = useContext(AppContext);
+  const router = useRouter();
   const { writeContract, contractData, amount, setAmount } =
     useContext(DepositContext);
 
@@ -70,8 +73,19 @@ const Deposit: React.FC = () => {
           <div className="bg-[#262626] bg-opacity-[31%] flex-1 flex flex-col items-center rounded-t-3xl mt-10 py-2">
             <div className="w-16 h-[3px] bg-[#707070] rounded-xl"></div>
 
-            <div className="mt-10 flex items-center justify-center w-full px-5">
-              <button className="text-white text-[16px]">Deposit</button>
+            <div className="mt-10 flex items-center justify-between w-full px-5">
+              <div>
+                <MdOutlineKeyboardArrowLeft
+                  className="text-[30px]"
+                  onClick={() => {
+                    router.back();
+                  }}
+                />
+              </div>
+              <button className="text-white text-[16px] ml-[-9%]">
+                Deposit
+              </button>
+              <div></div>
             </div>
 
             <div className="mt-10 flex items-center bg-transparent justify-center px-10">
