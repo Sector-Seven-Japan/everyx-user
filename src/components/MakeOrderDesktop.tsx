@@ -25,6 +25,9 @@ export default function MakeOrder() {
   const eventId = orderDetails?.event_id;
   const outcomeId = orderDetails?.event_outcome_id;
 
+  // State for tooltip visibility
+  const [showTooltip, setShowTooltip] = useState(false);
+
   useEffect(() => {
     if (tradeVal !== undefined) {
       setValue(tradeVal);
@@ -237,7 +240,33 @@ export default function MakeOrder() {
 
       {pathname.startsWith("/events") && (
         <div className="mb-[2vw]">
-          <h1 className="text-[0.7vw] mb-2">Leverage</h1>
+          <div className="flex items-center mb-2">
+            <h1 className="text-[0.7vw]">Leverage</h1>
+            {/* Info Icon with Tooltip */}
+            <div
+              className="relative ml-2"
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+            >
+              <span className="text-[12px] text-gray-400 cursor-pointer">
+                ⓘ
+              </span>
+              {showTooltip && (
+                <div className="absolute left-0 top-5 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                  <p>
+                    The value of your trade in this outcome after utilizing
+                    leverage.
+                  </p>
+                  <p className="mt-1">
+                    For more information see our{" "}
+                    <span className="text-[#00FFB8] cursor-pointer">
+                      Help Desk
+                    </span>.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
           <div className="border-[#aeaeae68] flex rounded-md border-[0.4px] gap-2 p-2">
             <div className="w-[60%] text-[13px] px-2 flex items-center">
               x
@@ -317,7 +346,7 @@ export default function MakeOrder() {
                   Cash used
                 </p>
                 <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                ${Math.round(orderDetails?.pledge)}
+                  ${Math.round(orderDetails?.pledge)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
@@ -325,7 +354,7 @@ export default function MakeOrder() {
                   Leverage cash value
                 </p>
                 <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                ${Math.round(orderDetails?.wager)}{" "}
+                  ${Math.round(orderDetails?.wager)}{" "}
                   <span className="text-[12px] text-[#E49C29] md:text-[0.85vw]">
                     x {orderDetails?.leverage}
                   </span>
@@ -339,7 +368,7 @@ export default function MakeOrder() {
                   Projected payout
                 </p>
                 <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                ${Math.round(orderDetails?.indicative_payout)}
+                  ${Math.round(orderDetails?.indicative_payout)}
                 </p>
               </div>
               <div className="flex flex-col gap-[1px] items-end">
@@ -347,7 +376,7 @@ export default function MakeOrder() {
                   Your return
                 </p>
                 <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                +{orderDetails?.indicative_return?.toFixed(0)} %
+                  +{orderDetails?.indicative_return?.toFixed(0)} %
                 </p>
               </div>
             </div>

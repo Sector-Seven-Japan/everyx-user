@@ -13,6 +13,11 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const currentPath = usePathname();
 
+  // State for tooltip visibility (toggled on hover)
+  const [showCurrentTooltip, setShowCurrentTooltip] = useState(false);
+  const [showBestCaseTooltip, setShowBestCaseTooltip] = useState(false);
+  const [showWinningsTooltip, setShowWinningsTooltip] = useState(false);
+
   const handleSettingsClick = () => {
     if (currentPath !== "/profile") {
       setIsLoading(true);
@@ -68,9 +73,44 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
               onClick={handleSettingsClick}
             />
           </div>
-          <p className="text-[0.8vw] text-center mt-7 font-normal gothic">
-            Current Cash Balance
-          </p>
+          <div className="flex items-center justify-center mt-7">
+            <p className="text-[0.8vw] text-center font-normal gothic">
+              Current Cash Balance
+            </p>
+            {/* Info Icon with Tooltip (hover to show) */}
+            <div
+              className="relative ml-1"
+              onMouseEnter={() => setShowCurrentTooltip(true)}
+              onMouseLeave={() => setShowCurrentTooltip(false)}
+            >
+              <svg
+                width="0.5vw"
+                height="0.6vw"
+                viewBox="0 0 14 13"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g opacity="0.24">
+                  <path
+                    d="M7.00235 12.1887C10.2332 12.1887 12.8523 9.71552 12.8523 6.66467C12.8523 3.61383 10.2332 1.14062 7.00235 1.14062C3.77148 1.14062 1.15234 3.61383 1.15234 6.66467C1.15234 9.71552 3.77148 12.1887 7.00235 12.1887Z"
+                    stroke="white"
+                  />
+                  <path
+                    d="M6.61985 9.29102V5.98502H7.30985V9.29102H6.61985ZM6.96785 5.37302C6.83585 5.37302 6.72985 5.33502 6.64985 5.25902C6.57385 5.18302 6.53585 5.08102 6.53585 4.95302C6.53585 4.83302 6.57385 4.73502 6.64985 4.65902C6.72985 4.58302 6.83585 4.54502 6.96785 4.54502C7.09185 4.54502 7.19385 4.58302 7.27385 4.65902C7.35385 4.73502 7.39385 4.83302 7.39385 4.95302C7.39385 5.08102 7.35385 5.18302 7.27385 5.25902C7.19385 5.33502 7.09185 5.37302 6.96785 5.37302Z"
+                    fill="white"
+                  />
+                </g>
+              </svg>
+              {showCurrentTooltip && (
+                <div className="absolute -left-2 top-4 w-[12vw] p-[0.5vw] bg-[#2b2b2b] text-white text-[0.6vw] rounded-lg shadow-lg z-20">
+                  <p>
+                    The cash available at this moment for trading. Pending deposits
+                    or withdrawals are not included.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
           <div className="flex justify-center mt-4 items-baseline font-bold">
             <span className="text-[2.3vw]">${balance.whole}</span>
             <span className="text-[1.5vw]">.{balance.decimal}</span>
@@ -151,8 +191,12 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
               {/* Best Case Cash Balance */}
               <div className="flex justify-between items-center">
                 <span className="text-[0.5vw] flex items-end font-thin gap-1">
-                  Best case cash balance{" "}
-                  <span>
+                  Best case cash balance
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setShowBestCaseTooltip(true)}
+                    onMouseLeave={() => setShowBestCaseTooltip(false)}
+                  >
                     <svg
                       width="0.5vw"
                       height="0.6vw"
@@ -171,7 +215,15 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                         />
                       </g>
                     </svg>
-                  </span>
+                    {showBestCaseTooltip && (
+                      <div className="absolute -left-2 top-4 w-[12vw] p-[0.5vw] bg-[#2b2b2b] text-white text-[0.6vw] rounded-lg shadow-lg z-20">
+                        <p>
+                          The best possible cash balance based on current market
+                          conditions and your trades.
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </span>
                 <span className="font-bold">
                   <span className="text-[0.8vw]">${bestCase.whole}</span>
@@ -182,7 +234,11 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
               <div className="flex justify-between items-center mb-2">
                 <span className="text-[0.5vw] font-thin flex gap-1">
                   Cumulative winnings
-                  <span>
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setShowWinningsTooltip(true)}
+                    onMouseLeave={() => setShowWinningsTooltip(false)}
+                  >
                     <svg
                       width="0.5vw"
                       height="0.6vw"
@@ -201,7 +257,14 @@ const CurrentCashBalanceCardWebview: React.FC = () => {
                         />
                       </g>
                     </svg>
-                  </span>
+                    {showWinningsTooltip && (
+                      <div className="absolute -left-2 top-4 w-[12vw] p-[0.5vw] bg-[#2b2b2b] text-white text-[0.6vw] rounded-lg shadow-lg z-20">
+                        <p>
+                          The total winnings accumulated from your trades to date.
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </span>
                 <span className="font-bold">
                   <span className="text-[0.8vw]">${winnings.whole}</span>

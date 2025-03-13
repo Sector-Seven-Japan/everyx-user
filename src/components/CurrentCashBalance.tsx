@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import settingIcon from "../../public/Icons/settingIcon.png";
 import { useRouter, usePathname } from "next/navigation";
 import { AppContext } from "@/app/Context/AppContext";
@@ -9,6 +9,11 @@ const CurrentCashBalanceCard: React.FC = () => {
   const router = useRouter();
   const { userStats, userProfile, walletData } = useContext(AppContext);
   const pathname = usePathname();
+
+  // State for tooltip visibility (toggled on click)
+  const [showCurrentTooltip, setShowCurrentTooltip] = useState(false);
+  const [showBestCaseTooltip, setShowBestCaseTooltip] = useState(false);
+  const [showWinningsTooltip, setShowWinningsTooltip] = useState(false);
 
   const handleSettingsClick = () => {
     router.push("/profile");
@@ -60,7 +65,24 @@ const CurrentCashBalanceCard: React.FC = () => {
           onClick={handleSettingsClick}
         />
       </div>
-      <p className="text-[15px] text-center mt-5">Current Cash Balance</p>
+      <div className="flex items-center justify-center mt-5">
+        <p className="text-[15px] text-center">Current Cash Balance</p>
+        {/* Info Icon with Tooltip (click to toggle) */}
+        <div
+          className="relative ml-2"
+          onClick={() => setShowCurrentTooltip((prev) => !prev)} // Toggle on click
+        >
+          <span className="text-[14px] text-gray-400 cursor-pointer">ⓘ</span>
+          {showCurrentTooltip && (
+            <div className="absolute -left-2 top-6 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+              <p>
+                The cash available at this moment for trading. Pending deposits
+                or withdrawals are not included.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
       <div className="flex justify-center mt-5 items-baseline font-bold">
         <span className="text-[34px]">${balance.whole}</span>
         <span className="text-[30px]">.{balance.decimal}</span>
@@ -144,7 +166,25 @@ const CurrentCashBalanceCard: React.FC = () => {
           <div className="my-5 space-y-4">
             {/* Best Case Cash Balance */}
             <div className="flex justify-between items-end">
-              <span>Best case cash balance</span>
+              <div className="flex items-center">
+                <span>Best case cash balance</span>
+                <div
+                  className="relative ml-2"
+                  onClick={() => setShowBestCaseTooltip((prev) => !prev)} // Toggle on click
+                >
+                  <span className="text-[14px] text-gray-400 cursor-pointer">
+                  ⓘ
+                  </span>
+                  {showBestCaseTooltip && (
+                    <div className="absolute -left-2 top-6 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                      <p>
+                        The best possible cash balance based on current market
+                        conditions and your trades.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
               <span className="font-bold">
                 <span className="text-[22px]">${bestCase.whole}</span>
                 <span className="text-[14px]">.{bestCase.decimal}</span>
@@ -153,7 +193,24 @@ const CurrentCashBalanceCard: React.FC = () => {
 
             {/* Cumulative Winnings */}
             <div className="flex justify-between items-end">
-              <span>Cumulative winnings</span>
+              <div className="flex items-center">
+                <span>Cumulative winnings</span>
+                <div
+                  className="relative ml-2"
+                  onClick={() => setShowWinningsTooltip((prev) => !prev)} // Toggle on click
+                >
+                  <span className="text-[14px] text-gray-400 cursor-pointer">
+                  ⓘ
+                  </span>
+                  {showWinningsTooltip && (
+                    <div className="absolute -left-2 top-6 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                      <p>
+                        The total winnings accumulated from your trades to date.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
               <span className="font-bold">
                 <span className="text-[22px]">${winnings.whole}</span>
                 <span className="text-[14px]">.{winnings.decimal}</span>
