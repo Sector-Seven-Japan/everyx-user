@@ -9,7 +9,7 @@ import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 
 interface EventData {
   _id: string;
@@ -44,7 +44,7 @@ interface GraphData {
 }
 
 interface EventHistoryParams {
-  precision?: "hour" | "day" | "month";
+  precision?: "hour" | "minute"; // Updated to only include "hour" and "minute"
   from?: string;
   to?: string;
   eventId: string;
@@ -67,6 +67,8 @@ export default function OrderSuccess() {
   const [countdown, setCountdown] = useState<string>("");
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [graphData, setGraphData] = useState<GraphData[]>([]);
+  const [minuteGraphData, setMinuteGraphData] = useState<GraphData[]>([]);
+  const [filterGraph, setFilterGraph] = useState("ALL");
 
   const fetchEvent = async () => {
     if (!categoryId) return;
@@ -93,28 +95,20 @@ export default function OrderSuccess() {
       setCountdown(getCountdown(eventData.ends_at));
       const interval = setInterval(() => {
         setCountdown(getCountdown(eventData.ends_at));
-      }, 60000); // Update every minute
-
+      }, 60000);
       return () => clearInterval(interval);
     }
   }, [eventData?.ends_at, getCountdown]);
 
-  useEffect(() => {
-    const getGraphData = async ({
-      eventId,
-      precision = "hour",
-      from,
-      to,
-    }: EventHistoryParams) => {
+  const getGraphData = useCallback(
+    async ({ eventId, precision = "hour", from, to }: EventHistoryParams) => {
       try {
-        // Build URL with query parameters
         const params = new URLSearchParams();
         if (precision) params.append("precision", precision);
         if (from) params.append("from", from);
         if (to) params.append("to", to);
 
         const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
-
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -122,37 +116,72 @@ export default function OrderSuccess() {
         }
 
         const data = await response.json();
-        // console.log("data at getGraphData", data);
         return data;
       } catch (error) {
         console.error("Error getting graph data:", error);
-        throw error; // Re-throw the error to handle it in the calling code
+        throw error;
       }
-    };
+    },
+    [API_BASE_URL]
+  );
 
-    setIsLoadingGraph(true);
-    const fetchData = async () => {
+  // Fetch hourly data only initially
+  useEffect(() => {
+    if (!eventData?._id) return;
+
+    const fetchHourlyGraphData = async () => {
       try {
-        if (eventData) {
-          const currentDate = new Date().toISOString();
-          const data = await getGraphData({
-            eventId: eventData?._id,
-            precision: "hour",
-            from: "2025-02-01T18:30:00.000Z",
-            to: currentDate,
-          });
-          setGraphData(data);
-        }
+        setIsLoadingGraph(true);
+        const currentDate = new Date().toISOString();
+
+        // Fetch hourly data only
+        const hourlyData = await getGraphData({
+          eventId: eventData._id,
+          precision: "hour",
+          from: "2025-02-01T18:30:00.000Z",
+          to: currentDate,
+        });
+        setGraphData(hourlyData);
       } catch (error) {
-        // Handle error appropriately
-        console.error("Failed to fetch graph data:", error);
+        console.error("Failed to fetch hourly graph data:", error);
+        setGraphData([]);
       } finally {
-        setIsLoadingGraph(false); // Stop loading
+        setIsLoadingGraph(false);
       }
     };
 
-    fetchData();
-  }, [eventData?._id, API_BASE_URL]);
+    fetchHourlyGraphData();
+  }, [eventData?._id, getGraphData]);
+
+  // Function to fetch minute data when 1h is selected
+  const fetchMinuteGraphData = useCallback(async () => {
+    if (!eventData?._id || minuteGraphData.length > 0) return; // Don't refetch if already loaded
+
+    try {
+      setIsLoadingGraph(true);
+      const currentDate = new Date().toISOString();
+      const minuteData = await getGraphData({
+        eventId: eventData._id,
+        precision: "minute",
+        from: new Date(Date.now() - 60 * 60 * 1000).toISOString(), // Last hour
+        to: currentDate,
+      });
+      setMinuteGraphData(minuteData);
+    } catch (error) {
+      console.error("Failed to fetch minute graph data:", error);
+      setMinuteGraphData([]);
+    } finally {
+      setIsLoadingGraph(false);
+    }
+  }, [eventData?._id, getGraphData]);
+
+  // Handle filter change
+  const handleFilterChange = (newFilter: string) => {
+    setFilterGraph(newFilter);
+    if (newFilter === "1h") {
+      fetchMinuteGraphData();
+    }
+  };
 
   return (
     <div>
@@ -170,6 +199,68 @@ export default function OrderSuccess() {
                   <h1 className="text-[23px] mb-8 mt-5 md:text-[1.4vw] font-semibold">
                     Live Chart
                   </h1>
+                  <div className="flex justify-end gap-5 items-center mb-4">
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1h"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("1h")}
+                    >
+                      1h
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "6h"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("6h")}
+                    >
+                      6h
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1d"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("1d")}
+                    >
+                      1d
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1w"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("1w")}
+                    >
+                      1w
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1m"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("1m")}
+                    >
+                      1m
+                    </div>
+                    <div
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "ALL"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
+                      }`}
+                      onClick={() => handleFilterChange("ALL")}
+                    >
+                      ALL
+                    </div>
+                  </div>
                   {isLoadingGraph ? (
                     <div className="flex justify-center items-center h-40">
                       <p className="text-[#00FFBB] text-lg md:text-xs">
@@ -177,7 +268,14 @@ export default function OrderSuccess() {
                       </p>
                     </div>
                   ) : (
-                    <DrawGraph data={graphData} graphFilter={"6h"} />
+                    <div className="flex justify-center items-center w-full sm:h-full lg:h-[15vw] ">
+                      <DrawGraph
+                        data={
+                          filterGraph === "1h" ? minuteGraphData : graphData
+                        }
+                        graphFilter={filterGraph}
+                      />
+                    </div>
                   )}
                 </div>
                 <CategoryRule />
@@ -253,7 +351,7 @@ export default function OrderSuccess() {
                     <div className="flex justify-between items-center gap-2">
                       <div className="w-[80%] h-[19px]">
                         <div
-                          className="h-[19px] rounded-lg bg-[#00FFBB] md:h-[14px]"
+                          className="h-[19px] rounded-lg bg-[#00FFB8] md:h-[14px]"
                           style={{
                             width: `${Math.round(
                               orderDetails?.new_probability * 100
