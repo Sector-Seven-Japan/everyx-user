@@ -287,7 +287,7 @@ export default function Deposit() {
               <div className="px-[10vw] mt-[3vw] w-full flex flex-col items-center">
                 <p className="text-[0.8vw]">
                   <span className="font-bold">Note: </span>
-                  We accept only USDT on Amoy Polygon & BSC Testnet
+                  Currently We accept only USDT on the Amoy Polygon Test Network
                 </p>
                 <div className="w-full">
                   <h1 className="text-white text-opacity-20 mt-[2vw] text-[0.8vw] font-">
