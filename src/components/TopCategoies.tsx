@@ -39,16 +39,12 @@ export default function TopCategories() {
           TOP Topics
         </h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 md:gap-x-14 gap-y-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {topCategoies.slice(0, 4).map((item, index) => {
           return (
             <CategoryCard
               key={index}
               item={item}
-              showChart={true}
-              showPrediction={true}
-              showTime={true}
-              hide={true}
             />
           );
         })}

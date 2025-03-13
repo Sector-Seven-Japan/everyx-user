@@ -11,16 +11,16 @@ export default function SearchBar({ search, setSearch }: searchProps) {
       <h1 className="text-center hidden md:block text-[2.5vw] md:mt-[3vw] Zenfont font-[400]">
         Search Market with EveryX
       </h1>
-      <div className="flex gap-3 py-2 md:py-3 rounded-2xl md:rounded-3xl bg-[#161616] mx-5 mt-5 md:mt-[2vw] items-center">
+      <div className="flex items-center gap-3 py-2 md:py-3 rounded-2xl md:rounded-3xl bg-[#161616] mx-5 mt-5 md:mt-[2vw]">
         {/* Search Icon */}
-
-        <Image
-          className="pl-2"
-          src="/Images/search.svg"
-          alt="Search icon"
-          width={30}
-          height={30}
-        />
+        <div className="pl-4">
+          <Image
+            src="/Images/search.svg"
+            alt="Search icon"
+            width={24}
+            height={24}
+          />
+        </div>
 
         {/* Search Input */}
         <input
@@ -31,7 +31,17 @@ export default function SearchBar({ search, setSearch }: searchProps) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Image src="/Images/logo_grey.png" alt="" height={20} width={20} className="hidden md:block"/>
+        
+        {/* Logo Icon */}
+        <div className="pr-4">
+          <Image 
+            src="/Images/logo_grey.png" 
+            alt="EveryX logo" 
+            height={20} 
+            width={20} 
+            className="hidden md:block"
+          />
+        </div>
       </div>
     </div>
   );

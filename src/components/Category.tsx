@@ -84,15 +84,11 @@ export default function Category({ item }: CategoryProps) {
           View ALL
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5 2xl:grid-cols-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-8">
         {events.slice(0,8).map((eventItem) => (
           <CategoryCard
             key={eventItem._id}
             item={eventItem}
-            showChart={false}
-            showPrediction={false}
-            showTime={true}
-            hide={false}
           />
         ))}
       </div>

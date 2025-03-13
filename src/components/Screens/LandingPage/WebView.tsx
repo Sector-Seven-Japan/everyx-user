@@ -106,12 +106,13 @@ const WebLanding = () => {
           <p className=" text-[4.5vw]   text-white text-opacity-[78%] text-left Zenfont font-extralight leading-tight">
             Global Events
           </p>
-          <p className="text-[1.1vw] mt-[5vw] text-white text-opacity-[80%] text-left font-normal leading-[2.5rem] ">
-            Use leverage to trade on real-world events and shape your
+          <p className="text-[1vw] mt-[5vw] text-white text-opacity-[80%] text-left font-normal leading-[2.5rem] ">
+            Use leverage to trade on real-world events and maximize your
+            potential gains.
           </p>
-          <p className="text-[1.1vw]  text-white text-opacity-[80%] text-left font-normal">
+          {/* <p className="text-[1.1vw]  text-white text-opacity-[80%] text-left font-normal">
             portfolio in a new way.
-          </p>
+          </p> */}
         </div>
 
         <div className="mt-5">
@@ -169,14 +170,26 @@ const WebLanding = () => {
       </div>
       {/* container2 */}
       <div className="flex  justify-between gap-10  mt-[5vw] ">
-        <div className="flex flex-col items-center justify-center gap-[5vw]  w-[70%]">
+        <div className="flex flex-col items-center justify-center gap-[4vw]  w-[70%] py-20 ">
           <div>
-            <p className="text-[2vw]  text-[#cacaca] text-center font-light Zenfont leading-none">
-              Predict real-world outcomes and
+            <p className="text-[4.2vw]  text-[#cacaca] text-center font-light Zenfont leading-none">
+              with leverage.
             </p>
-            <p className="text-[2vw]  text-[#cacaca] text-center font-light Zenfont leading-none">
-              profit when you’re right.
-            </p>
+            <div className="mt-12 mb-7 flex justify-center items-center gap-3">
+              <Image
+                src="/Images/tooltip.png"
+                alt="tooltip"
+                width={10}
+                height={10}
+                style={{
+                  width: "1.6vw",
+                  height: "1.6vw",
+                }}
+              />
+              <p className="text-[1.1vw]  text-[#cacaca] text-opacity-80 text-center font-thin Zenfont leading-none  ">
+                Limitations and risks apply
+              </p>
+            </div>
           </div>
           <div>
             <div className="flex justify-center items-center gap-[0.5vw] flex-wrap">
@@ -194,7 +207,7 @@ const WebLanding = () => {
                 </span>
               ))}
             </div>
-            <div className="pt-[1vw] px-[1vw] flex justify-center items-center gap-[0.5vw] flex-wrap">
+            <div className="pt-[1.5vw] px-[1vw] flex justify-center items-center gap-[0.5vw] flex-wrap">
               {["Science", "Culture", "Tech"].map((cat) => (
                 <span
                   key={cat}
@@ -222,14 +235,14 @@ const WebLanding = () => {
             </p>
           </div>
         </div>
-        <div className="mb-[10vw] relative ">
+        <div className="mb-[3vw] relative ">
           <Image
             src="/Images/LpImage3(gif).gif"
             alt="Landing Page Image 3"
             width={100}
             height={250}
             className="relative left-10"
-            style={{ width: "31vw", height: "40vw" }}
+            style={{ width: "26vw", height: "36vw" }}
           />
         </div>
       </div>
@@ -307,7 +320,7 @@ const WebLanding = () => {
       </div>
 
       <div className="mt-32 ">
-        <DragSlider text="Change your life with just a flick of this button." />
+        <DragSlider text="Predict now on EveryX" />
       </div>
 
       <div className="flex justify-center mt-[5vw] ">

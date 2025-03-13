@@ -5,6 +5,7 @@ import { AppContext } from "../app/Context/AppContext";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useDisconnect } from "wagmi";
+import { FaDiscord, FaXTwitter } from "react-icons/fa6";
 
 export default function Menu() {
   const router = useRouter();
@@ -107,10 +108,29 @@ export default function Menu() {
         </ul>
       </div>
 
-      <div className="p-5 mt-36 md:mt-20">
+      <div className="px-5 mt-36 mb-4 md:mb-0 md:mt-16 flex gap-10 justify-center">
+        <Link
+          href="https://discord.gg/Febu4RRJ"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#fff] hover:text-[#5865F2] transition-colors duration-200"
+        >
+          <FaDiscord className="text-[28px] md:text-[20px]" />
+        </Link>
+        <Link
+          href="https://x.com/everyx_io"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#fff] hover:text-[#1DA1F2] transition-colors duration-200"
+        >
+          <FaXTwitter className="text-[28px] md:text-[20px]" />
+        </Link>
+      </div>
+
+      <div className="p-5">
         {/* Login/Logout Button */}
         <button
-          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-2"
+          className="text-[#fff] text-sm border border-[#fff] w-full py-4 rounded-xl hover:bg-[#2DC198] hover:bg-opacity-100 hover:text-black hover:border-black transition-colors duration-200 md:py-2 md:rounded-md"
           onClick={() => {
             if (isLoggedIn) {
               handleLogoutUser();
