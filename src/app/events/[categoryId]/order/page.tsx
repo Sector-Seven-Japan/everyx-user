@@ -267,11 +267,13 @@ export default function Order() {
                       </p>
                     </div>
                   ) : (
-                    <DrawGraph
+                <div className="flex justify-center items-center w-full sm:h-full lg:h-[15vw] "> 
+                  <DrawGraph
                       data={graphData}
                       outcomeIds={outcomeIds}
                       graphFilter={"6h"}
                     />
+                </div>
                   )}
                 </div>
                 <CategoryGraph eventData={eventData} />
