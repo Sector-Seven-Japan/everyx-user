@@ -26,6 +26,8 @@ export default function SearchBar({
   const [isHovering, setIsHovering] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { categories } = useContext(AppContext);
+  console.log(isShadowBlinking);
+  
 
   // Set up the blinking effect for the shadow only
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function SearchBar({
               isShadowBlinking ? "shadow-[0_0_15px_5px_#ff4400]" : ""
             }`}
           ></div> */}
-          <LiveIcon size="md" color="#ff4400" />
+          <LiveIcon size="md" />
           <p className="text-[#FF4400] font-bold md:text-[1.1vw] md:tracking-[3px]">
             LIVE
           </p>

@@ -184,78 +184,24 @@ export default function EventCategoryPageDetails() {
             {eventData ? (
               <>
                 <CategoryInfo eventData={eventData} />
-<<<<<<< HEAD
                 <div className="px-5 md:pl-0">
-=======
-                <div className="px-5">
-
->>>>>>> 9ce3ba8ed8cec5109f3364210ebf677048a18a0f
                   <h1 className="text-[18px] mb-8 xl:text-[1.4vw] inter font-semibold">
-
-     
                     Live Chart
                   </h1>
                   <div className="flex justify-end gap-5 items-center">
-                    <div
-                      className={`cursor-pointer text-white ${
-                        filterGraph === "1h"
-                          ? "text-[#FFFFFF] font-semibold"
-                          : "text-white/50 hover:text-white/75"
-                      }`}
-                      onClick={() => handleFilterChange("1h")}
-                    >
-                      1h
-                    </div>
-                    <div
-                      className={`cursor-pointer text-white ${
-                        filterGraph === "6h"
-                          ? "text-[#FFFFFF] font-semibold"
-                          : "text-white/50 hover:text-white/75"
-                      }`}
-                      onClick={() => handleFilterChange("6h")}
-                    >
-                      6h
-                    </div>
-                    <div
-                      className={`cursor-pointer text-white ${
-                        filterGraph === "1d"
-                          ? "text-[#FFFFFF] font-semibold"
-                          : "text-white/50 hover:text-white/75"
-                      }`}
-                      onClick={() => handleFilterChange("1d")}
-                    >
-                      1d
-                    </div>
-                    <div
-                      className={`cursor-pointer text-white ${
-                        filterGraph === "1w"
-                          ? "text-[#FFFFFF] font-semibold"
-                          : "text-white/50 hover:text-white/75"
-                      }`}
-                      onClick={() => handleFilterChange("1w")}
-                    >
-                      1w
-                    </div>
-                    <div
-                      className={`cursor-pointer text-white ${
-                        filterGraph === "1m"
-                          ? "text-[#FFFFFF] font-semibold"
-                          : "text-white/50 hover:text-white/75"
-                      }`}
-                      onClick={() => handleFilterChange("1m")}
-                    >
-                      1m
-                    </div>
-                    <div
-                      className={`cursor-pointer text-white ${
-                        filterGraph === "ALL"
-                          ? "text-[#FFFFFF] font-semibold"
-                          : "text-white/50 hover:text-white/75"
-                      }`}
-                      onClick={() => handleFilterChange("ALL")}
-                    >
-                      ALL
-                    </div>
+                    {["1h", "6h", "1d", "1w", "1m", "ALL"].map((time) => (
+                      <div
+                        key={time}
+                        className={`cursor-pointer text-white ${
+                          filterGraph === time
+                            ? "text-[#FFFFFF] font-semibold"
+                            : "text-white/50 hover:text-white/75"
+                        }`}
+                        onClick={() => handleFilterChange(time)}
+                      >
+                        {time}
+                      </div>
+                    ))}
                   </div>
                   {isLoadingGraph ? (
                     <div className="flex justify-center items-center h-40">
@@ -266,9 +212,7 @@ export default function EventCategoryPageDetails() {
                   ) : (
                     <div className="flex justify-center items-center w-full sm:h-full lg:h-[15vw] ">
                       <DrawGraph
-                        data={
-                          filterGraph === "1h" ? minuteGraphData : graphData
-                        }
+                        data={filterGraph === "1h" ? minuteGraphData : graphData}
                         graphFilter={filterGraph}
                       />
                     </div>
@@ -279,9 +223,7 @@ export default function EventCategoryPageDetails() {
                 <CategoryActivity eventData={eventData} />
               </>
             ) : (
-              <p className="text-center text-gray-500">
-                Loading event details...
-              </p>
+              <p className="text-center text-gray-500">Loading event details...</p>
             )}
           </div>
           <div className="mt-5 hidden md:block md:w-[30%]">
