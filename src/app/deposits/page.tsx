@@ -159,7 +159,7 @@ export default function Deposit() {
             <div className="flex justify-center">
               <div className="w-16 h-[3px] bg-[rgb(112,112,112)] rounded-xl"></div>
             </div>
-            <div className="flex justify-between items-center mt-5">
+            <div className="flex justify-between items-center mt-10">
               <div>
                 <MdOutlineKeyboardArrowLeft
                   className="text-[30px]"
@@ -237,21 +237,29 @@ export default function Deposit() {
 
                 return (
                   <div
-                    className={`flex items-center gap-4 bg-[#00FFB8] p-3 rounded-sm cursor-pointer text-black justify-center ${
+                    className={`flex items-center gap-4  p-3 rounded-sm cursor-pointer text-black  ${
                       !ready ? "opacity-50 pointer-events-none" : ""
+                    } ${
+                      isConnected
+                        ? "border-[1px] border-solid border-[#00ffbb] "
+                        : "bg-[#00FFB8]"
                     }`}
                     onClick={handleClick}
                   >
                     <Image
-                      src="/Images/connect.png"
+                      src={
+                        isConnected
+                          ? "Images/connected.png"
+                          : "/Images/connect.png"
+                      }
                       alt=""
                       height={20}
                       width={20}
                     />
-                    <div>
+                    <div className="ml-[28%]">
                       {isConnected ? (
                         <div className="flex flex-col">
-                          <button type="button" className="text-black">
+                          <button type="button" className="text-[#00ffbb]">
                             Add Funds
                           </button>
                         </div>
@@ -348,14 +356,22 @@ export default function Deposit() {
 
                     return (
                       <div
-                        className={`flex items-center rounded-lg gap-3 bg-[#00FFB8] p-3 cursor-pointer justify-between w-full text-black ${
+                        className={`flex items-center rounded-lg gap-3 p-3 cursor-pointer justify-between w-full text-black ${
                           !ready ? "pointer-events-none bg-opacity-10" : ""
+                        }  ${
+                          isConnected
+                            ? "border-[1px] border-solid border-[#00ffbb] "
+                            : "bg-[#00FFB8]"
                         }`}
                         onClick={handleClick}
                       >
                         <div className="relative">
                           <Image
-                            src="/Images/connect.png"
+                            src={
+                              isConnected
+                                ? "Images/connected.png"
+                                : "/Images/connect.png"
+                            }
                             alt=""
                             height={18}
                             width={18}
@@ -364,12 +380,12 @@ export default function Deposit() {
                         <div>
                           {isConnected ? (
                             <div className="flex flex-col">
-                              <button type="button" className="text-black">
+                              <button type="button" className="text-[#00ffbb] ">
                                 Add Funds
                               </button>
                             </div>
                           ) : (
-                            <button className="text-md text-black">
+                            <button className="text-md text-black ">
                               Connect Wallet
                             </button>
                           )}

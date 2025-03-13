@@ -224,7 +224,7 @@ export default function BettingPage() {
                       <p className="text-[#00FFBB] text-lg">Loading graph...</p>
                     </div>
                   ) : (
-                    <DrawGraph data={graphData} />
+                    <DrawGraph data={graphData} graphFilter={"6h"} />
                   )}
                 </div>
                 <CategoryRule />

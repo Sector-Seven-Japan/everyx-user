@@ -105,8 +105,7 @@ const Page = () => {
     } catch (error) {
       console.error("Error during signup:", error);
       alert(
-        `Signup failed: ${
-          error instanceof Error ? error.message : "An unknown error occurred."
+        `Signup failed: ${error instanceof Error ? error.message : "An unknown error occurred."
         }`
       );
     }
