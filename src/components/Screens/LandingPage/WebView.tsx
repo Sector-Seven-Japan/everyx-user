@@ -242,7 +242,7 @@ const WebLanding = () => {
             width={100}
             height={250}
             className="relative left-10"
-            style={{ width: "24vw", height: "33vw" }}
+            style={{ width: "26vw", height: "36vw" }}
           />
         </div>
       </div>
