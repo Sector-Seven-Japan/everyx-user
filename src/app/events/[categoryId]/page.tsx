@@ -115,16 +115,16 @@ export default function EventCategoryPageDetails() {
     fetchEvent();
   }, [categoryId, setIsLoading, API_BASE_URL]);
 
-  // Fetch graph data only once when eventData._id changes
+  // Fetch hourly graph data only once when eventData._id changes
   useEffect(() => {
     if (!eventData?._id) return;
 
-    const fetchGraphData = async () => {
+    const fetchHourlyGraphData = async () => {
       try {
         setIsLoadingGraph(true);
         const currentDate = new Date().toISOString();
 
-        // Fetch hourly data
+        // Fetch hourly data only
         const hourlyData = await getGraphData({
           eventId: eventData._id,
           precision: "hour",
@@ -132,24 +132,46 @@ export default function EventCategoryPageDetails() {
           to: currentDate,
         });
         setGraphData(hourlyData);
-
-        // Fetch minute data for 1h
-        const minuteData = await getGraphData({
-          eventId: eventData._id,
-          precision: "minute",
-          from: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
-          to: currentDate,
-        });
-        setMinuteGraphData(minuteData);
       } catch (error) {
-        console.error("Failed to fetch graph data:", error);
+        console.error("Failed to fetch hourly graph data:", error);
+        setGraphData([]);
       } finally {
         setIsLoadingGraph(false);
       }
     };
 
-    fetchGraphData();
-  }, [eventData?._id, getGraphData]); // Only re-run when eventData._id changes
+    fetchHourlyGraphData();
+  }, [eventData?._id, getGraphData]);
+
+  // Function to fetch minute data when 1h is selected
+  const fetchMinuteGraphData = useCallback(async () => {
+    if (!eventData?._id || minuteGraphData.length > 0) return; // Don't refetch if already loaded
+
+    try {
+      setIsLoadingGraph(true);
+      const currentDate = new Date().toISOString();
+      const minuteData = await getGraphData({
+        eventId: eventData._id,
+        precision: "minute",
+        from: new Date(Date.now() - 60 * 60 * 1000).toISOString(), // Last hour
+        to: currentDate,
+      });
+      setMinuteGraphData(minuteData);
+    } catch (error) {
+      console.error("Failed to fetch minute graph data:", error);
+      setMinuteGraphData([]);
+    } finally {
+      setIsLoadingGraph(false);
+    }
+  }, [eventData?._id, getGraphData]);
+
+  // Handle filter change
+  const handleFilterChange = (newFilter: string) => {
+    setFilterGraph(newFilter);
+    if (newFilter === "1h") {
+      fetchMinuteGraphData();
+    }
+  };
 
   return (
     <div className="w-full">
@@ -168,50 +190,62 @@ export default function EventCategoryPageDetails() {
                   </h1>
                   <div className="flex justify-end gap-5 items-center">
                     <div
-                      className={`text-opacity-50 text-white cursor-pointer ${
-                        filterGraph === "1h" ? "text-opacity-100" : ""
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1h"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
                       }`}
-                      onClick={() => setFilterGraph("1h")}
+                      onClick={() => handleFilterChange("1h")}
                     >
                       1h
                     </div>
                     <div
-                      className={`text-opacity-50 text-white cursor-pointer ${
-                        filterGraph === "6h" ? "text-opacity-100" : ""
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "6h"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
                       }`}
-                      onClick={() => setFilterGraph("6h")}
+                      onClick={() => handleFilterChange("6h")}
                     >
                       6h
                     </div>
                     <div
-                      className={`text-opacity-50 text-white cursor-pointer ${
-                        filterGraph === "1d" ? "text-opacity-100" : ""
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1d"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
                       }`}
-                      onClick={() => setFilterGraph("1d")}
+                      onClick={() => handleFilterChange("1d")}
                     >
                       1d
                     </div>
                     <div
-                      className={`text-opacity-50 text-white cursor-pointer ${
-                        filterGraph === "1w" ? "text-opacity-100" : ""
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1w"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
                       }`}
-                      onClick={() => setFilterGraph("1w")}
+                      onClick={() => handleFilterChange("1w")}
                     >
                       1w
                     </div>
                     <div
-                      className={`text-opacity-50 text-white cursor-pointer ${
-                        filterGraph === "1m" ? "text-opacity-100" : ""
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "1m"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
                       }`}
-                      onClick={() => setFilterGraph("1m")}
+                      onClick={() => handleFilterChange("1m")}
                     >
                       1m
                     </div>
                     <div
-                      className={`text-opacity-50 text-white cursor-pointer ${
-                        filterGraph === "ALL" ? "text-opacity-100" : ""
+                      className={`cursor-pointer text-white ${
+                        filterGraph === "ALL"
+                          ? "text-[#FFFFFF] font-semibold"
+                          : "text-white/50 hover:text-white/75"
                       }`}
-                      onClick={() => setFilterGraph("ALL")}
+                      onClick={() => handleFilterChange("ALL")}
                     >
                       ALL
                     </div>
