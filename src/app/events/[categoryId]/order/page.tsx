@@ -251,7 +251,7 @@ export default function Order() {
         <div className="hidden md:block">
           <HeadingSlider filter={filter} setFilter={setFilter} />
         </div>
-        <div className="flex flex-col md:flex-row md:mt-14">
+        <div className="flex flex-col md:flex-row md:mt-1">
           <div className="md:w-[68%] xl:w-[72%] md:block hidden">
             {eventData ? (
               <>
@@ -466,7 +466,11 @@ export default function Order() {
                           Your return
                         </div>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          {(orderDetails?.after_return || orderDetails.indicative_return).toFixed(0)}%
+                          {(
+                            orderDetails?.after_return ||
+                            orderDetails.indicative_return
+                          ).toFixed(0)}
+                          %
                         </p>
                       </div>
                     </div>
@@ -542,6 +546,14 @@ export default function Order() {
                       : "Add Funds to continue"
                     : "Login to proceed"}
                 </button>
+                <p
+                  onClick={() => {
+                    router.back();
+                  }}
+                  className="text-center mt-3 cursor-pointer hover:underline md:hidden"
+                >
+                  Back
+                </p>
               </div>
             </div>
           </div>

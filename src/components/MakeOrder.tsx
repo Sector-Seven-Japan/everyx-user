@@ -158,7 +158,7 @@ export default function MakeOrder() {
   }, 200);
 
   const handleLeveragePlus = (multiplier: number) => {
-    const newValue = Math.min(leverage * multiplier, maxLeverage);
+    const newValue = multiplier
     const roundedValue = parseFloat(newValue.toFixed(1));
     setLeverage(roundedValue);
   };

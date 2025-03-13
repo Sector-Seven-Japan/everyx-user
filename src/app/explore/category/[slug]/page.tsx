@@ -147,7 +147,7 @@ export default function EventCategoryPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-12">
             {events.length !== 0 ? (
               events.map((item) => (
                 <div className="" key={item._id}>

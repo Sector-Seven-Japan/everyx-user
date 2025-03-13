@@ -50,39 +50,40 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
   }
   return (
     <div className="p-5">
-      <div className="relative flex gap-3 items-center h-48 w-full rounded-t-2xl overflow-hidden">
-        {eventData.event_images_url && (
+      <div className="flex gap-3 md:gap-8">
+        <div className="h-[70px] min-w-[70px] md:w-[8vw] md:h-[8vw] w-[70px] cursor-pointer flex-shrink-0">
           <img
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover rounded"
             src={eventData?.event_images_url[0]}
             alt={eventData?.name || "Event Image"}
           />
-        )}
-        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent"></div>
-      </div>
-      {/* Card Details */}
-      <div className="flex mt-3 gap-3 md:gap-7">
-        <button className="border-[1px] border-[#2DC198] px-4 py-1 text-xs text-[#2DC198] rounded-sm md:text-[1.2vw] md:py-[0.65vw] md:px-[1.4vw] md:rounded-md">
-          {eventData?.category?.name?.split(" ")[0] || "Global"}
-        </button>
-        <p className="text-[#2DC198] flex gap-2 items-center font-light ">
-          <Image
-            src={"/Images/FreeClock i.png"}
-            alt="clock"
-            height={18}
-            width={18}
-          />
-
-          <p className="md:text-[0.8vw] text-[#2DC198] ">{countdown}</p>
-        </p>
-      </div>
-      <div className="pt-4">
-        <p className="font-light text-[20px] md:text-[1.6vw] md:tracking-[3px] md:mb-10 ">
-          {eventData?.description}
-        </p>
+        </div>
+        <div className="flex-1 flex flex-col justify-center md:justify-end md:gap-5 gap-2">
+          <div>
+            <p className="text-[#2DC198] flex gap-1 md:gap-6 items-center font-light">
+              <div className="flex-shrink-0">
+                <Image
+                  src={"/Images/FreeClock i.png"}
+                  alt="clock"
+                  height={18}
+                  width={18}
+                  className="md:w-[2vw] md:h-[2vw]"
+                />
+              </div>
+              <p className="text-[#2DC198] text-[15px] md:text-[1.4vw] whitespace-nowrap">
+                {countdown}
+              </p>
+            </p>
+          </div>
+          <div className="cursor-pointer">
+            <p className="font-light text-[14px] md:text-[1.4vw] line-clamp-2 inter tracking-[0.9px]">
+              {eventData?.name}
+            </p>
+          </div>
+        </div>
       </div>
       {
-        <div className="flex gap-3 mt-5 leading-6 mb-5 md:leading-[1.9vw]">
+        <div className="flex gap-3 mt-10 leading-6 mb-5 md:leading-[1.9vw]">
           <div className="w-1/2 px-4 py-3 bg-[#131313] rounded-md md:px-[2vw] md:py-[1vw]">
             <p className="text-[#2DC198] text-[24px] font-light md:text-[1.5vw] ">
               {eventData?.outcomes?.length
