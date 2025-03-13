@@ -34,7 +34,7 @@ interface CategoryInfoProps {
   eventData: EventData;
 }
 
-const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
+const outcomeColors = ["#00FFBB", "#FF5952", "#924DD3", "#d9ff00", "#3661DF"];
 
 export default function CategoryGraph({ eventData }: CategoryInfoProps) {
   const {
