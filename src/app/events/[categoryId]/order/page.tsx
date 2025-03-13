@@ -267,7 +267,11 @@ export default function Order() {
                       </p>
                     </div>
                   ) : (
-                    <DrawGraph data={graphData} />
+                    <DrawGraph
+                      data={graphData}
+                      outcomeIds={outcomeIds}
+                      graphFilter={"6h"}
+                    />
                   )}
                 </div>
                 <CategoryGraph eventData={eventData} />
@@ -466,7 +470,11 @@ export default function Order() {
                           Your return
                         </div>
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
-                          {(orderDetails?.after_return || orderDetails.indicative_return).toFixed(0)}%
+                          {(
+                            orderDetails?.after_return ||
+                            orderDetails.indicative_return
+                          ).toFixed(0)}
+                          %
                         </p>
                       </div>
                     </div>
@@ -525,7 +533,11 @@ export default function Order() {
                           </div>
                         </div>
                       </div>
-                      <DrawGraph data={graphData} outcomeIds={outcomeIds} />
+                      <DrawGraph
+                        data={graphData}
+                        outcomeIds={outcomeIds}
+                        graphFilter={"6h"}
+                      />
                     </div>
                   </div>
                 </div>

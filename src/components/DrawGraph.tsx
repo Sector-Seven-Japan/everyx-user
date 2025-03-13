@@ -14,21 +14,48 @@ interface GraphData {
 
 interface DrawGraphProps {
   data: GraphData[];
+  graphFilter: string;
   outcomeIds?: string[];
 }
 
-const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
+const DrawGraph: React.FC<DrawGraphProps> = ({
+  data,
+  graphFilter,
+  outcomeIds,
+}) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
   const path = usePathname();
 
   const processDataForChart = useCallback(
-    (data: GraphData[], outcomeIds?: string[]) => {
+    (data: GraphData[], filter: string, outcomeIds?: string[]) => {
       const now = new Date();
-      const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000);
+      let filterDate: Date;
+
+      switch (filter) {
+        case "1h":
+          filterDate = new Date(now.getTime() - 1 * 60 * 60 * 1000);
+          break;
+        case "6h":
+          filterDate = new Date(now.getTime() - 6 * 60 * 60 * 1000);
+          break;
+        case "1d":
+          filterDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+          break;
+        case "1w":
+          filterDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+          break;
+        case "1m":
+          filterDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+          break;
+        case "ALL":
+        default:
+          filterDate = new Date(0); // Show all data
+          break;
+      }
 
       const filteredData = data.filter(
-        (item) => new Date(item.datetime) >= sixHoursAgo
+        (item) => new Date(item.datetime) >= filterDate
       );
 
       const timestamps = [
@@ -38,7 +65,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
       const outcomes = outcomeIds || [
         ...new Set(filteredData.map((item) => item.event_outcome_id)),
       ];
-      const colors = ["#00FFBB", "#FF5952", "#924DD3", "#26A45B", "#3661DF"];
+      const colors = ["#00FFBB", "#FF5952", "#924DD3", "#d9ff00", "#3661DF"];
 
       const datasets = outcomes.map((outcome, index) => {
         const outcomeData = timestamps.map((timestamp) => {
@@ -56,6 +83,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
           backgroundColor: colors[index % colors.length],
           tension: 0.4,
           fill: false,
+          borderWidth: 1, // Thin lines
         };
       });
 
@@ -68,9 +96,53 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
   );
 
   const processedData = useMemo(
-    () => processDataForChart(data, outcomeIds),
-    [data, outcomeIds, processDataForChart]
+    () => processDataForChart(data, graphFilter, outcomeIds),
+    [data, graphFilter, outcomeIds, processDataForChart]
   );
+
+  // Format the date for tooltip display based on filter
+  const formatDateForTooltip = (dateString: string, filter: string) => {
+    const date = new Date(dateString);
+
+    switch (filter) {
+      case "1h":
+      case "6h":
+        return date.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        });
+      case "1d":
+        return date.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        });
+      case "1w":
+      case "1m":
+      case "ALL":
+        return date.toLocaleString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        });
+      default:
+        return date.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        });
+    }
+  };
 
   useEffect(() => {
     if (!chartRef.current) return;
@@ -93,7 +165,7 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
         maintainAspectRatio: false,
         layout: {
           padding: {
-            left: 0, // Reduce left padding
+            left: 0,
             right: 0,
             top: 0,
             bottom: 0,
@@ -106,13 +178,35 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
         plugins: {
           legend: {
             display: false,
-            labels: {
-              color: "#fff",
-            },
           },
           tooltip: {
             mode: "index",
             intersect: false,
+            callbacks: {
+              title: (tooltipItems) => {
+                if (tooltipItems.length > 0) {
+                  const labelIndex = tooltipItems[0].dataIndex;
+                  const label = processedData.labels[labelIndex];
+                  return formatDateForTooltip(label as string, graphFilter);
+                }
+                return "";
+              },
+              label: (context) => {
+                const label = context.dataset.label || "";
+                const value = context.parsed.y.toFixed(2);
+                return `${label}: ${value}%`;
+              },
+            },
+            titleFont: {
+              weight: "bold",
+              size: 14,
+            },
+            padding: 10,
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            titleColor: "white",
+            bodyColor: "white",
+            borderColor: "rgba(255, 255, 255, 0.2)",
+            borderWidth: 1,
           },
         },
         elements: {
@@ -133,14 +227,33 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
               color: "rgba(255, 255, 255, 0.7)",
               maxRotation: 0,
               minRotation: 0,
+              maxTicksLimit: 6, // Limit to maximum 6 labels
               callback: function (value) {
                 if (path === "/trade") return "";
                 const label = this.getLabelForValue(value as number);
                 const date = new Date(label);
-                return date.toLocaleTimeString("en-US", {
-                  hour: "numeric",
-                  minute: "2-digit",
-                });
+
+                switch (graphFilter) {
+                  case "1h":
+                  case "6h":
+                  case "1d":
+                    return date.toLocaleTimeString("en-US", {
+                      hour: "numeric",
+                      minute: "2-digit",
+                    });
+                  case "1w":
+                  case "1m":
+                  case "ALL":
+                    return date.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    });
+                  default:
+                    return date.toLocaleTimeString("en-US", {
+                      hour: "numeric",
+                      minute: "2-digit",
+                    });
+                }
               },
             },
           },
@@ -150,12 +263,8 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
               display: false,
             },
             ticks: {
-              display: false, // Hide ticks completely
-              color: "#fff",
-              padding: 0, // Reduce padding between ticks and chart
+              display: false,
             },
-            // Optional: Set a very small offset to minimize space
-            offset: false,
           },
         },
       },
@@ -166,11 +275,11 @@ const DrawGraph: React.FC<DrawGraphProps> = ({ data, outcomeIds }) => {
         chartInstance.current.destroy();
       }
     };
-  }, [processedData, path]);
+  }, [processedData, path, graphFilter]);
 
   return (
-    <div className="w-full h-full ">
-      <div className="lg:h-[12vw] md:h-[15vw] sm:h-[40vw] mt-5 w-full  pr-1">
+    <div className="w-full h-full">
+      <div className="h-full mt-5 w-full">
         <canvas
           ref={chartRef}
           className="w-full h-full"

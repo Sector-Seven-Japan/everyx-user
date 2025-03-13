@@ -47,7 +47,7 @@ interface GraphData {
 }
 
 interface EventHistoryParams {
-  precision?: "hour" | "day" | "month";
+  precision?: "hour" | "minute";
   from?: string;
   to?: string;
   eventId: string;
@@ -60,51 +60,19 @@ export default function EventCategoryPageDetails() {
   const params = useParams();
   const categoryId = params?.categoryId as string | undefined;
   const [graphData, setGraphData] = useState<GraphData[]>([]);
+  const [minuteGraphData, setMinuteGraphData] = useState<GraphData[]>([]);
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
+  const [filterGraph, setFilterGraph] = useState("ALL");
 
-  // Memoized fetch function
-  const fetchEvent = useCallback(async () => {
-    if (!categoryId) return;
-
-    try {
-      setIsLoading(true);
-
-      const response = await fetch(`${API_BASE_URL}/events/${categoryId}`);
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-      setEventData(data);
-    } catch (error) {
-      console.error("Failed to fetch event:", error);
-      setEventData(null);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [categoryId, setIsLoading, API_BASE_URL]);
-
-  useEffect(() => {
-    fetchEvent();
-  }, [fetchEvent]);
-
-  useEffect(() => {
-    const getGraphData = async ({
-      eventId,
-      precision = "hour",
-      from,
-      to,
-    }: EventHistoryParams) => {
+  const getGraphData = useCallback(
+    async ({ eventId, precision = "hour", from, to }: EventHistoryParams) => {
       try {
-        // Build URL with query parameters
         const params = new URLSearchParams();
         if (precision) params.append("precision", precision);
         if (from) params.append("from", from);
         if (to) params.append("to", to);
 
         const url = `${API_BASE_URL}/events/${eventId}/history?${params.toString()}`;
-
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -115,32 +83,73 @@ export default function EventCategoryPageDetails() {
         return data;
       } catch (error) {
         console.error("Error getting graph data:", error);
-        throw error; // Re-throw the error to handle it in the calling code
+        throw error;
+      }
+    },
+    [API_BASE_URL]
+  );
+
+  // Fetch event data
+  useEffect(() => {
+    if (!categoryId) return;
+
+    const fetchEvent = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`${API_BASE_URL}/events/${categoryId}`);
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        setEventData(data);
+      } catch (error) {
+        console.error("Failed to fetch event:", error);
+        setEventData(null);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    const fetchData = async () => {
+    fetchEvent();
+  }, [categoryId, setIsLoading, API_BASE_URL]);
+
+  // Fetch graph data only once when eventData._id changes
+  useEffect(() => {
+    if (!eventData?._id) return;
+
+    const fetchGraphData = async () => {
       try {
-        setIsLoadingGraph(true); // Set loading state to true before fetching data
-        if (eventData) {
-          const currentDate = new Date().toISOString();
-          const data = await getGraphData({
-            eventId: eventData?._id,
-            precision: "hour",
-            from: "2025-02-01T18:30:00.000Z",
-            to: currentDate,
-          });
-          setGraphData(data);
-        }
+        setIsLoadingGraph(true);
+        const currentDate = new Date().toISOString();
+
+        // Fetch hourly data
+        const hourlyData = await getGraphData({
+          eventId: eventData._id,
+          precision: "hour",
+          from: "2025-02-01T18:30:00.000Z",
+          to: currentDate,
+        });
+        setGraphData(hourlyData);
+
+        // Fetch minute data for 1h
+        const minuteData = await getGraphData({
+          eventId: eventData._id,
+          precision: "minute",
+          from: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
+          to: currentDate,
+        });
+        setMinuteGraphData(minuteData);
       } catch (error) {
         console.error("Failed to fetch graph data:", error);
       } finally {
-        setIsLoadingGraph(false); // Set loading state to false after fetching data
+        setIsLoadingGraph(false);
       }
     };
 
-    fetchData();
-  }, [eventData?._id, API_BASE_URL]);
+    fetchGraphData();
+  }, [eventData?._id, getGraphData]); // Only re-run when eventData._id changes
 
   return (
     <div className="w-full">
@@ -154,18 +163,73 @@ export default function EventCategoryPageDetails() {
               <>
                 <CategoryInfo eventData={eventData} />
                 <div className="px-5">
-                  <h1 className="text-[23px] mb-8 mt-5 xl:text-[1.4vw] font-semibold ">
+                  <h1 className="text-[23px] mb-8 mt-5 xl:text-[1.4vw] font-semibold">
                     Live Chart
                   </h1>
+                  <div className="flex justify-end gap-5 items-center">
+                    <div
+                      className={`text-opacity-50 text-white cursor-pointer ${
+                        filterGraph === "1h" ? "text-opacity-100" : ""
+                      }`}
+                      onClick={() => setFilterGraph("1h")}
+                    >
+                      1h
+                    </div>
+                    <div
+                      className={`text-opacity-50 text-white cursor-pointer ${
+                        filterGraph === "6h" ? "text-opacity-100" : ""
+                      }`}
+                      onClick={() => setFilterGraph("6h")}
+                    >
+                      6h
+                    </div>
+                    <div
+                      className={`text-opacity-50 text-white cursor-pointer ${
+                        filterGraph === "1d" ? "text-opacity-100" : ""
+                      }`}
+                      onClick={() => setFilterGraph("1d")}
+                    >
+                      1d
+                    </div>
+                    <div
+                      className={`text-opacity-50 text-white cursor-pointer ${
+                        filterGraph === "1w" ? "text-opacity-100" : ""
+                      }`}
+                      onClick={() => setFilterGraph("1w")}
+                    >
+                      1w
+                    </div>
+                    <div
+                      className={`text-opacity-50 text-white cursor-pointer ${
+                        filterGraph === "1m" ? "text-opacity-100" : ""
+                      }`}
+                      onClick={() => setFilterGraph("1m")}
+                    >
+                      1m
+                    </div>
+                    <div
+                      className={`text-opacity-50 text-white cursor-pointer ${
+                        filterGraph === "ALL" ? "text-opacity-100" : ""
+                      }`}
+                      onClick={() => setFilterGraph("ALL")}
+                    >
+                      ALL
+                    </div>
+                  </div>
                   {isLoadingGraph ? (
                     <div className="flex justify-center items-center h-40">
-                      <p className="text-[#00FFBB] text-lg md:text-xs ">
+                      <p className="text-[#00FFBB] text-lg md:text-xs">
                         Loading graph...
                       </p>
                     </div>
                   ) : (
-                    <div className="flex justify-center items-center w-full h-full ">
-                      <DrawGraph data={graphData} />
+                    <div className="flex justify-center items-center w-full sm:h-full lg:h-[15vw] ">
+                      <DrawGraph
+                        data={
+                          filterGraph === "1h" ? minuteGraphData : graphData
+                        }
+                        graphFilter={filterGraph}
+                      />
                     </div>
                   )}
                 </div>
@@ -174,7 +238,7 @@ export default function EventCategoryPageDetails() {
                 <CategoryActivity eventData={eventData} />
               </>
             ) : (
-              <p className="text-center text-gray-500 ">
+              <p className="text-center text-gray-500">
                 Loading event details...
               </p>
             )}
