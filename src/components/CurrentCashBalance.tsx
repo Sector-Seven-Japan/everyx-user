@@ -74,7 +74,7 @@ const CurrentCashBalanceCard: React.FC = () => {
         >
           <span className="text-[14px] text-gray-400 cursor-pointer">ⓘ</span>
           {showCurrentTooltip && (
-            <div className="absolute -left-2 top-6 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+            <div className="absolute left-1/2 -translate-x-1/2 top-6 w-[200px] md:w-[250px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
               <p>
                 The cash available at this moment for trading. Pending deposits
                 or withdrawals are not included.
@@ -176,7 +176,7 @@ const CurrentCashBalanceCard: React.FC = () => {
                   ⓘ
                   </span>
                   {showBestCaseTooltip && (
-                    <div className="absolute -left-2 top-6 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                    <div className="absolute left-1/2 -translate-x-1/2 top-6 w-[200px] md:w-[250px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
                       <p>
                         The best possible cash balance based on current market
                         conditions and your trades.
@@ -203,7 +203,7 @@ const CurrentCashBalanceCard: React.FC = () => {
                   ⓘ
                   </span>
                   {showWinningsTooltip && (
-                    <div className="absolute -left-2 top-6 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                    <div className="absolute left-1/2 -translate-x-1/2 top-6 w-[200px] md:w-[250px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
                       <p>
                         The total winnings accumulated from your trades to date.
                       </p>
