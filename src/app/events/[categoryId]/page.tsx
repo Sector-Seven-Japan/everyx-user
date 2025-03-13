@@ -179,13 +179,16 @@ export default function EventCategoryPageDetails() {
       <div className="md:px-[12%] 2xl:px-[19%]">
         <HeadingSlider filter={filter} setFilter={setFilter} />
 
-        <div className="flex flex-col md:flex-row md:mt-14">
+        <div className="flex flex-col md:flex-row md:mt-0">
           <div className="xl:w-[72%] w-full">
             {eventData ? (
               <>
                 <CategoryInfo eventData={eventData} />
                 <div className="px-5">
-                  <h1 className="text-[23px] mb-8 mt-5 xl:text-[1.4vw] font-semibold">
+
+                  <h1 className="text-[18px] mb-8 xl:text-[1.4vw] inter font-semibold">
+
+     
                     Live Chart
                   </h1>
                   <div className="flex justify-end gap-5 items-center">

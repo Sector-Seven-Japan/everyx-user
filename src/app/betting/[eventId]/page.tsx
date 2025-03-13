@@ -246,7 +246,7 @@ export default function BettingPage() {
         <div className="md:block hidden">
           <HeadingSlider filter={filter} setFilter={setFilter} />
         </div>
-        <div className="flex flex-col md:flex-row md:mt-14">
+        <div className="flex flex-col md:flex-row md:mt-1">
           <div className="md:w-[68%] xl:w-[72%] md:block hidden">
             {eventData ? (
               <>

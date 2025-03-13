@@ -139,7 +139,7 @@ export default function CategoryActivity({ eventData }: CategoryInfoProps) {
             );
             return (
               <div
-                className="flex gap-5 items-center md:gap-10 2xl:gap-14 "
+                className="flex gap-5 items-center"
                 key={i}
               >
                 <div>
@@ -174,7 +174,7 @@ export default function CategoryActivity({ eventData }: CategoryInfoProps) {
                         className="gothic_font hidden md:block"
                       >
                         {" "}
-                        {truncateText(name, 20)}
+                        {truncateText(name, 15)}
                       </span>
                     </p>
                     <p className="opacity-[17%] text-end gothic_font 2xl:text-[1vw] md:text-[1.1vw]">
