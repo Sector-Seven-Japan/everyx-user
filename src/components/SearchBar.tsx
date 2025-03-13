@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import LiveIcon from "./LiveIcon";
 
 interface searchProps {
@@ -8,18 +8,8 @@ interface searchProps {
 }
 
 export default function SearchBar({ search, setSearch }: searchProps) {
-  const [isShadowBlinking, setIsShadowBlinking] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  // Set up the blinking effect for the shadow only
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsShadowBlinking((prev) => !prev);
-    }, 500); // Toggle every 1 second
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Fixed scroll function
   const scrollRight = () => {
@@ -55,7 +45,7 @@ export default function SearchBar({ search, setSearch }: searchProps) {
               isShadowBlinking ? "shadow-[0_0_15px_5px_#ff4400]" : ""
             }`}
           ></div> */}
-          <LiveIcon size="md" color="#ff4400" />
+          <LiveIcon size="md" />
           <p className="text-[#FF4400] font-bold md:text-[1.1vw] md:tracking-[3px]">
             LIVE
           </p>
