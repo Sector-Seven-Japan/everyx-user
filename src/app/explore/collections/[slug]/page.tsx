@@ -4,7 +4,6 @@ import CategoryCard from "@/components/CategoryCard";
 import Footer from "@/components/Footer";
 import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
-import SearchBar from "@/components/SearchBar";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 
@@ -36,7 +35,7 @@ interface Event {
 }
 
 export default function EventCategoryPage() {
-  const { filter, setFilter, API_BASE_URL, setIsLoading, search, setSearch } =
+  const { filter, setFilter, API_BASE_URL, setIsLoading } =
     useContext(AppContext);
   const [events, setEvents] = useState<Event[]>([]);
   const [heading, setHeading] = useState("");
@@ -86,7 +85,7 @@ export default function EventCategoryPage() {
       <Navbar />
       <div className="w-full md:px-[10%] 2xl:px-[13%]">
         <HeadingSlider setFilter={setFilter} filter={filter} />
-        <SearchBar search={search} setSearch={setSearch} />
+        {/* <SearchBar search={search} setSearch={setSearch} /> */}
         <div className="p-5 md:p-0">
           <div className="hidden md:flex justify-between md:mb-10 relative">
             <h1 className="text-xl mb-6 md:text-[25px] md:mt-20 inter font-[700] ">

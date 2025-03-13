@@ -191,11 +191,11 @@ export default function OrderSuccess() {
           <HeadingSlider filter={filter} setFilter={setFilter} />
         </div>
         <div className="flex flex-col md:flex-row md:mt-1">
-          <div className="md:w-[68%] xl:w-[72%] md:block hidden">
+          <div className="md:w-[68%] xl:w-[70%] md:block hidden">
             {eventData ? (
               <>
                 <CategoryInfo eventData={eventData} />
-                <div className="px-5">
+                <div className="px-5 md:pl-0">
                   <h1 className="text-[23px] mb-8 mt-5 md:text-[1.4vw] font-semibold">
                     Live Chart
                   </h1>
@@ -287,18 +287,18 @@ export default function OrderSuccess() {
               </p>
             )}
           </div>
-          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%] pb-20 md:pb-0">
+          <div className="md:mt-5 w-full md:w-[32%] xl:w-[30%] pb-20 md:pb-0">
             <div className="px-8 py-5 md:bg-[#141414] md:rounded-xl md:px-5 sticky top-[70px]">
               <h1 className="text-center mb-4 md:text-[1.1vw] md:mb-[1.2vw] text-[22px]">
                 Your Order
               </h1>
               <div className="flex flex-col items-center justify-center text-center gap-8 mt-5 md:gap-2">
-                <div className="">
+                <div className="border border-[#00FF11] rounded-full p-3">
                   <Image
-                    src="/Icons/SuccessIcon.png"
+                    src="/Icons/arrow.svg"
                     alt=""
-                    width={70}
-                    height={70}
+                    width={60}
+                    height={60}
                     className="md:w-[2vw] md:h-[2vw]"
                   ></Image>
                 </div>
@@ -315,7 +315,7 @@ export default function OrderSuccess() {
                   <p className="text-[#2DC198] flex gap-1 items-center font-light">
                     <div className="md:w-3">
                       <Image
-                        src={"/Images/FreeClock i.png"}
+                        src={"/Icons/freeclock.svg"}
                         alt="clock"
                         height={18}
                         width={18}
@@ -417,7 +417,7 @@ export default function OrderSuccess() {
                   }}
                   className="bg-[#00FFB8] py-4 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw] md:py-[0.65vw]"
                 >
-                  Recommend Events
+                  Recommended Events
                   <div className="md:w-2">
                     <Image
                       src="/Images/rightarrowicon.png"

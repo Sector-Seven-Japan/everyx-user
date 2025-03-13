@@ -1,16 +1,31 @@
+import { AppContext } from "@/app/Context/AppContext";
 import Image from "next/image";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import LiveIcon from "./LiveIcon";
+
 
 interface searchProps {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  setUserSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function SearchBar({ search, setSearch }: searchProps) {
+// Add proper type definition for Category
+interface Category {
+  id?: string | number;
+  name: string;
+  // Add other properties of Category if needed
+}
+
+export default function SearchBar({
+  search,
+  setSearch,
+  setUserSelectedCategory,
+}: searchProps) {
   const [isShadowBlinking, setIsShadowBlinking] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { categories } = useContext(AppContext);
 
   // Set up the blinking effect for the shadow only
   useEffect(() => {
@@ -35,16 +50,13 @@ export default function SearchBar({ search, setSearch }: searchProps) {
     }
   };
 
-  const categories = [
-    "ALL",
-    "Recommended",
-    "Breaking news",
-    "Trump Inaugration",
-    "Sports",
-    "Technology",
-    "Finance",
-    "Entertainment",
-  ];
+  // Function to get display text from category item
+  const getCategoryDisplayText = (item: string | Category): string => {
+    if (typeof item === "string") {
+      return item;
+    }
+    return item.name; // Use the name property for Category objects
+  };
 
   return (
     <div className="flex md:items-center mt-5 md:mt-10 gap-2 flex-col md:flex-row items-start px-5 md:px-0">
@@ -113,14 +125,28 @@ export default function SearchBar({ search, setSearch }: searchProps) {
                 WebkitOverflowScrolling: "touch",
               }}
             >
-              {categories.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 bg-[#1a1a1a] px-7 py-2 md:py-3 rounded-md text-[12px] md:text-[14px] font-bold whitespace-nowrap cursor-pointer hover:bg-[#252525]"
-                >
-                  {item}
-                </div>
-              ))}
+              <div
+                onClick={() => {
+                  setUserSelectedCategory("ALL");
+                }}
+                className="flex-shrink-0 flex gap-2 items-center bg-[#1a1a1a] px-5 py-2 md:py-[8.5px] rounded-md text-[12px] md:text-[14px] font-bold whitespace-nowrap cursor-pointer hover:bg-[#252525]"
+              >
+                <img src="/Icons/curvyarrow.svg" alt="" />
+                ALL
+              </div>
+              {categories.map((item, index) => {
+                return (
+                  <div
+                    onClick={() => {
+                      setUserSelectedCategory(getCategoryDisplayText(item));
+                    }}
+                    key={index}
+                    className="flex-shrink-0 bg-[#1a1a1a] px-7 py-2 md:py-[8.5px] rounded-md text-[12px] md:text-[14px] font-bold whitespace-nowrap cursor-pointer hover:bg-[#252525]"
+                  >
+                    {getCategoryDisplayText(item)}
+                  </div>
+                );
+              })}
               {/* Added extra spacing to ensure good scrolling experience */}
               <div className="w-8 flex-shrink-0"></div>
             </div>

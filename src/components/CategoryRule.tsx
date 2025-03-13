@@ -4,7 +4,7 @@ export default function CategoryRule() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="px-5 mt-10">
+    <div className="px-5 md:pl-0 mt-10">
       <h1 className="text-[18px] inter mb-8 md:text-[1.5vw] ">Rules</h1>
       <p
         className={`text-[15px] font-light text-[#adadad] md:text-[0.77vw] ${
