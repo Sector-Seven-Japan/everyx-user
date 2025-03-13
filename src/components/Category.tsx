@@ -46,12 +46,10 @@ export default function Category({
   const { setFilter, API_BASE_URL, setIsLoading } = useContext(AppContext);
   const router = useRouter();
   const [events, setEvents] = useState<Event[]>([]);
-  const [isFetching, setIsFetching] = useState(true);
 
   // Fetch events when component mounts or category changes
   const fetchEventsOfCategory = useCallback(async () => {
     try {
-      setIsFetching(true);
       const response = await fetch(
         `${API_BASE_URL}/search-events?tags=${item?.slug}&sortby=relevance`
       );
@@ -63,14 +61,16 @@ export default function Category({
     } catch (error) {
       console.error("Failed to fetch categories:", error);
       setEvents([]);
-    } finally {
-      setIsFetching(false);
     }
   }, [item?.slug, API_BASE_URL]);
 
   useEffect(() => {
     fetchEventsOfCategory();
   }, [fetchEventsOfCategory]);
+
+  if (!events.length) {
+    return null;
+  }
 
   // Ensure we only show selected category
   if (userSelectedCategory !== "ALL" && userSelectedCategory !== item.name) {
@@ -95,19 +95,11 @@ export default function Category({
         </button>
       </div>
 
-      {isFetching ? (
-        <div className="text-center text-gray-500 py-5">Loading events...</div>
-      ) : events.length === 0 ? (
-        <div className="text-center text-gray-500 py-5">
-          No events found for {item.name}.
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-12">
-          {events.slice(0, 8).map((eventItem) => (
-            <CategoryCard key={eventItem._id} item={eventItem} />
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-12">
+        {events.slice(0, 8).map((eventItem) => (
+          <CategoryCard key={eventItem._id} item={eventItem} />
+        ))}
+      </div>
     </div>
   );
 }

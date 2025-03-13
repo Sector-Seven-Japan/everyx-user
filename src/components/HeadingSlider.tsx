@@ -22,7 +22,7 @@ const HeadingSlider: React.FC<HeadingSliderProps> = ({ setFilter, filter }) => {
 
   return (
     <div className="w-full overflow-x-scroll mb-1 px-3 md:px-0 py-2 no-scrollbar border-t border-gray-900 bg-[#0E0E0E] md:mt-5">
-      <ul className="flex whitespace-nowrap gap-10 pt-1 justify-between">
+      <ul className="flex whitespace-nowrap pt-1 justify-between gap-10 md:gap-0">
         {processedCategories.map((category, index) => (
           <li
             key={index}

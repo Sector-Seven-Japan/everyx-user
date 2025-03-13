@@ -26,6 +26,8 @@ export default function SearchBar({
   const [isHovering, setIsHovering] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { categories } = useContext(AppContext);
+  console.log(isShadowBlinking);
+  
 
   // Set up the blinking effect for the shadow only
   useEffect(() => {
