@@ -15,18 +15,22 @@ export default function MakeOrder() {
   const pathname = usePathname();
   const lev = orderDetails?.leverage;
   const tradeVal = orderDetails?.pledge;
-  const [leverage, setLeverage] = useState<number>(lev);
-  const [value, setValue] = useState<number>(10);
-  const [inputValue, setInputValue] = useState<string>("10");
-  const [inputLeverage, setInputLeverage] = useState<string>("1.0");
+  const [leverage, setLeverage] = useState<number>(lev || 1); // Default to 1 if undefined
+  const [value, setValue] = useState<number>(tradeVal || 10); // Default to 10 if undefined
+  const [inputValue, setInputValue] = useState<string>((tradeVal || 10).toString());
+  const [inputLeverage, setInputLeverage] = useState<string>((lev || 1).toString());
   const [tradeSizeWarning, setTradeSizeWarning] = useState<string>("");
-  const maxTradeSize = orderDetails?.max_wager;
-  const maxLeverage = orderDetails?.max_leverage;
+  const maxTradeSize = orderDetails?.max_wager || 1000; // Default to 1000 if undefined
+  const maxLeverage = orderDetails?.max_leverage || 5; // Default to 5 if undefined
   const eventId = orderDetails?.event_id;
   const outcomeId = orderDetails?.event_outcome_id;
 
   // State for tooltip visibility
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [showLeverageTooltip, setShowLeverageTooltip] = useState(false);
+  const [showLeverageCashValueTooltip, setShowLeverageCashValueTooltip] = useState(false);
+  const [showProjectedPayoutTooltip, setShowProjectedPayoutTooltip] = useState(false);
+  const [showStopLevelTooltip, setShowStopLevelTooltip] = useState(false);
+  const [showYourTradedPossibilityTooltip, setShowYourTradedPossibilityTooltip] = useState(false);
 
   useEffect(() => {
     if (tradeVal !== undefined) {
@@ -43,7 +47,7 @@ export default function MakeOrder() {
     setInputValue(e.target.value);
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
-      setValue(Math.min(Math.max(newValue, 10), maxTradeSize)); // Ensure it stays within range
+      setValue(Math.min(Math.max(newValue, 10), maxTradeSize));
       if (newValue < 10) {
         setTradeSizeWarning("Minimum trade size is 10");
       } else {
@@ -70,7 +74,7 @@ export default function MakeOrder() {
     setInputLeverage(e.target.value);
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
-      setLeverage(Math.min(Math.max(newValue, 1), maxLeverage)); // Ensure it stays within range
+      setLeverage(Math.min(Math.max(newValue, 1), maxLeverage));
     }
   };
 
@@ -94,13 +98,13 @@ export default function MakeOrder() {
   };
 
   const handleLeveragePlus = (multiplier: number) => {
-    const newValue = multiplier
+    const newValue = multiplier;
     const roundedValue = parseFloat(newValue.toFixed(1));
     setLeverage(roundedValue);
   };
 
   const calculatePercentage = (current: number, min: number, max: number) => {
-    return Math.min(((current - min) / (max - min)) * 100, 100); // Cap at 100%
+    return Math.min(((current - min) / (max - min)) * 100, 100);
   };
 
   const tradeSizePercentage = calculatePercentage(value, 10, maxTradeSize);
@@ -118,25 +122,9 @@ export default function MakeOrder() {
     } else {
       router.push(`/events/${eventId}/order`);
       if (authToken) {
-        await makeOrder(
-          outcomeId,
-          eventId,
-          false,
-          leverage,
-          loan,
-          value,
-          wager
-        );
+        await makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
       } else {
-        await makeOrderWithoutAuth(
-          outcomeId,
-          eventId,
-          false,
-          leverage,
-          loan,
-          value,
-          wager
-        );
+        await makeOrderWithoutAuth(outcomeId, eventId, false, leverage, loan, value, wager);
       }
     }
   };
@@ -154,15 +142,7 @@ export default function MakeOrder() {
         if (authToken) {
           makeOrder(outcomeId, eventId, false, leverage, loan, value, wager);
         } else {
-          makeOrderWithoutAuth(
-            outcomeId,
-            eventId,
-            false,
-            leverage,
-            loan,
-            value,
-            wager
-          );
+          makeOrderWithoutAuth(outcomeId, eventId, false, leverage, loan, value, wager);
         }
       }
     }, 1000);
@@ -170,11 +150,11 @@ export default function MakeOrder() {
   }, [value, leverage]);
 
   return (
-    <div className="bg-[#141414] rounded-xl sticky top-[70px] w-full p-6">
+    <div className="bg-[#141414] rounded-xl sticky top-[70px] w-full p-6 relative">
       <h1 className="text-center mb-3 text-[1.1vw] md:mb-[1.2vw]">
         Your Order
       </h1>
-      <div className="mb-[2vw]">
+      <div className="mb-[2vw] relative">
         <h1 className="text-[0.7vw] mb-2">Total Size</h1>
         <div className="border-[#aeaeae68] border-[0.4px] flex rounded-md gap-2 p-2">
           <div className="w-[60%] px-2 text-[13px] flex items-center">
@@ -239,20 +219,26 @@ export default function MakeOrder() {
       </div>
 
       {pathname.startsWith("/events") && (
-        <div className="mb-[2vw]">
+        <div className="mb-[2vw] relative">
           <div className="flex items-center mb-2">
             <h1 className="text-[0.7vw]">Leverage</h1>
             {/* Info Icon with Tooltip */}
             <div
               className="relative ml-2"
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
+              onMouseEnter={() => {
+                console.log("Hovering Leverage");
+                setShowLeverageTooltip(true);
+              }}
+              onMouseLeave={() => {
+                console.log("Leaving Leverage");
+                setShowLeverageTooltip(false);
+              }}
             >
               <span className="text-[12px] text-gray-400 cursor-pointer">
                 ⓘ
               </span>
-              {showTooltip && (
-                <div className="absolute left-0 top-5 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+              {showLeverageTooltip && (
+                <div className="absolute left-0 top-5 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-50">
                   <p>
                     The value of your trade in this outcome after utilizing
                     leverage.
@@ -329,7 +315,7 @@ export default function MakeOrder() {
 
       {pathname.startsWith("/events") &&
         !pathname.startsWith("events/order") && (
-          <div className="flex flex-col gap-[1px]">
+          <div className="flex flex-col gap-[1px] relative">
             <p className="text-[#5D5D5D] md:text-[0.75vw]">Selected Outcome</p>
             <p className="text-[#00FFB8] md:text-[1vw] md:mb-3">
               {selectedOrder}
@@ -337,61 +323,156 @@ export default function MakeOrder() {
           </div>
         )}
 
-      {
-        <>
-          <div className="flex flex-col gap-4">
-            <div className="flex justify-between">
-              <div className="flex flex-col gap-[1px]">
-                <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">
-                  Cash used
-                </p>
+      <>
+        <div className="flex flex-col gap-4 relative">
+          <div className="flex justify-between relative">
+            <div className="flex flex-col gap-[1px]">
+              <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">
+                Cash used
+              </p>
+              <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
+                ${Math.round(orderDetails?.pledge || 0)}
+              </p>
+            </div>
+            <div className="flex flex-col gap-[1px] items-end">
+              <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">
+                Leverage cash value
+              </p>
+              <div
+                className="relative"
+                onMouseEnter={() => {
+                  console.log("Hovering Leverage Cash Value");
+                  setShowLeverageCashValueTooltip(true);
+                }}
+                onMouseLeave={() => {
+                  console.log("Leaving Leverage Cash Value");
+                  setShowLeverageCashValueTooltip(false);
+                }}
+              >
                 <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                  ${Math.round(orderDetails?.pledge)}
-                </p>
-              </div>
-              <div className="flex flex-col gap-[1px] items-end">
-                <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">
-                  Leverage cash value
-                </p>
-                <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                  ${Math.round(orderDetails?.wager)}{" "}
+                  ${Math.round(orderDetails?.wager || 0)}{" "}
                   <span className="text-[12px] text-[#E49C29] md:text-[0.85vw]">
-                    x {orderDetails?.leverage}
+                    x {orderDetails?.leverage || 1}
                   </span>
                 </p>
-              </div>
-            </div>
-
-            <div className="flex justify-between">
-              <div className="flex flex-col gap-[1px]">
-                <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">
-                  Projected payout
-                </p>
-                <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                  ${Math.round(orderDetails?.indicative_payout)}
-                </p>
-              </div>
-              <div className="flex flex-col gap-[1px] items-end">
-                <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">
-                  Your return
-                </p>
-                <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
-                  +{orderDetails?.indicative_return?.toFixed(0)} %
-                </p>
+                {showLeverageCashValueTooltip && (
+                  <div className="absolute -left-2 top-5 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-50">
+                    <p>
+                      The value of your trade in this outcome{" "}
+                      <b>after utilizing leverage</b>. For more information see
+                      our{" "}
+                      <a
+                        className="new-tab-link"
+                        target="_blank"
+                        href="/help"
+                        style={{ color: "#00FFB8", cursor: "pointer" }}
+                      >
+                        Help Desk
+                      </a>
+                      .
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
-          <div className="flex justify-between mt-7 md:items-center">
-            <p className="text-[#FF2E2E] text-[17px] md:text-[0.85vw]">
-              Stop level
-            </p>
+          <div className="flex justify-between relative">
+            <div className="flex flex-col gap-[1px]">
+              <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">
+                Projected payout
+              </p>
+              <div
+                className="relative"
+                onMouseEnter={() => {
+                  console.log("Hovering Projected Payout");
+                  setShowProjectedPayoutTooltip(true);
+                }}
+                onMouseLeave={() => {
+                  console.log("Leaving Projected Payout");
+                  setShowProjectedPayoutTooltip(false);
+                }}
+              >
+                <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
+                  ${Math.round(orderDetails?.indicative_payout || 0)}
+                </p>
+                {showProjectedPayoutTooltip && (
+                  <div className="absolute -left-2 top-5 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-50">
+                    <p>
+                      The payout you would receive if the event resolved in your
+                      favor right now. This value can change over time.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col gap-[1px] items-end">
+              <p className="text-[#5D5D5D] text-[11px] md:text-[0.75vw]">
+                Your return
+              </p>
+              <div
+                className="relative"
+                onMouseEnter={() => {
+                  console.log("Hovering Your Return");
+                  setShowYourTradedPossibilityTooltip(true);
+                }}
+                onMouseLeave={() => {
+                  console.log("Leaving Your Return");
+                  setShowYourTradedPossibilityTooltip(false);
+                }}
+              >
+                <p className="text-[16px] text-[#00FFB8] md:text-[1.2vw]">
+                  +{orderDetails?.indicative_return?.toFixed(0) || 0} %
+                </p>
+                {showYourTradedPossibilityTooltip && (
+                  <div className="absolute -left-2 top-5 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-50">
+                    <p>
+                      Your wager will move the market probability this much. You
+                      can set a warning on market impact{" "}
+                      <a
+                        className="new-tab-link"
+                        target="_blank"
+                        href="/setting"
+                        style={{ color: "#00FFB8", cursor: "pointer" }}
+                      >
+                        here
+                      </a>
+                      .
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-between mt-7 md:items-center relative">
+          <p className="text-[#FF2E2E] text-[17px] md:text-[0.85vw]">Stop level</p>
+          <div
+            className="relative"
+            onMouseEnter={() => {
+              console.log("Hovering Stop Level");
+              setShowStopLevelTooltip(true);
+            }}
+            onMouseLeave={() => {
+              console.log("Leaving Stop Level");
+              setShowStopLevelTooltip(false);
+            }}
+          >
             <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2.5px] md:text-[0.75vw]">
-              {(orderDetails?.after_stop_probability * 100).toFixed(0)}%
+              {(orderDetails?.after_stop_probability * 100).toFixed(0) || 0}%
             </button>
+            {showStopLevelTooltip && (
+              <div className="absolute -left-2 top-5 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-50">
+                <p>
+                  Your leveraged wager will become worthless if the probability
+                  of this outcome falls below this level.
+                </p>
+              </div>
+            )}
           </div>
-        </>
-      }
+        </div>
+      </>
 
       <button
         onClick={handleSubmit}

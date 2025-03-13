@@ -76,8 +76,7 @@ const CurrentCashBalanceCard: React.FC = () => {
           {showCurrentTooltip && (
             <div className="absolute left-1/2 -translate-x-1/2 top-6 w-[200px] md:w-[250px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
               <p>
-                The cash available at this moment for trading. Pending deposits
-                or withdrawals are not included.
+              The cash available at this moment for trading. <b>Pending deposits</b> or <b>withdrawals</b> are not included.
               </p>
             </div>
           )}
@@ -178,9 +177,14 @@ const CurrentCashBalanceCard: React.FC = () => {
                   {showBestCaseTooltip && (
                     <div className="absolute left-1/2 -translate-x-1/2 top-6 w-[200px] md:w-[250px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
                       <p>
-                        The best possible cash balance based on current market
-                        conditions and your trades.
+                      Your current cash balance plus winnings if all outstanding wagers resolved in your favor right now.
                       </p>
+                      <p className="mt-1">
+                      For more information see our{" "}
+                      <span className="text-[#00FFB8] cursor-pointer">
+                        Help Desk
+                      </span>.
+                    </p>
                     </div>
                   )}
                 </div>
@@ -205,7 +209,7 @@ const CurrentCashBalanceCard: React.FC = () => {
                   {showWinningsTooltip && (
                     <div className="absolute left-1/2 -translate-x-1/2 top-6 w-[200px] md:w-[250px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
                       <p>
-                        The total winnings accumulated from your trades to date.
+                      The total winnings from all events that resolved in your favor.
                       </p>
                     </div>
                   )}

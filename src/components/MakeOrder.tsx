@@ -36,6 +36,10 @@ export default function MakeOrder() {
 
   // State for tooltip visibility
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showLeverageTooltip, setShowLeverageTooltip] = useState(false);
+  const [showPayoutTooltip, setShowPayoutTooltip] = useState(false);
+  const [showStopLevelTooltip, setShowStopLevelTooltip] = useState(false);
+  const [showTradedPossibilityTooltip, setShowTradedPossibilityTooltip] = useState(false);
 
   // Update modal position when isOrderMade changes
   useEffect(() => {
@@ -346,7 +350,7 @@ export default function MakeOrder() {
                   ⓘ
                 </span>
                 {showTooltip && (
-                  <div className="absolute left-0 top-6 w-[200px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                  <div className="absolute left-1/2 -translate-x-1/2 top-6 w-[200px] md:w-[250px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
                     <p>
                       The value of your trade in this outcome after utilizing
                       leverage.
@@ -443,7 +447,22 @@ export default function MakeOrder() {
               </p>
             </div>
             <div className="flex flex-col gap-[1px] items-end">
-              <p className="text-[#5D5D5D] text-[13px]">Leverage cash value</p>
+              <div className="flex items-center">
+                <span>Leverage cash value</span>
+                <div
+                  className="relative ml-2"
+                  onClick={() => setShowLeverageTooltip((prev) => !prev)}
+                >
+                  <span className="text-[14px] text-gray-400 cursor-pointer">ⓘ</span>
+                  {showLeverageTooltip && (
+                    <div className="absolute right-0 top-6 w-[250px] md:w-[300px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                      <p>
+                        The value of your trade in this outcome <b>after utilizing leverage</b>. For more information see our <a className="new-tab-link text-[#00FFB8]" target="_blank" href="/help">Help Desk</a>.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
               <p className="text-[22px] text-[#00FFB8]">
                 ${Math.round(orderDetails?.wager)}{" "}
                 <span className="text-sm text-[#E49C29]">
@@ -455,13 +474,43 @@ export default function MakeOrder() {
 
           <div className="flex justify-between">
             <div className="flex flex-col gap-[1px]">
-              <p className="text-[#5D5D5D] text-[13px]">Projected payout</p>
+              <div className="flex items-center">
+                <span>Projected payout</span>
+                <div
+                  className="relative ml-2"
+                  onClick={() => setShowPayoutTooltip((prev) => !prev)}
+                >
+                  <span className="text-[14px] text-gray-400 cursor-pointer">ⓘ</span>
+                  {showPayoutTooltip && (
+                    <div className="absolute left-1/2 -translate-x-1/2 top-6 w-[200px] md:w-[250px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                      <p>
+                        The payout you would receive if the event resolved in your favor right now. This value can change over time.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
               <p className="text-[22px] text-[#00FFB8]">
                 ${Math.round(orderDetails?.indicative_payout)}
               </p>
             </div>
             <div className="flex flex-col gap-[1px] items-end">
-              <p className="text-[#5D5D5D] text-[13px]">Your return</p>
+              <div className="flex items-center">
+                <span>Your traded possibility</span>
+                <div
+                  className="relative ml-2"
+                  onClick={() => setShowTradedPossibilityTooltip((prev) => !prev)}
+                >
+                  <span className="text-[14px] text-gray-400 cursor-pointer">ⓘ</span>
+                  {showTradedPossibilityTooltip && (
+                    <div className="absolute right-0 top-6 w-[250px] md:w-[300px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                      <p>
+                        Your wager will move the market probability this much. You can set a warning on market impact <a className="new-tab-link text-[#00FFB8]" target="_blank" href="/setting">here</a>.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
               <p className="text-[22px] text-[#00FFB8]">
                 +{orderDetails?.indicative_return?.toFixed(0)} %
               </p>
@@ -471,9 +520,22 @@ export default function MakeOrder() {
 
         {pathname.startsWith("/wager") && (
           <div className="flex justify-between mt-7 md:items-center">
-            <p className="text-[#FF2E2E] text-[17px] md:text-[14px]">
-              Stop level
-            </p>
+            <div className="flex items-center">
+              <span>Stop level</span>
+              <div
+                className="relative ml-2"
+                onClick={() => setShowStopLevelTooltip((prev) => !prev)}
+              >
+                <span className="text-[14px] text-gray-400 cursor-pointer">ⓘ</span>
+                {showStopLevelTooltip && (
+                  <div className="absolute left-1/2 -translate-x-1/2 top-6 w-[200px] md:w-[250px] p-3 bg-[#2b2b2b] text-white text-sm rounded-lg shadow-lg z-20">
+                    <p>
+                      Your leveraged wager will become worthless if the probability of this outcome falls below this level.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
             <button className="bg-[#FF2E2E] rounded-md px-3 py-1 md:py-[2px] md:text-[12px]">
               {(orderDetails?.after_stop_probability * 100).toFixed(0)}%
             </button>
