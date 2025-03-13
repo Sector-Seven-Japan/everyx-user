@@ -149,11 +149,11 @@ export default function EventCategoryPageDetails() {
         <HeadingSlider filter={filter} setFilter={setFilter} />
 
         <div className="flex flex-col md:flex-row md:mt-0">
-          <div className="xl:w-[72%] w-full">
+          <div className="xl:w-[70%] w-full">
             {eventData ? (
               <>
                 <CategoryInfo eventData={eventData} />
-                <div className="px-5">
+                <div className="px-5 md:pl-0">
                   <h1 className="text-[18px] mb-8 xl:text-[1.4vw] inter font-semibold">
                     Live Chart
                   </h1>
@@ -179,7 +179,7 @@ export default function EventCategoryPageDetails() {
               </p>
             )}
           </div>
-          <div className="mt-5 hidden md:block md:w-[28%]">
+          <div className="mt-5 hidden md:block md:w-[30%]">
             <MakeOrderDesktop />
           </div>
         </div>

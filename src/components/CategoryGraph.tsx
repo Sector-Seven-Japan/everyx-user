@@ -53,7 +53,10 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (selected) return;
+    if (!eventData || !eventData.outcomes || eventData.outcomes.length === 0) {
+      console.warn("Event data not loaded or empty, skipping effect.");
+      return;
+    }
 
     const isDesktop = window.innerWidth >= 1024;
 
@@ -63,45 +66,97 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
       !pathname.match(/^\/events\/[^/]+\/order$/) &&
       !pathname.match(/^\/events\/[^/]+\/order\/success$/)
     ) {
-      setIsLoading(true);
-      const outcome = eventData?.outcomes[0];
-
-      if (outcome) {
-        setSelectedOrder(
-          String.fromCharCode(65) +
-            ". " +
-            outcome.name.charAt(0).toUpperCase() +
-            outcome.name.slice(1)
+      if (selected) {
+        // Find the selected outcome by ID
+        const selectedOutcome = eventData?.outcomes.find(
+          (outcome) => outcome._id === selected
         );
-        setSelectedOutcomeId(outcome._id);
 
-        (async () => {
-          if (authToken) {
-            await makeOrder(outcome._id, eventData._id, false, 1, 0, 10, 10);
-          } else {
-            await makeOrderWithoutAuth(
-              outcome._id,
-              eventData._id,
-              false,
-              1,
-              0,
-              10,
-              10
-            );
-          }
-          setIsOrderMade(true);
-        })();
+        if (selectedOutcome) {
+          // Find the index of the selected outcome
+          const outcomeIndex = eventData?.outcomes.findIndex(
+            (outcome) => outcome._id === selected
+          );
+
+          // Set the selected order with proper letter formatting based on index
+          setSelectedOrder(
+            String.fromCharCode(65 + (outcomeIndex !== -1 ? outcomeIndex : 0)) +
+              ". " +
+              selectedOutcome.name.charAt(0).toUpperCase() +
+              selectedOutcome.name.slice(1)
+          );
+
+          setSelectedOutcomeId(selected);
+
+          (async () => {
+            if (authToken) {
+              await makeOrder(selected, eventData._id, false, 1, 0, 10, 10);
+            } else {
+              await makeOrderWithoutAuth(
+                selected,
+                eventData._id,
+                false,
+                1,
+                0,
+                10,
+                10
+              );
+            }
+            setIsOrderMade(true);
+          })();
+          return;
+        }
+      }
+
+      if (!selected || selected === "null" || selected === "undefined") {
+        console.log("No selected outcome. Defaulting to the first available.");
+
+        if (eventData?.outcomes?.length > 0) {
+          const firstOutcome = eventData.outcomes[0];
+          setSelectedOrder(
+            `A. ${firstOutcome.name
+              .charAt(0)
+              .toUpperCase()}${firstOutcome.name.slice(1)}`
+          );
+
+          setSelectedOutcomeId(firstOutcome._id);
+
+          (async () => {
+            if (authToken) {
+              await makeOrder(
+                firstOutcome._id,
+                eventData._id,
+                false,
+                1,
+                0,
+                10,
+                10
+              );
+            } else {
+              await makeOrderWithoutAuth(
+                firstOutcome._id,
+                eventData._id,
+                false,
+                1,
+                0,
+                10,
+                10
+              );
+            }
+            setIsOrderMade(true);
+          })();
+        }
       }
     }
-  }, [pathname]); // Include pathname in the dependency array
+  }, [pathname, selected, eventData]); // Ensure eventData is included!
 
   return (
     <div className="mt-3 md:mt-20">
-      <h1 className="px-5 text-[18px] inter font-semibold mt-10 md:mt-0 md:text-[1.2vw] md:tracking-[1.1px] md:mb-12 mb-8">
+      <h1 className="px-5 md:pl-0 text-[18px] inter font-semibold mt-10 md:mt-0 md:text-[1.2vw] md:tracking-[1.1px] md:mb-12 mb-8">
         What do you predict ?
       </h1>
 
-      <div className="flex w-full px-5 flex-col gap-3">
+      <div className="flex w-full px-5 md:pl-0 flex-col gap-3">
         {eventData?.outcomes?.map((outcome: Outcome, index: number) => {
           return (
             <div
@@ -111,7 +166,9 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                   pathname.match(/^\/events\/[^/]+\/order\/success$/)
                 ) {
                   if (selectedOutcomeId !== outcome._id) {
-                    router.push(`/events/${eventData._id}?selected="true"`);
+                    router.push(
+                      `/events/${eventData._id}?selected=${outcome._id}`
+                    );
                   }
                 }
                 setSelectedOrder(
@@ -146,21 +203,36 @@ export default function CategoryGraph({ eventData }: CategoryInfoProps) {
                 setSelectedOutcomeId(outcome._id);
               }}
               key={outcome._id}
-              className="w-full h-[52px] rounded-sm md:h-[4.8vw] relative md:rounded-lg bg-[#131313] flex items-center md:px-12 px-8"
+              className="w-full h-[52px] cursor-pointer rounded-sm md:h-[4vw] relative md:rounded-lg bg-[#131313] flex items-center md:px-12 px-8"
             >
               <div
                 style={{
                   backgroundColor: outcomeColors[index],
                 }}
-                className={`absolute top-0 left-0 h-full rounded-lg ${selectedOutcomeId===outcome._id ? "w-full":"w-2"}`}
+                className={`absolute top-0 left-0 h-full rounded-lg ${
+                  selectedOutcomeId === outcome._id ? "w-full" : "w-2"
+                }`}
               ></div>
               <div className="flex gap-16 items-center">
-                <span className={`z-10 text-[17px] md:text-[1.6vw] font-bold ${selectedOutcomeId===outcome._id ? "text-black":"text-white"}`}>
+                <span
+                  className={`z-10 text-[17px] md:text-[1.3vw] font-bold ${
+                    selectedOutcomeId === outcome._id
+                      ? "text-black"
+                      : "text-white"
+                  }`}
+                >
                   {Math.round(outcome.trader_info.estimated_probability * 100)}%
                 </span>
-                <p className={`z-10 text-[16px] md:text-[1.3vw] ${selectedOutcomeId===outcome._id? "text-black":"text-white"}`}>
+                <p
+                  className={`z-10 text-[16px] md:text-[1vw] ${
+                    selectedOutcomeId === outcome._id
+                      ? "text-black"
+                      : "text-white"
+                  }`}
+                >
                   {String.fromCharCode(65 + index)}.{" "}
-                  {outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1)}s
+                  {outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1)}
+                  s
                 </p>
               </div>
             </div>

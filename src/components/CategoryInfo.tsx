@@ -49,7 +49,7 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
     return <p>Loading...</p>; // or some other loading UI
   }
   return (
-    <div className="p-5">
+    <div className="py-5 px-5 md:pl-0 pr-5">
       <div className="flex gap-3 md:gap-8">
         <div className="h-[70px] min-w-[70px] md:w-[8vw] md:h-[8vw] w-[70px] cursor-pointer flex-shrink-0">
           <img
@@ -60,23 +60,23 @@ export default function CategoryInfo({ eventData }: CategoryInfoProps) {
         </div>
         <div className="flex-1 flex flex-col justify-center md:justify-end md:gap-5 gap-2">
           <div>
-            <p className="text-[#2DC198] flex gap-1 md:gap-6 items-center font-light">
+            <p className="text-[#2DC198] flex gap-1 md:gap-5 items-center font-light">
               <div className="flex-shrink-0">
                 <Image
-                  src={"/Images/FreeClock i.png"}
+                  src={"/Icons/freeclock.svg"}
                   alt="clock"
                   height={18}
                   width={18}
-                  className="md:w-[2vw] md:h-[2vw]"
+                  className="md:w-[1.7vw] md:h-[1.7vw]"
                 />
               </div>
-              <p className="text-[#2DC198] text-[15px] md:text-[1.4vw] whitespace-nowrap">
+              <p className="text-[#2DC198] text-[15px] md:text-[1.2vw] whitespace-nowrap">
                 {countdown}
               </p>
             </p>
           </div>
           <div className="cursor-pointer">
-            <p className="font-light text-[14px] md:text-[1.4vw] line-clamp-2 inter tracking-[0.9px]">
+            <p className="font-light text-[14px] md:text-[1.35vw] line-clamp-2 inter tracking-[0.9px]">
               {eventData?.name}
             </p>
           </div>

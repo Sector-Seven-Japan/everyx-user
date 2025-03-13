@@ -213,11 +213,11 @@ export default function BettingPage() {
           <HeadingSlider filter={filter} setFilter={setFilter} />
         </div>
         <div className="flex flex-col md:flex-row md:mt-1">
-          <div className="md:w-[68%] xl:w-[72%] md:block hidden">
+          <div className="md:w-[68%] xl:w-[70%] md:block hidden">
             {eventData ? (
               <>
                 <CategoryInfo eventData={eventData} />
-                <div className="px-5">
+                <div className="px-5 md:pl-0">
                   <h1 className="text-[23px] mb-8 mt-5">Live Chart</h1>
                   {isLoadingGraph ? (
                     <div className="flex justify-center items-center h-40">
@@ -236,7 +236,7 @@ export default function BettingPage() {
               </p>
             )}
           </div>
-          <div className="md:mt-5 w-full md:w-[32%] xl:w-[28%] pb-20 md:pb-0">
+          <div className="md:mt-5 w-full md:w-[32%] xl:w-[30%] pb-20 md:pb-0">
             <div className="md:bg-[#171717] rounded-2xl md:pb-5 sticky top-[70px]">
               <div className="p-5 md:pb-0">
                 <h1 className="text-[22px] mt-4 text-center md:text-[18px]">

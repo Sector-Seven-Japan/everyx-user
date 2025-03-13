@@ -4,7 +4,13 @@ import CategoryCard from "./CategoryCard";
 import { AppContext } from "@/app/Context/AppContext";
 import LoadingPage from "./LoadingPage";
 
-export default function TopCategories() {
+interface TopCategoriesProps {
+  userSelectedCategory: string;
+}
+
+export default function TopCategories({
+  userSelectedCategory,
+}: TopCategoriesProps) {
   const [topCategoies, setTopCategories] = useState([]);
   const { API_BASE_URL } = useContext(AppContext);
 
@@ -32,6 +38,10 @@ export default function TopCategories() {
     fetchTopCategories();
   }, []);
 
+  if(userSelectedCategory!=="ALL"){
+    return null;
+  }
+
   return fetchingData == false ? (
     <div className="px-5 py-8 md:px-0">
       <div className="flex justify-between">
@@ -41,12 +51,7 @@ export default function TopCategories() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-12">
         {topCategoies.slice(0, 3).map((item, index) => {
-          return (
-            <CategoryCard
-              key={index}
-              item={item}
-            />
-          );
+          return <CategoryCard key={index} item={item} />;
         })}
       </div>
     </div>
