@@ -7,6 +7,16 @@ import { tPOLY, tBNB } from "../../utils/ABI";
 import type { Address } from "viem";
 import { AppContext } from "./AppContext";
 
+interface AbiItem {
+  constant?: boolean;
+  inputs?: Array<{ name: string; type: string }>;
+  name?: string;
+  outputs?: Array<{ name: string; type: string }>;
+  payable?: boolean;
+  stateMutability?: string;
+  type: string;
+}
+
 interface DepositContextType {
   writeContract: ReturnType<typeof useWriteContract>["writeContract"];
   isError: boolean;
@@ -17,7 +27,7 @@ interface DepositContextType {
   contractData: {
     [key: string]: {
       address: Address;
-      abi: any;
+      abi: AbiItem[];
     }
   };
   amount: string | null;

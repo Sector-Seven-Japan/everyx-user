@@ -8,14 +8,13 @@ import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
 import type React from "react";
 import { useContext, useEffect, useState } from "react";
-import { useSwitchChain, useChainId } from "wagmi";
+import { useChainId } from "wagmi";
 
 const Deposit: React.FC = () => {
   const { isMobile, filter, setFilter } = useContext(AppContext);
   const { writeContract, contractData, amount, setAmount, selectedNetwork, setSelectedNetwork } =
     useContext(DepositContext);
 
-  // const { switchChain } = useSwitchChain()
   const chainId = useChainId()
 
   const [value, setValue] = useState<string>("");
@@ -28,10 +27,6 @@ const Deposit: React.FC = () => {
 
   const [msg, setMsg] = useState<string>("")
 
-  // const handleSwitchChain = async (chainId: number) => {
-  //   await switchChain({ chainId })
-  // }
-
   useEffect(() => {
     console.log("Deposit page - Current context amount:", amount);
   }, [amount]);
@@ -41,16 +36,15 @@ const Deposit: React.FC = () => {
   }, [value]);
 
   useEffect(() => {
-    // if chainID is not same switch the network
-    console.log("Selected network:", selectedNetwork, chainId);
-    const selectedNetworkData = networks.find((network) => network.value === selectedNetwork);
-    if (selectedNetworkData?.chainId !== chainId)
-      setMsg("Kindly switch your network in order to proceed!")
-    else
-      setMsg("")
-    // if (selectedNetworkData)
-    //   handleSwitchChain(parseInt(selectedNetworkData.chainId))
-  }, [selectedNetwork]);
+    if (selectedNetwork && chainId) {
+      console.log("Selected network:", selectedNetwork, chainId);
+      const selectedNetworkData = networks.find((network) => network.value === selectedNetwork);
+      if (selectedNetworkData?.chainId !== chainId)
+        setMsg("Kindly switch your network in order to proceed!")
+      else
+        setMsg("")
+    }
+  }, [selectedNetwork, chainId]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/[^0-9.]/g, "");
