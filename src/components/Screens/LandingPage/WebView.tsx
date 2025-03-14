@@ -173,7 +173,7 @@ const WebLanding = () => {
         <div className="flex flex-col items-center justify-center gap-[4vw]  w-[70%] py-20 ">
           <div>
             <p className="text-[4.2vw]  text-[#cacaca] text-center font-light Zenfont leading-none">
-              with leverage.
+              with leverage,
             </p>
             <div className="mt-12 mb-7 flex justify-center items-center gap-3">
               <Image

@@ -24,9 +24,9 @@ const LiveIcon: React.FC<LiveIconProps> = ({
 
   // Status color mapping
   const colorMap = {
-    online: "#0bbf0b", // Green
-    offline: "#c51b1b", // Red
-    away: "#db8719", // Orange
+    online: "#FF4400", // Green
+    offline: "#FF4400", // Red
+    away: "#FF4400", // Orange
   };
 
   // Status text mapping

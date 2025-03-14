@@ -166,7 +166,7 @@ const MobileLanding = () => {
 
         <div>
           <p className="text-[11vw]  text-[#cacaca] text-center font-light Zenfont leading-none">
-            with leverage.
+            with leverage,
           </p>
           <div className="mt-10 mb-7 flex justify-center items-center gap-3">
             <Image
