@@ -8,20 +8,29 @@ import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
 import type React from "react";
 import { useContext, useEffect, useState } from "react";
+import { useSwitchChain, useChainId } from "wagmi";
 
 const Deposit: React.FC = () => {
   const { isMobile, filter, setFilter } = useContext(AppContext);
-  const { writeContract, contractData, amount, setAmount } =
+  const { writeContract, contractData, amount, setAmount, selectedNetwork, setSelectedNetwork } =
     useContext(DepositContext);
 
+  // const { switchChain } = useSwitchChain()
+  const chainId = useChainId()
+
   const [value, setValue] = useState<string>("");
-  const [selectedNetwork, setSelectedNetwork] = useState<string>("Polygon");
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const networks = [
-    { value: "Polygon", label: "Polygon Amoy Testnet" },
-    { value: "BSC", label: "BSC Testnet" },
+    { value: "tPOLY", label: "Polygon Amoy Testnet", chainId: 80002 },
+    { value: "tBNB", label: "BSC Testnet", chainId: 97 },
   ];
+
+  const [msg, setMsg] = useState<string>("")
+
+  // const handleSwitchChain = async (chainId: number) => {
+  //   await switchChain({ chainId })
+  // }
 
   useEffect(() => {
     console.log("Deposit page - Current context amount:", amount);
@@ -32,7 +41,15 @@ const Deposit: React.FC = () => {
   }, [value]);
 
   useEffect(() => {
-    console.log("Selected network:", selectedNetwork);
+    // if chainID is not same switch the network
+    console.log("Selected network:", selectedNetwork, chainId);
+    const selectedNetworkData = networks.find((network) => network.value === selectedNetwork);
+    if (selectedNetworkData?.chainId !== chainId)
+      setMsg("Kindly switch your network in order to proceed!")
+    else
+      setMsg("")
+    // if (selectedNetworkData)
+    //   handleSwitchChain(parseInt(selectedNetworkData.chainId))
   }, [selectedNetwork]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,72 +63,49 @@ const Deposit: React.FC = () => {
     setIsOpen(false);
   };
 
+  const processTXN = async () => {
+    try {
+      const numericValue = value.replace("$", "");
+      if (isNaN(Number.parseFloat(numericValue))) {
+        console.error("Invalid amount");
+        return;
+      }
+
+      const valueInWei = (
+        Number.parseFloat(numericValue) *
+        10 ** 18
+      ).toString();
+      console.log("Transferring amount:", numericValue);
+      console.log("Using network:", selectedNetwork);
+      console.log("ContractData:", contractData[selectedNetwork])
+
+      if (contractData[selectedNetwork].address && contractData[selectedNetwork].abi) {
+        writeContract({
+          address: contractData[selectedNetwork].address as `0x${string}`,
+          abi: contractData[selectedNetwork].abi,
+          functionName: "transfer",
+          args: ["0x6e22d47D5aFDe5baf633Abc0C805781483BCC69e", valueInWei],
+        });
+      } else {
+        console.error("Contract data is not properly initialized");
+      }
+    } catch (error) {
+      console.error("Transaction failed:", error);
+    }
+  }
+
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && value) {
-      setAmount(value);
-      try {
-        const numericValue = value.replace("$", "");
-        if (isNaN(Number.parseFloat(numericValue))) {
-          console.error("Invalid amount");
-          return;
-        }
-
-        const valueInWei = (
-          Number.parseFloat(numericValue) *
-          10 ** 18
-        ).toString();
-        console.log("Transferring amount:", numericValue);
-        console.log("Using network:", selectedNetwork);
-
-        if (contractData?.address && contractData?.abi) {
-          writeContract({
-            address: contractData.address as `0x${string}`,
-            abi: contractData.abi,
-            functionName: "transfer",
-            args: ["0x6e22d47D5aFDe5baf633Abc0C805781483BCC69e", valueInWei],
-          });
-        } else {
-          console.error("Contract data is not properly initialized");
-        }
-      } catch (error) {
-        console.error("Transaction failed:", error);
-      }
+      setAmount(value)
+      await processTXN()
     }
   };
 
-  const handleProceed = () => {
-    if (value) {
-      setAmount(value);
-      try {
-        const numericValue = value.replace("$", "");
-        if (isNaN(Number.parseFloat(numericValue))) {
-          console.error("Invalid amount");
-          return;
-        }
-
-        const valueInWei = (
-          Number.parseFloat(numericValue) *
-          10 ** 18
-        ).toString();
-        console.log("Transferring amount:", numericValue);
-        console.log("Using network:", selectedNetwork);
-
-        if (contractData?.address && contractData?.abi) {
-          writeContract({
-            address: contractData.address as `0x${string}`,
-            abi: contractData.abi,
-            functionName: "transfer",
-            args: ["0x6e22d47D5aFDe5baf633Abc0C805781483BCC69e", valueInWei],
-          });
-        } else {
-          console.error("Contract data is not properly initialized");
-        }
-      } catch (error) {
-        console.error("Transaction failed:", error);
-      }
-    } else {
-      console.error("No amount entered");
-    }
+  const handleProceed = async () => {
+    if (!value)
+      console.error("No amount entered")
+    setAmount(value)
+    await processTXN()
   };
 
   return (
@@ -147,24 +141,23 @@ const Deposit: React.FC = () => {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className={`ml-2 transition-transform duration-200 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
+                    className={`ml-2 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+                      }`}
                   >
                     <path d="m6 9 6 6 6-6" />
                   </svg>
                 </button>
+                <h6 className="text-[#04fbb8] text-[10px]">{msg || ""}</h6>
                 {isOpen && (
                   <div className="absolute top-full left-0 w-full mt-2 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.3)] z-10 border border-[#333333] backdrop-blur-sm">
                     {networks.map((network) => (
                       <button
                         key={network.value}
                         onClick={() => handleNetworkSelect(network.value)}
-                        className={`block w-full text-left px-4 py-3 transition-colors duration-200 flex items-center ${
-                          selectedNetwork === network.value
-                            ? "bg-[#1A1A1A] text-[#00FFB8]"
-                            : "bg-[#262626] text-white hover:bg-[#1A1A1A] hover:text-[#00FFB8]"
-                        }`}
+                        className={`block w-full text-left px-4 py-3 transition-colors duration-200 flex items-center ${selectedNetwork === network.value
+                          ? "bg-[#1A1A1A] text-[#00FFB8]"
+                          : "bg-[#262626] text-white hover:bg-[#1A1A1A] hover:text-[#00FFB8]"
+                          }`}
                       >
                         {network.label}
                       </button>
@@ -191,7 +184,8 @@ const Deposit: React.FC = () => {
             </div>
             <button
               onClick={handleProceed}
-              className="bg-[#00FFB8] py-3 w-[80%] mt-10 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw]"
+              disabled={true}
+              className="bg-[#00FFB8] py-3 w-[80%] mt-10 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw] disable"
             >
               Proceed
             </button>
@@ -230,24 +224,23 @@ const Deposit: React.FC = () => {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className={`ml-2 transition-transform duration-200 ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
+                      className={`ml-2 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+                        }`}
                     >
                       <path d="m6 9 6 6 6-6" />
                     </svg>
                   </button>
+                  <h6 className="text-[#04fbb8] text-[12px]">{msg || ""}</h6>
                   {isOpen && (
                     <div className="absolute top-full left-0 w-full mt-2 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.3)] z-10 border border-[#333333] backdrop-blur-sm">
                       {networks.map((network) => (
                         <button
                           key={network.value}
                           onClick={() => handleNetworkSelect(network.value)}
-                          className={`block w-full text-left px-4 py-3 transition-colors duration-200 flex items-center ${
-                            selectedNetwork === network.value
-                              ? "bg-[#1A1A1A] text-[#00FFB8]"
-                              : "bg-[#262626] text-white hover:bg-[#1A1A1A] hover:text-[#00FFB8]"
-                          }`}
+                          className={`block w-full text-left px-4 py-3 transition-colors duration-200 flex items-center ${selectedNetwork === network.value
+                            ? "bg-[#1A1A1A] text-[#00FFB8]"
+                            : "bg-[#262626] text-white hover:bg-[#1A1A1A] hover:text-[#00FFB8]"
+                            }`}
                         >
                           {network.label}
                         </button>
@@ -274,6 +267,7 @@ const Deposit: React.FC = () => {
               </div>
               <button
                 onClick={handleProceed}
+                disabled={msg !== "" ? true : false}
                 className="bg-[#00FFB8] py-3 w-[20vw] mt-10 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw]"
               >
                 Proceed

@@ -115,7 +115,7 @@ interface UserStats {
 }
 
 interface AppContextProps {
-  requestDeposit: (txnHash: string, amount: string) => Promise<void>;
+  requestDeposit: (txnHash: string, amount: string, network: string) => Promise<void>;
   filter: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
   sidebar: boolean;
@@ -410,7 +410,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const requestDeposit = async (txnHash: string, amount: string) => {
+  const requestDeposit = async (txnHash: string, amount: string, network: string) => {
     try {
       const response = await fetch(`${API_BASE_URL}/deposit/create/transaction`, {
         headers: {
@@ -418,7 +418,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           "Content-Type": "application/json",
         },
         method: "POST",
-        body: JSON.stringify({ txnHash, amount }),
+        body: JSON.stringify({ txnHash, amount, network }),
       });
       if (response.status === 401) {
         handleUnauthorized();

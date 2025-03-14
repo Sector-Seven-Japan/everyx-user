@@ -99,7 +99,7 @@ const HistoryMobile: React.FC = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        setTransactions(data);
+        setTransactions(data.reverse());
       }
     } catch (error) {
       console.error("Error fetching the transaction data:", error);
