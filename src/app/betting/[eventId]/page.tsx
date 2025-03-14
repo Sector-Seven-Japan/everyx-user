@@ -470,7 +470,7 @@ export default function BettingPage() {
                         <p className="text-[22px] text-[#00FFB8] md:text-[1.2vw]">
                           ${Math.round(orderDetails?.after_wager || 0)}{" "}
                           <span className="text-sm text-[#E49C29]">
-                            x {orderDetails?.after_leverage || 1}
+                            x {orderDetails?.after_leverage.toFixed(1) || 1}
                           </span>
                         </p>
                       </div>
