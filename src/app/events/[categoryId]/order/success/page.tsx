@@ -306,7 +306,7 @@ export default function OrderSuccess() {
                 Your Order
               </h1>
               <div className="flex flex-col items-center justify-center text-center gap-8 mt-5 md:gap-2">
-                <div className="border border-[#00FF11] rounded-full p-3">
+               
                   <Image
                     src="/Icons/SuccessIcon.svg"
                     alt=""
@@ -314,7 +314,7 @@ export default function OrderSuccess() {
                     height={60}
                     className="md:w-[2vw] md:h-[2vw]"
                   ></Image>
-                </div>
+               
                 <p className="text-lg font-light md:text-[0.7vw] md:mt-2">
                   Your order has been successfully processed!
                 </p>
