@@ -63,13 +63,11 @@ const Deposit: React.FC = () => {
       if (isNaN(Number.parseFloat(numericValue))) {
         console.error("Invalid amount");
         return;
-      }
+      } 
 
-      const valueInWei = (
-        Number.parseFloat(numericValue) *
-        10 ** 18
-      ).toString();
-      console.log("Transferring amount:", numericValue);
+      const valueInWei = parseFloat(numericValue) * 10 ** 18
+      
+      console.log("Transferring amount:", numericValue, valueInWei);
       console.log("Using network:", selectedNetwork);
       console.log("ContractData:", contractData[selectedNetwork])
 
@@ -78,7 +76,7 @@ const Deposit: React.FC = () => {
           address: contractData[selectedNetwork].address as `0x${string}`,
           abi: contractData[selectedNetwork].abi,
           functionName: "transfer",
-          args: ["0x6e22d47D5aFDe5baf633Abc0C805781483BCC69e", valueInWei],
+          args: ["0x6e22d47D5aFDe5baf633Abc0C805781483BCC69e", BigInt(valueInWei)],
           gas: BigInt(100000), // Increase gas limit (example value, adjust as needed)
           maxFeePerGas: BigInt(50000000000), // 50 Gwei (example value, adjust as needed)
           maxPriorityFeePerGas: BigInt(2000000000), // 2 Gwei (example value, adjust as needed)
@@ -181,7 +179,7 @@ const Deposit: React.FC = () => {
             </div>
             <button
               onClick={handleProceed}
-              disabled={true}
+              disabled={msg !== "" ? true : false}
               className="bg-[#00FFB8] py-3 w-[80%] mt-10 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw] disable"
             >
               Proceed
