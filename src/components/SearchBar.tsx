@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useEffect, useState, useRef, useContext } from "react";
 import LiveIcon from "./LiveIcon";
 
-
 interface searchProps {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +26,6 @@ export default function SearchBar({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { categories } = useContext(AppContext);
   console.log(isShadowBlinking);
-  
 
   // Set up the blinking effect for the shadow only
   useEffect(() => {
