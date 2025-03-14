@@ -126,7 +126,7 @@ export default function CategoryActivity({ eventData }: CategoryInfoProps) {
   };
 
   return (
-    <div className="px-5 mt-10">
+    <div className="px-5 md:pl-0 mt-10">
       <h1 className="text-[23px] mb-8 md:text-[1.5vw] md:mb-14 ">Activities</h1>
 
       {recentWagers.length === 0 ? (

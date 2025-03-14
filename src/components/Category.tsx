@@ -10,7 +10,6 @@ interface CategoryItem {
   name: string;
 }
 
-// Correct TraderInfo structure
 interface TraderInfo {
   max_leverage: number;
   estimated_payout: number;
@@ -37,16 +36,22 @@ interface Event {
 
 interface CategoryProps {
   item: CategoryItem;
+  userSelectedCategory: string;
 }
 
-export default function Category({ item }: CategoryProps) {
-  const { setFilter, API_BASE_URL,setIsLoading } = useContext(AppContext);
+export default function Category({
+  item,
+  userSelectedCategory,
+}: CategoryProps) {
+  const { setFilter, API_BASE_URL, setIsLoading } = useContext(AppContext);
   const router = useRouter();
   const [events, setEvents] = useState<Event[]>([]);
+  const [isFetching, setIsFetching] = useState(true);
 
-  // Use useCallback to avoid re-creating the function every render
+  // Fetch events when component mounts or category changes
   const fetchEventsOfCategory = useCallback(async () => {
     try {
+      setIsFetching(true);
       const response = await fetch(
         `${API_BASE_URL}/search-events?tags=${item?.slug}&sortby=relevance`
       );
@@ -58,24 +63,33 @@ export default function Category({ item }: CategoryProps) {
     } catch (error) {
       console.error("Failed to fetch categories:", error);
       setEvents([]);
+    } finally {
+      setIsFetching(false);
     }
-  }, [item?.slug, API_BASE_URL]); // Add `item?.slug` as a dependency
+  }, [item?.slug, API_BASE_URL]);
 
   useEffect(() => {
     fetchEventsOfCategory();
-  }, [fetchEventsOfCategory]); // Use `fetchEventsOfCategory` as a dependency
+  }, [fetchEventsOfCategory]);
 
-  if (!events.length) {
+  // Ensure we only show selected category
+  if (userSelectedCategory !== "ALL" && userSelectedCategory !== item.name) {
+    return null;
+  }
+
+  if (events.length === 0 && userSelectedCategory === "ALL") {
     return null;
   }
 
   return (
     <div className="px-5 py-8 md:px-0">
       <div className="flex justify-between">
-        <h1 className="text-xl mb-6 md:text-[25px] md:mb-14 inter font-[700]">{item?.name}</h1>
+        <h1 className="text-xl mb-6 md:text-[25px] md:mb-14 inter font-[700]">
+          {item?.name}
+        </h1>
         <button
           onClick={() => {
-            setIsLoading(true)
+            setIsLoading(true);
             setFilter(item?.name);
             router.push(`/explore/category/${item?.slug}`);
           }}
@@ -84,14 +98,20 @@ export default function Category({ item }: CategoryProps) {
           View ALL
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-12">
-        {events.slice(0,8).map((eventItem) => (
-          <CategoryCard
-            key={eventItem._id}
-            item={eventItem}
-          />
-        ))}
-      </div>
+
+      {isFetching ? (
+        <div className="text-center text-gray-500 py-5">Loading events...</div>
+      ) : events.length === 0 && userSelectedCategory !== "ALL" ? (
+        <div className="text-center text-gray-500 py-5">
+          No events found for {item.name}.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-12">
+          {events.slice(0, 8).map((eventItem) => (
+            <CategoryCard key={eventItem._id} item={eventItem} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

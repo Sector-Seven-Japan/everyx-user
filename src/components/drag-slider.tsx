@@ -21,7 +21,6 @@ export default function DragSlider({
   const [isDragged, setIsDragged] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  console.log(isDragged);
 
   // Motion values for interactive animations
   const x = useMotionValue(0);
@@ -57,6 +56,7 @@ export default function DragSlider({
     event: MouseEvent | TouchEvent,
     info: { offset: { x: number; y: number } }
   ) => {
+    console.log(isDragged);
     if (!sliderRef.current) return;
 
     const sliderWidth = sliderRef.current.offsetWidth;

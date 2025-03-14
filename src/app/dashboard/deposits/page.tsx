@@ -8,20 +8,30 @@ import HeadingSlider from "@/components/HeadingSlider";
 import Navbar from "@/components/Navbar";
 import type React from "react";
 import { useContext, useEffect, useState } from "react";
+import { useChainId } from "wagmi";
 
 const Deposit: React.FC = () => {
   const { isMobile, filter, setFilter } = useContext(AppContext);
-  const { writeContract, contractData, amount, setAmount } =
-    useContext(DepositContext);
+  const {
+    writeContract,
+    contractData,
+    amount,
+    setAmount,
+    selectedNetwork,
+    setSelectedNetwork,
+  } = useContext(DepositContext);
+
+  const chainId = useChainId();
 
   const [value, setValue] = useState<string>("");
-  const [selectedNetwork, setSelectedNetwork] = useState<string>("Polygon");
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const networks = [
-    { value: "Polygon", label: "Polygon Amoy Testnet" },
-    { value: "BSC", label: "BSC Testnet" },
+    { value: "tPOLY", label: "Polygon Amoy Testnet", chainId: 80002 },
+    { value: "tBNB", label: "BSC Testnet", chainId: 97 },
   ];
+
+  const [msg, setMsg] = useState<string>("");
 
   useEffect(() => {
     console.log("Deposit page - Current context amount:", amount);
@@ -32,8 +42,16 @@ const Deposit: React.FC = () => {
   }, [value]);
 
   useEffect(() => {
-    console.log("Selected network:", selectedNetwork);
-  }, [selectedNetwork]);
+    if (selectedNetwork && chainId) {
+      console.log("Selected network:", selectedNetwork, chainId);
+      const selectedNetworkData = networks.find(
+        (network) => network.value === selectedNetwork
+      );
+      if (selectedNetworkData?.chainId !== chainId)
+        setMsg("Kindly switch your network in order to proceed!");
+      else setMsg("");
+    }
+  }, [selectedNetwork, chainId]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/[^0-9.]/g, "");
@@ -46,72 +64,55 @@ const Deposit: React.FC = () => {
     setIsOpen(false);
   };
 
-  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && value) {
-      setAmount(value);
-      try {
-        const numericValue = value.replace("$", "");
-        if (isNaN(Number.parseFloat(numericValue))) {
-          console.error("Invalid amount");
-          return;
-        }
-
-        const valueInWei = (
-          Number.parseFloat(numericValue) *
-          10 ** 18
-        ).toString();
-        console.log("Transferring amount:", numericValue);
-        console.log("Using network:", selectedNetwork);
-
-        if (contractData?.address && contractData?.abi) {
-          writeContract({
-            address: contractData.address as `0x${string}`,
-            abi: contractData.abi,
-            functionName: "transfer",
-            args: ["0x6e22d47D5aFDe5baf633Abc0C805781483BCC69e", valueInWei],
-          });
-        } else {
-          console.error("Contract data is not properly initialized");
-        }
-      } catch (error) {
-        console.error("Transaction failed:", error);
+  const processTXN = async () => {
+    try {
+      const numericValue = value.replace("$", "");
+      if (isNaN(Number.parseFloat(numericValue))) {
+        console.error("Invalid amount");
+        return;
       }
+
+      const valueInWei = parseFloat(numericValue) * 10 ** 18;
+
+      console.log("Transferring amount:", numericValue, valueInWei);
+      console.log("Using network:", selectedNetwork);
+      console.log("ContractData:", contractData[selectedNetwork]);
+
+      if (
+        contractData[selectedNetwork].address &&
+        contractData[selectedNetwork].abi
+      ) {
+        writeContract({
+          address: contractData[selectedNetwork].address as `0x${string}`,
+          abi: contractData[selectedNetwork].abi,
+          functionName: "transfer",
+          args: [
+            "0x6e22d47D5aFDe5baf633Abc0C805781483BCC69e",
+            BigInt(valueInWei),
+          ],
+          gas: BigInt(100000), // Increase gas limit (example value, adjust as needed)
+          maxFeePerGas: BigInt(50000000000), // 50 Gwei (example value, adjust as needed)
+          maxPriorityFeePerGas: BigInt(2000000000), // 2 Gwei (example value, adjust as needed)
+        });
+      } else {
+        console.error("Contract data is not properly initialized");
+      }
+    } catch (error) {
+      console.error("Transaction failed:", error);
     }
   };
 
-  const handleProceed = () => {
-    if (value) {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && value) {
       setAmount(value);
-      try {
-        const numericValue = value.replace("$", "");
-        if (isNaN(Number.parseFloat(numericValue))) {
-          console.error("Invalid amount");
-          return;
-        }
-
-        const valueInWei = (
-          Number.parseFloat(numericValue) *
-          10 ** 18
-        ).toString();
-        console.log("Transferring amount:", numericValue);
-        console.log("Using network:", selectedNetwork);
-
-        if (contractData?.address && contractData?.abi) {
-          writeContract({
-            address: contractData.address as `0x${string}`,
-            abi: contractData.abi,
-            functionName: "transfer",
-            args: ["0x6e22d47D5aFDe5baf633Abc0C805781483BCC69e", valueInWei],
-          });
-        } else {
-          console.error("Contract data is not properly initialized");
-        }
-      } catch (error) {
-        console.error("Transaction failed:", error);
-      }
-    } else {
-      console.error("No amount entered");
+      await processTXN();
     }
+  };
+
+  const handleProceed = async () => {
+    if (!value) console.error("No amount entered");
+    setAmount(value);
+    await processTXN();
   };
 
   return (
@@ -128,7 +129,7 @@ const Deposit: React.FC = () => {
             </div>
 
             <div className="pt-10 pb-10 w-full px-10">
-              <p className="mb-2 text-[#00FFB8] font-medium">Select Network:</p>
+              <p className="mb-2 text-white font-medium">Select Network:</p>
               <div className="relative">
                 <button
                   onClick={() => setIsOpen(!isOpen)}
@@ -154,6 +155,7 @@ const Deposit: React.FC = () => {
                     <path d="m6 9 6 6 6-6" />
                   </svg>
                 </button>
+                <h6 className="text-[#04fbb8] text-[10px]">{msg || ""}</h6>
                 {isOpen && (
                   <div className="absolute top-full left-0 w-full mt-2 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.3)] z-10 border border-[#333333] backdrop-blur-sm">
                     {networks.map((network) => (
@@ -191,7 +193,8 @@ const Deposit: React.FC = () => {
             </div>
             <button
               onClick={handleProceed}
-              className="bg-[#00FFB8] py-3 w-[80%] mt-10 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw]"
+              disabled={msg !== "" ? true : false}
+              className="bg-[#00FFB8] py-3 w-[80%] mt-10 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw] disable"
             >
               Proceed
             </button>
@@ -209,9 +212,7 @@ const Deposit: React.FC = () => {
               </div>
 
               <div className="pt-10 pb-10">
-                <p className="mb-2 text-[#00FFB8] font-medium">
-                  Select Network:
-                </p>
+                <p className="mb-2 text-white font-medium">Select Network:</p>
                 <div className="relative w-[24vw]">
                   <button
                     onClick={() => setIsOpen(!isOpen)}
@@ -237,6 +238,7 @@ const Deposit: React.FC = () => {
                       <path d="m6 9 6 6 6-6" />
                     </svg>
                   </button>
+                  <h6 className="text-[#04fbb8] text-[12px]">{msg || ""}</h6>
                   {isOpen && (
                     <div className="absolute top-full left-0 w-full mt-2 rounded-xl overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.3)] z-10 border border-[#333333] backdrop-blur-sm">
                       {networks.map((network) => (
@@ -274,6 +276,7 @@ const Deposit: React.FC = () => {
               </div>
               <button
                 onClick={handleProceed}
+                disabled={msg !== "" ? true : false}
                 className="bg-[#00FFB8] py-3 w-[20vw] mt-10 rounded-md text-black text-[18px] flex items-center justify-center gap-3 md:text-[0.9vw]"
               >
                 Proceed

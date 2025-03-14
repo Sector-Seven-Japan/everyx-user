@@ -47,10 +47,12 @@ export default function Home() {
     setIsLoading,
     categories,
     fetchingData,
-    setSelectedOutcomeId
+    setSelectedOutcomeId,
   } = useContext(AppContext);
   const [searchData, setSearchData] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [userSelectedCategory, setUserSelectedCategory] =
+    useState<string>("ALL");
 
   useEffect(() => {
     setSelectedOutcomeId("");
@@ -89,6 +91,7 @@ export default function Home() {
       setSearchData([]);
     }
   }, [search, API_BASE_URL]);
+  
 
   return fetchingData == false ? (
     <div>
@@ -96,14 +99,15 @@ export default function Home() {
       <div className="w-full max-w-screen-2xl mx-auto md:px-10 lg:px-16 xl:px-20">
         <HeadingSlider setFilter={setFilter} filter={filter} />
         <ImageSlider />
-        <SearchBar search={search} setSearch={setSearch} />
+        <SearchBar search={search} setSearch={setSearch} setUserSelectedCategory={setUserSelectedCategory}/>
 
-        {!search && <TopCategories />}
+        {!search && <TopCategories userSelectedCategory={userSelectedCategory}/>}
+
 
         {!search &&
           categories.map((item, index) => {
             if (typeof item === "object") {
-              return <Category key={index} item={item} />;
+              return <Category key={index} item={item} userSelectedCategory={userSelectedCategory}/>;
             }
             return null;
           })}
@@ -117,10 +121,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-12 md:mt-10">
               {searchData.length > 0 ? (
                 searchData.map((item) => (
-                  <CategoryCard
-                    key={item._id}
-                    item={item}
-                  />
+                  <CategoryCard key={item._id} item={item} />
                 ))
               ) : search.trim() ? (
                 <div className="text-white h-[100px] flex items-center justify-center">

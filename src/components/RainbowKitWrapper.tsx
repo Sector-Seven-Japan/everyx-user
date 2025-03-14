@@ -8,12 +8,31 @@ import {
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { polygonAmoy, bscTestnet } from "wagmi/chains";
+import {
+  phantomWallet,
+  metaMaskWallet,
+  walletConnectWallet,
+  coinbaseWallet
+} from '@rainbow-me/rainbowkit/wallets';
 
 const queryClient = new QueryClient();
 
+const wallets = [
+  {
+    groupName: 'Recommended',
+    wallets: [
+      phantomWallet,
+      metaMaskWallet,
+      walletConnectWallet,
+      coinbaseWallet
+    ],
+  },
+];
+
 const config = getDefaultConfig({
-  appName: "My RainbowKit App",
+  appName: "Everyx",
   projectId: "ecd3b47bbfb460ff7694adef865be002",
+  wallets,
   chains: [polygonAmoy, bscTestnet],
 });
 

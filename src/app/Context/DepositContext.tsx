@@ -3,9 +3,19 @@
 import { useRouter } from "next/navigation";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useAccount, useWriteContract } from "wagmi";
-import { abi } from "../../utils/ABI";
+import { tPOLY, tBNB } from "../../utils/ABI";
 import type { Address } from "viem";
 import { AppContext } from "./AppContext";
+
+interface AbiItem {
+  constant?: boolean;
+  inputs?: Array<{ name: string; type: string }>;
+  name?: string;
+  outputs?: Array<{ name: string; type: string }>;
+  payable?: boolean;
+  stateMutability?: string;
+  type: string;
+}
 
 interface DepositContextType {
   writeContract: ReturnType<typeof useWriteContract>["writeContract"];
@@ -15,10 +25,14 @@ interface DepositContextType {
   changeToBigInt: (value: string) => string;
   address: Address | undefined;
   contractData: {
-    address: Address;
-    abi: typeof abi;
+    [key: string]: {
+      address: Address;
+      abi: AbiItem[];
+    }
   };
   amount: string | null;
+  selectedNetwork: string,
+  setSelectedNetwork: (data: string) => void;
   setAmount: (data: string) => void;
 }
 
@@ -30,10 +44,18 @@ const initialState: DepositContextType = {
   changeToBigInt: () => "0",
   address: undefined,
   contractData: {
-    address: `0x953E8a78Ac9fe3d1c0746a9EcB1B30687f87EE13` as Address,
-    abi,
+    "tPOLY": {
+      address: `0x953E8a78Ac9fe3d1c0746a9EcB1B30687f87EE13` as Address,
+      abi: tPOLY,
+    },
+    "tBNB": {
+      address: `0x9B7011DC67958472BABD619D6C61EeBb51c3edd9` as Address,
+      abi: tBNB,
+    }
   },
   amount: null,
+  selectedNetwork: "",
+  setSelectedNetwork: () => { },
   setAmount: () => { },
 };
 
@@ -44,14 +66,21 @@ export const DepositProvider = ({ children }: { children: ReactNode }) => {
     useWriteContract();
   const { address } = useAccount();
   const [amount, setAmount] = useState<string | "">("");
+  const [selectedNetwork, setSelectedNetwork] = useState<string | "">("tPOLY");
   const router = useRouter();
 
   const { requestDeposit } = useContext(AppContext);
 
   const contractData = {
-    address: `0x953E8a78Ac9fe3d1c0746a9EcB1B30687f87EE13` as Address,
-    abi,
-  };
+    "tPOLY": {
+      address: `0x953E8a78Ac9fe3d1c0746a9EcB1B30687f87EE13` as Address,
+      abi: tPOLY,
+    },
+    "tBNB": {
+      address: `0x9B7011DC67958472BABD619D6C61EeBb51c3edd9` as Address,
+      abi: tBNB,
+    }
+  }
 
   const changeToBigInt = (value: string) => {
     try {
@@ -63,6 +92,8 @@ export const DepositProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const contextValue: DepositContextType = {
+    selectedNetwork,
+    setSelectedNetwork,
     writeContract,
     isError,
     isSuccess,
@@ -106,7 +137,7 @@ export const DepositProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (data) {
       (async () => {
-        await requestDeposit(data, amount)
+        await requestDeposit(data, amount, selectedNetwork)
       })()
     }
   }, [data])

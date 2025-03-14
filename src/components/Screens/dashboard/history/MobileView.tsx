@@ -96,10 +96,12 @@ const HistoryMobile: React.FC = () => {
             Authorization: `Bearer ${authToken}`,
           },
         }
+
+
       );
       if (response.ok) {
         const data = await response.json();
-        setTransactions(data);
+        setTransactions(data.reverse());
       }
     } catch (error) {
       console.error("Error fetching the transaction data:", error);

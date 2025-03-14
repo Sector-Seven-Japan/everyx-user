@@ -37,7 +37,15 @@ interface CategoryCardProps {
 export default function CategoryCard({ item }: CategoryCardProps) {
   const { getCountdown } = useContext(AppContext);
   const router = useRouter();
-  const { setIsLoading, setSelectedOrder, makeOrderWithoutAuth, makeOrder, authToken, setIsOrderMade, setSelectedOutcomeId } = useContext(AppContext);
+  const {
+    setIsLoading,
+    setSelectedOrder,
+    makeOrderWithoutAuth,
+    makeOrder,
+    authToken,
+    setIsOrderMade,
+    setSelectedOutcomeId,
+  } = useContext(AppContext);
 
   const [countdown, setCountdown] = useState("");
 
@@ -64,7 +72,7 @@ export default function CategoryCard({ item }: CategoryCardProps) {
   // Function to truncate text if it's longer than the specified length
   const truncateText = (text: string, maxLength: number): string => {
     if (text.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
+      return text.substring(0, maxLength) + "...";
     }
     return text;
   };
@@ -75,7 +83,10 @@ export default function CategoryCard({ item }: CategoryCardProps) {
   return (
     <div className="cursor-pointer h-full relative flex flex-col justify-between border border-transparent rounded-lg">
       <div className="flex gap-3">
-        <div onClick={handleNavigation} className="h-[70px] min-w-[70px] w-[70px] cursor-pointer flex-shrink-0">
+        <div
+          onClick={handleNavigation}
+          className="h-[70px] min-w-[70px] w-[70px] cursor-pointer flex-shrink-0"
+        >
           <img
             className="h-full w-full object-cover rounded"
             src={item?.event_images_url[0]}
@@ -106,14 +117,22 @@ export default function CategoryCard({ item }: CategoryCardProps) {
         </div>
       </div>
 
-      <div className={`mt-6 ${showScrollbar ? 'max-h-[180px] overflow-y-auto pr-1' : ''}`}>
+      <div
+        className={`mt-6 ${
+          showScrollbar ? "max-h-[180px] overflow-y-auto pr-1" : ""
+        }`}
+      >
         <div className="flex flex-col gap-1">
           {item?.outcomes.map((outcome: Outcome, index: number) => {
-            const formattedName = outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1);
+            const formattedName =
+              outcome.name.charAt(0).toUpperCase() + outcome.name.slice(1);
             const displayName = truncateText(formattedName, 20);
-            
+
             return (
-              <div key={index} className="flex w-full items-center justify-between gap-2">
+              <div
+                key={index}
+                className="flex w-full items-center justify-between gap-2"
+              >
                 <div className="flex-1 min-w-0">
                   <p className="text-[12px] md:text-[14px] truncate">
                     {String.fromCharCode(65 + index)}. {displayName}
@@ -121,7 +140,10 @@ export default function CategoryCard({ item }: CategoryCardProps) {
                 </div>
                 <div className="flex items-center gap-6 flex-shrink-0">
                   <div className="font-semibold text-[12px] md:text-[14px] whitespace-nowrap">
-                    {Math.round(outcome.trader_info.estimated_probability * 100)}%
+                    {Math.round(
+                      outcome.trader_info.estimated_probability * 100
+                    )}
+                    %
                   </div>
                   <button
                     onClick={async () => {
@@ -155,7 +177,9 @@ export default function CategoryCard({ item }: CategoryCardProps) {
                       }
                       setIsOrderMade(true);
                       setSelectedOutcomeId(outcome._id);
-                      router.push(`/events/${item._id}?selected=true`)
+                      router.push(
+                        `/events/${item._id}?selected=${outcome._id}`
+                      );
                     }}
                     className="cursor-pointer bg-[#2C4B51] text-[#00FFB8] text-[11px] md:text-[14px] px-6 py-1 rounded-md whitespace-nowrap"
                   >
