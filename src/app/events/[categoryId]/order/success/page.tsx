@@ -44,7 +44,7 @@ interface GraphData {
 }
 
 interface EventHistoryParams {
-  precision?: "hour" | "minute"; // Updated to only include "hour" and "minute"
+  precision?: "hour" | "minute";
   from?: string;
   to?: string;
   eventId: string;
@@ -70,6 +70,17 @@ export default function OrderSuccess() {
   const [minuteGraphData, setMinuteGraphData] = useState<GraphData[]>([]);
   const [filterGraph, setFilterGraph] = useState("ALL");
 
+  // Add this effect to handle page refresh
+  useEffect(() => {
+    // Check if this is a page refresh by checking if orderDetails is null
+    // A refresh will clear context state
+    if (!orderDetails || !orderDetails.event_id) {
+      setIsLoading(true);
+      setIsOrderMade(false);
+      router.push("/trade");
+    }
+  }, [orderDetails, router, setIsLoading, setIsOrderMade]);
+
   const fetchEvent = async () => {
     if (!categoryId) return;
     try {
@@ -86,9 +97,11 @@ export default function OrderSuccess() {
   };
 
   useEffect(() => {
-    fetchEvent();
+    if (categoryId) {
+      fetchEvent();
+    }
     setIsLoading(false);
-  }, []);
+  }, [categoryId]);
 
   useEffect(() => {
     if (eventData?.ends_at) {
@@ -173,7 +186,7 @@ export default function OrderSuccess() {
     } finally {
       setIsLoadingGraph(false);
     }
-  }, [eventData?._id, getGraphData]);
+  }, [eventData?._id, getGraphData, minuteGraphData.length]);
 
   // Handle filter change
   const handleFilterChange = (newFilter: string) => {
@@ -295,7 +308,7 @@ export default function OrderSuccess() {
               <div className="flex flex-col items-center justify-center text-center gap-8 mt-5 md:gap-2">
                 <div className="">
                   <Image
-                    src="/Icons/SuccessIcon.png"
+                    src="/Icons/SuccessIcon.svg"
                     alt=""
                     width={70}
                     height={70}

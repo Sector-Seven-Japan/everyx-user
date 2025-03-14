@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { Suspense, useContext } from "react";
-import SuccessIcon from "../../../../../public/Icons/SuccessIcon.png";
+import SuccessIcon from "../../../../../public/Icons/SuccessIcon.svg";
 import Navbar from "@/components/Navbar";
 import { useRouter, useSearchParams } from "next/navigation";
 import CurrentCashBalanceCard from "@/components/CurrentCashBalance";
