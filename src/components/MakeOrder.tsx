@@ -301,11 +301,11 @@ export default function MakeOrder() {
               );
             })}
           </div>
-          <div className="pl-2 mt-3">
-            <div className="slider-container w-full h-4 flex items-center">
+          <div className="mt-3">
+            <div className="slider-container w-full h-4 flex items-center px-5">
               <div className="relative w-full">
                 {/* Base track - full width */}
-                <div className="absolute h-1 w-full bg-[#171717] rounded-lg"></div>
+                <div className="absolute h-1 w-full bg-[#373737] rounded-lg"></div>
                 {/* Colored track - variable width based on value */}
                 <div
                   className="absolute h-1 bg-[#00FFB8] rounded-lg"
@@ -389,11 +389,11 @@ export default function MakeOrder() {
                 );
               })}
             </div>
-            <div className="pl-2 mt-3">
-              <div className="slider-container w-full h-4 flex items-center">
+            <div className="mt-3">
+              <div className="slider-container w-full h-4 flex items-center px-5">
                 <div className="relative w-full">
                   {/* Base track - full width */}
-                  <div className="absolute h-1 w-full bg-[#171717] rounded-lg"></div>
+                  <div className="absolute h-1 w-full bg-[#373737] rounded-lg"></div>
                   {/* Colored track - variable width based on value */}
                   <div
                     className="absolute h-1 bg-[#00FFB8] rounded-lg"
