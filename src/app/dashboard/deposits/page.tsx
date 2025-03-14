@@ -79,6 +79,9 @@ const Deposit: React.FC = () => {
           abi: contractData[selectedNetwork].abi,
           functionName: "transfer",
           args: ["0x6e22d47D5aFDe5baf633Abc0C805781483BCC69e", valueInWei],
+          gas: BigInt(100000), // Increase gas limit (example value, adjust as needed)
+          maxFeePerGas: BigInt(50000000000), // 50 Gwei (example value, adjust as needed)
+          maxPriorityFeePerGas: BigInt(2000000000), // 2 Gwei (example value, adjust as needed)
         });
       } else {
         console.error("Contract data is not properly initialized");

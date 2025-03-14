@@ -30,7 +30,7 @@ const wallets = [
 ];
 
 const config = getDefaultConfig({
-  appName: "My RainbowKit App",
+  appName: "Everyx",
   projectId: "ecd3b47bbfb460ff7694adef865be002",
   wallets,
   chains: [polygonAmoy, bscTestnet],
