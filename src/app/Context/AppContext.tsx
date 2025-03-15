@@ -186,7 +186,7 @@ interface AppContextProps {
   setSelectedOutcomeId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const API_BASE_URL = "https://dev-api.everyx.io";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://dev-api.everyx.io";
 
 // Initial context state
 const initialState: AppContextProps = {
